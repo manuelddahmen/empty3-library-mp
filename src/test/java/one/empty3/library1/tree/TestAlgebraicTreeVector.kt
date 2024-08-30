@@ -613,6 +613,17 @@ class TestAlgebraicTreeVector() {
     }
 
     @Test
+    fun testForVectorSumOfComponents() {
+        val r = 12.0
+        val vars = HashMap<String, Double>()
+        vars["r"] = r
+        testResultVariableVec(
+            "sum((2,1,2,2,2,3))",
+            Vec(12.0), vars, true
+        )
+    }
+
+    @Test
     fun testForVectorMulVec() {
         val vars = HashMap<String, Double>()
         val a: Point3D = Point3D(2.0, 1.0, 2.0)

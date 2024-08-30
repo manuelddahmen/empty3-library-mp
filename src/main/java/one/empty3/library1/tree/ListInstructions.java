@@ -220,7 +220,9 @@ public class ListInstructions {
             StructureMatrix<Double> resultVec = null;
             Double resultDouble = null;
 
-            if (key != null) {
+            System.err.println("key=" + key + ", value=" + value);
+
+            if (key != null || value != null && !instruction.originalString.startsWith("##")) {
                 try {
                     /*/if (value.startsWith("#")) {
                         i++;
@@ -231,28 +233,41 @@ public class ListInstructions {
                     tree.setParametersValuesVec(currentParamsValuesVec);
                     tree.setParametersValuesVecComputed(currentParamsValuesVecComputed);
 
-
-                    tree.construct();
-
+                    try {
+                        tree.construct();
+                    } catch (AlgebraicFormulaSyntaxException | RuntimeException ex) {
+                        //String errors1 = String.format(Locale.getDefault(),
+                        //        "\n##Error: can't execute");
+                        //returnedCode.add(instruction.originalString + errors1);
+                        continue;
+                    }
                     resultVec = tree.eval();
 
                     if (resultVec != null) {
-                        Logger.getAnonymousLogger().log(Level.INFO, "key: " + key + " value: " + value + " computed: " + resultVec);
-                        if (resultVec.getDim() == 1) {
-                            currentParamsValuesVecComputed.put(key, resultVec);
-                            currentParamsValuesVec.put(key, value);
+                        if (key != null) {
+                            Logger.getAnonymousLogger().log(Level.INFO, "key: " + key + " value: " + value + " computed: " + resultVec);
+                            if (resultVec.getDim() == 1) {
+                                currentParamsValuesVecComputed.put(key, resultVec);
+                                currentParamsValuesVec.put(key, value);
 
-                            String errors1 = String.format(Locale.getDefault(),
-                                    "\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
-                            returnedCode.add(instruction.originalString + errors1);
-
-
-                        } else if (resultVec.getDim() == 0) {
-                            currentParamsValuesVecComputed.put(key, resultVec);
-                            currentParamsValuesVec.put(key, value);
-                            currentParamsValues.put(key, resultVec.getElem());
+                                String errors1 = String.format(Locale.getDefault(),
+                                        "\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
+                                returnedCode.add(instruction.originalString + errors1);
 
 
+                            } else if (resultVec.getDim() == 0) {
+                                currentParamsValuesVecComputed.put(key, resultVec);
+                                currentParamsValuesVec.put(key, value);
+                                currentParamsValues.put(key, resultVec.getElem());
+
+
+                                String errors1 = String.format(Locale.getDefault(),
+                                        "\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
+                                returnedCode.add(instruction.originalString + errors1);
+
+                            }
+                        } else if (instruction.originalString.startsWith("##")) {
+                        } else {
                             String errors1 = String.format(Locale.getDefault(),
                                     "\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
                             returnedCode.add(instruction.originalString + errors1);
