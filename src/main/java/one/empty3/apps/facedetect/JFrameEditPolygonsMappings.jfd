@@ -82,6 +82,10 @@ new FormModel {
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menu7"
+					"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu7.text" )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu1"
 					"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu1.text" )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {

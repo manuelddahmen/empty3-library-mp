@@ -464,6 +464,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItem12 = new JMenuItem();
         menuItem8 = new JMenuItem();
         menuItem2 = new JMenuItem();
+        menu7 = new JMenu();
         menu1 = new JMenu();
         menuItemAddPoint = new JMenuItem();
         menuItemMoveLinesDown = new JMenuItem();
@@ -567,6 +568,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menu2.add(menuItem2);
             }
             menuBar1.add(menu2);
+
+            //======== menu7 ========
+            {
+                menu7.setText(bundle.getString("JFrameEditPolygonsMappings.menu7.text"));
+            }
+            menuBar1.add(menu7);
 
             //======== menu1 ========
             {
@@ -768,6 +775,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItem12;
     private JMenuItem menuItem8;
     private JMenuItem menuItem2;
+    private JMenu menu7;
     private JMenu menu1;
     private JMenuItem menuItemAddPoint;
     private JMenuItem menuItemMoveLinesDown;
