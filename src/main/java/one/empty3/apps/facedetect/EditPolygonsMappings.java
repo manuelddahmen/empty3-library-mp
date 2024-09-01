@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
@@ -54,6 +55,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     private static final int SELECT_POINT_VERTEX = 4;
     public BufferedImage zBufferImage;
     public int typeShape = DistanceAB.TYPE_SHAPE_QUADR;
+    public boolean refineMatrix = false;
+    public Dimension2D aDimReduced = new Dimension(20, 20);
+    public Dimension2D bDimReduced = new Dimension(20, 20);
     private int mode = EDIT_POINT_POSITION;
     int selectedPointNo = -1;
     protected E3Model model;
@@ -86,8 +90,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     EditPolygonsMappings() {
         initComponents();
-        iTextureMorphMove = new TextureMorphMove(this, distanceABClass != null ? distanceABClass : DistanceProxLinear1.class);
-        distanceABClass = DistanceProxLinear1.class;
+        distanceABClass = DistanceProxLinear2.class;
     }
 
     public JPanel getContentPanel() {
@@ -434,19 +437,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             threadDistanceIsNotRunning = false;
                             Logger.getAnonymousLogger().log(Level.INFO, "All loaded resources finished. Starts distance calculation");
                             iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
-                            TextureMorphMove iTextureMorphMove1;
-//                        testHumanHeadTexturing.stop();
-//                        while(testHumanHeadTexturing.isRunning()) {
-//                            try {
-//                                Logger.getAnonymousLogger().log(Level.SEVERE, "Waiting rendering loop to stop");
-//                                Thread.sleep(500);
-//                            } catch (InterruptedException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                        }
                             if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
 
-                                if(pointsInImage!=null && pointsInImage.size()>=3 && pointsInModel!=null && pointsInModel.size()>=3) {
+                                if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
                                     iTextureMorphMove.setConvHullAB();
                                 }
                                 if (!iTextureMorphMove.distanceAB.isInvalidArray()) {
@@ -540,27 +533,37 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     uvCoordinates.getY());
                             if (uvFace != null) {
                                 Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
-                                if (point != null) {
+                                Point point2 = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
+                                if (point != null && point2 != null) {
                                     point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                                             point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
+                                    point2.setLocation(point2.getX() * panelModelView.getWidth(), point2.getX() * panelModelView.getWidth());
                                     Graphics graphics = panelDraw.getGraphics();
-                                    if (selectedPointNo == i[0])
-                                        graphics.setColor(Color.ORANGE);
-                                    else
-                                        graphics.setColor(Color.GREEN);
-
                                     // point.setLocation(point.getX(), point.getY());
-
                                     if (testHumanHeadTexturing.getZ().checkScreen(point)) {
+                                        if (selectedPointNo == i[0]) {
+                                            graphics.setColor(Color.PINK);
+                                        } else {
+                                            graphics.setColor(Color.YELLOW);
+                                        }
                                         graphics.fillOval((int) (point.getX() - 3),
                                                 (int) ((point.getY()) - 3),
                                                 7, 7);
-                                    } else {
-                                        graphics = panelDraw.getGraphics();
-                                        graphics.setColor(Color.YELLOW);
-                                        graphics.fillRect(0, 0, 10, 10);
-
                                     }
+                                    /*
+                                    if (testHumanHeadTexturing.getZ().checkScreen(point2)
+                                            && iTextureMorphMove != null && iTextureMorphMove.distanceAB != null
+                                            && !iTextureMorphMove.distanceAB.isInvalidArray()) {
+                                        Point3D point3 = iTextureMorphMove.distanceAB.findAxPointInB(point2.getX(), point2.getY());
+                                        if (selectedPointNo == i[0]) {
+                                            graphics.setColor(Color.PINK);
+                                        } else {
+                                            graphics.setColor(Color.YELLOW);
+                                        }
+                                        graphics.fillOval((int) (point3.getX() - 3),
+                                                (int) ((point3.getY()) - 3),
+                                                7, 7);
+                                    }*/
                                 } else {
                                     Graphics graphics = panelDraw.getGraphics();
                                     graphics.setColor(Color.GREEN);
@@ -630,22 +633,22 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.defautZheight = (panelModelView.getHeight() * Math.sqrt(2) / 2) * 2;
 
             Point3D minWidthPanel = new Point3D((double) panelModelView.getWidth(),
-                    (double) panelModelView.getHeight()*(1.0*panelModelView.getWidth()/panelModelView.getHeight()), 0.0).mult(Math.sqrt(2));
+                    (double) panelModelView.getHeight() * (1.0 * panelModelView.getWidth() / panelModelView.getHeight()), 0.0).mult(Math.sqrt(2));
             Point3D[] plane;
 
 
             plane = new Point3D[]{
                     new Point3D(-minWidthPanel.getX() / 2, -minWidthPanel.getY() / 2, 0.0).mult(-1),
                     new Point3D(minWidthPanel.getX() / 2, -minWidthPanel.getY() / 2, 0.0).mult(-1),
-                    new Point3D(minWidthPanel.getX()/2, minWidthPanel.getY() / 2, 0.0).mult(-1),
-                    new Point3D(-minWidthPanel.getX()/2, minWidthPanel.getY() / 2, 0.0).mult(-1)
+                    new Point3D(minWidthPanel.getX() / 2, minWidthPanel.getY() / 2, 0.0).mult(-1),
+                    new Point3D(-minWidthPanel.getX() / 2, minWidthPanel.getY() / 2, 0.0).mult(-1)
             };
             // Adapt uv textures
             double[] textUv = new double[]{0, 0, 1, 0, 1, 1, 0, 1};
 
-            for (int i = 0; i < textUv.length; i+=2) {
+            for (int i = 0; i < textUv.length; i += 2) {
                 textUv[i] = textUv[i] /* * minWidthPanel.getX()*/;
-                textUv[i+1] = textUv[i+1] /* * minWidthPanel.getY()*/;
+                textUv[i + 1] = textUv[i + 1] /* * minWidthPanel.getY()*/;
             }
 
             boolean a = false;

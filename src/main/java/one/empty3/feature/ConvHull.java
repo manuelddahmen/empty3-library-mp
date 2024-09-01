@@ -18,7 +18,7 @@ public class ConvHull {
     // 1 --> Clockwise
     // 2 --> Counterclockwise
     public static int orientation(Point3D p, Point3D q, Point3D r) {
-        int val = (int)((q.getY() - p.getY()) * (r.getX() - q.getX()) -
+        int val = (int) ((q.getY() - p.getY()) * (r.getX() - q.getX()) -
                 (q.getX() - p.getX()) * (r.getY() - q.getY()));
 
         if (val == 0) return 0; // collinear
@@ -26,17 +26,17 @@ public class ConvHull {
     }
 
     // Prints convex hull of a set of n hull0.
-    public static Vector<Point3D> convexHull(Point3D[] hull0, int n) {
+    public static List<Point3D> convexHull(List<Point3D> hull0, int n) {
         // There must be at least 3 hull0
         if (n < 3) return null;
 
         // Initialize Result
-        Vector<Point3D> hull = new Vector<>();
+        List<Point3D> hull = new ArrayList<>();
 
         // Find the leftmost Point3D
         int l = 0;
         for (int i = 1; i < n; i++)
-            if (hull0[i].getX() < hull0[l].getX())
+            if (hull0.get(i).getX() < hull0.get(l).getX())
                 l = i;
 
         // Start from leftmost Point3D, keep moving
@@ -46,7 +46,7 @@ public class ConvHull {
         int p = l, q;
         do {
             // Add current Point3D to result
-            hull.add(hull0[p]);
+            hull.add(hull0.get(p));
 
             // Search for a Point3D 'q' such that
             // orientation(p, q, x) is counterclockwise
@@ -59,7 +59,7 @@ public class ConvHull {
             for (int i = 0; i < n; i++) {
                 // If i is more counterclockwise than
                 // current q, then update q
-                if (orientation(hull0[p], hull0[i], hull0[q])
+                if (orientation(hull0.get(p), hull0.get(i), hull0.get(q))
                         == 2)
                     q = i;
             }
@@ -71,16 +71,15 @@ public class ConvHull {
 
         } while (p != l); // While we don't come to first
         // Point3D
-
         // Print Result
-        Vector<Point3D> listRet = hull;
+        List<Point3D> listRet = hull;
         return listRet;
     }
 
     /* Driver program to test above function */
     public static void main(String[] args) {
 
-        Point3D [] Point3Ds = new Point3D[7];
+        Point3D[] Point3Ds = new Point3D[7];
         Point3Ds[0] = new Point3D(0., 3., 0.);
         Point3Ds[1] = new Point3D(2., 3., 0.);
         Point3Ds[2] = new Point3D(1., 1., 0.);
@@ -90,7 +89,7 @@ public class ConvHull {
         Point3Ds[6] = new Point3D(3., 3., 0.);
 
         int n = Point3Ds.length;
-        Vector<Point3D> hull = convexHull(Point3Ds, n);
+        List<Point3D> hull = convexHull(Arrays.stream(Point3Ds).toList(), n);
 
         for (Point3D temp : hull)
             System.out.println("(" + temp.getX() + ", " +
@@ -98,7 +97,7 @@ public class ConvHull {
     }
 
 
-    public static boolean convexHullTestPointIsInside(Vector<Point3D> points_list, Point3D testPoint) {
+    public static boolean convexHullTestPointIsInside(List<Point3D> points_list, Point3D testPoint) {
         Path2D path = new Path2D.Double();
 
         // Move to the first point in the polygon
@@ -115,23 +114,25 @@ public class ConvHull {
         // Create a Point2D object for the test point
 
         // Check if the test point is inside the polygon
-        return path.contains(new Point2D() {
-            @Override
-            public double getX() {
-                return testPoint.getX();
-            }
+        return path.contains(
 
-            @Override
-            public double getY() {
-                return testPoint.getY();
-            }
+                new Point2D() {
+                    @Override
+                    public double getX() {
+                        return testPoint.getX();
+                    }
 
-            @Override
-            public void setLocation(double x, double y) {
-                testPoint.setX(x);
-                testPoint.setY(y);
-            }
-        });
+                    @Override
+                    public double getY() {
+                        return testPoint.getY();
+                    }
+
+                    @Override
+                    public void setLocation(double x, double y) {
+                        testPoint.setX(x);
+                        testPoint.setY(y);
+                    }
+                });
 
 
     }

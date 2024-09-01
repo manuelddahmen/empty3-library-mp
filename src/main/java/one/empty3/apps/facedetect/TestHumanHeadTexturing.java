@@ -92,7 +92,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
         Camera c = new Camera();
 
-        if(defautZheight==0) {
+        if (defautZheight == 0) {
             c.getEye().setZ(c.getEye().getX() / 8);
             c.getEye().setX(0.0);
             c.calculerMatrice(Point3D.Y.mult(-1));
@@ -134,12 +134,13 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 && !scene().getObjets().getData1d().contains(editPolygonsMappings.model)) {
             scene.add(editPolygonsMappings.model);
         }
-        if (editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove!=null) {
+        if (editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
+            editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         } else {
-            Logger.getAnonymousLogger().log(Level.WARNING, "model or texture null on render thread");
+            Logger.getAnonymousLogger().log(Level.WARNING, "setConvHullAB:: model or texture null on render thread");
         }
-        if(!scene().getObjets().getData1d().isEmpty()) {
+        if (!scene().getObjets().getData1d().isEmpty()) {
             z().scene(scene);
             z().camera(c);
         }
@@ -147,7 +148,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void afterRender() {
-        if(getPicture()!=null) {
+        if (getPicture() != null) {
             zBufferImages.add(getPicture());
         }
     }
@@ -155,22 +156,25 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, BufferedImage jpg, E3Model obj) {
         Logger.getAnonymousLogger().log(Level.INFO, "Jpg Obj Mapping...");
-        if(instance!=null) {
+        if (instance != null) {
             instance.stop();
             editPolygonsMappings.iTextureMorphMove.distanceAB = null;
             instance.editPolygonsMappings.iTextureMorphMove = null;
             instance.editPolygonsMappings = null;
-
         }
         TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
         testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
         TestHumanHeadTexturing.instance = testHumanHeadTexturing;
         testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings;
+        editPolygonsMappings.iTextureMorphMove = new TextureMorphMove(editPolygonsMappings, editPolygonsMappings.distanceABClass);
         editPolygonsMappings.iTextureMorphMove.setDistanceABclass(editPolygonsMappings.distanceABClass);
         editPolygonsMappings.iTextureMorphMove.distanceAB.opt1 = editPolygonsMappings.opt1;
         editPolygonsMappings.iTextureMorphMove.distanceAB.optimizeGrid = editPolygonsMappings.optimizeGrid;
         editPolygonsMappings.iTextureMorphMove.distanceAB.typeShape = editPolygonsMappings.typeShape;
+        editPolygonsMappings.iTextureMorphMove.distanceAB.refineMatrix = editPolygonsMappings.refineMatrix;
         editPolygonsMappings.iTextureMorphMove.setConvHullAB();
+        editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
+        editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
         testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
         testHumanHeadTexturing.setJpg(jpg);
         testHumanHeadTexturing.setObj(obj);

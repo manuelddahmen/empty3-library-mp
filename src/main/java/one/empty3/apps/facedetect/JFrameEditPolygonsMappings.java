@@ -27,8 +27,6 @@
 package one.empty3.apps.facedetect;
 
 import net.miginfocom.swing.MigLayout;
-import one.empty3.apps.manul.ModelIO;
-import one.empty3.feature.ConvHull;
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
@@ -39,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
@@ -443,9 +442,13 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void checkBoxRefiineMatric(ActionEvent e) {
         if (e.getSource() instanceof JCheckBoxMenuItem r) {
             if (r.isSelected()) {
-                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = true;
+                editPolygonsMappings2.aDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.aDimReduced;
+                editPolygonsMappings2.aDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.aDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.aDimReduced.getHeight() * 2)));
+                editPolygonsMappings2.bDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.bDimReduced;
+                editPolygonsMappings2.bDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.bDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.bDimReduced.getHeight() * 2)));
+                //editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = true;
             } else {
-                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = false;
+                //editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = false;
             }
         }
         editPolygonsMappings2.hasChangedAorB = true;

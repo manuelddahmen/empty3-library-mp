@@ -32,16 +32,10 @@ import one.empty3.library.Point3D;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Vector;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class TextureMorphMove extends ITexture {
     private static final int WHITE = Color.WHITE.getRGB();
@@ -50,8 +44,8 @@ public class TextureMorphMove extends ITexture {
     protected DistanceAB distanceAB;
     private int GRAY = Color.GRAY.getRGB();
     private Class<? extends DistanceBezier2> distanceABclass;
-    private Vector<Point3D> polyConvA;
-    private Vector<Point3D> polyConvB;
+    private @NotNull List<Point3D> polyConvA;
+    private @NotNull List<Point3D> polyConvB;
 
     @Override
     public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {
@@ -61,7 +55,8 @@ public class TextureMorphMove extends ITexture {
     public TextureMorphMove(EditPolygonsMappings editPanel, Class<? extends DistanceAB> distanceABclass) {
         super();
         this.editPanel = editPanel;
-        this.setDistanceABclass(distanceABclass);
+        setDistanceABclass(distanceABclass);
+        setConvHullAB();
     }
 
     private TextureMorphMove() {
@@ -69,7 +64,14 @@ public class TextureMorphMove extends ITexture {
 
     @Override
     public int getColorAt(double u, double v) {
-        if (distanceAB != null && !distanceAB.isInvalidArray() && editPanel.image != null) {
+        if (distanceAB == null)
+            return 0;
+        if (distanceAB.isInvalidArray()) {
+            setConvHullAB();
+            if (distanceAB.isInvalidArray())
+                return 0;
+        }
+        if (editPanel.image != null) {
             if (distanceAB.getClass().isAssignableFrom(DistanceBezier3.class))
                 ;
             else if ((distanceAB.sAij == null || distanceAB.sBij == null) && !distanceAB.getClass().isAssignableFrom(DistanceBezier3.class)) {
@@ -86,23 +88,31 @@ public class TextureMorphMove extends ITexture {
                     int y = (int) (Math.max(0, Math.min((point3D.getY()), (double) editPanel.image.getHeight() - 1)));
 
 
-
-                    if (polyConvB == null || polyConvB.isEmpty() || polyConvA == null || polyConvA.isEmpty()) {
-                        int rgb = editPanel.image.getRGB(x, y);
-                        return rgb;
-                    } else if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
-                        int rgb = editPanel.image.getRGB(x, y);
-                        return rgb;
+                    if (polyConvB != null && !polyConvB.isEmpty() && polyConvA != null && !polyConvA.isEmpty()) {
+                        if (!ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                            int rgb = editPanel.image.getRGB(x, y);
+                            return rgb;
+                        } else if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                            int rgb = Color.GREEN.getRGB();
+                            return rgb;
+                        }
+                    } else {
+                        if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                            int rgb = Color.ORANGE.getRGB();
+                            return rgb;
+                        }
                     }
-                    int rgb = editPanel.image.getRGB(x, y);
+                } else {
+                    int rgb = Color.RED.getRGB();
                     return rgb;
+
                 }
             } catch (RuntimeException e) {
                 throw new RuntimeException(e);
             }
         }
-        int x = (int) (Math.max(0, Math.min(u*((double) editPanel.image.getWidth() - 1),   (double) editPanel.image.getWidth() - 1)));
-        int y = (int) (Math.max(0, Math.min(v* ((double) editPanel.image.getHeight() - 1) ,  (double) editPanel.image.getHeight() - 1)));
+        int x = (int) (Math.max(0, Math.min(u * ((double) editPanel.image.getWidth() - 1), (double) editPanel.image.getWidth() - 1)));
+        int y = (int) (Math.max(0, Math.min(v * ((double) editPanel.image.getHeight() - 1), (double) editPanel.image.getHeight() - 1)));
         int rgb = editPanel.image.getRGB(x, y);
         return rgb;
     }
@@ -167,35 +177,38 @@ public class TextureMorphMove extends ITexture {
 
     public void setConvHullAB() {
 
-        Map<String, Point3D> hashMapA = Map.copyOf(editPanel.pointsInImage.entrySet().stream()
-                .filter(entry -> entry != null && entry.getKey() != null && entry.getValue() != null
-                        && entry.getValue().getX() != null && entry.getValue().getY() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-        Map<String, Point3D> hashMapB = Map.copyOf(editPanel.pointsInModel.entrySet().stream()
-                .filter(entry -> entry != null && entry.getKey() != null && entry.getValue() != null
-                        && entry.getValue().getX() != null && entry.getValue().getY() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-        Point3D[] aConv = new Point3D[hashMapA.size()];
+        Map<String, Point3D> hashMapA = editPanel.pointsInImage;
+        Map<String, Point3D> hashMapB = editPanel.pointsInModel;
+        ArrayList<Point3D> aConv = new ArrayList<Point3D>();
         int i = 0;
         for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-            aConv[i] = stringPoint3DEntry.getValue();
+            aConv.add(stringPoint3DEntry.getValue());
             i++;
         }
         i = 0;
-        Point3D[] bConv = new Point3D[hashMapB.size()];
+        List<Point3D> bConv = new ArrayList<>();
         for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-            bConv[i] = stringPoint3DEntry.getValue();
+            bConv.add(stringPoint3DEntry.getValue());
             i++;
         }
-        editPanel.iTextureMorphMove.setConvHullA(ConvHull.convexHull(aConv, aConv.length));
-        editPanel.iTextureMorphMove.setConvHullB(ConvHull.convexHull(bConv, bConv.length));
+        if (aConv.size() >= 3 && bConv.size() >= 3) {
+            List<Point3D> convexHullA = ConvHull.convexHull(aConv, aConv.size());
+            List<Point3D> convexHullB = ConvHull.convexHull(bConv, bConv.size());
+            if (convexHullA != null && convexHullB != null) {
+                editPanel.iTextureMorphMove.setConvHullA(convexHullA);
+                editPanel.iTextureMorphMove.setConvHullB(convexHullB);
+                distanceAB.setInvalidArray(false);
+                return;
+            }
+        }
+        distanceAB.setInvalidArray(true);
     }
 
-    public void setConvHullA(@NotNull Vector<Point3D> polyConvA) {
+    public void setConvHullA(@NotNull List<Point3D> polyConvA) {
         this.polyConvA = polyConvA;
     }
 
-    public void setConvHullB(@NotNull Vector<Point3D> polyConvB) {
+    public void setConvHullB(@NotNull List<Point3D> polyConvB) {
         this.polyConvB = polyConvB;
     }
 }
