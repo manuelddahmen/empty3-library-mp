@@ -40,19 +40,24 @@ import java.awt.event.*;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.logging.Filter;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
  * @author manue
  */
 public class JFrameEditPolygonsMappings extends JFrame {
+
+    public class MyFilter implements Filter {
+        public boolean isLoggable(LogRecord record) {
+            return record.getLevel().intValue() >= Level.SEVERE.intValue();
+        }
+    }
 
     File lastDirectory;
     private final Config config;
@@ -82,7 +87,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
         initParameters();
         threadDisplay = new Thread(editPolygonsMappings2);
         threadDisplay.start();
-        Logger.getAnonymousLogger().setLevel(Level.OFF);
+
+        Filter filter = new MyFilter();
+
+        Logger.getAnonymousLogger().setFilter(filter);
 
     }
 
@@ -321,6 +329,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.hasChangedAorB = true;
     }
 
+    private void distanceLinear4(ActionEvent e) {
+        //editPolygonsMappings2.iTextureMorphMove.setDistanceABclass(DistanceProxLinear3.class);
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear4.class;
+        editPolygonsMappings2.hasChangedAorB = true;
+    }
+
     private void optimizeGrid(ActionEvent e) {
         if (e.getSource() instanceof JCheckBoxMenuItem r) {
 
@@ -454,6 +468,92 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.hasChangedAorB = true;
     }
 
+    /***
+     * Starts rendering loop
+     * @param e
+     */
+    private void renderVideo(ActionEvent e) {
+        Thread videoCreationThread = new Thread(() -> {
+            System.out.println("Video creation stub start");
+            File[] imagesIn = null;
+            File[] txtIn = null;
+            File[] txtout = null;
+            E3Model model;
+            editPolygonsMappings2.durationMilliS = 30000;
+            if (editPolygonsMappings2.inImageType == EditPolygonsMappings.MULTIPLE) {
+                if (editPolygonsMappings2.imagesDirectory.isDirectory()) {
+                    imagesIn = new File[editPolygonsMappings2.imagesDirectory.listFiles().length];
+                    Object[] array = Arrays.stream(editPolygonsMappings2.imagesDirectory.listFiles()).sequential().filter(file -> file.getAbsolutePath().substring(-4).toLowerCase().equals(".jpg") || file.getAbsolutePath().substring(-4).toLowerCase().equals(".png")).toArray();
+                    for (int i = 0; i < array.length; i++) {
+                        imagesIn[i] = (File) array[i];
+                    }
+                }
+            }
+            if (editPolygonsMappings2.inTxtType == EditPolygonsMappings.MULTIPLE) {
+                if (editPolygonsMappings2.txtInDirectory.isDirectory()) {
+                    txtIn = new File[editPolygonsMappings2.txtInDirectory.listFiles().length];
+                    Object[] array = Arrays.stream(editPolygonsMappings2.txtInDirectory.listFiles()).sequential().filter(file -> file.getAbsolutePath().substring(-4).toLowerCase().equals(".txt")).toArray();
+                    for (int i = 0; i < array.length; i++) {
+                        txtIn[i] = (File) array[i];
+                    }
+                }
+            }
+            if (editPolygonsMappings2.outTxtType == EditPolygonsMappings.MULTIPLE) {
+                if (editPolygonsMappings2.txtOutDirectory.isDirectory()) {
+                    txtout = new File[editPolygonsMappings2.txtOutDirectory.listFiles().length];
+                    Object[] array = Arrays.stream(editPolygonsMappings2.txtInDirectory.listFiles()).sequential().filter(file -> file.getAbsolutePath().substring(-4).toLowerCase().equals(".txt")).toArray();
+                    for (int i = 0; i < array.length; i++) {
+                        txtout[i] = (File) array[i];
+                    }
+                }
+            }
+            if (editPolygonsMappings2.model != null) {
+                model = editPolygonsMappings2.model;
+            }
+        });
+        videoCreationThread.start();
+    }
+
+    /***
+     * Stops rendering loop
+     * @param e
+     */
+    private void stopRender(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void loadMovieIn(ActionEvent e) {
+        JFileChooser loadImageDeformed = new JFileChooser();
+        loadImageDeformed.setDialogType(JFileChooser.DIRECTORIES_ONLY);
+        if (lastDirectory != null)
+            loadImageDeformed.setCurrentDirectory(lastDirectory);
+        if (loadImageDeformed.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.loadImages(loadImageDeformed.getSelectedFile());
+        }
+        lastDirectory = loadImageDeformed.getCurrentDirectory();
+    }
+
+    private void loadResultsFromVideoLeft(ActionEvent e) {
+        JFileChooser loadImageDeformed = new JFileChooser();
+        loadImageDeformed.setDialogType(JFileChooser.DIRECTORIES_ONLY);
+        if (lastDirectory != null)
+            loadImageDeformed.setCurrentDirectory(lastDirectory);
+        if (loadImageDeformed.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.loadTxtVideoDirectory(loadImageDeformed.getSelectedFile());
+        }
+        lastDirectory = loadImageDeformed.getCurrentDirectory();
+    }
+
+    private void loadResultsFromVideoRight(ActionEvent e) {
+        JFileChooser loadImageDeformed = new JFileChooser();
+        if (lastDirectory != null)
+            loadImageDeformed.setCurrentDirectory(lastDirectory);
+        if (loadImageDeformed.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.loadTxtOutVideoDirectory(loadImageDeformed.getSelectedFile());
+        }
+        lastDirectory = loadImageDeformed.getCurrentDirectory();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -461,9 +561,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
         menuItem1 = new JMenuItem();
+        menuItem9 = new JMenuItem();
         menuItem4 = new JMenuItem();
         menuItem3 = new JMenuItem();
+        menuItemLoadResultsFromVideoLeft = new JMenuItem();
         menuItemLoadTxtOut = new JMenuItem();
+        menuItemLoadResultsFromVideoRight = new JMenuItem();
         menuItem12 = new JMenuItem();
         menuItem8 = new JMenuItem();
         menuItem2 = new JMenuItem();
@@ -484,7 +587,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItem10 = new JMenuItem();
         menuItem11 = new JMenuItem();
         menuItemStartRenderer = new JMenuItem();
+        menuItemRenderVideo = new JMenuItem();
         menuItemStopRenderer = new JMenuItem();
+        menuItemStopRender = new JMenuItem();
         menu5 = new JMenu();
         checkBoxMenuItemTypeShapePolyogns = new JCheckBoxMenuItem();
         checkBoxMenuItemTypeShapeBezier = new JCheckBoxMenuItem();
@@ -496,6 +601,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItemDistLinearProx1 = new JRadioButtonMenuItem();
         menuItemDistLinearProx2 = new JRadioButtonMenuItem();
         menuItemDistLinearProx3 = new JRadioButtonMenuItem();
+        menuItemDistanceLinear4 = new JRadioButtonMenuItem();
         editPolygonsMappings2 = new EditPolygonsMappings();
         menu3 = new JMenu();
 
@@ -541,6 +647,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem1.addActionListener(e -> menuItemLoadImage(e));
                 menu2.add(menuItem1);
 
+                //---- menuItem9 ----
+                menuItem9.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem9.text"));
+                menu2.add(menuItem9);
+
                 //---- menuItem4 ----
                 menuItem4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem4.text"));
                 menuItem4.addActionListener(e -> menuItemAdd3DModel(e));
@@ -551,10 +661,20 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem3.addActionListener(e -> menuItemLoadTxt(e));
                 menu2.add(menuItem3);
 
+                //---- menuItemLoadResultsFromVideoLeft ----
+                menuItemLoadResultsFromVideoLeft.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemLoadResultsFromVideoLeft.text"));
+                menuItemLoadResultsFromVideoLeft.addActionListener(e -> loadResultsFromVideoLeft(e));
+                menu2.add(menuItemLoadResultsFromVideoLeft);
+
                 //---- menuItemLoadTxtOut ----
                 menuItemLoadTxtOut.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemLoadTxtOut.text"));
                 menuItemLoadTxtOut.addActionListener(e -> loadTxtOut(e));
                 menu2.add(menuItemLoadTxtOut);
+
+                //---- menuItemLoadResultsFromVideoRight ----
+                menuItemLoadResultsFromVideoRight.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemLoadResultsFromVideoRight.text"));
+                menuItemLoadResultsFromVideoRight.addActionListener(e -> loadResultsFromVideoRight(e));
+                menu2.add(menuItemLoadResultsFromVideoRight);
 
                 //---- menuItem12 ----
                 menuItem12.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem12.text"));
@@ -666,11 +786,21 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemStartRenderer.addActionListener(e -> startRenderer(e));
                 menu4.add(menuItemStartRenderer);
 
+                //---- menuItemRenderVideo ----
+                menuItemRenderVideo.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemRenderVideo.text"));
+                menuItemRenderVideo.addActionListener(e -> renderVideo(e));
+                menu4.add(menuItemRenderVideo);
+
                 //---- menuItemStopRenderer ----
                 menuItemStopRenderer.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemStopRenderer.text"));
                 menuItemStopRenderer.setBackground(new Color(0xff3300));
                 menuItemStopRenderer.addActionListener(e -> stopRenderer(e));
                 menu4.add(menuItemStopRenderer);
+
+                //---- menuItemStopRender ----
+                menuItemStopRender.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemStopRender.text"));
+                menuItemStopRender.addActionListener(e -> stopRender(e));
+                menu4.add(menuItemStopRender);
             }
             menuBar1.add(menu4);
 
@@ -737,6 +867,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemDistLinearProx3.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistLinearProx3.text"));
                 menuItemDistLinearProx3.addActionListener(e -> menuItemLinearProx3(e));
                 menu5.add(menuItemDistLinearProx3);
+
+                //---- menuItemDistanceLinear4 ----
+                menuItemDistanceLinear4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistanceLinear4.text"));
+                menuItemDistanceLinear4.addActionListener(e -> distanceLinear4(e));
+                menu5.add(menuItemDistanceLinear4);
             }
             menuBar1.add(menu5);
         }
@@ -765,6 +900,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         buttonGroup2.add(menuItemDistLinearProx1);
         buttonGroup2.add(menuItemDistLinearProx2);
         buttonGroup2.add(menuItemDistLinearProx3);
+        buttonGroup2.add(menuItemDistanceLinear4);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -772,9 +908,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuBar menuBar1;
     private JMenu menu2;
     private JMenuItem menuItem1;
+    private JMenuItem menuItem9;
     private JMenuItem menuItem4;
     private JMenuItem menuItem3;
+    private JMenuItem menuItemLoadResultsFromVideoLeft;
     private JMenuItem menuItemLoadTxtOut;
+    private JMenuItem menuItemLoadResultsFromVideoRight;
     private JMenuItem menuItem12;
     private JMenuItem menuItem8;
     private JMenuItem menuItem2;
@@ -795,7 +934,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItem10;
     private JMenuItem menuItem11;
     private JMenuItem menuItemStartRenderer;
+    private JMenuItem menuItemRenderVideo;
     private JMenuItem menuItemStopRenderer;
+    private JMenuItem menuItemStopRender;
     private JMenu menu5;
     private JCheckBoxMenuItem checkBoxMenuItemTypeShapePolyogns;
     private JCheckBoxMenuItem checkBoxMenuItemTypeShapeBezier;
@@ -807,6 +948,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JRadioButtonMenuItem menuItemDistLinearProx1;
     private JRadioButtonMenuItem menuItemDistLinearProx2;
     private JRadioButtonMenuItem menuItemDistLinearProx3;
+    private JRadioButtonMenuItem menuItemDistanceLinear4;
     EditPolygonsMappings editPolygonsMappings2;
     private JMenu menu3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

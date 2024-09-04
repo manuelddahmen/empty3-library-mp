@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "17.0.11" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.3" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -52,6 +52,10 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLoadImage", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItem9"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem9.text" )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItem4"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem4.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemAdd3DModel", true ) )
@@ -62,9 +66,19 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLoadTxt", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemLoadResultsFromVideoLeft"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemLoadResultsFromVideoLeft.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadResultsFromVideoLeft", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemLoadTxtOut"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemLoadTxtOut.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadTxtOut", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemLoadResultsFromVideoRight"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemLoadResultsFromVideoRight.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadResultsFromVideoRight", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItem12"
@@ -163,10 +177,20 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startRenderer", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemRenderVideo"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemRenderVideo.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "renderVideo", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemStopRenderer"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemStopRenderer.text" )
 						"background": new java.awt.Color( 255, 51, 0, 255 )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "stopRenderer", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemStopRender"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemStopRender.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "stopRender", true ) )
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
@@ -233,6 +257,12 @@ new FormModel {
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistLinearProx3.text" )
 						"$buttonGroup": new FormReference( "buttonGroup2" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLinearProx3", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+						name: "menuItemDistanceLinear4"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistanceLinear4.text" )
+						"$buttonGroup": new FormReference( "buttonGroup2" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "distanceLinear4", true ) )
 					} )
 				} )
 			}

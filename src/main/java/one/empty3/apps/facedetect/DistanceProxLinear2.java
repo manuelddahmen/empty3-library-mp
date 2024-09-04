@@ -28,6 +28,9 @@ import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
+/***
+ * Used for portrait  "Boites imbriquées"
+ */
 public class DistanceProxLinear2 extends DistanceBezier2 {
     private static final int MAX_SUB_ITERE_X = 10;
 

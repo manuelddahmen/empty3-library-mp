@@ -3,7 +3,7 @@ plugins {
     id("java")
     id 'java-library'
     id 'maven-publish'
-    id 'org.jreleaser' version '1.13.1'
+    id 'org.jreleaser' version '1.14.0'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
@@ -441,13 +441,13 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2024.7.21'
+def versionName = '2024.9.2'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-3d'
-            version = '2024.7.21'
+            version = '2024.9.2'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -463,7 +463,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-3d"
-                version '2024.7.21'
+                version '2024.9.2'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -495,17 +495,17 @@ publishing {
     }
 
     repositories {
-        maven {
-            name = "JetBrainsSpaceEmpty3"
-            url = "https://maven.pkg.jetbrains.space/empty3/p/empty3/maven/maven"
-            credentials {
-                // Automation has a special account for authentication in Space
-                // account credentials are accessible via env vars
-                username = load.get("spaceUsername")
-                password = load.get("spacePassword")
-            }
+        /*  maven {
+              name = "JetBrainsSpaceEmpty3"
+              url = "https://maven.pkg.jetbrains.space/empty3/p/empty3/maven/maven"
+              credentials {
+                  // Automation has a special account for authentication in Space
+                  // account credentials are accessible via env vars
+                  username = load.get("spaceUsername")
+                  password = load.get("spacePassword")
+              }
 
-        }
+          }*/
         /*maven {
             name = "OSSRH"
             url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -515,7 +515,7 @@ publishing {
             }
 
         }*/
-
+/*
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/manuelddahmen/empty3_miror")
@@ -523,10 +523,11 @@ publishing {
                 username = load.get("GITHUB_ACTOR")
                 password = load.get("GITHUB_TOKEN")
             }
-        }
+        }*/
         maven {
             url = layout.buildDirectory.dir('staging-deploy')
         }
+
     }
 }
 
@@ -546,8 +547,8 @@ jreleaser {
         name = 'empty3-library-3d'
         java.artifactId = 'empty3-library-3d'
         java.groupId = 'one.empty3'
-        java.version = '2024.7.21'
-        version = '2024.7.21'
+        java.version = '2024.9.2'
+        version = '2024.9.2'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
@@ -573,6 +574,11 @@ jreleaser {
 
     deploy {
         maven {
+            // Enable or disable all configured deployers.
+            // Supported values are [`NEVER`, `ALWAYS`, `RELEASE`, `SNAPSHOT`].
+            // Defaults to `ALWAYS`.
+            //
+            active = 'ALWAYS'
             pomchecker {
                 // Defines the tool version to use.
                 //
@@ -600,7 +606,7 @@ jreleaser {
                     //
                     password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     // List of directories where staged artifacts can be found.
-                    stagingRepository('target/staging-deploy')
+                    stagingRepository('build/staging-deploy')
 
                     // Defines the connection timeout in seconds.
                     // Defaults to `20`.

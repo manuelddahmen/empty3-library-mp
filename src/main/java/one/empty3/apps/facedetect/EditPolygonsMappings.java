@@ -53,11 +53,14 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     private static final int EDIT_POINT_POSITION = 1;
     private static final int SELECT_POINT_POSITION = 2;
     private static final int SELECT_POINT_VERTEX = 4;
+    public static final int MULTIPLE = 1;
+    private static final int SINGLE = 2;
     public BufferedImage zBufferImage;
     public int typeShape = DistanceAB.TYPE_SHAPE_QUADR;
     public boolean refineMatrix = false;
     public Dimension2D aDimReduced = new Dimension(20, 20);
     public Dimension2D bDimReduced = new Dimension(20, 20);
+    public int durationMilliS = 30000;
     private int mode = EDIT_POINT_POSITION;
     int selectedPointNo = -1;
     protected E3Model model;
@@ -83,6 +86,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public boolean optimizeGrid = false;
     boolean renderingStarted = false;
     boolean renderingStopped = true;
+    int inImageType;
+    int outTxtType;
+    int inTxtType;
+    File imagesDirectory;
+    File txtInDirectory;
+    File txtOutDirectory;
 
     public EditPolygonsMappings(Window owner) {
         this();
@@ -680,6 +689,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     public void loadTxt(File selectedFile) {
+        inTxtType = SINGLE;
         if (image != null && model != null) {
             pointsInImage = new HashMap<String, Point3D>();
             try {
@@ -743,6 +753,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     public void loadTxtOut(File selectedFile) {
+        outTxtType = SINGLE;
         if (image != null && model != null) {
             pointsInModel = new HashMap<>();
             try {
@@ -817,4 +828,24 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         }
     }
 
+    public void loadTxtOutVideoDirectory(File selectedFile) {
+        inTxtType = MULTIPLE;
+        this.txtOutDirectory = selectedFile;
+    }
+
+    public void loadTxtVideoDirectory(File selectedFile) {
+        if (selectedFile.exists() && selectedFile.isDirectory()) {
+            outTxtType = MULTIPLE;
+            this.txtInDirectory = selectedFile;
+        }
+
+    }
+
+    public void loadImages(File selectedFile) {
+        if (selectedFile.exists() && selectedFile.isDirectory()) {
+            inImageType = MULTIPLE;
+            this.imagesDirectory = selectedFile;
+        }
+
+    }
 }
