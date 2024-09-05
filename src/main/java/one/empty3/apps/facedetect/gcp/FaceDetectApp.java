@@ -288,19 +288,20 @@ public class FaceDetectApp {
      * Annotates an image using the Vision API.
      */
     public static void main(String[] args) throws IOException, GeneralSecurityException {
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err.println("Usage:");
             System.err.printf(
-                    "\tjava %s inputImagePath outputImagePath\n", FaceDetectApp.class.getCanonicalName());
+                    "\tjava %s inputImagePath outputImagePath outPutTxtPath\n", FaceDetectApp.class.getCanonicalName());
             System.exit(1);
         }
         Path inputPath = Paths.get(args[0]);
         Path outputPath = Paths.get(args[1]);
+        Path outputPathTxt = Paths.get(args[2]);
         if (!outputPath.toString().toLowerCase().endsWith(".jpg") && !outputPath.toString().toLowerCase().endsWith(".png")) {
             System.err.println("outputImagePath must have the file extension 'jpg' or 'png'.");
             System.exit(1);
         }
-        final File annotationData = new File(outputPath.toFile().getName() + "-" + UUID.randomUUID() + ".txt");
+        final File annotationData = new File(outputPathTxt.toFile().getName() + ".txt");
 
         FaceDetectApp app = new FaceDetectApp(getVisionService());
         List<FaceAnnotation> faces = app.detectFaces(inputPath, MAX_RESULTS);
@@ -308,7 +309,7 @@ public class FaceDetectApp {
         System.out.printf("Writing to file %s\n", outputPath);
         BufferedImage img = ImageIO.read(inputPath.toFile());
 
-        final File output_filename = new File(outputPath.toFile().getName() + "-" + UUID.randomUUID() + ".jpg");
+        final File output_filename = new File(outputPath.toFile().getName() + ".jpg");
 
         try {
             app.dataWriter = new PrintWriter(new FileOutputStream(annotationData));

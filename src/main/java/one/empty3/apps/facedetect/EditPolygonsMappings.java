@@ -54,7 +54,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     private static final int SELECT_POINT_POSITION = 2;
     private static final int SELECT_POINT_VERTEX = 4;
     public static final int MULTIPLE = 1;
-    private static final int SINGLE = 2;
+    public static final int SINGLE = 2;
     public BufferedImage zBufferImage;
     public int typeShape = DistanceAB.TYPE_SHAPE_QUADR;
     public boolean refineMatrix = false;

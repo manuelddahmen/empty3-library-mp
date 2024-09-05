@@ -510,6 +510,36 @@ public class JFrameEditPolygonsMappings extends JFrame {
             if (editPolygonsMappings2.model != null) {
                 model = editPolygonsMappings2.model;
             }
+
+            BufferedImage currentZbufferImage = editPolygonsMappings2.testHumanHeadTexturing.zBufferImage();
+            if (editPolygonsMappings2.inImageType == EditPolygonsMappings.MULTIPLE
+                    && editPolygonsMappings2.inTxtType == EditPolygonsMappings.MULTIPLE
+                    && editPolygonsMappings2.outTxtType == EditPolygonsMappings.SINGLE) {
+                for (int j = 0; j < imagesIn.length; j++) {
+                    File ii = imagesIn[j];
+                    File ti = txtIn[j];
+                    File to = txtout[j];
+                    editPolygonsMappings2.loadImage(ii);
+                    editPolygonsMappings2.loadTxt(ti);
+                    editPolygonsMappings2.loadImage(to);
+
+                    startRenderer(null);
+
+                    while (editPolygonsMappings2.testHumanHeadTexturing.zBufferImage() == currentZbufferImage && j < imagesIn.length) {
+
+
+                        try {
+                            Thread.sleep(199);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        currentZbufferImage = editPolygonsMappings2.testHumanHeadTexturing.zBufferImage();
+                    }
+
+                    ImageIO.write(currentZbufferImage, "xjpg", new File(config.getDefaultFileOutput() + File.separator + String.format("FRAME%d.jpg", j)));
+
+                }
+            }
         });
         videoCreationThread.start();
     }
@@ -554,6 +584,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
         lastDirectory = loadImageDeformed.getCurrentDirectory();
     }
 
+    private void chargeVideoDirectory(ActionEvent e) {
+        JFileChooser loadImageDeformed = new JFileChooser();
+        if (lastDirectory != null)
+            loadImageDeformed.setCurrentDirectory(lastDirectory);
+        if (loadImageDeformed.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.imagesDirectory = loadImageDeformed.getSelectedFile();
+        }
+        lastDirectory = loadImageDeformed.getCurrentDirectory();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -561,7 +601,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
         menuItem1 = new JMenuItem();
-        menuItem9 = new JMenuItem();
+        menuItemChargeVideoDirectory = new JMenuItem();
         menuItem4 = new JMenuItem();
         menuItem3 = new JMenuItem();
         menuItemLoadResultsFromVideoLeft = new JMenuItem();
@@ -647,9 +687,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem1.addActionListener(e -> menuItemLoadImage(e));
                 menu2.add(menuItem1);
 
-                //---- menuItem9 ----
-                menuItem9.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem9.text"));
-                menu2.add(menuItem9);
+                //---- menuItemChargeVideoDirectory ----
+                menuItemChargeVideoDirectory.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemChargeVideoDirectory.text"));
+                menuItemChargeVideoDirectory.addActionListener(e -> chargeVideoDirectory(e));
+                menu2.add(menuItemChargeVideoDirectory);
 
                 //---- menuItem4 ----
                 menuItem4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem4.text"));
@@ -663,7 +704,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItemLoadResultsFromVideoLeft ----
                 menuItemLoadResultsFromVideoLeft.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemLoadResultsFromVideoLeft.text"));
-                menuItemLoadResultsFromVideoLeft.addActionListener(e -> loadResultsFromVideoLeft(e));
+                menuItemLoadResultsFromVideoLeft.addActionListener(e -> {
+			loadResultsFromVideoLeft(e);
+			loadResultsFromVideoLeft(e);
+		});
                 menu2.add(menuItemLoadResultsFromVideoLeft);
 
                 //---- menuItemLoadTxtOut ----
@@ -908,7 +952,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuBar menuBar1;
     private JMenu menu2;
     private JMenuItem menuItem1;
-    private JMenuItem menuItem9;
+    private JMenuItem menuItemChargeVideoDirectory;
     private JMenuItem menuItem4;
     private JMenuItem menuItem3;
     private JMenuItem menuItemLoadResultsFromVideoLeft;
