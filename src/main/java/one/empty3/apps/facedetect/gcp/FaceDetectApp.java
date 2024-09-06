@@ -71,6 +71,7 @@ public class FaceDetectApp {
         this.vision = visionService;
     }
 
+
     public void initStructurePolygons() {
         landmarks = new String[][][]{
                 {
@@ -288,10 +289,11 @@ public class FaceDetectApp {
      * Annotates an image using the Vision API.
      */
     public static void main(String[] args) throws IOException, GeneralSecurityException {
+
         if (args.length != 3) {
             System.err.println("Usage:");
             System.err.printf(
-                    "\tjava %s inputImagePath outputImagePath outPutTxtPath\n", FaceDetectApp.class.getCanonicalName());
+                    "\tgradle one.empty3.apps.facedetect.gcp.FaceDetectApp %s inputImagePath outputImagePath outPutTxtCordPath\n", FaceDetectApp.class.getCanonicalName() + "\n\n");
             System.exit(1);
         }
         Path inputPath = Paths.get(args[0]);
@@ -301,7 +303,12 @@ public class FaceDetectApp {
             System.err.println("outputImagePath must have the file extension 'jpg' or 'png'.");
             System.exit(1);
         }
-        final File annotationData = new File(outputPathTxt.toFile().getName() + ".txt");
+        if (!outputPathTxt.toString().toLowerCase().endsWith(".txt")) {
+            System.err.println("outputPathTxt must have the file extension 'txt'.");
+            System.exit(1);
+        }
+        final File annotationData = outputPathTxt.toAbsolutePath().toFile();
+        final File imageOut = outputPath.toAbsolutePath().toFile();
 
         FaceDetectApp app = new FaceDetectApp(getVisionService());
         List<FaceAnnotation> faces = app.detectFaces(inputPath, MAX_RESULTS);
@@ -309,7 +316,6 @@ public class FaceDetectApp {
         System.out.printf("Writing to file %s\n", outputPath);
         BufferedImage img = ImageIO.read(inputPath.toFile());
 
-        final File output_filename = new File(outputPath.toFile().getName() + ".jpg");
 
         try {
             app.dataWriter = new PrintWriter(new FileOutputStream(annotationData));
@@ -324,19 +330,19 @@ public class FaceDetectApp {
             //app.annotateWithFaces2(img, faceAnnotation);
             //app.writePolygonsDataPoly(img, faceAnnotation);
             //app.writePolygonsData(img, faceAnnotation);
-            app.writeFaceData(faceAnnotation);
+            app.writeFaceData(img, faceAnnotation);
         });
 
-        ImageIO.write(img, "jpg", output_filename);
+        ImageIO.write(img, "jpg", imageOut);
 
         app.dataWriter.close();
 
-        uploadFile(annotationData);
+        ///uploadFile(annotationData);
 
-        uploadFile(output_filename);
+        ///uploadFile(imageOut);
     }
 
-    private void writeFaceData(FaceAnnotation faceAnnotation) {
+    private void writeFaceData(BufferedImage img, FaceAnnotation faceAnnotation) {
 
         for (int i = 0; i < landmarks.length; i++) {
             for (int j = 0; j < landmarks[i].length; j++) {
@@ -349,8 +355,8 @@ public class FaceDetectApp {
                     if (!landmark1.isEmpty()) {
                         Landmark landmark2 = landmark1.get();
                         dataWriter.println(landmark2.getType());
-                        dataWriter.println(landmark2.getPosition().getX());
-                        dataWriter.println(landmark2.getPosition().getY());
+                        dataWriter.println((double) landmark2.getPosition().getX() / img.getWidth());
+                        dataWriter.println((double) landmark2.getPosition().getY() / img.getHeight());
                         dataWriter.println();
                     }
                 }

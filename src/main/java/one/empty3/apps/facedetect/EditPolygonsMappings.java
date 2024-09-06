@@ -61,6 +61,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public Dimension2D aDimReduced = new Dimension(20, 20);
     public Dimension2D bDimReduced = new Dimension(20, 20);
     public int durationMilliS = 30000;
+    public File imageFile;
+    public File txtFile;
     private int mode = EDIT_POINT_POSITION;
     int selectedPointNo = -1;
     protected E3Model model;
@@ -92,6 +94,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     File imagesDirectory;
     File txtInDirectory;
     File txtOutDirectory;
+    private File modelFile;
 
     public EditPolygonsMappings(Window owner) {
         this();
@@ -387,8 +390,10 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (image != null && testHumanHeadTexturing != null)
+        if (image != null && testHumanHeadTexturing != null) {
             testHumanHeadTexturing.setJpg(image);
+            imageFile = selectedFile;
+        }
 
         Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
 
@@ -624,7 +629,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.setObj(model);
             Logger.getAnonymousLogger().log(Level.INFO, "Loaded model");
             testHumanHeadTexturing.defautZheight = 0;
-
+            this.modelFile = selectedFile;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -696,7 +701,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
                 String line = "";
                 while (bufferedReader.hasNextLine()) {
-                    line = bufferedReader.nextLine();
+                    line = bufferedReader.nextLine().trim();
                     Point3D point = new Point3D();
                     String landmarkType;
                     double x;
@@ -705,13 +710,13 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         if (Character.isLetter(line.charAt(0))) {
                             landmarkType = line;
                             // X
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
                             x = Double.parseDouble(line);
                             // Y
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
                             y = Double.parseDouble(line);
                             // Blank line
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
 
                             pointsInImage.put(landmarkType, new Point3D(x, y, 0.0));
                         }
@@ -730,7 +735,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                     });
                 }
 
-
+                this.txtFile = selectedFile;
                 hasChangedAorB = true;
 
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in model view", pointsInImage.size());
@@ -760,7 +765,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
                 String line = "";
                 while (bufferedReader.hasNextLine()) {
-                    line = bufferedReader.nextLine();
+                    line = bufferedReader.nextLine().trim();
                     String landmarkType;
                     double x;
                     double y;
@@ -768,13 +773,13 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         if (Character.isLetter(line.charAt(0))) {
                             landmarkType = line;
                             // X
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
                             x = Double.parseDouble(line);
                             // Y
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
                             y = Double.parseDouble(line);
                             // Blank line
-                            line = bufferedReader.nextLine();
+                            line = bufferedReader.nextLine().trim();
 
                             pointsInModel.put(landmarkType, new Point3D(x, y, 0.0));
                         }
@@ -782,7 +787,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 }
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInModel.size());
                 bufferedReader.close();
-
+                
                 hasChangedAorB = true;
 
             } catch (IOException | RuntimeException ex) {

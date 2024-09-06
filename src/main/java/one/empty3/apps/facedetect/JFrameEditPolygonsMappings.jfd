@@ -93,8 +93,9 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemSaveModifiedVertex", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem2"
-						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem2.text" )
+						name: "menuItemFaceDetector"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemFaceDetector.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "faceDetector", true ) )
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {

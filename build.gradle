@@ -178,6 +178,12 @@ tasks.register('TestHumainMarche', JavaExec) {
     args "fourier_series"
     dependsOn(jar)
 }
+tasks.register("one.empty3.apps.facedetect.gcp.FaceDetectApp", JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = "one.empty3.apps.facedetect.gcp.FaceDetectApp"
+    args "image0.jpg", "image1.jpg", "image1.txt"
+    dependsOn(jar)
+}
 
 
 tasks.register('Paysage', JavaExec) {
@@ -390,7 +396,10 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-vision:3.41.0'
     implementation platform('com.google.cloud:libraries-bom:26.38.0')
     implementation 'com.google.cloud:google-cloud-storage'
-
+    implementation "com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0"
+    implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
+    implementation "com.google.guava:guava:16.0.1"
+    implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
 }
 
 tasks.register('javadocJar', Jar) {
@@ -431,7 +440,6 @@ tasks.named("processTestResources") {
 tasks.named("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
 tasks.withType(Jar).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

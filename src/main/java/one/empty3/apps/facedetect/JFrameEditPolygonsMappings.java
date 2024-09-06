@@ -27,6 +27,7 @@
 package one.empty3.apps.facedetect;
 
 import net.miginfocom.swing.MigLayout;
+import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
@@ -40,6 +41,8 @@ import java.awt.event.*;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -594,6 +597,18 @@ public class JFrameEditPolygonsMappings extends JFrame {
         lastDirectory = loadImageDeformed.getCurrentDirectory();
     }
 
+    private void faceDetector(ActionEvent e) {
+        try {
+            String s = (editPolygonsMappings2.txtFile != null ? editPolygonsMappings2.txtFile.getAbsolutePath() :
+                    editPolygonsMappings2.imageFile.getAbsolutePath()) + ".txt";
+            FaceDetectApp.main(new String[]{editPolygonsMappings2.imageFile.getAbsolutePath(),
+                    editPolygonsMappings2.imageFile.getAbsolutePath() + ".jpg", s});
+            editPolygonsMappings2.loadTxt(new File(s));
+        } catch (IOException | GeneralSecurityException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -609,7 +624,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItemLoadResultsFromVideoRight = new JMenuItem();
         menuItem12 = new JMenuItem();
         menuItem8 = new JMenuItem();
-        menuItem2 = new JMenuItem();
+        menuItemFaceDetector = new JMenuItem();
         menu7 = new JMenu();
         menu1 = new JMenu();
         menuItemAddPoint = new JMenuItem();
@@ -730,9 +745,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem8.addActionListener(e -> menuItemSaveModifiedVertex(e));
                 menu2.add(menuItem8);
 
-                //---- menuItem2 ----
-                menuItem2.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem2.text"));
-                menu2.add(menuItem2);
+                //---- menuItemFaceDetector ----
+                menuItemFaceDetector.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemFaceDetector.text"));
+                menuItemFaceDetector.addActionListener(e -> faceDetector(e));
+                menu2.add(menuItemFaceDetector);
             }
             menuBar1.add(menu2);
 
@@ -960,7 +976,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItemLoadResultsFromVideoRight;
     private JMenuItem menuItem12;
     private JMenuItem menuItem8;
-    private JMenuItem menuItem2;
+    private JMenuItem menuItemFaceDetector;
     private JMenu menu7;
     private JMenu menu1;
     private JMenuItem menuItemAddPoint;
