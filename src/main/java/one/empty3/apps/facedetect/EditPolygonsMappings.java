@@ -63,6 +63,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public int durationMilliS = 30000;
     public File imageFile;
     public File txtFile;
+    public boolean hdTextures = false;
+    public boolean textureWired = false;
     private int mode = EDIT_POINT_POSITION;
     int selectedPointNo = -1;
     protected E3Model model;
@@ -787,7 +789,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 }
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInModel.size());
                 bufferedReader.close();
-                
+
                 hasChangedAorB = true;
 
             } catch (IOException | RuntimeException ex) {

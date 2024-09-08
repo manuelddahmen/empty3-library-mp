@@ -23,9 +23,7 @@
 package one.empty3.apps.facedetect;
 
 import one.empty3.feature.PixM;
-import one.empty3.library.Camera;
-import one.empty3.library.Point3D;
-import one.empty3.library.ZBufferImpl;
+import one.empty3.library.*;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
@@ -134,7 +132,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 && !scene().getObjets().getData1d().contains(editPolygonsMappings.model)) {
             scene.add(editPolygonsMappings.model);
         }
-        if (editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
+        if (editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
+            editPolygonsMappings.model.texture(new ImageTexture(new ECBufferedImage(editPolygonsMappings.image)));
+        } else if (editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
             editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         } else {

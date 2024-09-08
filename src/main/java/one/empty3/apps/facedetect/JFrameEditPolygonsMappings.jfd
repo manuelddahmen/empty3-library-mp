@@ -145,6 +145,11 @@ new FormModel {
 						name: "menuItem7"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem7.text" )
 					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemwiredTextures"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemwiredTextures.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "wiredTextures", true ) )
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu6"
@@ -200,6 +205,11 @@ new FormModel {
 					name: "menu5"
 					"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu5.text" )
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
+						name: "menuItemHDTextures"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemHDTextures.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemHDTextures", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "checkBoxMenuItemTypeShapePolyogns"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapePolyogns.text" )
 						"$buttonGroup": new FormReference( "buttonGroup1" )
@@ -235,6 +245,12 @@ new FormModel {
 						name: "menuItemDistanceBB"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistanceBB.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem1DistanceBB", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+						name: "menuItemTextureDict"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemTextureDict.text" )
+						"$buttonGroup": new FormReference( "buttonGroup2" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "textureDirect", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
 						name: "menuItemDistBezier2"

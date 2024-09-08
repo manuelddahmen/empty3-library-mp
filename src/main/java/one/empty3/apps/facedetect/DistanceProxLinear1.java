@@ -35,6 +35,7 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
     private static final int MAX_SUB_ITERE_X = 10;
     private double right = -1;
     private double bottom = -1;
+    private boolean borderNotIinitialized = true;
 
     public DistanceProxLinear1(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
@@ -45,9 +46,10 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
 
     @Override
     public Point3D findAxPointInB(double u, double v) {
-        if (!isInvalidArray() && right == -1 && bottom == -1) {
+        if ((!isInvalidArray() || right == -1 && bottom == -1) || borderNotIinitialized) {
             right = Math.max(findAxPointInBal2(1, 0).getX(), findAxPointInBal2(1, 1).getX());
             bottom = Math.max(findAxPointInBal2(0, 1).getY(), findAxPointInBal2(1, 1).getY());
+            borderNotIinitialized = false;
         }
         return findAxPointInBal2(u, v);
     }
@@ -62,8 +64,11 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
     private Point3D findAxPointInBal2(double u, double v) {
         Point3D pb = nearLandmark(u, v);
         //pb = new Point3D(Math.max(0, Math.min(pb.get(0) / listBX.size() * 5, 1.0)), Math.max(0.0, Math.min(pb.get(1) / listBY.size() * 5, 1.0)), 1.0, 0.0);
-        pb = new Point3D(Math.max(0, Math.min(pb.get(0), 1.0)),
-                Math.max(0.0, Math.min(pb.get(1), 1.0)), 0.0);
+        if (right == -1 || bottom == -1 || borderNotIinitialized) {
+        } else {
+            pb = pb.multDot(new Point3D(1. / right, 1. / bottom, 0.0));
+            pb = new Point3D(Math.max(0, Math.min(pb.get(0), 1.0)), Math.max(0.0, Math.min(pb.get(1), 1.0)), 0.0);
+        }
         Point3D pa = surfaceA.calculerPoint3D((double) pb.getX(), (double) pb.getY());
         return pa;
     }
