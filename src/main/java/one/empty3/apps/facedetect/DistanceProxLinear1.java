@@ -63,9 +63,10 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
             borderNotIinitialized = false;
         }
         if (!(borderNotIinitialized || right == -1 || bottom == -1)) {
-            return findAxPointInBal2(u, v)
-                    .multDot(new Point3D(1.0 / right, 1.0 / bottom, 0.0))
-                    .multDot(new Point3D(1.0 / aDimReal.getWidth(), 1. / aDimReal.getHeight(), 0.0));
+            return findAxPointInBal2(u / right, v / bottom)
+//                    .multDot(new Point3D(1.0 / right, 1.0 / bottom, 0.0))
+                    .multDot(new Point3D(1.0 / aDimReal.getWidth(), 1. / aDimReal.getHeight(), 0.0))
+                    .multDot(new Point3D(bDimReal.getWidth(), bDimReal.getHeight(), 0.0));
         } else {
             return findAxPointInBal2(u, v);
         }
@@ -80,7 +81,7 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
 
     private Point3D findAxPointInBal2(double u, double v) throws RuntimeException {
         Point3D pb = nearLandmark(u, v);
-        Point3D pa = surfaceA.calculerPoint3D(pb.getX(), pb.getY());
+        Point3D pa = surfaceA.calculerPoint3D(u, v);
         if (pa == null) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "surfaceA.calculerPoint3D:: null");
             pa = Point3D.O0;
