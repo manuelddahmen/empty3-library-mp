@@ -58,8 +58,8 @@ public class SurfaceParametriquePolynomialeBezier extends SurfaceParametriquePol
     @Override
     public Point3D calculerPoint3D(double u, double v) {
         Point3D sum = Point3D.O0;
-        for (int i = 0; i < getPower1(); i++) {
-            for (int j = 0; j < getPower2(); j++) {
+        for (int i = 0; i < coefficients.getData2d().size(); i++) {
+            for (int j = 0; j < coefficients.getData2d().get(i).size(); j++) {
                 sum = sum.plus(coefficients.getElem(i, j).mult(B(i, power1.getElem() - 1, u) * B(j, power2.getElem() - 1, v)));
             }
         }

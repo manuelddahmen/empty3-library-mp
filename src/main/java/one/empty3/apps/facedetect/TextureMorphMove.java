@@ -41,8 +41,8 @@ public class TextureMorphMove extends ITexture {
     protected DistanceAB distanceAB;
     private int GRAY = Color.GRAY.getRGB();
     private Class<? extends DistanceBezier2> distanceABclass;
-    private @NotNull List<Point3D> polyConvA;
-    private @NotNull List<Point3D> polyConvB;
+    private List<Point3D> polyConvA;
+    private List<Point3D> polyConvB;
 
     @Override
     public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {
@@ -72,14 +72,13 @@ public class TextureMorphMove extends ITexture {
             int x = (int) (Math.max(0, Math.min(point3D.getX(), (double) editPanel.image.getWidth() - 1)));
             int y = (int) (Math.max(0, Math.min((point3D.getY()), (double) editPanel.image.getHeight() - 1)));
 
-            int rgb = editPanel.image.getRGB(x, y);
-            return rgb;
+            return editPanel.image.getRGB(x, y);
         }
         if (distanceAB.isInvalidArray()) {
-            setConvHullAB();
-            if (distanceAB.isInvalidArray())
-                return 0;
+            return 0;
         }
+        setConvHullAB();
+
         if (editPanel.image != null) {
             if (distanceAB.getClass().isAssignableFrom(DistanceBezier3.class))
                 ;
@@ -97,33 +96,38 @@ public class TextureMorphMove extends ITexture {
                     int y = (int) (Math.max(0, Math.min((point3D.getY()), (double) editPanel.image.getHeight() - 1)));
 
 
-                    if (polyConvB != null && !polyConvB.isEmpty() && polyConvA != null && !polyConvA.isEmpty()) {
-                        if (!ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
-                            int rgb = editPanel.image.getRGB(x, y);
-                            return rgb;
-                        } else if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
-                            int rgb = Color.GREEN.getRGB();
-                            return rgb;
-                        }
-                    } else {
-                        if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
-                            int rgb = Color.ORANGE.getRGB();
-                            return rgb;
-                        }
-                    }
-                } else {
-                    int rgb = Color.RED.getRGB();
+                    //if (polyConvB != null && !polyConvB.isEmpty() && polyConvA != null && !polyConvA.isEmpty()) {
+                    /*if (!ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                        int rgb = editPanel.image.getRGB(x, y);
+                        return rgb;
+                    } else if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                        */
+                    int rgb = editPanel.image.getRGB(x, y);
                     return rgb;
+                    //}
+                    //} else {
+                    //    if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
+                    //        int rgb = Color.ORANGE.getRGB();
+                    //        return rgb;
+                    //    }
+                    //}
+                } else {
+                    return Color.RED.getRGB();
 
                 }
             } catch (RuntimeException e) {
-                throw new RuntimeException(e);
-            }
+                e.printStackTrace();
+            }/*
+            int x = (int) (Math.max(0, Math.min(u * ((double) editPanel.image.getWidth() - 1), (double) editPanel.image.getWidth() - 1)));
+            int y = (int) (Math.max(0, Math.min(v * ((double) editPanel.image.getHeight() - 1), (double) editPanel.image.getHeight() - 1)));
+            return Color.GREEN.getRGB();*/
         }
         int x = (int) (Math.max(0, Math.min(u * ((double) editPanel.image.getWidth() - 1), (double) editPanel.image.getWidth() - 1)));
         int y = (int) (Math.max(0, Math.min(v * ((double) editPanel.image.getHeight() - 1), (double) editPanel.image.getHeight() - 1)));
-        int rgb = editPanel.image.getRGB(x, y);
+        //int rgb = editPanel.image.getRGB(x, y);
+        int rgb = Color.YELLOW.getRGB();
         return rgb;
+
     }
 
     //public void setEditOPanel(EditPolygonsMappings editPolygonsMappings) {
