@@ -158,6 +158,14 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         Logger.getAnonymousLogger().log(Level.INFO, "Jpg Obj Mapping...");
         if (instance != null) {
             instance.stop();
+            if (threadTest != null && threadTest.isAlive()) {
+                while (threadTest != null && threadTest.isAlive()) {
+                    threadTest.interrupt();
+                }
+                if (threadTest != null && !threadTest.isAlive()) {
+                    threadTest = null;
+                }
+            }
             editPolygonsMappings.iTextureMorphMove.distanceAB = null;
             instance.editPolygonsMappings.iTextureMorphMove = null;
             instance.editPolygonsMappings = null;

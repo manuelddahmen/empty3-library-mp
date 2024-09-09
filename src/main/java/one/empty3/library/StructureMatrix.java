@@ -173,11 +173,11 @@ public class StructureMatrix<T> implements Serializable, Serialisable {
     }
 
     public boolean inBounds(int i, int j) {
-        return dim == 2 && i < getData2d().size() && j < getData2d().get(i).size();
+        return dim == 2 && i >= 0 && j >= 0 && i < getData2d().size() && j < getData2d().get(i).size();
     }
 
     public boolean inBounds(int i) {
-        return dim == 1 && i < getData1d().size();
+        return dim == 1 && i >= 0 && i < getData1d().size();
     }
 
     public void insert(int pos, int rowCol, T value) {

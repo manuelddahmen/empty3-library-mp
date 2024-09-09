@@ -97,6 +97,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     File txtInDirectory;
     File txtOutDirectory;
     private File modelFile;
+    Thread threadDisplay;
 
     public EditPolygonsMappings(Window owner) {
         this();
@@ -408,7 +409,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         AtomicBoolean oneMore = new AtomicBoolean(true);
         while (isRunning) {
             try {
-                Thread threadDisplay = new Thread(() -> {
+                threadDisplay = new Thread(() -> {
                     while (isRunning) {
                         //if (isNotMenuOpen()) {
                         zBufferImage = testHumanHeadTexturing.zBufferImage();

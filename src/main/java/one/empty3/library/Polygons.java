@@ -44,8 +44,8 @@ public class Polygons extends SurfaceParametriquePolynomiale {
             if (indexV1 > coefficients.getData2d().get(0).size() - 1) {
                 indexV1 = coefficients.getData2d().get(0).size() - 1;
             }
-            if(coefficients.inBounds(indexU0, indexV0) && coefficients.inBounds(indexU1, indexV0)
-                &&coefficients.inBounds(indexU1, indexV1) && coefficients.inBounds(indexU0, indexV1)) {
+            if (coefficients.inBounds(indexU0, indexV0) && coefficients.inBounds(indexU1, indexV0) // May produce array out of bounds
+                    && coefficients.inBounds(indexU1, indexV1) && coefficients.inBounds(indexU0, indexV1)) {
                 Point3D[] points = new Point3D[]{
                         coefficients.getElem(indexU0, indexV0), coefficients.getElem(indexU1, indexV0),
                         coefficients.getElem(indexU1, indexV1), coefficients.getElem(indexU0, indexV1)

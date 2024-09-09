@@ -24,6 +24,7 @@ package one.empty3.testscopy.tests.tests2;
 
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.SurfaceParametricPolygonalBezier;
+import one.empty3.library.core.nurbs.SurfaceParametriquePolynomialeBezier;
 import one.empty3.library.core.testing.TestObjetSub;
 
 import java.awt.*;
@@ -39,7 +40,7 @@ public class TestThierryJaspart extends TestObjetSub {
             {Point3D.n(-2, -2, 0), Point3D.n(-2, -1, 0), Point3D.n(-2, 0, 0), Point3D.n(-2, 1, 0), Point3D.n(-2, 2, 0)}
     };
     ITexture texture;
-    private SurfaceParametricPolygonalBezier s = new SurfaceParametricPolygonalBezier(coeff);
+    private SurfaceParametriquePolynomialeBezier s = new SurfaceParametriquePolynomialeBezier(coeff);
 
     public TestThierryJaspart() {
         setMaxFrames(25 * 60 * 5);
@@ -52,18 +53,23 @@ public class TestThierryJaspart extends TestObjetSub {
 
     @Override
     public void ginit() {
+        z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
         s.texture(texture);
         scene().add(s);
-        scene().cameraActive().setEye(Point3D.Z.mult(-5d));
-        scene().cameraActive(new Camera(Point3D.Z.mult(-5d), Point3D.O0));
+        Camera camera = new Camera(Point3D.Z.mult(10d), Point3D.O0, Point3D.Y);
+        scene().cameraActive(camera);
+        scene().cameraActive().setEye(Point3D.Z.mult(10d));
         try {
-            texture = new TextureImg(ECBufferedImage.getFromFile(
-                    new File("resources/img/2018-03-31 11.51.58.jpg")));
-        } catch (Exception ex) {}
+            texture = new ImageTexture(ECBufferedImage.getFromFile(
+                    new File("res/img/IMG_20240510_152936.jpg")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         s.setIncrU(0.1);
         s.setIncrV(0.1);
         s.texture(texture);
+        setGenerate(getGenerate() | GENERATE_IMAGE | GENERATE_MOVIE);
     }
 
 
@@ -73,7 +79,7 @@ public class TestThierryJaspart extends TestObjetSub {
             for (int j = 0; j < s.getCoefficients().getData2d().get(i).size(); j++) {
                 Point3D point3D = Point3D.random2(0.1);
                 for (int k = 0; k < 3; k++)
-                    s.getCoefficients().getElem(i,j).set(k, s.getCoefficients().getElem(i,j).get(k)+point3D.get(k));
+                    s.getCoefficients().getElem(i, j).set(k, s.getCoefficients().getElem(i, j).get(k) + point3D.get(k));
             }
     }
 

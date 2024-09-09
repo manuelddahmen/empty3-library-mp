@@ -417,19 +417,29 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void stopRenderer(ActionEvent e) {
+        editPolygonsMappings2.hasChangedAorB = false;
         editPolygonsMappings2.testHumanHeadTexturing.stop();
+        //while (TestHumanHeadTexturing.threadTest.isAlive()) {
+        //     TestHumanHeadTexturing.threadTest.interrupt();
+        //}
+        while (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
+            editPolygonsMappings2.threadDisplay.interrupt();
+        }
+        if (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
+            while (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
+                editPolygonsMappings2.threadDisplay.interrupt();
+            }
+            if (editPolygonsMappings2.threadDisplay != null && !editPolygonsMappings2.threadDisplay.isAlive()) {
+                editPolygonsMappings2.threadDisplay = null;
+            }
+        }
+        editPolygonsMappings2.iTextureMorphMove = null;
+        editPolygonsMappings2.threadDisplay = null;
+        editPolygonsMappings2.threadDistanceIsNotRunning = true;
         editPolygonsMappings2.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(editPolygonsMappings2,
                 editPolygonsMappings2.image, editPolygonsMappings2.model);
         editPolygonsMappings2.hasChangedAorB = false;
         editPolygonsMappings2.renderingStopped = true;
-        if (TestHumanHeadTexturing.threadTest != null) {
-            editPolygonsMappings2.testHumanHeadTexturing.stop(); // TestObjet stop method
-            try {
-                TestHumanHeadTexturing.threadTest.join(); // join thread as it's dying
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
     }
 
     private void startRenderer(ActionEvent e) {
@@ -545,14 +555,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
             }
         });
         videoCreationThread.start();
-    }
-
-    /***
-     * Stops rendering loop
-     * @param e
-     */
-    private void stopRender(ActionEvent e) {
-        // TODO add your code here
     }
 
     private void loadMovieIn(ActionEvent e) {
@@ -997,6 +999,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
         buttonGroup2.add(menuItemDistLinearProx3);
         buttonGroup2.add(menuItemDistanceLinear4);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    private void stopRender(ActionEvent e) {
+        stopRenderer(e);
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off

@@ -27,6 +27,8 @@ import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 
 import java.awt.geom.Dimension2D;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /***
  * Used for portrait  "Boites imbriquées"
@@ -46,12 +48,26 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
 
     @Override
     public Point3D findAxPointInB(double u, double v) {
-        if (right == -1 && bottom == -1 || borderNotIinitialized) {
-            right = Math.max(findAxPointInBal2(1, 0).getX(), findAxPointInBal2(1, 1).getX());
-            bottom = Math.max(findAxPointInBal2(0, 1).getY(), findAxPointInBal2(1, 1).getY());
+        if (borderNotIinitialized || right == -1 || bottom == -1) {
+            for (int i = 0, listBXSize = listBX.size(); i < listBXSize; i++) {
+                for (int j = 0, listBYSize = listBY.size(); j < listBYSize; j++) {
+                    Point3D p2 = findAxPointInBal2(listBX.get(i), listBY.get(j));
+                    if (p2.getX() > right) {
+                        right = p2.getX();
+                    }
+                    if (p2.getY() > bottom) {
+                        bottom = p2.getY();
+                    }
+                }
+            }
             borderNotIinitialized = false;
         }
-        return findAxPointInBal2(u, v);
+        if (!borderNotIinitialized) {
+            return findAxPointInBal2(u, v)
+                    .multDot(new Point3D(1.0 / right, 1.0 / bottom, 0.0));
+        } else {
+            return findAxPointInBal2(u, v);
+        }
     }
 
     private Point3D findAxPointInBal2z(double u, double v) {
@@ -61,15 +77,13 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
         return pa;
     }
 
-    private Point3D findAxPointInBal2(double u, double v) {
+    private Point3D findAxPointInBal2(double u, double v) throws RuntimeException {
         Point3D pb = nearLandmark(u, v);
-        //pb = new Point3D(Math.max(0, Math.min(pb.get(0) / listBX.size() * 5, 1.0)), Math.max(0.0, Math.min(pb.get(1) / listBY.size() * 5, 1.0)), 1.0, 0.0);
-        if (right == -1 || bottom == -1 || borderNotIinitialized) {
-        } else {
-            pb = pb.multDot(new Point3D(1. / right, 1. / bottom, 0.0));
+        Point3D pa = surfaceA.calculerPoint3D(pb.getX(), pb.getY());
+        if (pa == null) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "surfaceA.calculerPoint3D:: null");
+            throw new NullPointerException("pa is null surfaceA.calculerPoint3D(" + u + ", " + v + ")");
         }
-        pb = new Point3D(Math.max(0, Math.min(pb.get(0), 1.0)), Math.max(0.0, Math.min(pb.get(1), 1.0)), 0.0);
-        Point3D pa = surfaceA.calculerPoint3D((double) pb.getX(), (double) pb.getY());
         return pa;
     }
 
@@ -98,6 +112,9 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
                     distance = Point3D.distance(surfaceB.getCoefficients().getElem(i, j), uv);
                 }
             }
+        }
+        if (indexI == -1 || indexJ == -1) {
+            return Point3D.O0;
         }
         Point3D point3Dij = new Point3D((double) indexI, (double) indexJ, 0.0);
         return precision1(point3Dij, u, v);//point3Dij
@@ -315,8 +332,8 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
         double totalBx = listBX.get(listBX.size() - 1) - listBX.get(0);
         double totalBy = listBY.get(listBY.size() - 1) - listBY.get(0);
 
-        return new Point3D((u + (u - interCurrBi) / sizeBi) / totalBx / listBX.size() / aDimReduced.getWidth() * right,
-                (v + (v - interCurrBj) / sizeBj) / totalBy / listBY.size() / aDimReduced.getHeight() * bottom, 0.0);
+        return new Point3D((u + (u - interCurrBi) / sizeBi),
+                (v + (v - interCurrBj) / sizeBj), 0.0);
     }
 
     Point3D precision2(Point3D ij, double k, double l) {
