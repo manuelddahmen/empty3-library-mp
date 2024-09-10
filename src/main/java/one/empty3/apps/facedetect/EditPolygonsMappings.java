@@ -429,7 +429,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             }
                         }
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(20);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
