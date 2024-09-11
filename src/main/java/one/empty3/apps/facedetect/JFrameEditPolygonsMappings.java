@@ -422,19 +422,19 @@ public class JFrameEditPolygonsMappings extends JFrame {
         //while (TestHumanHeadTexturing.threadTest.isAlive()) {
         //     TestHumanHeadTexturing.threadTest.interrupt();
         //}
-        while (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
-            editPolygonsMappings2.threadDisplay.interrupt();
+        while (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
+            editPolygonsMappings2.threadTextureCreation.interrupt();
         }
-        if (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
-            while (editPolygonsMappings2.threadDisplay != null && editPolygonsMappings2.threadDisplay.isAlive()) {
-                editPolygonsMappings2.threadDisplay.interrupt();
+        if (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
+            while (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
+                editPolygonsMappings2.threadTextureCreation.interrupt();
             }
-            if (editPolygonsMappings2.threadDisplay != null && !editPolygonsMappings2.threadDisplay.isAlive()) {
-                editPolygonsMappings2.threadDisplay = null;
+            if (editPolygonsMappings2.threadTextureCreation != null && !editPolygonsMappings2.threadTextureCreation.isAlive()) {
+                editPolygonsMappings2.threadTextureCreation = null;
             }
         }
         editPolygonsMappings2.iTextureMorphMove = null;
-        editPolygonsMappings2.threadDisplay = null;
+        editPolygonsMappings2.threadTextureCreation = null;
         editPolygonsMappings2.threadDistanceIsNotRunning = true;
         editPolygonsMappings2.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(editPolygonsMappings2,
                 editPolygonsMappings2.image, editPolygonsMappings2.model);

@@ -97,7 +97,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     File txtInDirectory;
     File txtOutDirectory;
     private File modelFile;
-    Thread threadDisplay;
+    private Thread threadDisplay;
+    Thread threadTextureCreation;
+
 
     public EditPolygonsMappings(Window owner) {
         this();
@@ -444,7 +446,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null && (renderingStarted)) {
                     if (oneMore.get() || hasChangedAorB()) {
-                        Thread thread = new Thread(() -> {
+                        threadTextureCreation = new Thread(() -> {
                             if (hasChangedAorB())
                                 oneMore.set(true);
                             else
@@ -475,7 +477,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                 //System.gc();///!!!
                             }
                         });
-                        thread.start();
+                        threadTextureCreation.start();
                         Logger.getAnonymousLogger().log(Level.INFO, "Thread texture creation started");
                         //Logger.getAnonymousLogger().log(Level.INFO, "Pause because no changes, and texture updated");
                     }
