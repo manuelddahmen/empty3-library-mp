@@ -93,6 +93,16 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemSaveModifiedVertex", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemSaveImageLeft"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemSaveImageLeft.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "saveImageLeft", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemSaveImageRight"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemSaveImageRight.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "saveImageRight", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemFaceDetector"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemFaceDetector.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "faceDetector", true ) )

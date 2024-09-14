@@ -1,16 +1,10 @@
 package one.empty3.apps.facedetect;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.Polygons;
-import one.empty3.library.core.nurbs.ParametricSurface;
-import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
-import one.empty3.library.core.nurbs.SurfaceParametriquePolynomialeBezier;
 
 import java.awt.geom.Dimension2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,12 +15,12 @@ public class DistanceBezier3 extends DistanceBezier2 {
 
     public DistanceBezier3(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal, boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
-        if(A==null || B==null || A.size()==0 || B.size()==0 || A.size()!=B.size()) {
+        if (A == null || B == null || A.size() == 0 || B.size() == 0 || A.size() != B.size()) {
             setInvalidArray(true);
             return;
         }
         Logger.getAnonymousLogger().log(Level.INFO, "DistanceBezier3() constructor started");
-        float [][][] doubles= new float[7][dim][dim];
+        float[][][] doubles = new float[7][dim][dim];
         for (int u = 0; u < dim; u++) {
             // Closer A point
             for (int v = 0; v < dim; v++) {
@@ -78,14 +72,14 @@ public class DistanceBezier3 extends DistanceBezier2 {
 
     @Override
     public Point3D findAxPointInB(double u, double v) {
-        int iX = (int)(u * dim);
-        int iY = (int)(v * dim);
-        if(iX >= dim) System.exit(1);
-        if(iY>= dim) System.exit(1);
-        Point3D a  = A.get((int) doubles[2][iX][iY]);
-        Point3D b  = new Point3D((double)doubles[0][(int) (u * dim)][(int) (v * dim)], (double)doubles[1][(int) (u * dim)][(int) (v * dim)], 0.0);
-        Point3D a2 = new Point3D((double)doubles[3][(int) (u * dim)][(int) (v * dim)], (double)doubles[4][(int) (u * dim)][(int) (v * dim)], 0.0);
-        Point3D ba = new Point3D((double)doubles[5][(int) (u * dim)][(int) (v * dim)], (double)doubles[5][(int) (u * dim)][(int) (v * dim)], 0.0);
+        int iX = (int) (u * dim);
+        int iY = (int) (v * dim);
+        if (iX >= dim) System.exit(1);
+        if (iY >= dim) System.exit(1);
+        Point3D a = A.get((int) doubles[2][iX][iY]);
+        Point3D b = new Point3D((double) doubles[0][(int) (u * dim)][(int) (v * dim)], (double) doubles[1][(int) (u * dim)][(int) (v * dim)], 0.0);
+        Point3D a2 = new Point3D((double) doubles[3][(int) (u * dim)][(int) (v * dim)], (double) doubles[4][(int) (u * dim)][(int) (v * dim)], 0.0);
+        Point3D ba = new Point3D((double) doubles[5][(int) (u * dim)][(int) (v * dim)], (double) doubles[5][(int) (u * dim)][(int) (v * dim)], 0.0);
         return ba;
     }
 

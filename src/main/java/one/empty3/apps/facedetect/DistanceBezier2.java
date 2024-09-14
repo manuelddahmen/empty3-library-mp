@@ -39,6 +39,33 @@ public abstract class DistanceBezier2 extends DistanceAB {
         super();
         this.opt1 = opt1;
         this.optimizeGrid = optimizeGrid;
+        class Dimension2D extends java.awt.geom.Dimension2D {
+            private double x;
+            private double y;
+
+            public Dimension2D(double xMax, double yMax) {
+                this.x = xMax;
+                this.y = yMax;
+            }
+
+            @Override
+            public double getWidth() {
+                return x;
+            }
+
+            @Override
+            public double getHeight() {
+                return y;
+            }
+
+            @Override
+            public void setSize(double width, double height) {
+
+            }
+        }
+
+        aDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);
+        bDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);
         System.out.println("\nStart properties\n\tOpt1 : " + opt1 + "\n\tOptimizeGrid: " + optimizeGrid + "\n\tTypeShape : " + typeShape + "\n\t" + "refineGrid : " + refineMatrix + "\n" + getClass().getCanonicalName() + "\nEnd of properties");
 
         if (A != null && B != null && A.size() > 0 && B.size() > 0) {
@@ -47,7 +74,6 @@ public abstract class DistanceBezier2 extends DistanceAB {
             System.out.println("A or B are null or empty");
             return;
         }
-
 
         this.A = A;
         this.B = B;
@@ -154,14 +180,14 @@ public abstract class DistanceBezier2 extends DistanceAB {
 //                int j1 = (int) Math.min((double) (j / ((int) Math.sqrt(B.size() )+ 1)) * (Math.sqrt(A.size() )+ 1), B.size() - 1);
                     if (refineMatrix) {
                         if (i + 1 < A.size() && i + 1 < B.size() && j + 1 < A.size() && j + 1 < B.size()) {
-                            double uA = listAX.get(i + 1) - listAX.get(i) / 5;
-                            double uB = listBX.get(i + 1) - listBX.get(i) / 5;
-                            double vA = listAY.get(j + 1) - listAY.get(j) / 5;
-                            double vB = listBY.get(j + 1) - listBY.get(j) / 5;
+                            double uA = listAX.get(i + 1) - listAX.get(i) / REFINE_MATRIX_FACTOR;
+                            double uB = listBX.get(i + 1) - listBX.get(i) / REFINE_MATRIX_FACTOR;
+                            double vA = listAY.get(j + 1) - listAY.get(j) / REFINE_MATRIX_FACTOR;
+                            double vB = listBY.get(j + 1) - listBY.get(j) / REFINE_MATRIX_FACTOR;
                             for (int k = 0; k < REFINE_MATRIX_FACTOR; k++) {
                                 for (int l = 0; l < REFINE_MATRIX_FACTOR; l++) {
                                     ((SurfaceParametriquePolynomiale) surfaceA).getCoefficients().setElem(new Point3D(listAX.get(i) + uA * k, listAY.get(j) + vA * l, 0.0), i * REFINE_MATRIX_FACTOR + k, j * REFINE_MATRIX_FACTOR + l);
-                                    ((SurfaceParametriquePolynomiale) surfaceB).getCoefficients().setElem(new Point3D(listBX.get(i) + uA * k, listBY.get(j) * vB * l, 0.0), i * REFINE_MATRIX_FACTOR + k, j * REFINE_MATRIX_FACTOR + l);
+                                    ((SurfaceParametriquePolynomiale) surfaceB).getCoefficients().setElem(new Point3D(listBX.get(i) + uB * k, listBY.get(j) * vB * l, 0.0), i * REFINE_MATRIX_FACTOR + k, j * REFINE_MATRIX_FACTOR + l);
 
                                 }
                             }

@@ -35,6 +35,10 @@ public abstract class DistanceAB {
 
     public boolean refineMatrix = false;
     int REFINE_MATRIX_FACTOR = 5;
+    protected boolean borderNotIinitialized;
+    protected double right;
+    protected double bottom;
+    public int distanceABdimSize = 25;
 
     static class Rectangle2 {
         public double getX1() {

@@ -48,12 +48,12 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
 
     @Override
     public Point3D findAxPointInB(double u, double v) {
-        if (borderNotIinitialized || right == -1 || bottom == -1) {
+        if (borderNotIinitialized || this.right == -1 || bottom == -1) {
             for (int i = 0, listBXSize = listBX.size(); i < listBXSize; i++) {
                 for (int j = 0, listBYSize = listBY.size(); j < listBYSize; j++) {
                     Point3D p2 = findAxPointInBal2(listBX.get(i), listBY.get(j));
-                    if (p2.getX() > right) {
-                        right = p2.getX();
+                    if (p2.getX() > this.right) {
+                        this.right = p2.getX();
                     }
                     if (p2.getY() > bottom) {
                         bottom = p2.getY();
@@ -62,8 +62,8 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
             }
             borderNotIinitialized = false;
         }
-        if (!(borderNotIinitialized || right == -1 || bottom == -1)) {
-            return findAxPointInBal2(u / right, v / bottom)
+        if (!(borderNotIinitialized || this.right == -1 || bottom == -1)) {
+            return findAxPointInBal2(u / this.right, v / bottom)
 //                    .multDot(new Point3D(1.0 / right, 1.0 / bottom, 0.0))
                     .multDot(new Point3D(1.0 / aDimReal.getWidth(), 1. / aDimReal.getHeight(), 0.0))
                     .multDot(new Point3D(bDimReal.getWidth(), bDimReal.getHeight(), 0.0));

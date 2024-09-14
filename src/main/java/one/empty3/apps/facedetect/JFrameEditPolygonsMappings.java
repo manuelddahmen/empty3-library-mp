@@ -417,29 +417,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void stopRenderer(ActionEvent e) {
-        editPolygonsMappings2.hasChangedAorB = false;
-        editPolygonsMappings2.testHumanHeadTexturing.stop();
-        //while (TestHumanHeadTexturing.threadTest.isAlive()) {
-        //     TestHumanHeadTexturing.threadTest.interrupt();
-        //}
-        while (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
-            editPolygonsMappings2.threadTextureCreation.interrupt();
-        }
-        if (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
-            while (editPolygonsMappings2.threadTextureCreation != null && editPolygonsMappings2.threadTextureCreation.isAlive()) {
-                editPolygonsMappings2.threadTextureCreation.interrupt();
-            }
-            if (editPolygonsMappings2.threadTextureCreation != null && !editPolygonsMappings2.threadTextureCreation.isAlive()) {
-                editPolygonsMappings2.threadTextureCreation = null;
-            }
-        }
-        editPolygonsMappings2.iTextureMorphMove = null;
-        editPolygonsMappings2.threadTextureCreation = null;
-        editPolygonsMappings2.threadDistanceIsNotRunning = true;
-        editPolygonsMappings2.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(editPolygonsMappings2,
-                editPolygonsMappings2.image, editPolygonsMappings2.model);
-        editPolygonsMappings2.hasChangedAorB = false;
-        editPolygonsMappings2.renderingStopped = true;
+        editPolygonsMappings2.stopRenderer();
     }
 
     private void startRenderer(ActionEvent e) {
@@ -449,7 +427,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         if (editPolygonsMappings2.pointsInImage.size() >= 3 && editPolygonsMappings2.pointsInModel.size() >= 3) {
             editPolygonsMappings2.iTextureMorphMove.setConvHullAB();
         }
-
+        editPolygonsMappings2.threadDistanceIsNotRunning = true;
         editPolygonsMappings2.hasChangedAorB = true;
         editPolygonsMappings2.renderingStarted = true;
 
@@ -466,16 +444,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
         // TODO add your code here
     }
 
-    private void checkBoxRefiineMatric(ActionEvent e) {
+    private void checkBoxRefineMatrix(ActionEvent e) {
         if (e.getSource() instanceof JCheckBoxMenuItem r) {
             if (r.isSelected()) {
                 editPolygonsMappings2.aDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.aDimReduced;
                 editPolygonsMappings2.aDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.aDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.aDimReduced.getHeight() * 2)));
                 editPolygonsMappings2.bDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.bDimReduced;
                 editPolygonsMappings2.bDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.bDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.bDimReduced.getHeight() * 2)));
-                //editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = true;
+                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = true;
             } else {
-                //editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = false;
+                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = false;
             }
         }
         editPolygonsMappings2.hasChangedAorB = true;
@@ -627,6 +605,31 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     }
 
+    private void saveImageLeft(ActionEvent e) {
+        JFileChooser saveImageDeformed = new JFileChooser();
+        if (lastDirectory != null)
+            saveImageDeformed.setCurrentDirectory(lastDirectory);
+        if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            ImageIO.write(editPolygonsMappings2.image, "jpg", saveImageDeformed.getSelectedFile());
+        }
+        lastDirectory = saveImageDeformed.getCurrentDirectory();
+    }
+
+    private void saveImageRight(ActionEvent e) {
+        JFileChooser saveImageDeformed = new JFileChooser();
+        if (lastDirectory != null)
+            saveImageDeformed.setCurrentDirectory(lastDirectory);
+        if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            ImageIO.write(editPolygonsMappings2.zBufferImage, "jpg", saveImageDeformed.getSelectedFile());
+        }
+        lastDirectory = saveImageDeformed.getCurrentDirectory();
+    }
+
+
+    private void checkBoxRefiineMatric(ActionEvent e) {
+        // TODO add your code here
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -642,6 +645,8 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItemLoadResultsFromVideoRight = new JMenuItem();
         menuItem12 = new JMenuItem();
         menuItem8 = new JMenuItem();
+        menuItemSaveImageLeft = new JMenuItem();
+        menuItemSaveImageRight = new JMenuItem();
         menuItemFaceDetector = new JMenuItem();
         menu7 = new JMenu();
         menu1 = new JMenu();
@@ -765,6 +770,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem8.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem8.text"));
                 menuItem8.addActionListener(e -> menuItemSaveModifiedVertex(e));
                 menu2.add(menuItem8);
+
+                //---- menuItemSaveImageLeft ----
+                menuItemSaveImageLeft.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemSaveImageLeft.text"));
+                menuItemSaveImageLeft.addActionListener(e -> saveImageLeft(e));
+                menu2.add(menuItemSaveImageLeft);
+
+                //---- menuItemSaveImageRight ----
+                menuItemSaveImageRight.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemSaveImageRight.text"));
+                menuItemSaveImageRight.addActionListener(e -> saveImageRight(e));
+                menu2.add(menuItemSaveImageRight);
 
                 //---- menuItemFaceDetector ----
                 menuItemFaceDetector.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemFaceDetector.text"));
@@ -1017,6 +1032,8 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItemLoadResultsFromVideoRight;
     private JMenuItem menuItem12;
     private JMenuItem menuItem8;
+    private JMenuItem menuItemSaveImageLeft;
+    private JMenuItem menuItemSaveImageRight;
     private JMenuItem menuItemFaceDetector;
     private JMenu menu7;
     private JMenu menu1;
