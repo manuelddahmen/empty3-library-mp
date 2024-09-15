@@ -246,10 +246,15 @@ new FormModel {
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxMenuItemOptimizeGrid.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "optimizeGrid", true ) )
 					} )
-					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
-						name: "checkBoxRefiineMatric"
-						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxRefiineMatric.text" )
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "checkBoxRefiineMatric", true ) )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "checkBoxRefiineMatrix"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxRefiineMatrix.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "refiineMatrix", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemDivideItem"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDivideItem.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "divideItem", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemDistanceBB"

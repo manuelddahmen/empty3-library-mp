@@ -158,12 +158,23 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         Logger.getAnonymousLogger().log(Level.INFO, "Jpg Obj Mapping...");
         if (instance != null) {
             instance.stop();
-            if (threadTest != null) {
-                threadTest.interrupt();
-                threadTest = null;
+        }
+        if (threadTest != null) {
+            threadTest.interrupt();
+            threadTest = null;
+        }
+        if (editPolygonsMappings.iTextureMorphMove != null) {
+            if (editPolygonsMappings.iTextureMorphMove.distanceAB != null) {
+                editPolygonsMappings.iTextureMorphMove.distanceAB = null;
             }
-            editPolygonsMappings.iTextureMorphMove.distanceAB = null;
-            instance.editPolygonsMappings.iTextureMorphMove = null;
+        }
+        if (instance != null && instance.editPolygonsMappings.iTextureMorphMove != null) {
+            if (instance.editPolygonsMappings.iTextureMorphMove != null) {
+                instance.editPolygonsMappings.iTextureMorphMove = null;
+            }
+            instance.editPolygonsMappings = null;
+        }
+        if (instance != null) {
             instance.editPolygonsMappings = null;
         }
         TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
@@ -179,6 +190,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
         editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
+        editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
         testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
         testHumanHeadTexturing.setJpg(jpg);
         testHumanHeadTexturing.setObj(obj);

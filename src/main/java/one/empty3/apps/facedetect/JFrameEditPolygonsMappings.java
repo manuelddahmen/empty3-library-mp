@@ -444,21 +444,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
         // TODO add your code here
     }
 
-    private void checkBoxRefineMatrix(ActionEvent e) {
-        if (e.getSource() instanceof JCheckBoxMenuItem r) {
-            if (r.isSelected()) {
-                editPolygonsMappings2.aDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.aDimReduced;
-                editPolygonsMappings2.aDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.aDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.aDimReduced.getHeight() * 2)));
-                editPolygonsMappings2.bDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.bDimReduced;
-                editPolygonsMappings2.bDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.bDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.bDimReduced.getHeight() * 2)));
-                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = true;
-            } else {
-                editPolygonsMappings2.iTextureMorphMove.distanceAB.refineMatrix = false;
-            }
-        }
-        editPolygonsMappings2.hasChangedAorB = true;
-    }
-
     /***
      * Starts rendering loop
      * @param e
@@ -626,8 +611,18 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
 
-    private void checkBoxRefiineMatric(ActionEvent e) {
-        // TODO add your code here
+    private void refiineMatrix(ActionEvent e) {
+        editPolygonsMappings2.aDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.aDimReduced;
+        editPolygonsMappings2.aDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.aDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.aDimReduced.getHeight() * 5 + 1)));//Demeter
+        editPolygonsMappings2.bDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.bDimReduced;
+        editPolygonsMappings2.bDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.bDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.bDimReduced.getHeight() * 5 + 1)));
+    }
+
+    private void divideItem(ActionEvent e) {
+        editPolygonsMappings2.aDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.aDimReduced;
+        editPolygonsMappings2.aDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.aDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.aDimReduced.getHeight() / 5)));
+        editPolygonsMappings2.bDimReduced = editPolygonsMappings2.iTextureMorphMove.distanceAB.bDimReduced;
+        editPolygonsMappings2.bDimReduced.setSize(new Dimension((int) (editPolygonsMappings2.bDimReduced.getWidth() * 2), (int) (editPolygonsMappings2.bDimReduced.getHeight() / 5)));
     }
 
 
@@ -675,7 +670,8 @@ public class JFrameEditPolygonsMappings extends JFrame {
         checkBoxMenuItemTypeShapeBezier = new JCheckBoxMenuItem();
         checkBoxMenuItem1 = new JCheckBoxMenuItem();
         checkBoxMenuItemOptimizeGrid = new JCheckBoxMenuItem();
-        checkBoxRefiineMatric = new JCheckBoxMenuItem();
+        checkBoxRefiineMatrix = new JMenuItem();
+        menuItemDivideItem = new JMenuItem();
         menuItemDistanceBB = new JMenuItem();
         menuItemTextureDict = new JRadioButtonMenuItem();
         menuItemDistBezier2 = new JRadioButtonMenuItem();
@@ -941,10 +937,15 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 checkBoxMenuItemOptimizeGrid.addActionListener(e -> optimizeGrid(e));
                 menu5.add(checkBoxMenuItemOptimizeGrid);
 
-                //---- checkBoxRefiineMatric ----
-                checkBoxRefiineMatric.setText(bundle.getString("JFrameEditPolygonsMappings.checkBoxRefiineMatric.text"));
-                checkBoxRefiineMatric.addActionListener(e -> checkBoxRefiineMatric(e));
-                menu5.add(checkBoxRefiineMatric);
+                //---- checkBoxRefiineMatrix ----
+                checkBoxRefiineMatrix.setText(bundle.getString("JFrameEditPolygonsMappings.checkBoxRefiineMatrix.text"));
+                checkBoxRefiineMatrix.addActionListener(e -> refiineMatrix(e));
+                menu5.add(checkBoxRefiineMatrix);
+
+                //---- menuItemDivideItem ----
+                menuItemDivideItem.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDivideItem.text"));
+                menuItemDivideItem.addActionListener(e -> divideItem(e));
+                menu5.add(menuItemDivideItem);
 
                 //---- menuItemDistanceBB ----
                 menuItemDistanceBB.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistanceBB.text"));
@@ -1062,7 +1063,8 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JCheckBoxMenuItem checkBoxMenuItemTypeShapeBezier;
     private JCheckBoxMenuItem checkBoxMenuItem1;
     private JCheckBoxMenuItem checkBoxMenuItemOptimizeGrid;
-    private JCheckBoxMenuItem checkBoxRefiineMatric;
+    private JMenuItem checkBoxRefiineMatrix;
+    private JMenuItem menuItemDivideItem;
     private JMenuItem menuItemDistanceBB;
     private JRadioButtonMenuItem menuItemTextureDict;
     private JRadioButtonMenuItem menuItemDistBezier2;
