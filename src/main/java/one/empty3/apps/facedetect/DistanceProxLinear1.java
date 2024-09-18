@@ -298,12 +298,12 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
         double interCurrAj = 0;
         double interCurrBi = 0;
         double interCurrBj = 0;
-        if (i >= listBX.size() - 1) {
+        if (i > listBX.size() - 1) {
             interCurrAi = listAX.get(listAX.size() - 1) - listAX.get(listAX.size() - 2);
             interCurrBi = listBX.get(listBX.size() - 1) - listBX.get(listBX.size() - 2);
             sizeAi = listAX.get(listAX.size() - 1) - listAX.get(0);
             sizeBi = listBX.get(listBX.size() - 1) - listBX.get(0);
-        } else if (i <= 0) {
+        } else if (i < 0) {
             interCurrAi = sizeAi = listAX.get(1) - listAX.get(0);
             interCurrBi = sizeBi = listBX.get(1) - listBX.get(0);
 
@@ -315,12 +315,12 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
                 interCurrBi += listBX.get((int) (i + 1)) - listBX.get((int) i);
             }
         }
-        if (j >= listBY.size() - 1) {
+        if (j > listBY.size() - 1) {
             interCurrAj += listAY.get(listAX.size() - 1) - listAY.get(listAY.size() - 2);
             interCurrBj += listBY.get(listBY.size() - 1) - listBY.get(listBY.size() - 2);
             sizeAj = listAX.get(listAX.size() - 1) - listAX.get(0);
             sizeBj = listBY.get(listBY.size() - 1) - listBY.get(0);
-        } else if (j <= 0) {
+        } else if (j < 0) {
             interCurrAj = sizeAj = listAY.get(1) - listAY.get(0);
             interCurrBj = sizeBj = listBY.get(1) - listBY.get(0);
         } else {

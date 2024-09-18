@@ -11,6 +11,7 @@ public class Functions {
         listOfFunctions.add("sum");
         listOfFunctions.add("product");
         listOfFunctions.add("avg");
+        listOfFunctions.add("median");
     }
 
 
@@ -56,9 +57,20 @@ public class Functions {
         double sum = 1.0;
         int count = 0;
         for (int i = 0; i < args.length; i++) {
-            sum *= args[i];
+            sum += args[i];
             count++;
         }
         return sum / count;
+    }
+
+    public static double median(Double... args) {
+        double avg = avg(args);
+        double sum = 1.0;
+        int count = 0;
+        for (int i = 0; i < args.length; i++) {
+            sum += (args[i] - avg) * (args[i] - avg);
+            count++;
+        }
+        return sum;
     }
 }
