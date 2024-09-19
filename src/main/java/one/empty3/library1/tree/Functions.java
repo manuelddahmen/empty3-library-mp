@@ -32,6 +32,7 @@ public class Functions {
             case "sum" -> sum(vec);
             case "product" -> product(vec);
             case "avg" -> avg(vec);
+            case "median" -> median(vec);
             default -> 0;
         };
     }
