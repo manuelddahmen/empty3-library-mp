@@ -243,6 +243,7 @@
                 d += (p1.get(i) - p2.get(i)) * (p1.get(i) - p2.get(i));
             return Math.sqrt(d);
         }
+
         /**
          * Calculates the Euclidean distance between two 3D points.
          *
@@ -393,7 +394,7 @@
          *
          * @return The y-coordinate value of the point as a Double.
          */
-        public Double getY() {
+        public double getY() {
             return y;
         }
 
@@ -432,7 +433,7 @@
          *
          * @return the X-coordinate value
          */
-        public Double getX() {
+        public double getX() {
             return x;
         }
 
@@ -787,7 +788,6 @@
         public double getLength() {
             return norme();
         }
-
 
 
         /**

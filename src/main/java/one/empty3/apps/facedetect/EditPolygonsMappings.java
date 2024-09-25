@@ -43,6 +43,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,7 +73,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     boolean threadDistanceIsNotRunning = true;
     protected boolean isRunning = true;
     private Point3D pFound = null;
-    private String landmarkType;
+    private String landmarkType = "";
     private double u;
     private double v;
     private int selectedPointNoOut = -1;
@@ -124,6 +125,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             Point3D pointIme = null;
             if (ime.checkCoordinates(x, y)) {
                 Representable elementRepresentable = ime.getrMap()[x][y];
+                System.out.println(elementRepresentable);
                 if (elementRepresentable instanceof E3Model.FaceWithUv
                         && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)) {
                     u = ime.getuMap()[x][y];
@@ -155,22 +157,20 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             Point3D[] pNear = new Point3D[]{new Point3D(point.getX() / panelPicture.getWidth(),
                     point.getY() / panelPicture.getHeight(), 0.)};
             AtomicDouble distanceMin = new AtomicDouble(Double.MAX_VALUE);
-            int[] i = new int[]{0};
             pointsInImage.forEach((s, point3D) -> {
                 if (Point3D.distance(pNear[0], point3D) < distanceMin.get()) {
                     distanceMin.set(Point3D.distance(pNear[0], point3D));
                     pFound = point3D;
                     landmarkType = s;
-                    selectedPointNo = i[0];
+                    selectedPointNo = 0;
                 }
-                i[0]++;
 
             });
         }
     }
 
     private void panelModelViewMouseClicked(MouseEvent e) {
-        Point point = e.getPoint();
+/*        Point point = e.getPoint();
         if (model != null) {
             int x = point.x;
             int y = point.y;
@@ -207,7 +207,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             }
             selectedPointOutUv = new Point3D(u, v);
         }
-
+*/
     }
 
     private void panelModelViewComponentResized(ComponentEvent e) {
@@ -522,16 +522,14 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (image != null && panelDraw != null) {
                 Graphics graphics = panelDraw.getGraphics();
                 if (graphics != null) {
-                    int[] i = new int[]{0};
                     points.forEach((s, point3D) -> {
                         Graphics graphics1 = panelDraw.getGraphics();
-                        if (selectedPointNo == i[0])
+                        if (landmarkType != null && landmarkType.equals(s))
                             graphics1.setColor(Color.ORANGE);
                         else
                             graphics1.setColor(Color.GREEN);
                         graphics1.fillOval((int) (double) (point3D.getX() * panelDraw.getWidth()) - 3,
                                 (int) (double) (point3D.getY() * panelDraw.getHeight()) - 3, 7, 7);
-                        i[0]++;
                     });
                     // Display 3D scene
                 }
@@ -547,7 +545,6 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         if (image != null && panelDraw != null && testHumanHeadTexturing != null && testHumanHeadTexturing.getZ().la() == panelModelView.getWidth()
                 && testHumanHeadTexturing.getZ().ha() == panelModelView.getHeight()) {
             // Display image
-            int[] i = new int[]{0};
             if (points != null) {
                 try {
                     points.forEach((s, uvCoordinates) -> {
@@ -566,10 +563,10 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     Graphics graphics = panelDraw.getGraphics();
                                     // point.setLocation(point.getX(), point.getY());
                                     if (testHumanHeadTexturing.getZ().checkScreen(point)) {
-                                        if (selectedPointNo == i[0]) {
+                                        if (landmarkType != null && landmarkType.equals(s)) {
                                             graphics.setColor(Color.PINK);
                                         } else {
-                                            graphics.setColor(Color.YELLOW);
+                                            graphics.setColor(Color.GREEN);
                                         }
                                         graphics.fillOval((int) (point.getX() - 3),
                                                 (int) ((point.getY()) - 3),
@@ -598,13 +595,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             }
                         }
 
-                        i[0]++;
                     });
                 } catch (ConcurrentModificationException ex) {
                     Logger.getAnonymousLogger().log(Level.SEVERE, "Concurrent exception while drawing");
                 }
             }
-
+/*
             if (mode == SELECT_POINT_POSITION && selectedPointOutUv != null) {
                 Point3D uvFace = model.findUvFace(selectedPointOutUv.getX(), selectedPointOutUv.getY());
                 Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
@@ -627,6 +623,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         7, 7);
 
             }
+  */
         }
     }
 
@@ -761,7 +758,22 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     public void editPointPosition() {
-        //mode = EDIT_POINT_POSITION;
+        pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+            @Override
+            public void accept(String s, Point3D point3D) {
+                if (!pointsInModel.containsKey(s)) {
+                    pointsInModel.put(s, new Point3D(Point3D.O0));
+                }
+            }
+        });
+        pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+            @Override
+            public void accept(String s, Point3D point3D) {
+                if (!pointsInImage.containsKey(s)) {
+                    pointsInImage.put(s, new Point3D(Point3D.O0));
+                }
+            }
+        });
     }
 
     public void selectPointPosition() {
