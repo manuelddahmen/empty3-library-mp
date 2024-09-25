@@ -53,8 +53,10 @@ public class TextureMorphMove extends ITexture {
     public TextureMorphMove(EditPolygonsMappings editPanel, Class<? extends DistanceAB> distanceABclass) {
         super();
         this.editPanel = editPanel;
-        setDistanceABclass(distanceABclass);
-        setConvHullAB();
+        if (distanceABclass != null) {
+            setDistanceABclass(distanceABclass);
+            setConvHullAB();
+        }
     }
 
     private TextureMorphMove() {
@@ -169,49 +171,50 @@ public class TextureMorphMove extends ITexture {
                 });
             }
         });
+        if (editPanel.image != null && editPanel.model != null) {
+            long timeStarted = System.nanoTime();
+            try {
+                if (distanceMap.isAssignableFrom(DistanceProxLinear1.class)) {
+                    distanceAB = new DistanceProxLinear1(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear2.class)) {
+                    distanceAB = new DistanceProxLinear2(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear3.class)) {
+                    distanceAB = new DistanceProxLinear3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
+                    distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
+                    distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceIdent.class)) {
+                    distanceAB = new DistanceIdent();
+                } else {
+                    distanceAB = new DistanceIdent();
 
-        long timeStarted = System.nanoTime();
-        try {
-            if (distanceMap.isAssignableFrom(DistanceProxLinear1.class)) {
-                distanceAB = new DistanceProxLinear1(lA, lB, new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()),
-                        bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-            } else if (distanceMap.isAssignableFrom(DistanceProxLinear2.class)) {
-                distanceAB = new DistanceProxLinear2(lA, lB, new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()),
-                        bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-            } else if (distanceMap.isAssignableFrom(DistanceProxLinear3.class)) {
-                distanceAB = new DistanceProxLinear3(lA, lB, new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()),
-                        bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-            } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
-                distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()),
-                        bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-            } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
-                distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()),
-                        bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-            } else if (distanceMap.isAssignableFrom(DistanceIdent.class)) {
-                distanceAB = new DistanceIdent();
-            } else {
-                distanceAB = new DistanceIdent();
+                }
 
-            }
-
-            editPanel.hasChangedAorB = true;
-
-            if (distanceMap != null) {
-                this.distanceABclass = (Class<? extends DistanceBezier2>) distanceMap;
-                editPanel.iTextureMorphMove = this;
-                editPanel.iTextureMorphMove.distanceAB = distanceAB;
                 editPanel.hasChangedAorB = true;
-                editPanel.distanceABClass = distanceABclass;
-            } else {
-                throw new NullPointerException("distanceMap is null in TextureMorphMove");
+
+                if (distanceMap != null) {
+                    this.distanceABclass = (Class<? extends DistanceBezier2>) distanceMap;
+                    editPanel.iTextureMorphMove = this;
+                    editPanel.iTextureMorphMove.distanceAB = distanceAB;
+                    editPanel.hasChangedAorB = true;
+                    editPanel.distanceABClass = distanceABclass;
+                } else {
+                    throw new NullPointerException("distanceMap is null in TextureMorphMove");
+                }
+            } catch (RuntimeException ex) {
+                editPanel.hasChangedAorB = true;
+                ex.printStackTrace();
             }
-        } catch (RuntimeException ex) {
-            editPanel.hasChangedAorB = true;
-            ex.printStackTrace();
+            long nanoElapsed = System.nanoTime() - timeStarted;
+            Logger.getAnonymousLogger().log(Level.INFO, "Temps écoulé à produire l'object DistanceAB (" + distanceMap.getCanonicalName() +
+                    ") à : " + 10E-9 * nanoElapsed);
         }
-        long nanoElapsed = System.nanoTime() - timeStarted;
-        Logger.getAnonymousLogger().log(Level.INFO, "Temps écoulé à produire l'object DistanceAB (" + distanceMap.getCanonicalName() +
-                ") à : " + 10E-9 * nanoElapsed);
     }
 
     public void setConvHullAB() {
@@ -240,7 +243,7 @@ public class TextureMorphMove extends ITexture {
                 return;
             }
         }
-        distanceAB.setInvalidArray(true);
+        return;
     }
 
     public void setConvHullA(@NotNull List<Point3D> polyConvA) {

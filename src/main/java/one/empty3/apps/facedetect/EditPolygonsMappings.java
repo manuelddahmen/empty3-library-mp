@@ -109,7 +109,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     EditPolygonsMappings() {
         initComponents();
         distanceABClass = DistanceProxLinear2.class;
-
+        testHumanHeadTexturing = new TestHumanHeadTexturing();
     }
 
     public JPanel getContentPanel() {
@@ -217,7 +217,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.loop(false);
             testHumanHeadTexturing.setMaxFrames(0);
             testHumanHeadTexturing.stop();
-            TestHumanHeadTexturing.threadTest.interrupt();
+            if (testHumanHeadTexturing.threadTest != null)
+                TestHumanHeadTexturing.threadTest.interrupt();
         }
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model);
         hasChangedAorB = true;
