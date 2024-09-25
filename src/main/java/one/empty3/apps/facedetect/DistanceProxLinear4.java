@@ -81,7 +81,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         double dist = distance;
         for (int i = 0; i < pointsB.size(); i++) {
             Point3D currentB = pointsB.get(i);
-            if ((dist = Point3D.distance(currentDist, currentB.moins(currentDist))) < distance) {
+            if ((dist = Point3D.distance(currentDist, currentB)) < distance) {
                 distance = dist;
                 j = i;
             }
