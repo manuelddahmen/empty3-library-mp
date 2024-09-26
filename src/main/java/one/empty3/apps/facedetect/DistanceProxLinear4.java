@@ -47,12 +47,12 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         List<Point3D> newA = new ArrayList<>();
         List<Point3D> newB = new ArrayList<>();
         double eps = 1. / Math.max(bDimReal.getWidth(), bDimReal.getHeight());
-        double maxDist = 1. / eps;
+        double maxDist = 1. / A.size();
         while (maxDist > eps) {
             for (int i = 0; i < pointsB.size(); i++) {
                 for (int j = 0; j < pointsA.size(); j++) {
-                    maxDist = Point3D.distance(pointsA.get(j), pointsA.get(i));
-                    if (maxDist > eps) {
+                    double dist = Point3D.distance(pointsA.get(j), pointsA.get(i));
+                    if (maxDist > eps && dist < maxDist) {
                         Point3D pB = pointsB.get(i).plus(pointsB.get(j)).mult(0.5);
                         Point3D pA = pointsA.get(i).plus(pointsA.get(j)).mult(0.5);
 
@@ -65,6 +65,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
             pointsB.addAll(newB);
             newA = new ArrayList<>();
             newB = new ArrayList<>();
+
         }
     }
 
