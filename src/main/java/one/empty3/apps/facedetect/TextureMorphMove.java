@@ -158,14 +158,12 @@ public class TextureMorphMove extends ITexture {
         editPanel.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
             @Override
             public void accept(String s, Point3D point3D) {
-                String sA = s;
                 editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
                     @Override
-                    public void accept(String s, Point3D point3D) {
-                        String sB = s;
-                        if (sA.equals(sB)) {
-                            lA.add(editPanel.pointsInImage.get(sA));
-                            lB.add(editPanel.pointsInModel.get(sB));
+                    public void accept(String sB, Point3D point3D) {
+                        if (s.equals(sB)) {
+                            lA.add(editPanel.pointsInImage.get(s));
+                            lB.add(editPanel.pointsInModel.get(s));
                         }
                     }
                 });

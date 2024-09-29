@@ -489,12 +489,15 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                     }
                 }
                 if (!threadDistanceIsNotRunning)
-                    Logger.getAnonymousLogger().log(Level.INFO, "Thread 'Texture creation' still in progress...");
+                    Thread.sleep(10);// Logger.getAnonymousLogger().log(Level.INFO, "Thread 'Texture creation' still in progress...");
                 //}
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 hasChangedAorB = true;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
+
             if (testHumanHeadTexturing == null || !testHumanHeadTexturing.isRunning()
                     && image != null && model != null) {
                 //testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model);
@@ -736,14 +739,15 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
                 // Initialize surface bezier
 
-                pointsInModel = new HashMap<>();
-                if (!testHumanHeadTexturing.scene().getObjets().getData1d().isEmpty() && testHumanHeadTexturing.scene().getObjets().getElem(0) instanceof E3Model e3Model) {
-                    pointsInImage.forEach((s, point3D) -> {
-                        Point3D copy = new Point3D(point3D);
-                        pointsInModel.put(s, copy);
-                    });
+                if (pointsInModel.size() == 0) {
+                    pointsInModel = new HashMap<>();
+                    if (!testHumanHeadTexturing.scene().getObjets().getData1d().isEmpty() && testHumanHeadTexturing.scene().getObjets().getElem(0) instanceof E3Model e3Model) {
+                        pointsInImage.forEach((s, point3D) -> {
+                            Point3D copy = new Point3D(point3D);
+                            pointsInModel.put(s, copy);
+                        });
+                    }
                 }
-
                 this.txtFile = selectedFile;
                 hasChangedAorB = true;
 
