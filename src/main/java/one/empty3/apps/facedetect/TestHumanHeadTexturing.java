@@ -25,6 +25,7 @@ package one.empty3.apps.facedetect;
 import one.empty3.feature.PixM;
 import one.empty3.library.*;
 import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.testing.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
 
@@ -156,7 +157,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
 
-    public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, BufferedImage jpg, E3Model obj) {
+    public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, BufferedImage jpg, E3Model obj, Resolution resolution) {
         Logger.getAnonymousLogger().log(Level.INFO, "Jpg Obj Mapping...");
         if (instance != null) {
             instance.stop();
@@ -180,12 +181,16 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             instance.editPolygonsMappings = null;
         }
         TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
-        testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+        if (resolution == null) {
+            testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+
+        } else {
+            testHumanHeadTexturing.setDimension(TestObjet.HD1080);
+        }
         TestHumanHeadTexturing.instance = testHumanHeadTexturing;
         testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings;
         if (editPolygonsMappings.distanceABClass != null) {
             editPolygonsMappings.iTextureMorphMove = new TextureMorphMove(editPolygonsMappings, editPolygonsMappings.distanceABClass);
-            editPolygonsMappings.iTextureMorphMove.setDistanceABclass(editPolygonsMappings.distanceABClass);
             if (editPolygonsMappings.iTextureMorphMove.distanceAB != null) {
                 editPolygonsMappings.iTextureMorphMove.distanceAB.opt1 = editPolygonsMappings.opt1;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.optimizeGrid = editPolygonsMappings.optimizeGrid;

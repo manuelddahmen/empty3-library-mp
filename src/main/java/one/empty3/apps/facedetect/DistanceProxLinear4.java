@@ -50,9 +50,12 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     public DistanceProxLinear4(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
-        imageAB = new Point3D[((int) aDimReal.getWidth())][(int) aDimReal.getHeight()];
+        imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         init_1();
     }
+
+    int nIteration0 = 7;
+    int nNeighbors = 3;
 
     public void init_1() {
 
@@ -62,6 +65,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         List<Point3D> newB = new ArrayList<>();
         double eps = 1. / Math.min(aDimReal.getWidth(), aDimReal.getHeight());
         boolean[][] checkedList = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
+        Point3D[][] pointAdded = new Point3D[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
+        int[][] gen = new int[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
+        ;
         double maxDist = 1. / (1 / eps + 1);
         for (int i = 0; i < checkedList.length; i++) {
             for (int j = 0; j < checkedList[i].length; j++) {
@@ -69,9 +75,14 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
 
             }
         }
+        int iteration = 1;
+        double N = 1 / eps;
         boolean stepNewPoints = false;
         boolean firstStep = true;
-        while (maxDist > 0 && (stepNewPoints || firstStep)) {
+        //while (maxDist > eps && (stepNewPoints || firstStep)) {
+        int occ = 0;
+        double surfaceOccupied = 0.0;
+        while (surfaceOccupied < 0.014) {
             stepNewPoints = false;
             firstStep = false;
             maxDist = 0;
@@ -85,19 +96,21 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                 for (int k = 0; k < sizeA; k++) {
                     if (k == i)
                         continue;
+                    if (((gen[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()]) ==
+                            (gen[(int) pointsA.get(k).getX()][(int) pointsA.get(k).getY()]))
+                            && gen[(int) pointsA.get(k).getX()][(int) pointsA.get(k).getY()] != 0) {
+                        //continue;
+                    }
                     double norm = pointsA.get(i).moins(pointsA.get(k)).norme();
-
                     if (norm < distCand && norm > 0) {
                         distCand = norm;
                         candidatesA.add(pointsA.get(k));
                         candidatesB.add(pointsB.get(k));
                     }
-                }
-                if (maxDist < distCand) {
-                    maxDist = distCand;
+
                 }
                 if (!candidatesA.isEmpty()) {
-                    for (int m = 0; m < 1 && candidatesA.size() - m > 0; m++) {
+                    for (int m = 0; m < 3 && candidatesA.size() - m > 0; m++) {
                         int indexA = candidatesA.size() - m - 1;
                         int indexB = candidatesB.size() - m - 1;
                         Point3D candidateA = candidatesA.get(indexA);
@@ -109,22 +122,41 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
 
                         int i1 = (int) (pA.getX() * aDimReal.getWidth());
                         int i2 = (int) (pA.getY() * aDimReal.getHeight());
+                        int j1 = (int) (pB.getX() * bDimReal.getWidth());
+                        int j2 = (int) (pB.getY() * bDimReal.getHeight());
 
                         if (!checkedList[i1][i2]) {
                             checkedList[i1][i2] = true;
                             stepNewPoints = true;
                             newA.add(pA);
                             newB.add(pB);
-
+                            imageAB[j1][j2] = pA;
+                            gen[i1][i1] = iteration;
+                            pointAdded[i1][i1] = pA;
                         }
-
                     }
                 }
             }
             pointsA.addAll(newA);
             pointsB.addAll(newB);
 
-            System.out.println("Number of points : " + pointsA.size());
+            iteration++;
+            int oldOcc = occ;
+            occ = 0;
+            for (int i = 0; i < imageAB.length; i++) {
+                for (int j = 0; j < imageAB[i].length; j++) {
+                    if (imageAB[i][j] != null) {
+                        occ++;
+                    }
+                }
+            }
+
+            surfaceOccupied = 1.0 * occ / imageAB.length / imageAB[0].length;
+            System.out.println("Number of points : " + pointsA.size() + "\n\t" + "Iterations : " + iteration
+                    + "\n\toccupied (%) : " + surfaceOccupied);
+            System.out.println("Thread n°" + Thread.currentThread().getId());
+            if (occ == oldOcc)
+                break;
         }
 
         System.out.println("Compute texturing ended");
@@ -182,10 +214,15 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
 
     @Override
     public Point3D findAxPointInB(double u, double v) {
-        return findAxPointInBal5(u, v);
+        return findAxPointInBa12(u, v);
     }
 
-    private Point3D findAxPointInBal5(double u, double v) {
+    private Point3D findAxPointInBa11(double u, double v) {
+        return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? Point3D.O0
+                : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+    }
+
+    private Point3D findAxPointInBa12(double u, double v) {
         double distance = Double.MAX_VALUE;
         Point3D currentDist = new Point3D(u, v, 0.0);
         int j = 0;

@@ -155,20 +155,22 @@ public class TextureMorphMove extends ITexture {
         /**
          * Double A, B avec ai correspond à bi ( en se servant des HashMap)
          * **/
-        editPanel.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
-            @Override
-            public void accept(String s, Point3D point3D) {
-                editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-                    @Override
-                    public void accept(String sB, Point3D point3D) {
-                        if (s.equals(sB)) {
-                            lA.add(editPanel.pointsInImage.get(s));
-                            lB.add(editPanel.pointsInModel.get(s));
+        synchronized (editPanel.pointsInImage) {
+            editPanel.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+                @Override
+                public void accept(String s, Point3D point3D) {
+                    editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                        @Override
+                        public void accept(String sB, Point3D point3D) {
+                            if (s.equals(sB)) {
+                                lA.add(editPanel.pointsInImage.get(s));
+                                lB.add(editPanel.pointsInModel.get(s));
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
         if (editPanel.image != null && editPanel.model != null) {
             long timeStarted = System.nanoTime();
             try {
@@ -237,7 +239,8 @@ public class TextureMorphMove extends ITexture {
             if (convexHullA != null && convexHullB != null) {
                 editPanel.iTextureMorphMove.setConvHullA(convexHullA);
                 editPanel.iTextureMorphMove.setConvHullB(convexHullB);
-                distanceAB.setInvalidArray(false);
+                if (distanceAB != null)
+                    distanceAB.setInvalidArray(false);
                 return;
             }
         }

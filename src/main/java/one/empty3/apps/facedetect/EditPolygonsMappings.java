@@ -31,6 +31,7 @@ import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.morph.Main;
 import one.empty3.feature.ConvHull;
 import one.empty3.library.*;
+import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.objloader.E3Model;
 
 import javax.imageio.ImageIO;
@@ -220,7 +221,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model, null);
         hasChangedAorB = true;
     }
 
@@ -407,7 +408,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model, TestObjet.HD1080);
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -438,7 +439,6 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             throw new RuntimeException(e);
                         }
                     }
-
                 });
                 if (firstTime || !isRunning) {
                     threadDisplay.start();
@@ -447,43 +447,54 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 if (pointsInImage != null && panelModelView != null && !pointsInImage.isEmpty()
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null) {
-                    if (oneMore.get() || hasChangedAorB()) {
+                    if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
+                        threadDistanceIsNotRunning = false;
+                        hasChangedAorB = false;
                         threadTextureCreation = new Thread(() -> {
                             try {
-                                threadDistanceIsNotRunning = false;
                                 if (hasChangedAorB())
                                     oneMore.set(true);
                                 else
                                     oneMore.set(false);
-                                hasChangedAorB = false;
                                 long l = System.nanoTime();
                                 Logger.getAnonymousLogger().log(Level.INFO, "All loaded resources finished. Starts distance calculation");
-                                iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
-                                if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
+                                if (iTextureMorphMove == null || !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
+                                    iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
+                                    if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
 
-                                    if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
-                                        iTextureMorphMove.setConvHullAB();
-                                    }
-                                    if (!iTextureMorphMove.distanceAB.isInvalidArray()) {
-                                        // Display 3D scene
-                                        if (model != null) {
-                                            iTextureMorphMove.distanceAB.setModel(model);
-                                            model.texture(iTextureMorphMove);
+                                        if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
+                                            iTextureMorphMove.setConvHullAB();
                                         }
-                                    } else {
-                                        Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");
-                                    }
+                                        if (!iTextureMorphMove.distanceAB.isInvalidArray()) {
+                                            // Display 3D scene
+                                            if (model != null) {
+                                                iTextureMorphMove.distanceAB.setModel(model);
+                                                model.texture(iTextureMorphMove);
+                                            }
+                                        } else {
+                                            Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");
+                                        }
 
-                                    l = System.nanoTime() - l;
-                                    Logger.getAnonymousLogger().log(Level.INFO, "Distance calculation finished" + (l / 1000000.0));
-                                    threadDistanceIsNotRunning = true;
-                                    //System.gc();///!!!
+                                        l = System.nanoTime() - l;
+                                        Logger.getAnonymousLogger().log(Level.INFO, "Distance calculation finished" + (l / 1000000.0));
+                                    }
                                 }
                             } catch (RuntimeException ex) {
                                 ex.printStackTrace();
+                            } finally {
+
+                            }
+                            threadTextureCreation = null;
+                            hasChangedAorB = false;
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
                             }
                         });
                         threadTextureCreation.start();
+                        Thread.sleep(1000);
+                        threadDistanceIsNotRunning = true;
                         Logger.getAnonymousLogger().log(Level.INFO, "Thread texture creation started");
                         //Logger.getAnonymousLogger().log(Level.INFO, "Pause because no changes, and texture updated");
                     }
@@ -645,6 +656,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        hasChangedAorB = true;
     }
 
     public void add3DModelFillPanel(File selectedFile) {
@@ -903,7 +915,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, model);
+                image, model, TestObjet.HD1080);
         renderingStopped = true;
         hasChangedAorB = true;
     }

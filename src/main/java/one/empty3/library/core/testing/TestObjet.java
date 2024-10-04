@@ -76,6 +76,7 @@ public abstract class TestObjet implements Test, Runnable {
     public static final int GENERATE_SAVE_OBJ = 256;
     public static final int GENERATE_SAVE_STL = 512;
     public static final int GENERATE_SAVE_ZIP = 1024;
+    public static final int GENERATE_LOG = 1024 * 2;
     public static final ArrayList<TestInstance.Parameter> initParams = new ArrayList<TestInstance.Parameter>();
     public static final int ON_TEXTURE_ENDS_STOP = 0;
     public static final int ON_TEXTURE_ENDS_LOOP_TEXTURE = 1;
@@ -940,9 +941,13 @@ public abstract class TestObjet implements Test, Runnable {
                     z.idzpp();
 
 
-                    Logger.getAnonymousLogger().log(Level.INFO, "Starts rendering");
+                    if (LOG) {
+                        Logger.getAnonymousLogger().log(Level.INFO, "Starts rendering");
+                    }
                     z.draw(scene());
-                    Logger.getAnonymousLogger().log(Level.INFO, "Rendering Finished");
+                    if (LOG) {
+                        Logger.getAnonymousLogger().log(Level.INFO, "Rendering Finished");
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     reportException(ex);
@@ -1114,9 +1119,10 @@ public abstract class TestObjet implements Test, Runnable {
         dataWriter.end();
 
 
-        Logger.getAnonymousLogger().log(Level.INFO, "End movie       " + runtimeInfoSucc());
-        Logger.getAnonymousLogger().log(Level.INFO, "Quit run method " + runtimeInfoSucc());
-
+        if (LOG) {
+            Logger.getAnonymousLogger().log(Level.INFO, "End movie       " + runtimeInfoSucc());
+            Logger.getAnonymousLogger().log(Level.INFO, "Quit run method " + runtimeInfoSucc());
+        }
     }
 
     private void setRunning(boolean running) {

@@ -222,13 +222,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
             resolutionOut = Resolution.HD1080RESOLUTION;
         }
         Runnable jpg = () -> {
-            while (editPolygonsMappings2.image == null || editPolygonsMappings2.pointsInImage == null || editPolygonsMappings2.pointsInModel == null
+            if (editPolygonsMappings2.image == null || editPolygonsMappings2.pointsInImage == null || editPolygonsMappings2.pointsInModel == null
                     || editPolygonsMappings2.model == null) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                return;
             }
             /*
             TextureMorphMove textureMorphMoveImage = new TextureMorphMove(editPolygonsMappings2, DistanceProxLinear1.class);
@@ -246,6 +242,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             BufferedImage bufferedImage = saveTexture.computeTexture();
             ImageIO.write(bufferedImage, "jpg", new File(config.getDefaultFileOutput()
                     + File.separator + "output-face-on-model-texture" + UUID.randomUUID() + ".jpg"));
+
             if (resolutionOut.equals(Resolution.HD1080RESOLUTION))
                 Logger.getAnonymousLogger().log(Level.INFO, "Smart generated HD image");
             else
@@ -332,7 +329,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void distanceLinear4(ActionEvent e) {
         //editPolygonsMappings2.iTextureMorphMove.setDistanceABclass(DistanceProxLinear3.class);
         editPolygonsMappings2.distanceABClass = DistanceProxLinear4.class;
-        editPolygonsMappings2.hasChangedAorB = true;
+        //editPolygonsMappings2.hasChangedAorB = true;
     }
 
     private void optimizeGrid(ActionEvent e) {
