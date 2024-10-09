@@ -18,7 +18,27 @@ tasks.withType(JavaCompile).configureEach {
     options.release = 21
 }
 
+configurations {
+    desktopCompile
+    androidCompile
 
+    compileOnly.extendsFrom desktopCompile
+    testCompile.extendsFrom desktopCompile // Assuming tests run on the desktop
+
+    desktop {
+        extendsFrom desktopCompile
+        //extendsFrom runtime
+    }
+    android {
+        extendsFrom androidCompile
+        //extendsFrom runtime
+    }
+}
+
+dependencies {
+    //androidCompile "one.empty3.libs:partial-android"
+    //desktopCompile "one.empty3.libs:partial-desktop"
+}
 sourceSets {
     main {
         java {
@@ -449,7 +469,7 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2024.9.2'
+def versionName = '2024.10.10'
 publishing {
     publications {
         maven(MavenPublication) {

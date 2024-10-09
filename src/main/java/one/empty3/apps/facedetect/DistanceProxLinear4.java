@@ -80,9 +80,11 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         boolean stepNewPoints = false;
         boolean firstStep = true;
         //while (maxDist > eps && (stepNewPoints || firstStep)) {
-        int occ = 0;
+        int occ = -1;
+        int oldoccc = 0;
         double surfaceOccupied = 0.0;
-        while (surfaceOccupied < 0.014) {
+        while (surfaceOccupied < 0.014 && occ != oldoccc) {
+            oldoccc = occ;
             stepNewPoints = false;
             firstStep = false;
             maxDist = 0;
@@ -99,7 +101,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                     if (((gen[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()]) ==
                             (gen[(int) pointsA.get(k).getX()][(int) pointsA.get(k).getY()]))
                             && gen[(int) pointsA.get(k).getX()][(int) pointsA.get(k).getY()] != 0) {
-                        //continue;
+                        continue;
                     }
                     double norm = pointsA.get(i).moins(pointsA.get(k)).norme();
                     if (norm < distCand && norm > 0) {
@@ -141,8 +143,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
             pointsB.addAll(newB);
 
             iteration++;
-            int oldOcc = occ;
+
             occ = 0;
+
             for (int i = 0; i < imageAB.length; i++) {
                 for (int j = 0; j < imageAB[i].length; j++) {
                     if (imageAB[i][j] != null) {
@@ -155,8 +158,6 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
             System.out.println("Number of points : " + pointsA.size() + "\n\t" + "Iterations : " + iteration
                     + "\n\toccupied (%) : " + surfaceOccupied);
             System.out.println("Thread n°" + Thread.currentThread().getId());
-            if (occ == oldOcc)
-                break;
         }
 
         System.out.println("Compute texturing ended");
