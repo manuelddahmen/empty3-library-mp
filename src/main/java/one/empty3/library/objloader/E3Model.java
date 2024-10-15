@@ -76,6 +76,19 @@ public class E3Model extends RepresentableConteneur {
         return objects;
     }
 
+    public void getBounds(Point3D minBox, Point3D maxBox) {
+        for (int i = 0; i < vertexsets.size(); i++) {
+            for (int j = 0; j < 3; j++) {
+                if (minBox.get(j) > vertexsets.get(i)[j]) {
+                    minBox.set(j, vertexsets.get(i)[j]);
+                }
+                if (maxBox.get(j) < vertexsets.get(i)[j]) {
+                    maxBox.set(j, vertexsets.get(i)[j]);
+                }
+            }
+        }
+    }
+
     /***
      * a = (x1, y1, z1, u1, v1)+u*((x2, y2, z2, u2, v2)- (x1, y1, z1, u1, v1))
      * b = (x4, y4, z4, u4, v4)+u*((x3, y3, z3, u3, v3)- (x4, y4, z4, u4, v4))
@@ -171,7 +184,7 @@ public class E3Model extends RepresentableConteneur {
             return textUv;
         }
 
-        public void setTextUv(double[] textUv ) {
+        public void setTextUv(double[] textUv) {
             this.textUv = textUv;
         }
     }
@@ -590,7 +603,7 @@ public class E3Model extends RepresentableConteneur {
                 //// Quad Begin Header ////
                 Representable quad;
                 if (tempfaces.length == 3) {
-                    quad = new TRI();
+                    quad = new Polygon();
                 } else {
                     quad = new Polygon();
                 }
@@ -643,7 +656,10 @@ public class E3Model extends RepresentableConteneur {
 
                 quad.texture(new TextureCol(pointCol));
                 //add(quad);
-                add(new FaceWithUv((Polygon) quad, textureListUv1234));
+                Polygon p = (Polygon) quad;
+                if (p.getPoints().getData1d().size() > 3) {
+                    add(new FaceWithUv(p, textureListUv1234));
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

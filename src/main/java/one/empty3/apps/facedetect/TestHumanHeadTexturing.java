@@ -93,20 +93,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
         Camera c = new Camera();
 
-        if (defautZheight == 0) {
-            c.getEye().setZ(c.getEye().getX() / 8);
-            c.getEye().setX(0.0);
-            c.calculerMatrice(Point3D.Y.mult(-1));
-            //c.setAngleYr(60, 1.0 * z().ha() / z().la());
-        } else {
-            c.getEye().setZ(-Math.max(defautZheight, defautZwidth));
-            c.getEye().setX(0.0);
-            c.setLookat(Point3D.O0);
-            c.calculerMatrice(Point3D.Y.mult(-1));
-            //c.setAngleYr(60, 1.0 * z().ha() / z().la());
-        }
-        camera(c);
-        scene().cameraActive(c);
 
         if (jpgFile != null && objFile != null) {
             printWriter.println("# Face elements without eyes month and nose");
@@ -147,6 +133,28 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             z().scene(scene);
             z().camera(c);
         }
+        Point3D minBox = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        Point3D maxBox = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+
+        if (editPolygonsMappings.model != null) {
+            editPolygonsMappings.model.getBounds(minBox, maxBox);
+
+            if (defautZheight == 0) {
+                c.getEye().setZ(Math.max(maxBox.getZ(), Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2))));
+                c.getEye().setX(maxBox.getX() / 2 + minBox.getX() / 2);
+                c.getEye().setY(maxBox.getY() / 2 + minBox.getY() / 2);
+                c.calculerMatrice(Point3D.Y.mult(-1));
+                //c.setAngleYr(60, 1.0 * z().ha() / z().la());
+            } else {
+                c.getEye().setZ(-Math.max(defautZheight, defautZwidth));
+                c.getEye().setX(0.0);
+                c.setLookat(Point3D.O0);
+                c.calculerMatrice(Point3D.Y.mult(-1));
+                //c.setAngleYr(60, 1.0 * z().ha() / z().la());
+            }
+        }
+        camera(c);
+        scene().cameraActive(c);
     }
 
     @Override

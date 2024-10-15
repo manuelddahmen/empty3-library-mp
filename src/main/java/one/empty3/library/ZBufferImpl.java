@@ -277,8 +277,15 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         , tri.texture());
                 //System.out.print("Triangle");
             }
-        } else if (r instanceof E3Model.FaceWithUv) {
-            tracerQuadRefined((E3Model.FaceWithUv) r);
+        } else if (r instanceof E3Model.FaceWithUv f) {
+            if (f.getPolygon().getPoints().getData1d().size() == 4) {
+                tracerQuadRefined((E3Model.FaceWithUv) r);
+            } else if (f.getPolygon().getPoints().getData1d().size() == 3) {
+                Polygon polygon = ((E3Model.FaceWithUv) r).getPolygon();
+                TRI tri = new TRI(polygon.getPoints().getData1d().get(0), polygon.getPoints().getData1d().get(1), polygon.getPoints().getData1d().get(2));
+                tracerTriangle(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1), polygon.getPoints().getElem(2),
+                        polygon.texture(), f.getU1(), f.getV1(), f.getU2(), f.getV2());
+            }
         } else if (r instanceof ParametricSurface) {
             ParametricSurface n = (ParametricSurface) r;
             setCurrentRepresentable(r);

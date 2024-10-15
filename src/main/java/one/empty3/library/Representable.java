@@ -661,7 +661,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
     }
 
     public void setPosition(Point3D calcCposition) {
-        getRotation().getElem().getCentreRot().setElem(calcCposition);
+        //getRotation().getElem().getCentreRot().setElem(calcCposition);
     }
 
     /***

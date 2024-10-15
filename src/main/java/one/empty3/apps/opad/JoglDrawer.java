@@ -45,7 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JoglDrawer extends Drawer implements GLEventListener {
-    protected final Frame component;
+    protected final JFrame component;
     protected final Animator animator;
     private final JPanel panel;
     protected GLCanvas glCanvas;
@@ -131,7 +131,8 @@ public class JoglDrawer extends Drawer implements GLEventListener {
             System.err.println("Continue///");
         }
         ((JFrame) component).setContentPane(panel);
-        component.setVisible(true);
+        if (component.isVisible() == false)
+            component.setVisible(true);
 
     }
 

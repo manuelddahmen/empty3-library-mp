@@ -611,10 +611,25 @@
          * @param p1 The point to calculate the cross product with.
          * @return The result of the cross product as a new Point3D object.
          */
-        public one.empty3.library.Point3D prodVect(one.empty3.library.Point3D p1) {
+        public Point3D prodVect(one.empty3.library.Point3D p1) {
             return new one.empty3.library.Point3D(p1.getY() * getZ() + -p1.getZ() * getY(), p1.getZ()
                     * getX() - p1.getX() * getZ(), p1.getX() * getY() - p1.getY()
                     * getX());
+        }
+
+        /**
+         * Calculates the cross product between this point and the given point.
+         *
+         * @param p2 The point to calculate the cross product with.
+         * @return The result of the cross product as a new Point3D object.
+         * Corrigé d'après: <a href="https://www.nagwa.com/fr/explainers/616184792816/">...</a>
+         */
+        public Point3D prodVect1(one.empty3.library.Point3D p2) {
+            Point3D p1 = this;
+
+            return new one.empty3.library.Point3D(p1.getY() * p2.getZ() - p1.getZ() * p2.getY(),
+                    -(p2.getZ() * getX() - p2.getX() * getZ()),
+                    p1.getX() * p2.getY() - p1.getY() * p1.getX());
         }
 
         /**
