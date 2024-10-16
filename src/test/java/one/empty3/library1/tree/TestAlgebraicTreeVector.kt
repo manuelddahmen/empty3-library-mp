@@ -943,7 +943,7 @@ class TestAlgebraicTreeVector() {
         if (file.exists()) {
             file.listFiles()!!.forEach {
                 if (it.isFile() && it.name.endsWith(".txt")) {
-                    var fileOutTxt: String = "##\n##" + it.name + "\n##\n##" + it.path + "\n##\n"
+                    var fileOutTxt: String = "##\n##" + it.name + "\n##\n##" + it.absolutePath + "\n##\n"
                     val listInstructions: ListInstructions = ListInstructions()
                     listInstructions.addInstructions(it.readText(Charsets.UTF_8))
                     val list: List<String> = listInstructions.runInstructions()
