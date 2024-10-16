@@ -32,7 +32,6 @@ import org.junit.runners.JUnit4
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import kotlin.system.exitProcess
 
 /**
  * Test class for AlgebraicTree.

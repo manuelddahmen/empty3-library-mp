@@ -1,8 +1,9 @@
 package one.empty3;
 
 class Number1 {
-    Double[] ar;
-
+    Double ar;
+    double ar1;
+    double ar2;
     void empty() {
     }
 

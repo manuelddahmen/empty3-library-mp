@@ -27,10 +27,12 @@ import one.empty3.library.Point2D
 import one.empty3.library.Point3D
 import one.empty3.library.StructureMatrix
 import one.empty3.library1.shader.Vec
+import org.bridj.cpp.std.list
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.io.File
 import kotlin.Array
 import kotlin.math.pow
 
@@ -933,6 +935,26 @@ class TestAlgebraicTreeVector() {
             ex.printStackTrace()
         }
         Assert.assertTrue(assertion)
+    }
+
+    @Test
+    fun testTextCalculator4() {
+        val file = File("resources/textcalculator")
+        if (file.exists()) {
+            file.listFiles()!!.forEach {
+                if (it.isFile() && it.name.endsWith(".txt")) {
+                    var fileOutTxt: String = "##\n##" + it.name + "\n##\n##" + it.path + "\n##\n"
+                    val listInstructions: ListInstructions = ListInstructions()
+                    listInstructions.addInstructions(it.readText(Charsets.UTF_8))
+                    val list: List<String> = listInstructions.runInstructions()
+                    for ((_, s) in list.withIndex()) {
+                        fileOutTxt = fileOutTxt + s + "\n"
+                    }
+                    it.writeBytes(fileOutTxt.toByteArray())
+                }
+            }
+
+        }
     }
 
     /***
