@@ -32,6 +32,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -690,6 +691,10 @@ public class E3Model extends RepresentableConteneur {
         getListRepresentable().forEach(representable -> representable.texture(tc));
     }
 
+
+    /**
+     *
+     */
     public Point3D findUvFace(double u, double v) {
         final Point3D[] p = {null};
         for (int i = 0; i < faces.size(); i++) {
@@ -708,5 +713,68 @@ public class E3Model extends RepresentableConteneur {
             }
         }
         return p[0];
+    }
+
+    /***
+     *
+     * @param pos Point de l'espace
+     * @return coordonnées (u,v) du point dy modèle le plus proche de point
+     */
+    public Point3D findUvForPoint3D(Point3D pos) {
+        final Point3D[] p = {null};
+        final double[] eps = {Double.MAX_VALUE};
+        final FaceWithUv[] face = new FaceWithUv[1];
+        for (int i = 0; i < faces.size(); i++) {
+            for (Representable representable : getListRepresentable()) {
+                if (representable instanceof FaceWithUv faceWithUv) {
+                    if (faceWithUv.textUv != null) {
+                        double minU = Math.min(Math.min(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.min(faceWithUv.textUv[4], faceWithUv.textUv[6]));
+                        double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
+                        double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
+                        double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
+                        faceWithUv.getPolygon().getPoints().getData1d().forEach(new Consumer<Point3D>() {
+                            @Override
+                            public void accept(Point3D point3D) {
+                                if (Point3D.distance(pos, point3D) < eps[0]) {
+                                    eps[0] = Point3D.distance(pos, point3D);
+                                    face[0] = faceWithUv;
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        Point3D p1 = p[0];
+        FaceWithUv faceWithUv = face[0];
+        double u = p1.getX();
+        double v = p1.getY();
+        Point3D goood;
+        Point3D selectedUv = null;
+        if (p[0] != null) {
+            for (int i = 0; i < 100; i++) {
+                for (int j = 0; j < 100; j++) {
+                    double minU = Math.min(Math.min(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.min(faceWithUv.textUv[4], faceWithUv.textUv[6]));
+                    double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
+                    double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
+                    double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
+                    u = minU + (maxU - minU) * i / 100;
+                    v = minU + (maxV - minV) * i / 100;
+                    if (minU <= u && u <= maxU && minV <= v && v <= maxV) {
+                        goood = faceWithUv.calculerPoint3D((u - minU) / (maxU - minU), 1 - (v - minV) / (maxV - minV));
+                        if (Point3D.distance(goood, faceWithUv.getPolygon().getIsocentre()) < eps[0]) {
+                            selectedUv = goood;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (selectedUv != null) {
+            return selectedUv;
+        }
+
+        return null;
     }
 }

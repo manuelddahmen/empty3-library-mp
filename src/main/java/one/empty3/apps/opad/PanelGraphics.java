@@ -27,6 +27,7 @@
 package one.empty3.apps.opad;
 
 import one.empty3.apps.opad.menu.LevelMenu;
+import one.empty3.library.Point3D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +56,7 @@ public class PanelGraphics extends JDialog {
      */
     public PanelGraphics(Frame parent, boolean modal) {
         super(parent, modal);
+        Point3D.useTreuVectorialProduct = true;
         initComponents();
         initPlayersList();
         panelGraphics = this;

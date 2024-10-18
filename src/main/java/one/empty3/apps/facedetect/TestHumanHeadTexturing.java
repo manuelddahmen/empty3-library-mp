@@ -140,9 +140,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.getBounds(minBox, maxBox);
 
             if (defautZheight == 0) {
-                c.getEye().setZ(Math.max(maxBox.getZ(), Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2))));
                 c.getEye().setX(maxBox.getX() / 2 + minBox.getX() / 2);
                 c.getEye().setY(maxBox.getY() / 2 + minBox.getY() / 2);
+                //c.getEye().setZ(maxBox.getZ() + Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2)));
+                c.getEye().setZ(maxBox.getZ() + Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2)));
                 c.calculerMatrice(Point3D.Y.mult(-1));
                 //c.setAngleYr(60, 1.0 * z().ha() / z().la());
             } else {

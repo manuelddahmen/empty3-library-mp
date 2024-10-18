@@ -45,6 +45,7 @@
      * @author Manuel Dahmen
      */
     public class Point3D extends Representable {
+        public static boolean useTreuVectorialProduct = false;
         private static Double DISTANCE_MIN = 0.0001;
         private StructureMatrix<Double> point3DStructureMatrix;
         private double x, y, z;
@@ -604,6 +605,13 @@
             return this.prodScalaire(p2);
         }
 
+        public Point3D prodVect(one.empty3.library.Point3D p2) {
+            if (useTreuVectorialProduct) {
+                return prodVect1(p2);
+            } else {
+                return prodVect0(p2);
+            }
+        }
 
         /**
          * Calculates the cross product between this point and the given point.
@@ -611,7 +619,7 @@
          * @param p1 The point to calculate the cross product with.
          * @return The result of the cross product as a new Point3D object.
          */
-        public Point3D prodVect(one.empty3.library.Point3D p1) {
+        public Point3D prodVect0(one.empty3.library.Point3D p1) {
             return new one.empty3.library.Point3D(p1.getY() * getZ() + -p1.getZ() * getY(), p1.getZ()
                     * getX() - p1.getX() * getZ(), p1.getX() * getY() - p1.getY()
                     * getX());
