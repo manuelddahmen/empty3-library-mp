@@ -47,27 +47,25 @@ a=(1,1)
 ##line : (46)=num(dim:0) data : null 
 
 ##line : (48)=num(dim:0) data : null 
-sqrt(median((29,12)))
-##line : (50)sqrt(median((29,12)))=num(dim:0) data : null 
-
-##line : (52)=num(dim:0) data : null 
+r=sqrt(median(29,12))
+##line : (50)sqrt(median(29,12))=num(dim:0) data : 12.083045973594572 
 2.35/1.5
-##line : (54)2.35/1.5=num(dim:0) data : 1.5666666666666667 
+##line : (52)2.35/1.5=num(dim:0) data : 1.5666666666666667 
 
-##line : (56)=num(dim:0) data : null 
+##line : (54)=num(dim:0) data : null 
 24/9
-##line : (58)24/9=num(dim:0) data : 2.6666666666666665 
+##line : (56)24/9=num(dim:0) data : 2.6666666666666665 
 m=(0.39,12)
-##line : (60)(0.39,12)=num(dim:1) data : ( 0.39, 12.0 ) 
+##line : (58)(0.39,12)=num(dim:1) data : ( 0.39, 12.0 ) 
 e=sum(x)
-##line : (62)sum(x)=num(dim:1) data : ( 16.0 ) 
+##line : (60)sum(x)=num(dim:0) data : 16.0 
 e=sin(x)
-##line : (64)sin(x)=num(dim:0) data : -0.2879033166650653 
+##line : (62)sin(x)=num(dim:0) data : -0.2879033166650653 
 e=sum((m))
-##line : (66)sum((m))=num(dim:1) data : ( 0.39, 12.0 ) 
+##line : (64)sum((m))=num(dim:0) data : 12.39 
 e=sum(m)
 e=sum((x))
-##line : (69)sum((x))=num(dim:1) data : ( 16.0 ) 
+##line : (67)sum((x))=num(dim:0) data : 16.0 
 sum((0.39,12.0))
-a
-##line : (72)a=num(dim:0) data : 6.0 
+sin(m)
+sin((m))
