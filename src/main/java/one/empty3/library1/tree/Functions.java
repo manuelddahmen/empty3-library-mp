@@ -12,6 +12,7 @@ public class Functions {
         listOfFunctions.add("product");
         listOfFunctions.add("avg");
         listOfFunctions.add("median");
+        listOfFunctions.add("count");
     }
 
 
@@ -33,6 +34,7 @@ public class Functions {
             case "product" -> product(vec);
             case "avg" -> avg(vec);
             case "median" -> median(vec);
+            case "count" -> count(vec);
             default -> 0;
         };
     }
@@ -73,5 +75,10 @@ public class Functions {
             count++;
         }
         return sum;
+    }
+
+    public static double count(Double... args) {
+        int count = args.length;
+        return count;
     }
 }

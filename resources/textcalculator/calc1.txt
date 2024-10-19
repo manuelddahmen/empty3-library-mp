@@ -63,7 +63,8 @@ e=sin(x)
 ##line : (62)sin(x)=num(dim:0) data : -0.2879033166650653 
 e=sum((m))
 ##line : (64)sum((m))=num(dim:0) data : 12.39 
-e=sum(m)
+e=sum((m))
+##line : (66)sum((m))=num(dim:0) data : 12.39 
 e=sum((x))
 ##line : (67)sum((x))=num(dim:0) data : 16.0 
 sum((0.39,12.0))

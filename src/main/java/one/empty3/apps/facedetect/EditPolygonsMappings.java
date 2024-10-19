@@ -760,6 +760,21 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         });
                     }
                 }
+                pointsInModel.forEach((s, point3D) -> {
+                    if (!pointsInImage.containsKey(s)) {
+                        pointsInImage.put(s, point3D);
+                    }
+                });
+                pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!pointsInModel.containsKey(s)) {
+                            pointsInModel.put(s, point3D);
+                        }
+                    }
+                });
+
+
                 this.txtFile = selectedFile;
                 hasChangedAorB = true;
 
@@ -825,6 +840,23 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         }
                     }
                 }
+                pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!pointsInModel.containsKey(s)) {
+                            pointsInModel.put(s, point3D);
+                        }
+                    }
+                });
+                pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!pointsInImage.containsKey(s)) {
+                            pointsInImage.put(s, point3D);
+                        }
+                    }
+                });
+
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInModel.size());
                 bufferedReader.close();
 
