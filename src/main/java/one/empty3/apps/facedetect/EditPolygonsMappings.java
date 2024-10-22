@@ -465,7 +465,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                         if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
                                             iTextureMorphMove.setConvHullAB();
                                         }
-                                        if (!iTextureMorphMove.distanceAB.isInvalidArray()) {
+                                        if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
                                             // Display 3D scene
                                             if (model != null) {
                                                 iTextureMorphMove.distanceAB.setModel(model);
@@ -537,15 +537,19 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (image != null && panelDraw != null) {
                 Graphics graphics = panelDraw.getGraphics();
                 if (graphics != null) {
-                    points.forEach((s, point3D) -> {
-                        Graphics graphics1 = panelDraw.getGraphics();
-                        if (landmarkType != null && landmarkType.equals(s))
-                            graphics1.setColor(Color.ORANGE);
-                        else
-                            graphics1.setColor(Color.GREEN);
-                        graphics1.fillOval((int) (double) (point3D.getX() * panelDraw.getWidth()) - 3,
-                                (int) (double) (point3D.getY() * panelDraw.getHeight()) - 3, 7, 7);
-                    });
+                    try {
+                        points.forEach((s, point3D) -> {
+                            Graphics graphics1 = panelDraw.getGraphics();
+                            if (landmarkType != null && landmarkType.equals(s))
+                                graphics1.setColor(Color.ORANGE);
+                            else
+                                graphics1.setColor(Color.GREEN);
+                            graphics1.fillOval((int) (double) (point3D.getX() * panelDraw.getWidth()) - 3,
+                                    (int) (double) (point3D.getY() * panelDraw.getHeight()) - 3, 7, 7);
+                        });
+                    } catch (ConcurrentModificationException ex) {
+
+                    }
                     // Display 3D scene
                 }
             }

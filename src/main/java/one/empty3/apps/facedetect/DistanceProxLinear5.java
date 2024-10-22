@@ -23,15 +23,12 @@
 package one.empty3.apps.facedetect;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TRI;
-import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
-import one.empty3.library.lang.Node;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistanceProxLinear4 extends DistanceBezier2 {
+public class DistanceProxLinear5 extends DistanceBezier2 {
     private Point3D[][] imageAB;
     private List<Point3D> pointsB;
     private List<Point3D> pointsA;
@@ -47,7 +44,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
      * @param opt1
      * @param optimizeGrid
      */
-    public DistanceProxLinear4(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear5(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
@@ -132,7 +129,12 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                         if (!checkedList[i1][i2]) {
                             checkedList[i1][i2] = true;
                             stepNewPoints = true;
-                            newA.add(pA);
+
+                            Point3D pAreal = model.findUvFace(pA.getX(), pA.getY());
+
+                            Point3D pAreal2 = model.findUvForPoint3D(pAreal);
+
+                            newA.add(pAreal2);
                             newB.add(pB);
                             imageAB[j1][j2] = pA;
                             gen[i1][i1] = iteration;

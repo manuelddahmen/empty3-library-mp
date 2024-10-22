@@ -732,13 +732,11 @@ public class E3Model extends RepresentableConteneur {
                         double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
                         double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
                         double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                        faceWithUv.getPolygon().getPoints().getData1d().forEach(new Consumer<Point3D>() {
-                            @Override
-                            public void accept(Point3D point3D) {
-                                if (Point3D.distance(pos, point3D) < eps[0]) {
-                                    eps[0] = Point3D.distance(pos, point3D);
-                                    face[0] = faceWithUv;
-                                }
+                        faceWithUv.getPolygon().getPoints().getData1d().forEach(point3D -> {
+                            if (Point3D.distance(pos, point3D) < eps[0]) {
+                                eps[0] = Point3D.distance(pos, point3D);
+                                face[0] = faceWithUv;
+                                p[0] = point3D;
                             }
                         });
                     }
@@ -746,35 +744,31 @@ public class E3Model extends RepresentableConteneur {
             }
         }
 
-        Point3D p1 = p[0];
+        p[0] = pos;
         FaceWithUv faceWithUv = face[0];
-        double u = p1.getX();
-        double v = p1.getY();
+        double u = p[0].getX();
+        double v = p[0].getY();
         Point3D goood;
         Point3D selectedUv = null;
         if (p[0] != null) {
-            for (int i = 0; i < 100; i++) {
-                for (int j = 0; j < 100; j++) {
+            for (double i = 0; i < 10; i++) {
+                for (double j = 0; j < 10; j++) {
                     double minU = Math.min(Math.min(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.min(faceWithUv.textUv[4], faceWithUv.textUv[6]));
                     double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
                     double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
                     double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                    u = minU + (maxU - minU) * i / 100;
-                    v = minU + (maxV - minV) * i / 100;
+                    u = minU + (maxU - minU) * i / 10;
+                    v = minV + (maxV - minV) * j / 10;
                     if (minU <= u && u <= maxU && minV <= v && v <= maxV) {
-                        goood = faceWithUv.calculerPoint3D((u - minU) / (maxU - minU), 1 - (v - minV) / (maxV - minV));
-                        if (Point3D.distance(goood, faceWithUv.getPolygon().getIsocentre()) < eps[0]) {
-                            selectedUv = goood;
+                        goood = faceWithUv.calculerPoint3D((u - minU) / (maxU - minU), (v - minV) / (maxV - minV));
+                        if (Point3D.distance(goood, pos) <= eps[0]) {
+                            selectedUv = new Point3D(u, v, 0.0);
                         }
                     }
                 }
             }
         }
 
-        if (selectedUv != null) {
-            return selectedUv;
-        }
-
-        return null;
+        return selectedUv;
     }
 }
