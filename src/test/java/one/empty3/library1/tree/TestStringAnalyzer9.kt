@@ -42,7 +42,7 @@ import kotlin.Array
  */
 @RunWith(JUnit4::class)
 class TestStringAnalyzer9 {
-    private val isDebug: Boolean = false
+    private val isDebug: Boolean = true
     fun readDir(directory_path: String) {
         var succeed = true
         File(directory_path).listFiles()?.forEach {
@@ -307,7 +307,7 @@ class TestStringAnalyzer9 {
 
         // Arguments' list
         val tokenOpenParenthesizedMethodParameter = stringAnalyzer3.TokenOpenParenthesized()
-        tokenOpenParenthesizedMethodParameter.fireOnTrue(true)
+        //tokenOpenParenthesizedMethodParameter.fireOnTrue(true)
         /*val tokenComaMethodParameter1 = stringAnalyzer3.TokenComa()
         val tokenQualifiedNameMethodParameter1 = stringAnalyzer3.TokenName()
         val tokenNameMethodParameter1 = stringAnalyzer3.TokenName()
