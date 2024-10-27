@@ -42,7 +42,7 @@ import kotlin.Array
  */
 @RunWith(JUnit4::class)
 class TestStringAnalyzer9 {
-    private val isDebug: Boolean = true
+    private val isDebug: Boolean = false
     fun readDir(directory_path: String) {
         var succeed = true
         File(directory_path).listFiles()?.forEach {

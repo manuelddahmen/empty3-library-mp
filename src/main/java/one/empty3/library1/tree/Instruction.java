@@ -76,20 +76,10 @@ public class Instruction extends InstructionBlock {
 
     @Override
     public String toLangStringJava(boolean debug) {
-        StringBuffer sb = new StringBuffer();
-        if (getType() != null) {
-            sb.append(getType()).append(" ");
-        }
-        if (name != null) {
-            sb.append(name).append(" ");
-        }
         if (expression != null && expression.tokenExpression2 != null && expression instanceof ListInstructions.Instruction) {
-            if (name != null) {
-                sb.append(name).append("= ");
-            }
-            String string = new TokenExpression2toString().toString(expression.getOriginalString(), expression.tokenExpression2);
-            sb.append(string).append(";");
+            return expression.tokenExpression2.toString();
+        } else {
+            return super.toLangStringJava(debug);
         }
-        return sb.toString();
     }
 }

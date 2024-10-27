@@ -172,7 +172,7 @@ public class InstructionBlock {
                     s1 = s1 + " ";
                 }
                 String s2 = instruction.getExpression() != null ? " " +
-                        debugString(debug, instruction.expression.getOriginalString()) : "";
+                        debugString(debug, instruction.getExpression().toString()) : "";
                 stringBuilder.append("\n").append(tabs()).append(s).append(s1).append(s2).append(";\n");
             }
             case "one.empty3.library1.tree.InstructionBlock" -> {
