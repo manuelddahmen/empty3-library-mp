@@ -380,7 +380,7 @@ public class StringAnalyzerJava2 extends StringAnalyzer3 {
 */
 
 
-                while (i < input.length() && !lastToken) {
+                while (i < input.length()) {
                     if (i == input.length() - 1) {
                         lastToken = true;
 

@@ -418,7 +418,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-storage'
     implementation "com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0"
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-    implementation "com.google.guava:guava:16.0.1"
+    implementation 'com.google.guava:guava:32.0.0-android'
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
 }
 

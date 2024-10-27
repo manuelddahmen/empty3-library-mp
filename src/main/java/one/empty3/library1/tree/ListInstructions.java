@@ -112,9 +112,11 @@ public class ListInstructions {
         public String toString() {
             if (tokenExpression2 != null && tokenExpression2.isSuccessful()) {
                 expression = tokenExpression2.toString();
+                if (expression == null) expression = originalString != null ? originalString : "";
                 if (expression.startsWith("."))
                     expression = expression.substring(1);
             } else {
+                if (expression == null) expression = originalString != null ? originalString : "";
                 if (expression.startsWith("."))
                     expression = expression.substring(1);
             }
