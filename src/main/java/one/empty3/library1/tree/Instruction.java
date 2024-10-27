@@ -70,12 +70,16 @@ public class Instruction extends InstructionBlock {
         return "Instruction{" +
                 "type='" + type + '\'' +
                 "', name='" + name + '\'' +
-                "', expression='" + this.expression +
+                "', expression='" + this.expression.toString() +
                 "'}";
     }
 
     @Override
     public String toLangStringJava(boolean debug) {
-        return super.toLangStringJava(debug);
+        if (expression != null && expression.tokenExpression2 != null && expression instanceof ListInstructions.Instruction) {
+            return expression.tokenExpression2.toString();
+        } else {
+            return super.toLangStringJava(debug);
+        }
     }
 }

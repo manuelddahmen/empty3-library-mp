@@ -1413,12 +1413,18 @@ public class StringAnalyzer3 {
         }
 
         @Override
+        public String toString() {
+            return expression;
+        }
+
+        @Override
         public Token copy(Token token) {
             super.copy(token);
             token = new TokenExpression1();
             ((TokenExpression1) token).expression = expression;
             return token;
         }
+
     }
 
     class TokenSemiColon extends TokenString {

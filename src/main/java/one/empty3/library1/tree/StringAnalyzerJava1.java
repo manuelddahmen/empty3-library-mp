@@ -529,7 +529,7 @@ public class StringAnalyzerJava1 extends StringAnalyzer3 {
             }
         }
 
-
+        @Override
         public String toString() {
             TokenExpression2 te = this;
             StringBuilder sb = new StringBuilder();
@@ -546,6 +546,10 @@ public class StringAnalyzerJava1 extends StringAnalyzer3 {
             if (hasNextToken()) {
                 sb.append(getConstruct().debugString(isDebug, " "))
                         .append(getNextToken().getElem(0).toString());
+            }
+            TokenExpression2 tokenExpression2 = this;
+            if (sb.toString().isEmpty()) {
+                return "";
             }
             return sb.toString();
         }
