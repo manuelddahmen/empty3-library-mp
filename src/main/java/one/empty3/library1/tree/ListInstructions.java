@@ -45,7 +45,7 @@ public class ListInstructions {
         private int id;
         private String leftHand;
         private String expression;
-        StringAnalyzerJava1.TokenExpression2 tokenExpression2;
+        StringAnalyzerJava2.TokenExpression2 tokenExpression2;
         private String originalString;
 
         public Instruction(int id, String leftHand, String expression, @NotNull String originalString) {
@@ -84,17 +84,17 @@ public class ListInstructions {
         public void setExpression(String expression) {
             if (expression != null) {
                 this.expression = expression;
-                StringAnalyzerJava1 stringAnalyzerJava1 = new StringAnalyzerJava1();
-                tokenExpression2 = stringAnalyzerJava1.new TokenExpression2();
+                StringAnalyzerJava2 stringAnalyzerJava2 = new StringAnalyzerJava2();
+                tokenExpression2 = stringAnalyzerJava2.new TokenExpression2();
                 tokenExpression2.parse(expression, 0);
             }
         }
 
-        public StringAnalyzerJava1.TokenExpression2 getExpressionTokenString() {
+        public StringAnalyzerJava2.TokenExpression2 getExpressionTokenString() {
             return tokenExpression2;
         }
 
-        public void setTokenExpression2(StringAnalyzerJava1.TokenExpression2 expression) {
+        public void setTokenExpression2(StringAnalyzerJava2.TokenExpression2 expression) {
             //setExpression(expression.parse(expression., 0));
             this.tokenExpression2 = expression;
         }

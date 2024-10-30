@@ -77,7 +77,8 @@ public class Instruction extends InstructionBlock {
     @Override
     public String toLangStringJava(boolean debug) {
         if (expression != null && expression.tokenExpression2 != null && expression instanceof ListInstructions.Instruction) {
-            return expression.tokenExpression2.toString();
+            //return expression.tokenExpression2.toString();
+            return new TokenExpression2toString().toString(expression.getExpressionTokenString());
         } else {
             return super.toLangStringJava(debug);
         }
