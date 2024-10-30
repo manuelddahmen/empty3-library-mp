@@ -496,7 +496,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-3d'
-            version = '2024.9.22'
+            version = '2024.10.31'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -512,7 +512,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-3d"
-                version '2024.9.22'
+                version '2024.10.31'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -596,8 +596,8 @@ jreleaser {
         name = 'empty3-library-3d'
         java.artifactId = 'empty3-library-3d'
         java.groupId = 'one.empty3'
-        java.version = '2024.9.22'
-        version = '2024.9.22'
+        java.version = '2024.10.31'
+        version = '2024.10.31'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
