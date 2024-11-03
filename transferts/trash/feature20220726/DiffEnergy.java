@@ -25,7 +25,7 @@ package one.empty3.feature20220726;
 import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.image.imageio.ImageIO;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.*;
 import java.util.Objects;

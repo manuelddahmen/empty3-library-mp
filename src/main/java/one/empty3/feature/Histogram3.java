@@ -26,7 +26,10 @@ import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -163,14 +166,14 @@ public class Histogram3 extends ProcessFile {
         init();
 
         try {
-            PixM m = new PixM(ImageIO.read(in));
-            BufferedImage image = m.getImage();
+            PixM m = new PixM(new ECImage(ImageIO.read(in)));
+            Image image = m.getImage();
 
 
             final double radiusIncr = 1;
 
 
-            BufferedImage img2 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Image img2 = new Image(image.getWidth(), image.getHeight(), Image.TYPE_INT_RGB);
             List<Circle> pointsOfInterest;
             pointsOfInterest = getPointsOfInterest(m, radiusIncr, 0.5);
             // grands;cercles = grandes iles les separer

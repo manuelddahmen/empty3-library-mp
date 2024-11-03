@@ -1,4 +1,4 @@
-///*
+/// *
 // * Copyright (c) 2023. Manuel Daniel Dahmen
 // *
 // *
@@ -25,7 +25,7 @@
 //import one.empty3.library.ZBuffer;
 //
 //import javax.imageio.ImageIO;
-//import java.awt.image.BufferedImage;
+//import one.empty3.libs.Image;
 //import java.io.File;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;
@@ -116,7 +116,7 @@
 //        }
 //    }
 //
-//    protected void writeImage(BufferedImage image) {
+//    protected void writeImage(Image image) {
 //        try {
 //            File imageFile = getUniqueFilenameForProduction("testResults", getClass().getCanonicalName() + "___" + getClass().getEnclosingMethod(), "jpg");
 //            ImageIO.write(image, "jpg", imageFile);

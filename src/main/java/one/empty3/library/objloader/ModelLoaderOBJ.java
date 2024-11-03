@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*__
- * Image loading class that converts BufferedImages into a data structure that
+ * Image loading class that converts Images into a data structure that
  * can be easily passed to OpenGL.
  * 
  * @author Pepijn Van Eeckhoudt Downloaded from:

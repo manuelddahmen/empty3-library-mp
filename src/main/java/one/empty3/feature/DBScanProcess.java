@@ -26,6 +26,7 @@ import one.empty3.feature.kmeans.K_Clusterer;
 import one.empty3.feature.kmeans.MakeDataset;
 import one.empty3.feature.kmeans.ReadDataset;
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -129,7 +130,7 @@ public class DBScanProcess extends ProcessFile {
 
         try {
             pix = PixM
-                    .getPixM(ImageIO.read(in), 100);
+                    .getPixM(new ECImage(ImageIO.read(in)), 100);
         } catch (Exception ex1) {
             ex1.printStackTrace();
             return false;

@@ -1,1 +1,2 @@
-curl.exe --verbose --header 'Authorization: Bearer '=d3F6T2syckw6a25FOWViVGRWTHNTbnZveUxpR0ZOdVIrUWlZOEZKcjB0R3g0bExzbXZXOVM=' --form bundle=@bundle.zip https://central.sonatype.com/api/v1/publisher/upload
+REM Copier la ligne de commande et enlever le = à la fin du token.
+curl.exe --request POST  --verbose --header 'Authorization: Bearer QURSSzc3MEU6TEYwSjdQNk02eG53VzNNaTZYcWtSbE94TnRYbzRjOG5qbjJrVjRWN3hjYlM' --form bundle=@build/staging-deploy/one.zip https://central.sonatype.com/api/v1/publisher/upload

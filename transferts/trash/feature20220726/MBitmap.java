@@ -23,7 +23,8 @@
 package one.empty3.feature20220726;
 
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.PrimitiveIterator;
 import java.util.Random;
 
@@ -33,7 +34,7 @@ import one.empty3.library.Point3D;
 public class MBitmap /*implements InterfaceMatrix*/ {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
     public static final Double noValue = r.next();
-    protected java.awt.image.BufferedImage bitmap = null;
+    protected one.empty3.libs.Image bitmap = null;
     protected int columns;
     protected int lines;
     double[] x;
@@ -41,12 +42,12 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public int compCount = 3;
 
     public MBitmap(int c, int l) {
-        this.bitmap = new BufferedImage(c, l, BufferedImage.TYPE_INT_RGB);
+        this.bitmap = new Image(c, l, Image.TYPE_INT_RGB);
         this.lines = l;
         this.columns = c;
     }
 
-    public MBitmap(java.awt.image.BufferedImage bitmap) {
+    public MBitmap(one.empty3.libs.Image bitmap) {
         this.bitmap = bitmap;
         int l = bitmap.getHeight();
         int c = bitmap.getWidth();
@@ -55,7 +56,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
 
     }
 
-    public MBitmap(java.awt.image.BufferedImage bitmap, int resMax) {
+    public MBitmap(one.empty3.libs.Image bitmap, int resMax) {
         this.bitmap = bitmap;
     }
 
@@ -108,7 +109,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
         return v;
     }
 
-    public java.awt.image.BufferedImage getBitmap() {
+    public one.empty3.libs.Image getBitmap() {
         return bitmap;
     }
 

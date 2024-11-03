@@ -2,7 +2,7 @@
 //
 //import javaAnd.awt.image.imageio.ImageIO;
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.BufferedImage;
+//import javaAnd.awt.image.Image;
 //import javaAnd.awt.image.Graphics2D;
 //
 //import java.awt.image.RescaleOp;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 //    static int imgHeight;
 //
 //    public static void writeImage(int[][] imgArray, File outFile) throws Exception {
-//        BufferedImage img = new javaAnd.awt.image.BufferedImage(imgWidth, imgHeight, javaAnd.awt.image.BufferedImage.TYPE_INT_ARGB);
+//        Image img = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_INT_ARGB);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 //    }
 //
 //    public static void writeImage(double[][] imgArray, File outFile) throws Exception {
-//        BufferedImage img = new javaAnd.awt.image.BufferedImage(imgWidth, imgHeight, javaAnd.awt.image.BufferedImage.TYPE_BYTE_GRAY);
+//        Image img = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                img.setRGB(i, j, (int) imgArray[i][j]);
@@ -41,12 +41,12 @@ import java.util.logging.Logger;
 //        ImageIO.write(img, "png", outFile);
 //    }
 //
-//    public static void writeImage(BufferedImage image, File outFile) throws Exception {
+//    public static void writeImage(Image image, File outFile) throws Exception {
 //        ImageIO.write(image, "png", outFile);
 //    }
 //
 //    public static void writeImage(double[][] sobelArray, File outFile, int threshold) throws Exception {
-//        BufferedImage img = new javaAnd.awt.image.BufferedImage(imgWidth, imgHeight, javaAnd.awt.image.BufferedImage.TYPE_BYTE_GRAY);
+//        Image img = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                if (sobelArray[i][j] > threshold) {
@@ -57,7 +57,7 @@ import java.util.logging.Logger;
 //        ImageIO.write(img, "png", outFile);
 //    }
 //
-//    public static void superimposeCircles(List<CircleHit> hits, javaAnd.awt.image.BufferedImage in, File out) {
+//    public static void superimposeCircles(List<CircleHit> hits, javaAnd.awt.image.Image in, File out) {
 //        Graphics2D g = in.createGraphics();
 //        g.setColor(Color.RED);
 //        for (int circles = 0; circles < drawnCircles; circles++) {
@@ -81,9 +81,9 @@ import java.util.logging.Logger;
 //    }
 ///*
 //    public static void superimposeCircles(List<CircleHit> hits, double[][] sobelTotal, File out) throws Exception {
-//        BufferedImage totalCircles = new javaAnd.awt.image.BufferedImage(imgWidth, imgHeight, javaAnd.awt.image.BufferedImage.TYPE_INT_ARGB);
+//        Image totalCircles = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_INT_ARGB);
 //
-//        BufferedImage total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
+//        Image total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
 //        totalCircles.getGraphics().drawImage(total, 0, 0);
 //        Graphics2D g = totalCircles.createGraphics();
 //        g.setColor(Color.RED);
@@ -103,8 +103,8 @@ import java.util.logging.Logger;
 //        ImageIO.write(totalCircles, "png", out);
 //    }
 ///*/
-//    public static javaAnd.awt.image.BufferedImage scaledSobelResult(double[][] sobelTotal) {
-//        BufferedImage total = new javaAnd.awt.image.BufferedImage(imgWidth, imgHeight, javaAnd.awt.image.BufferedImage.TYPE_BYTE_GRAY);
+//    public static javaAnd.awt.image.Image scaledSobelResult(double[][] sobelTotal) {
+//        Image total = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        double max = 0;
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
@@ -137,7 +137,7 @@ import java.util.logging.Logger;
 //
 //
 //    //changes the brightness of an image by the factor given
-//    private static javaAnd.awt.image.BufferedImage changeBrightness(float brightenFactor, javaAnd.awt.image.BufferedImage image) {
+//    private static javaAnd.awt.image.Image changeBrightness(float brightenFactor, javaAnd.awt.image.Image image) {
 //        RescaleOp op = new RescaleOp(brightenFactor, 0, null);
 //        image = op.filter(image, image);
 //        return image;

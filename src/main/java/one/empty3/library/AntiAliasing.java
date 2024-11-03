@@ -38,9 +38,9 @@ public class AntiAliasing {
     public static Image antiAliasing(ZBuffer z, int echelle, int id) {
         int dimx = z.resX();
         int dimy = z.resY();
-        ECBufferedImage img = z.image();
-        Image scaled = new ECBufferedImage(dimx / echelle, dimy / echelle,
-                ECBufferedImage.TYPE_INT_RGB);
+        ECImage img = z.image();
+        Image scaled = new ECImage(dimx / echelle, dimy / echelle,
+                ECImage.TYPE_INT_RGB);
         Graphics g = scaled.getGraphics();
 
         g.setColor(Color.white);

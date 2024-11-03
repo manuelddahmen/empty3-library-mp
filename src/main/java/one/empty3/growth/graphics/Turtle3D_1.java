@@ -165,7 +165,7 @@ public class Turtle3D_1 {
 
     public Image returnImage() {
         zBuffer.draw();
-        ECBufferedImage image = zBuffer.image();
+        ECImage image = zBuffer.image();
         return image;
 
     }

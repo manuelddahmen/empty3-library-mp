@@ -40,7 +40,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -565,7 +567,7 @@ public class Turtle3DTest extends TestCaseExtended {
 
         @Test
         public void testRotation360deg300RandomAxe() {
-            BufferedImage image = new BufferedImage(1600, 1200, BufferedImage.TYPE_INT_RGB);
+            Image image = new Image(1600, 1200, Image.TYPE_INT_RGB);
             Graphics graphics = image.getGraphics();
             graphics.setColor(Color.YELLOW);
             Point3D y = Point3D.O0;

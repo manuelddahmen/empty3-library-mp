@@ -28,7 +28,8 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -119,9 +120,9 @@ public class Hist1Votes extends ProcessFile {
     public boolean process(File in, File out) {
         if (!isImage(in))
             return false;
-        BufferedImage bufferedImage = null;
+        Image bufferedImage = null;
         try {
-            bufferedImage = javax.imageio.ImageIO.read(in);
+            bufferedImage = new one.empty3.libs.Image(javax.imageio.ImageIO.read(in));
         } catch (RuntimeException | IOException ex) {
             return false;
         }

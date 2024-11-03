@@ -30,7 +30,8 @@ import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.*;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class ExtractIntensityInfo extends
 
     @Override
     public boolean process(File in, File out) {
-        BufferedImage img = null;
+        Image img = null;
         try {
             img = ImageIO.read(in);
         } catch (Exception rx) {
@@ -62,7 +63,7 @@ public class ExtractIntensityInfo extends
 
         PixM pixMOriginal = pix;
 
-        final BufferedImage[] img3 = new java.awt.image.BufferedImage[]{pix.getImage()};
+        final Image[] img3 = new one.empty3.libs.Image[]{pix.getImage()};
 
 
         GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns(), pixMOriginal.getLines());

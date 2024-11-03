@@ -22,7 +22,8 @@
 
 package one.empty3.feature20220726.tryocr;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ public class ResolutionCharacter0 implements Runnable {
     private final int charMinWidth = 5;
     int step = 1;// Searched Characters size.
     private double[] WHITE_DOUBLES = new double[]{1, 1, 1};
-    private BufferedImage read;
+    private Image read;
     private String name;
     private int shakeTimes;
     private double totalError;
@@ -80,11 +81,11 @@ public class ResolutionCharacter0 implements Runnable {
     private PixM input;
     private PixM output;
 
-    public ResolutionCharacter0(BufferedImage read, String name) {
+    public ResolutionCharacter0(Image read, String name) {
         this(read, name, new File("testsResults"));
     }
 
-    public ResolutionCharacter0(BufferedImage read, String name, File dirOut) {
+    public ResolutionCharacter0(Image read, String name, File dirOut) {
         this.read = read;
         this.name = name;
         this.dirOut = dirOut;
@@ -98,7 +99,7 @@ public class ResolutionCharacter0 implements Runnable {
         if (dir.exists() && dir.isDirectory()) {
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-                    BufferedImage read = ImageIO.read(file);
+                    Image read = ImageIO.read(file);
 
                     String name = file.getName();
 

@@ -28,16 +28,18 @@
 package one.empty3.library;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.util.Hashtable;
 import java.util.Set;
 
 public class CourbeDeImage {
 
-    private BufferedImage image;
+    private Image image;
     private Hashtable<Point2D, Color> points;
 
-    public CourbeDeImage(BufferedImage image) {
+    public CourbeDeImage(Image image) {
         super();
         this.image = image;
         this.points = new Hashtable<Point2D, Color>();
@@ -66,11 +68,11 @@ public class CourbeDeImage {
     public void classerPoints() {
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(ECBufferedImage image) {
+    public void setImage(ECImage image) {
         this.image = image;
     }
 

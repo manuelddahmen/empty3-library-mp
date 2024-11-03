@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -47,7 +48,7 @@ public class ExtremaProcess extends ProcessFile {
             return false;
 
         try {
-            pix = new PixM(ImageIO.read(in));
+            pix = new PixM(new ECImage(ImageIO.read(in)));
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

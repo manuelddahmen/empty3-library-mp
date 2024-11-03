@@ -26,7 +26,9 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -47,7 +49,7 @@ public class HoughTransformCircle extends ProcessFile {
     public boolean process(File in, File out) {
         try {
 
-            BufferedImage grey = toGrayScale(in);
+            Image grey = toGrayScale(in);
 
             HoughTransformOutput.imgWidth = imgWidth = grey.getWidth();
             HoughTransformOutput.imgHeight = imgHeight = grey.getHeight();
@@ -110,9 +112,9 @@ public class HoughTransformCircle extends ProcessFile {
     }
 
     //converts given file into a grayscale image
-    private BufferedImage toGrayScale(File f) throws Exception {
-        BufferedImage img = ImageIO.read(f);
-        BufferedImage grey = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+    private Image toGrayScale(File f) throws Exception {
+        Image img = new one.empty3.libs.Image(ImageIO.read(f));
+        Image grey = new Image(img.getWidth(), img.getHeight(), Image.TYPE_BYTE_GRAY);
         grey.getGraphics().drawImage(img, 0, 0, null);
 
         return grey;

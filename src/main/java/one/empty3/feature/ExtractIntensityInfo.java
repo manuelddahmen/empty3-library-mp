@@ -22,12 +22,15 @@
 
 package one.empty3.feature;
 
+import one.empty3.library.ECImage;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -49,9 +52,9 @@ public class ExtractIntensityInfo extends
 
     @Override
     public boolean process(File in, File out) {
-        BufferedImage img = null;
+        Image img = null;
         try {
-            img = ImageIO.read(in);
+            img = new ECImage(ImageIO.read(in));
         } catch (Exception rx) {
         }
         PixM pix = PixM.getPixM(img, -1);
@@ -59,7 +62,7 @@ public class ExtractIntensityInfo extends
 
         PixM pixMOriginal = pix;
 
-        final BufferedImage[] img3 = new BufferedImage[]{pix.getImage()};
+        final Image[] img3 = new Image[]{pix.getImage()};
 
 
         GradientFilter gradientMask = new GradientFilter(pixMOriginal.columns, pixMOriginal.lines);

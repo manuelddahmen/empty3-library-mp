@@ -65,12 +65,12 @@ public class ZBufferGL implements ZBuffer {
     }
 
     @Override
-    public ECBufferedImage image() {
+    public ECImage image() {
         return null;
     }
 
     @Override
-    public ECBufferedImage imageInvX() {
+    public ECImage imageInvX() {
         return null;
     }
 

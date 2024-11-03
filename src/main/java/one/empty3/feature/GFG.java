@@ -1,4 +1,4 @@
-///*
+/// *
 // *
 // *  * Copyright (c) 2024. Manuel Daniel Dahmen
 // *  *
@@ -32,7 +32,7 @@
 //import one.empty3.library.core.nurbs.Fct1D_1D;
 //
 //import java.awt.*;
-//import java.awt.image.BufferedImage;
+//import one.empty3.libs.Image;
 //import java.io.File;
 //import java.io.IOException;
 //
@@ -171,7 +171,7 @@
 //
 //    @Override
 //    public boolean process(File in, File out) {
-//        BufferedImage read = ImageIO.read(in);
+//        Image read = new one.empty3.libs.Image(ImageIO.read(in));
 //        if (read == null)
 //            return false;
 //        PixM pix = new PixM(read);

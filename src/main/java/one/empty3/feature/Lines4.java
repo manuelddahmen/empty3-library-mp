@@ -30,7 +30,9 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,7 +100,7 @@ public class Lines4 extends ProcessFile {
             if (!in.getName().endsWith("jpg"))
                 return false;
             pixM = null;
-            pixM = new PixM(ImageIO.read(in));
+            pixM = new PixM(new one.empty3.libs.Image(ImageIO.read(in)));
             ArrayList<List<Point3D>> lists = new ArrayList<>();
             lists.add(new ArrayList<>());
             PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -356,7 +358,7 @@ public class Lines4 extends ProcessFile {
 
             });
 
-            BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
+            Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
             Graphics g = bLines.getGraphics();
             for (LineSegment line : lines) {
                 g.setColor(Color.RED);

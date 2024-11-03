@@ -27,7 +27,9 @@ import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class Vectorize extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             lists = new ArrayList<ArrayList<Point3D>>();
-            BufferedImage read = ImageIO.read(in);
+            Image read = new one.empty3.libs.Image(ImageIO.read(in));
             if (read == null)
                 return false;
             pixM = new PixM(read);

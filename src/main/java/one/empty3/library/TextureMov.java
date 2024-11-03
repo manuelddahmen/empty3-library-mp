@@ -25,12 +25,14 @@ package one.empty3.library;
 //import com.xuggle.mediatool.IMediaReader;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 
 
 public class TextureMov extends ITexture {
-    BufferedImage image;
+    Image image;
     VideoDecoder defs;
     private File file = null;
     private int transparent = Color.BLACK.getRGB();
@@ -71,7 +73,7 @@ public class TextureMov extends ITexture {
                     System.err.println("Plus de frames");
                 }
 */
-        if(image==null)
+        if (image == null)
             return transparent;
 
         int x = (int) (u * image.getWidth());
@@ -124,7 +126,7 @@ public class TextureMov extends ITexture {
         this.transparent = black.getRGB();
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 }

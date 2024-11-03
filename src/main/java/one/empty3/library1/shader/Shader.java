@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 /***
  * vn(int n)
@@ -453,7 +453,7 @@ public class Shader {
     public void runCode() {
     }
 
-    public BufferedImage getOutput() {
+    public Image getOutput() {
         return null;
     }
 }

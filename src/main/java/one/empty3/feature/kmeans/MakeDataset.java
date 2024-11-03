@@ -25,7 +25,9 @@ package one.empty3.feature.kmeans;
 import one.empty3.feature.PixM;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,7 +40,7 @@ public class MakeDataset {
     public MakeDataset(File image,
                        File outputCsv, int res) {
         try {
-            BufferedImage img = ImageIO.read(image);
+            Image img = new one.empty3.libs.Image(ImageIO.read(image));
             PixM pix;
             if (res > 0)
 

@@ -26,7 +26,7 @@ import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -187,16 +187,16 @@ public class Histogram2 extends ProcessFile {
         File directory = new File(out.getParent());
         PixM imageCoutours = new PixM(ImageIO.read(in));
         this.m = imageCoutours;
-        java.awt.image.BufferedImage file = m.getImage();
+        one.empty3.libs.Image file = m.getImage();
 
         int levels = 10;
         double min = 0.0;
         double radiusIncr = 2;
 
 
-        java.awt.image.BufferedImage img = file;
-        BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-        BufferedImage img3 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+        one.empty3.libs.Image img = file;
+        Image img2 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+        Image img3 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
 
 
         List<Circle> pointsOfInterest = getPointsOfInterest(4.0);
@@ -240,7 +240,7 @@ public class Histogram2 extends ProcessFile {
                 File fileToWrite3 = new File(directory.getAbsolutePath()
                         + "level"+ "_NEW_RGB.jpg");
                 //fileToWrite.mkdirs();*/
-        ImageIO.write(new PixM(img3.bufferedImage).normalize(0., 1.).getImage(), "JPEG", out);
+        ImageIO.write(new PixM(img3.Image).normalize(0., 1.).getImage(), "JPEG", out);
                 /*
                 ImageIO.write(img, "JPEG", fileToWrite);
                 ImageIO.write(img, "JPEG", fileToWrite2);

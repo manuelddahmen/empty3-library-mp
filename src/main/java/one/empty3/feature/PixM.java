@@ -30,7 +30,8 @@ import one.empty3.library.core.nurbs.ParametricCurve;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 public class PixM extends M {
     public static final int COMP_RED = 0;
@@ -44,7 +45,7 @@ public class PixM extends M {
         super(l, c);
     }
 
-    public PixM(@NotNull BufferedImage image) {
+    public PixM(@NotNull Image image) {
         super(image.getWidth(), image.getHeight());
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
@@ -72,7 +73,7 @@ public class PixM extends M {
         return new Point3D(dr, dg, db);
     }
 
-    public static PixM getPixM(BufferedImage image, double maxRes) {
+    public static PixM getPixM(Image image, double maxRes) {
         double f = 1.0;
         if (maxRes < image.getWidth() && maxRes < image.getHeight())
             f = 1.0 / Math.max(image.getWidth(), image.getHeight()) * maxRes;
@@ -654,8 +655,8 @@ public class PixM extends M {
         return diff / (this.columns * this.lines * other.columns * other.lines);
     }
 
-    public BufferedImage getBitmap() {
-        BufferedImage b = new BufferedImage(columns, lines, BufferedImage.TYPE_INT_RGB);
+    public Image getBitmap() {
+        Image b = new Image(columns, lines, Image.TYPE_INT_RGB);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 b.setRGB(i, j, getInt(i, j));
@@ -664,9 +665,9 @@ public class PixM extends M {
         return b;
     }
 
-    public BufferedImage getImage() {
-        BufferedImage image = new BufferedImage(columns,
-                lines, BufferedImage.TYPE_INT_RGB);
+    public Image getImage() {
+        Image image = new Image(columns,
+                lines, Image.TYPE_INT_RGB);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 //double[] values = getValues(i, j);

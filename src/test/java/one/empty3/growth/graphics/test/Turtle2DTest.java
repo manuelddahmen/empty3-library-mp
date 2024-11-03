@@ -38,7 +38,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.IOException;
 
 @RunWith(JUnit4.class)
@@ -47,7 +49,7 @@ public class Turtle2DTest extends TestCase {
 
     @Test
     public void testLineRotate() {
-        BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
+        Image bufferedImage = new Image(1024, 768, Image.TYPE_INT_RGB);
         Turtle2D turtle2D = new Turtle2D(bufferedImage);
         Point2D o = new Point2D(turtle2D.getPosition().getX(),
                 turtle2D.getPosition().getY());

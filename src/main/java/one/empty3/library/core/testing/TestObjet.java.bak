@@ -56,7 +56,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
@@ -113,7 +113,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int resx = 1920;
     private int resy = 1080;
     private File dir = null;
-    private ECBufferedImage ri;
+    private ECImage ri;
     private String filename = "frame";
     private String fileExtension = "JPG";
     private boolean publish = true;
@@ -132,8 +132,8 @@ public abstract class TestObjet implements Test, Runnable {
     private String sousdossier;
     private boolean D3 = false;
     private ImageContainer biic;
-    private ECBufferedImage riG;
-    private ECBufferedImage riD;
+    private ECImage riG;
+    private ECImage riD;
     private File fileG;
     private File fileD;
     private boolean pause = false;
@@ -317,7 +317,7 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
-        Graphics g = ((BufferedImage) ri).getGraphics();
+        Graphics g = ((Image) ri).getGraphics();
         g.setColor(Color.black);
         g.drawString(description, 0, 1100);
 
@@ -691,9 +691,9 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
-            ECBufferedImage eci = new ECBufferedImage(bi);
+            ECImage eci = new ECImage(bi);
             biic.setImage(eci);
 
         str.setMessage("ERROR EXCEPTION");
@@ -716,9 +716,9 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
-            ECBufferedImage eci = new ECBufferedImage(bi);
+            ECImage eci = new ECImage(bi);
             biic.setImage(eci);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -1104,10 +1104,10 @@ public abstract class TestObjet implements Test, Runnable {
         }
     }
 
-    public void writeOnPictureAfterZ(BufferedImage bi) {
+    public void writeOnPictureAfterZ(Image bi) {
     }
 
-    public void writeOnPictureBeforeZ(BufferedImage bi) {
+    public void writeOnPictureBeforeZ(Image bi) {
     }
 
     public String getFolder() {

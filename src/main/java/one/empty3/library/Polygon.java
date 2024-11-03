@@ -25,7 +25,7 @@
  */
 package one.empty3.library;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 import one.empty3.feature.PixM;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
@@ -224,7 +224,7 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
         return !(foundLeft && !foundRight) || (foundLeft && foundRight) && !(!foundLeft && !foundRight);
     }
 
-    public PixM fillPolygon2D(Polygon faceSurface, Canvas canvas, BufferedImage bitmap, int transparent, double prof, Point position, double scale) {
+    public PixM fillPolygon2D(Polygon faceSurface, Canvas canvas, Image bitmap, int transparent, double prof, Point position, double scale) {
         boolean isDrawingOnImage = true;
         int pixels = 0;
 

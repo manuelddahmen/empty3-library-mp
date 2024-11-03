@@ -50,7 +50,7 @@ public class ReyesLikeList {
         return true;
     }
 
-    public void render(ECBufferedImage image) {
+    public void render(ECImage image) {
         for(int i=0; i<idx; i++) {
             image.setRGB((int) listsPolygons[idx][12],
                     (int) listsPolygons[idx][13],

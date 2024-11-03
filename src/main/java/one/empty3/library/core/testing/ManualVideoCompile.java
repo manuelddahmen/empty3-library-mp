@@ -25,7 +25,7 @@ package one.empty3.library.core.testing;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 import java.io.File;
 
 import org.slf4j.Logger;
@@ -42,11 +42,11 @@ public class ManualVideoCompile {
 
 
 
-	private static BufferedImage convert(BufferedImage value, int type) {
+	private static Image convert(Image value, int type) {
 		if (value.getType() == type)
 			return value;
 		
-		BufferedImage result = new BufferedImage(value.getWidth(), value.getHeight(),
+		Image result = new Image(value.getWidth(), value.getHeight(),
 				type);
 		
 		result.getGraphics().drawImage(value, 0, 0, null);

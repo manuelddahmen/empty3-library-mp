@@ -42,62 +42,67 @@ import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+
 public class DecodeJcodec extends VideoDecoder {
 
-public DecodeJcodec(File f, TextureMov tex) {
-     super(f,tex);
-}
+    public DecodeJcodec(File f, TextureMov tex) {
+        super(f, tex);
+    }
+
     double startSec = 0.0;
     long frameCount = MAXSIZE;
-public void run() {
 
-    int maxFrames = (int)MAXSIZE;
-    FileChannelWrapper in = null;
-    try {
-        AWTFrameGrab fg = null;
-            in = NIOUtils.readableChannel(file);
+    public void run() {
+
+        int maxFrames = (int) MAXSIZE;
+        FileChannelWrapper in = null;
         try {
-            fg = AWTFrameGrab.createAWTFrameGrab(in);
-        } catch (IOException | JCodecException e) {
-            e.printStackTrace();
-        }
-        int i=0;
-        int j=-1;
-        BufferedImage frame = null;
-        while ( frame==null || i!=j) {
-            j = i;
-            if(imgBuf.size()<MAXSIZE) {
-                try {
-                    assert fg != null;
-                    frame = fg.getFrame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if(frame!=null) {
-                    imgBuf.add(new ECBufferedImage(frame));
-                }
-                i++;
-            } else {
-                try {
-                    Thread.sleep(30);
-                    j = -1;
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
+            AWTFrameGrab fg = null;
+            in = NIOUtils.readableChannel(file);
+            try {
+                fg = AWTFrameGrab.createAWTFrameGrab(in);
+            } catch (IOException | JCodecException e) {
+                e.printStackTrace();
             }
+            int i = 0;
+            int j = -1;
+            Image frame = null;
+            while (frame == null || i != j) {
+                j = i;
+                if (imgBuf.size() < MAXSIZE) {
+                    try {
+                        assert fg != null;
+                        frame = new one.empty3.libs.Image(fg.getFrame());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (frame != null) {
+                        imgBuf.add(new ECImage(frame));
+                    }
+                    i++;
+                } else {
+                    try {
+                        Thread.sleep(30);
+                        j = -1;
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
 
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            NIOUtils.closeQuietly(in);
         }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    } finally {
-        NIOUtils.closeQuietly(in);
     }
-}
- 
+
 }

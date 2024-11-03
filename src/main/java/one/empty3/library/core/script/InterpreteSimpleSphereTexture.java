@@ -136,7 +136,7 @@ public class InterpreteSimpleSphereTexture implements Interprete {
             this.pos = pos;
             SimpleSphereAvecTexture s = null;
             try {
-                s = new SimpleSphereAvecTexture(c, r, Color.white, ImageIO.read(f));
+                s = new SimpleSphereAvecTexture(c, r, Color.white, new one.empty3.libs.Image( ImageIO.read(f)));
                 s.fichier(f.getName());
             } catch (IOException ex) {
                 Logger.getLogger(InterpreteSimpleSphereTexture.class.getName()).log(Level.SEVERE, null, ex);

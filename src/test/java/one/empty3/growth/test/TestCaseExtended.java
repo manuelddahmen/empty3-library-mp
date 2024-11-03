@@ -27,7 +27,9 @@ import one.empty3.library.Point3D;
 import one.empty3.library.ZBuffer;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -77,13 +79,12 @@ public class TestCaseExtended extends TestCase {
         properties.put(getClass().getCanonicalName(), ((Integer) getSerId()).toString());
         try {
             properties.store(new FileOutputStream(file), "Saved again");
-          } catch (Exception ex) {
-          ex.printStackTrace();
-    }    
-    
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
 
-            return getSerId();
+        return getSerId();
     }
 
     private void createNewId(Class myClass) {
@@ -122,7 +123,7 @@ public class TestCaseExtended extends TestCase {
         }
     }
 
-    protected void writeImage(BufferedImage image) {
+    protected void writeImage(Image image) {
         try {
             File imageFile = getUniqueFilenameForProduction("testResults", getClass().getCanonicalName() + "___" + getClass().getEnclosingMethod(), "jpg");
             ImageIO.write(image, "jpg", imageFile);

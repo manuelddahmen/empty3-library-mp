@@ -22,9 +22,11 @@
 
 package one.empty3.library.utils;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -34,25 +36,4 @@ import javax.imageio.ImageIO;
  */
 public class Developer {
 
-    public static BufferedImage getImageFromClasspath(Object clazz, String path) {
-        try {
-            return ImageIO.read(clazz.getClass()
-                    .getResourceAsStream(
-                            path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static BufferedImage getImageFromOuter(String[] path, String name) {
-        for (int i = 0; i < path.length; i++) {
-            try {
-                return ImageIO.read(new File(path + File.separator + name));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 }

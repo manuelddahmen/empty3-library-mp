@@ -28,7 +28,8 @@ import javax.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 public class TrueHarrisProcess extends ProcessFile {
 
@@ -41,10 +42,10 @@ public class TrueHarrisProcess extends ProcessFile {
         File file = in;
 
         PixM pix = null;
-        BufferedImage img = null;
+        Image img = null;
 
         try {
-            img = ImageIO.read(file);
+            img = new one.empty3.libs.Image(ImageIO.read(file));
             pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {

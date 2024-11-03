@@ -24,7 +24,9 @@ package atlasgen;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +39,7 @@ public class SimpleMap {
         );
 
         Color color = Color.WHITE;
-        Pixeler pixeler = new Pixeler(new BufferedImage(1800, 1600, BufferedImage.TYPE_INT_RGB));
+        Pixeler pixeler = new Pixeler(new Image(1800, 1600, Image.TYPE_INT_RGB));
         CsvReader csvReader = new CsvReader(new File("allCountries/allCountries.txt"),
                 "" + '\t', "" + '\n', false);
         csvReader.setAction(new DrawCsvAction(pixeler, color));
@@ -46,6 +48,7 @@ public class SimpleMap {
             File file = Seriald.newOutputFile("SimpleMap");
             file.mkdirs();
             ImageIO.write(pixeler.getImage(), "jpg", file);
-        }catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 }

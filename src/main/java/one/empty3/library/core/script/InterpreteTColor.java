@@ -27,7 +27,7 @@
  */
 package one.empty3.library.core.script;
 
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.ITexture;
 import one.empty3.library.TextureCol;
 import one.empty3.library.TextureImg;
@@ -89,7 +89,7 @@ public class InterpreteTColor implements Interprete {
                 inf.setRepertoire(repertoire);
                 File f = (File) inf.interprete(text, pos);
 
-                ECBufferedImage bi = new ECBufferedImage(ImageIO.read(f));
+                ECImage bi = new ECImage(ImageIO.read(f));
 
                 tc = new TextureImg(bi);
 
@@ -97,7 +97,7 @@ public class InterpreteTColor implements Interprete {
                 /*
                  InterpretePGM iPGM = new InterpretePGM();
 				
-                 ECBufferedImage ec = (ECBufferedImage) iPGM.interprete(text, pos);
+                 ECImage ec = (ECImage) iPGM.interprete(text, pos);
 				
                  tc = new TextureCol(ec);
 				

@@ -40,7 +40,7 @@ public class MagnitudeProcess extends ProcessFile {
         File file = in;
         PixM pix;
         try {
-            pix = PixM.getPixM(ImageIO.read(file), maxRes);
+            pix = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(file)), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
             PixM[][] imagesMatrix = gf.filter(

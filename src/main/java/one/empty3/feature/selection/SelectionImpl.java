@@ -22,15 +22,12 @@
 
 package one.empty3.feature.selection;
 
-import one.empty3.feature.MultiLinkList;
 import one.empty3.feature.PixM;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class SelectionImpl extends Selection {

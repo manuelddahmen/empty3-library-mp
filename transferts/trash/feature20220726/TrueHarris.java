@@ -22,7 +22,7 @@
 
 package one.empty3.feature20220726;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 public class TrueHarris extends FilterPixM {
 

@@ -22,7 +22,8 @@
 
 package one.empty3.library;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -35,10 +36,10 @@ import javax.sound.sampled.AudioFormat;
 //public class DecodeVelvet extends VideoDecoder {
 //
 /***
-* init, start, run, and block on maxsize reached
-* @param file video to draw on surface
-* @param refTextureMov texture to apply
-*/
+ * init, start, run, and block on maxsize reached
+ * @param file video to draw on surface
+ * @param refTextureMov texture to apply
+ */
 /*
     public DecodeVelvet(File file, TextureMov refTextureMov) {
         super(file, refTextureMov);
@@ -50,8 +51,8 @@ import javax.sound.sampled.AudioFormat;
 	    IVideoDecoderStream videoStream = demuxer.videoStream(0);
 	    IVideoFrame videoFrame;
 	    while ((videoFrame = videoStream.nextFrame()) != null) {
-	   	    BufferedImage image = videoFrame.image();
-	   	    imgBuf. add(new ECBufferedImage(image) );
+	   	    Image image = videoFrame.image();
+	   	    imgBuf. add(new ECImage(image) );
                     while(imgBuf.size()>4*/
 /*MAX_SIZE*//*
 )

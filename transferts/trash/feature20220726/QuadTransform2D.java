@@ -25,10 +25,10 @@ package one.empty3.feature20220726;
 import one.empty3.library.Point3D;
 
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 public class QuadTransform2D {
-    private javaAnd.awt.image.BufferedImage i1, i2;
+    private javaAnd.awt.image.Image i1, i2;
     private Point3D[] p1;
     private Point3D[] p2;
 
@@ -58,7 +58,7 @@ public class QuadTransform2D {
         }
     }
 
-    public QuadTransform2D(BufferedImage i1, javaAnd.awt.image.BufferedImage i2, Point3D[] p1, Point3D[] p2) {
+    public QuadTransform2D(Image i1, javaAnd.awt.image.Image i2, Point3D[] p1, Point3D[] p2) {
         this.i1 = i1;
         this.i2 = i2;
         this.p1 = p1;

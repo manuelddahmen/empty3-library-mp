@@ -52,7 +52,7 @@ public class SimpleAnimationSuiteDiapo extends Animation {
 
         private URL loadMediaFromUrl;
         private File loadMediaFromFIle;
-        private BufferedImage image;
+        private Image image;
         private Movie movie;
     }
 -**/

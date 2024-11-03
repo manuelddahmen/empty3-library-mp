@@ -45,7 +45,7 @@ public class TourDeRevolution extends Representable {
 
     public TourDeRevolution(File image, Axe axe) {
         try {
-            this.courbe = new CourbeDeImage(ImageIO.read(image));
+            this.courbe = new CourbeDeImage(new one.empty3.libs.Image(ImageIO.read(image)));
             courbe.anayliserImage();
 
         } catch (Exception ex) {}

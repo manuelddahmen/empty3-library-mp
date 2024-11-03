@@ -307,7 +307,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
             }
 
 
-            BufferedImage bLines = new javaAnd.awt.image.BufferedImage(o.getColumns(), o.getLines(), javaAnd.awt.image.BufferedImage.TYPE_INT_RGB);
+            Image bLines = new javaAnd.awt.image.Image(o.getColumns(), o.getLines(), javaAnd.awt.image.Image.TYPE_INT_RGB);
             for (LineSegment line : lines) {
                 Color ab = Colors.random();
                 if (line.getLength() >= 2) {

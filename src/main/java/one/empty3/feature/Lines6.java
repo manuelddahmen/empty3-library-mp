@@ -30,7 +30,9 @@ import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,7 +99,7 @@ public class Lines6 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             pixM = null;
-            pixM = new PixM(ImageIO.read(in));
+            pixM = new PixM(new one.empty3.libs.Image(ImageIO.read(in)));
             ArrayList<List<Point3D>> lists = new ArrayList<>();
             PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -191,7 +193,7 @@ public class Lines6 extends ProcessFile {
 
             }
             // d'après pcount x, y et curve xy supprimer les courbes en trop.
-            BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
+            Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
             Graphics g = bLines.getGraphics();
 
             g.setColor(Color.RED);

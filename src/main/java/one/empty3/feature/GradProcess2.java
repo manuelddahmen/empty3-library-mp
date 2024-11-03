@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -32,7 +33,7 @@ public class GradProcess2 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            PixM pixM = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM pixM = PixM.getPixM(new ECImage(ImageIO.read(in)), maxRes);
             PixM pixMout = new PixM(pixM.getColumns(), pixM.getLines());
 
             for(int x=0; x<pixM.getColumns(); x++)

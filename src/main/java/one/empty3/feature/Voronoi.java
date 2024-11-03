@@ -26,7 +26,9 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,7 @@ public class Voronoi extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             List<Point3D> points = new ArrayList<>();
-            BufferedImage read = ImageIO.read(in);
+            Image read = new one.empty3.libs.Image(ImageIO.read(in));
             PixM pixM = PixM.getPixM(read, maxRes);
             PixM pixMOut = pixM.copy();
             for (int i = 0; i < pixM.getColumns(); i++) {

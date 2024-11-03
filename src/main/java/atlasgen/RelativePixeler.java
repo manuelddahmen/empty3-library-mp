@@ -23,19 +23,20 @@
 package atlasgen;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 /*__
  * Created by manuel on 19-06-18.
  */
 public class RelativePixeler {
     private final SetMinMax.MyDim minMax;
-    private BufferedImage image;
+    private Image image;
     private int width;
     private int height;
 
 
-    public RelativePixeler(BufferedImage image, SetMinMax.MyDim minMax) {
+    public RelativePixeler(Image image, SetMinMax.MyDim minMax) {
         this.image = image;
         width = image.getWidth();
         height = image.getHeight();
@@ -52,11 +53,11 @@ public class RelativePixeler {
         return new Point((int) (ratioX * width), (int) (ratioY * height));
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 }

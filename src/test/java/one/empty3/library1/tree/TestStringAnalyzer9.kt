@@ -23,7 +23,6 @@
 package one.empty3.library1.tree;
 
 import one.empty3.library1.tree.StringAnalyzer3.Token
-import one.empty3.library1.tree.StringAnalyzer3.TokenCloseParenthesized
 import one.empty3.library1.tree.StringAnalyzerJava2.TokenExpression2
 import org.junit.Assert
 import org.junit.Assert.fail

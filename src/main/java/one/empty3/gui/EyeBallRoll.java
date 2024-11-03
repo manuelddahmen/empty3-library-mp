@@ -114,7 +114,7 @@ public class EyeBallRoll extends JPanel {
 
                     z.draw();
 
-                    ECBufferedImage image = z.image2();
+                    ECImage image = z.image2();
 
                     graphics.drawImage(image, RES, 0, 800, 800, null);
 

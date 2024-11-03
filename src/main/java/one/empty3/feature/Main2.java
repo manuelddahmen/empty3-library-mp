@@ -24,7 +24,9 @@ package one.empty3.feature;
 
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
@@ -49,7 +51,7 @@ public class Main2 {
         }
     }
 */
-    public static File work(File dir, BufferedImage imageToWrite, String outputFilename) throws IOException {
+    public static File work(File dir, Image imageToWrite, String outputFilename) throws IOException {
         File dir1 = new File(dir.getAbsolutePath() + "/" + outputFilename.substring(0,
                 outputFilename.lastIndexOf("/")));
         File file = new File(dir.getAbsolutePath() + "/" + outputFilename);
@@ -91,7 +93,7 @@ public class Main2 {
                         Logger.getAnonymousLogger().log(Level.INFO, "Directory created" + directory.getAbsolutePath());
                     Logger.getAnonymousLogger().log(Level.INFO, "format name image " + ext + " found");
 
-                    BufferedImage image = ImageIO.read(new File("resources/" + s));
+                    Image image = new one.empty3.libs.Image(ImageIO.read(new File("resources/" + s)));
 
                     GradientFilter gradientMask = new GradientFilter(image.getWidth(), image.getHeight());
                     PixM pixMOriginal = PixM.getPixM(image, 300);
@@ -129,7 +131,7 @@ public class Main2 {
                             LocalExtrema localExtrema = new LocalExtrema(smoothedGradM3.columns, smoothedGradM3.lines, 3, 2);
                             PixM[][] filter2 = localExtrema.filter(smoothedGradM3).normalize(0.0, 1.0);
                             PixM filter1 = filter2[0][0];
-                            BufferedImage image1 = filter1.getImage();
+                            Image image1 = filter1.getImage();
                             Logger.getAnonymousLogger().log(Level.INFO, "Original read image");
                             work(directory, imagesMatrix[0][0].getImage(), s + "/1/sigma" + sigma + "/size" + size + "gradient.jpg");
                             Logger.getAnonymousLogger().log(Level.INFO, "oriented grad extremum search (max==1.0) ");
@@ -168,7 +170,7 @@ public class Main2 {
                             String sub = s + "/4/OrientedGradExtremum_2_" +
                                     +angle + ".jpg";
                             File image = work(directory, pixM.getImage(), sub);
-                            BufferedImage image1 = pixM.getImage();
+                            Image image1 = pixM.getImage();
                             Histogram.testCircleSelect(image1, new File("resources"), 10, 0.3, pixM.columns / 10.0);
                             //i[0]++;
                             System.gc();

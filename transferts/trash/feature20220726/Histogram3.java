@@ -26,7 +26,7 @@ import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -162,13 +162,13 @@ public class Histogram3 extends ProcessFile {
         init();
 
         PixM m = new PixM(ImageIO.read(in));
-        java.awt.image.BufferedImage image = m.getImage();
+        one.empty3.libs.Image image = m.getImage();
 
 
         final double radiusIncr = 1;
 
 
-        BufferedImage img2 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Image img2 = new Image(image.getWidth(), image.getHeight(), Image.TYPE_INT_RGB);
         List<Circle> pointsOfInterest;
         pointsOfInterest = getPointsOfInterest(m, radiusIncr, 0.5);
         // grands;cercles = grandes iles les separer

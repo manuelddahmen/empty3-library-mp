@@ -22,6 +22,7 @@
 
 package one.empty3.feature;
 
+import one.empty3.library.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
@@ -63,7 +64,7 @@ public class FeatureDescriptor extends PixM {
 
         for (File file : set) {
             try {
-                PixM pm = new PixM(ImageIO.read(file));
+                PixM pm = new PixM(new ECImage(ImageIO.read(file)));
                 for (FeatureDescriptor f : fd) {
                     f.setPixM(pm);
                     for (int i = 0; i < poi.size(); i++) {

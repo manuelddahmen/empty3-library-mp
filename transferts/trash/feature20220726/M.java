@@ -25,7 +25,8 @@ package one.empty3.feature20220726;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.PrimitiveIterator;
 import java.util.Random;
 

@@ -31,7 +31,9 @@ import one.empty3.library.Scene;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -151,10 +153,10 @@ public class HighlightFeatures extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            BufferedImage read = ImageIO.read(in);
+            Image read = new one.empty3.libs.Image(ImageIO.read(in));
             PixM pixM = PixM.getPixM(read, maxRes);
             File stackItem = getStackItem(1);
-            PixM original = new PixM(ImageIO.read(stackItem));
+            PixM original = new PixM(new one.empty3.libs.Image(ImageIO.read(stackItem)));
             int cadre = (int) Math.min((pixM.getColumns() + pixM.getLines()) / 2., 10.);
             for (int i = 0; i < pixM.getColumns(); i++)
                 for (int j = 0; j < pixM.getLines(); j++) {

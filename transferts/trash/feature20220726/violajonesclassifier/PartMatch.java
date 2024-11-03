@@ -30,7 +30,8 @@ import one.empty3.library.Point2D;
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class PartMatch extends ProcessFile {
 
         PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
 
-        BufferedImage outImg = pix.getImage();
+        Image outImg = pix.getImage();
 
         int[][] largeurs = new int[pix.getColumns()][pix.getLines()];
         double lastMatchScore = 0;

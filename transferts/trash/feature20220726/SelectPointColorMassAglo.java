@@ -23,13 +23,14 @@
 package one.empty3.feature20220726;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 public class SelectPointColorMassAglo extends FilterPixM {
     private double[] tmpColor = new double[3];
     private double[] rgb;
 
-    public SelectPointColorMassAglo(java.awt.image.BufferedImage image) {
+    public SelectPointColorMassAglo(one.empty3.libs.Image image) {
         super(image);
     }
 

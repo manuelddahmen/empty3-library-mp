@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
@@ -103,7 +104,7 @@ public class Histogram0 extends ProcessFile {
     public boolean process(File in, File out) {
         PixM inP;
         try {
-            inP = PixM.getPixM(ImageIO.read(in), maxRes);
+            inP = PixM.getPixM(new ECImage(ImageIO.read(in)), maxRes);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

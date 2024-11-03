@@ -34,15 +34,15 @@ import one.empty3.library.core.nurbs.ThickSurface;
 import one.empty3.pointset.PCont;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /***
  * * Classe de rendu graphique
@@ -161,8 +161,8 @@ class Data {
         return null;
     }
 
-    public ECBufferedImage getBufferedImage() {
-        BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_RGB);
+    public ECImage getImage() {
+        Image bi = new Image(la, ha, Image.TYPE_INT_RGB);
 
         int[] c = new int[4];
         for (int j = 0; j < ha; j++)
@@ -172,10 +172,10 @@ class Data {
                             dataP[9][j][i], dataP[10][j][i]);
                     bi.setRGB(i, j, i, j, c, 0, la);
                 } else
-                    Logger.getAnonymousLogger().log(Level.INFO, "error texture null Data.getBufferedImage");
+                    Logger.getAnonymousLogger().log(Level.INFO, "error texture null Data.getImage");
 
 
-        return new ECBufferedImage(bi);
+        return new ECImage(bi);
 
     }
 
@@ -202,7 +202,7 @@ public class ZBufferImpl8 extends ZBufferImpl {
     protected boolean experimental = true;
     protected double angleX = Math.PI / 3;
     protected double angleY = Math.PI / 3;
-    protected ECBufferedImage bi;
+    protected ECImage bi;
     protected ImageMap ime;
     public static Point3D INFINI = new Point3D(0d, 0d, INFINI_PROF);
     private Camera cameraC = new Camera();
@@ -287,7 +287,7 @@ public class ZBufferImpl8 extends ZBufferImpl {
      *
      * @return image null
      */
-    public BufferedImage finishDraw() {
+    public Image finishDraw() {
         return null;
 
     }
@@ -661,9 +661,9 @@ public class ZBufferImpl8 extends ZBufferImpl {
         ha = height;
     }
 
-    public ECBufferedImage image() {
+    public ECImage image() {
                /*
-        ECBufferedImage bi2 = new ECBufferedImage(la, ha, ECBufferedImage.TYPE_INT_RGB);
+        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.ime.getElementCouleur(i, j);
@@ -678,8 +678,8 @@ public class ZBufferImpl8 extends ZBufferImpl {
 
     }
 
-    public ECBufferedImage image2() {
-        return data1.getBufferedImage();
+    public ECImage image2() {
+        return data1.getImage();
 
 
     }
@@ -883,7 +883,7 @@ public class ZBufferImpl8 extends ZBufferImpl {
 
 
     public boolean add(Double px, Double py, Double pz, Double
-            tx, Double ty, Double tz, Double nx, Double ny, Double nz,
+                               tx, Double ty, Double tz, Double nx, Double ny, Double nz,
                        Double u, Double v, Double w, Representable r) {
         //  rotate(p);
         // ime.testDeep(new Point3D(px, py, pz), new Point3D(nx, ny, nz), r.texture().getColorAt(u, v));

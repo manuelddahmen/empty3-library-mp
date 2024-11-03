@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 import org.apache.commons.net.ftp.FTPFile;
 
 import javax.imageio.ImageIO;
@@ -103,7 +104,7 @@ public class ProcessBean extends Thread {
 
     public void setImage(File fo) {
         try {
-            listImage.add(new PixM(ImageIO.read(fo)));
+            listImage.add(new PixM(new ECImage(ImageIO.read(fo))));
         } catch (Exception ex) {
         }
 

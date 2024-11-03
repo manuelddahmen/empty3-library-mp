@@ -47,7 +47,7 @@ public class Transform1 extends ProcessFile {
         File file = in;
         PixM pixMOriginal = null;
         try {
-            pixMOriginal = PixM.getPixM(ImageIO.read(file), 500.0);
+            pixMOriginal = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(file)), 500.0);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

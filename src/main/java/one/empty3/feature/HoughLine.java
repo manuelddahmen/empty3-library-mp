@@ -22,7 +22,7 @@
 
 package one.empty3.feature;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 /*
  * Represents a linear line as detected by the hough transform.
@@ -54,7 +54,7 @@ public class HoughLine implements Comparable {
     /*
      * Draws the line on the image of your choice with the RGB colour of your choice.
      */
-    public void draw(BufferedImage image, int color) {
+    public void draw(Image image, int color) {
 
         int height = image.getHeight();
         int width = image.getWidth();

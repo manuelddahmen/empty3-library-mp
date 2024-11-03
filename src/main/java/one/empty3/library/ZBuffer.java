@@ -86,9 +86,9 @@ public interface ZBuffer {
      *
      * @return image
      */
-    ECBufferedImage image();
+    ECImage image();
 
-    ECBufferedImage imageInvX();
+    ECImage imageInvX();
 
     /*__
      * Verrou

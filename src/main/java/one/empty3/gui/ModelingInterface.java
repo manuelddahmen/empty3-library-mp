@@ -39,7 +39,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -57,7 +59,7 @@ public class ModelingInterface extends JFrame {
     private final int RES_X = 2000;
     private one.empty3.gui.Tubulaire4map tubulaire4;
     private Camera camera;
-    private BufferedImage image;
+    private Image image;
     private Color paintColor = Color.WHITE;
     private int drawUtil = 2;
     private boolean runningViewDisplay = false;
@@ -116,7 +118,7 @@ public class ModelingInterface extends JFrame {
 
     public void init() {
 
-        image = new BufferedImage(RES_X, RES_Y, BufferedImage.TYPE_INT_RGB);
+        image = new Image(RES_X, RES_Y, Image.TYPE_INT_RGB);
         tubulaire4 = new Tubulaire4map();
         tubulaire4.declareProperties();
         tubulaire4.getSoulCurve().setElem(new CourbeParametriquePolynomialeBezier());
@@ -127,7 +129,7 @@ public class ModelingInterface extends JFrame {
         tubulaire4.getDiameterFunction().setElem(new FctXY());
         tubulaire4.getDiameterFunction().getElem().setFormulaX("20.0");
         try {
-            tubulaire4.texture(new TextureImg(ECBufferedImage.getFromFile(new File("sauvegardes/WIN_20210622_09_55_55_Pro.jpg"))));
+            tubulaire4.texture(new TextureImg(ECImage.getFromFile(new File("sauvegardes/WIN_20210622_09_55_55_Pro.jpg"))));
         } catch (IOException e) {
             e.printStackTrace();
             tubulaire4.texture(new ColorTexture(Color.WHITE));
@@ -156,16 +158,16 @@ public class ModelingInterface extends JFrame {
                 zBuffer.texture(new ColorTexture(Color.WHITE));
                 zBuffer.backgroundTexture(new ColorTexture(Color.WHITE));
                 scene = new Scene();
-                tubulaire4.updateBufferedImage(image);
+                tubulaire4.updateImage(image);
                 scene.add(tubulaire4);
                 scene.cameraActive(camera);
                 zBuffer.scene(scene);
                 zBuffer.camera(camera);
                 zBuffer.idzpp();
                 zBuffer.draw();
-                ECBufferedImage ecBufferedImage = zBuffer.image2();
+                ECImage ecImage = zBuffer.image2();
                 Graphics graphics = panel3.getGraphics();
-                graphics.drawImage(ecBufferedImage, 0, 0, panel3.getWidth(), panel3.getHeight(), null);
+                graphics.drawImage(ecImage, 0, 0, panel3.getWidth(), panel3.getHeight(), null);
                 graphics = panel4.getGraphics();
                 graphics.drawImage(image, 0, 0, panel4.getWidth(), panel4.getHeight(), null);
                 Logger.getAnonymousLogger().log(Level.INFO, "Nano time ellapsed: " + (System.nanoTime() - nanos) / 1000000000d);
@@ -299,16 +301,16 @@ public class ModelingInterface extends JFrame {
         zBuffer.texture(new ColorTexture(Color.WHITE));
         zBuffer.backgroundTexture(new ColorTexture(Color.WHITE));
         scene = new Scene();
-        tubulaire4.updateBufferedImage(image);
+        tubulaire4.updateImage(image);
         scene.add(tubulaire4);
         scene.cameraActive(camera);
         zBuffer.scene(scene);
         zBuffer.camera(camera);
         zBuffer.idzpp();
         zBuffer.draw();
-        ECBufferedImage ecBufferedImage = zBuffer.image2();
+        ECImage ecImage = zBuffer.image2();
         try {
-            ImageIO.write(ecBufferedImage, "jpg", new File(file.getAbsolutePath() + "-renderedImage.jpg"));
+            ImageIO.write(ecImage, "jpg", new File(file.getAbsolutePath() + "-renderedImage.jpg"));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

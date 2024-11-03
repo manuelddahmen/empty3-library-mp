@@ -25,7 +25,10 @@ package one.empty3.feature;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 
 
@@ -37,10 +40,10 @@ public class GaussFilterProcess extends ProcessFile {
             return false;
 
         PixM pix = null;
-        BufferedImage img = null;
+        Image img = null;
 
         try {
-            img = ImageIO.read(in);
+            img = new ECImage(ImageIO.read(in));
             pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {

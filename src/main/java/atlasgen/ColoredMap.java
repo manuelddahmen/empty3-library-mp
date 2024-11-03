@@ -24,17 +24,20 @@ package atlasgen;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+
 public class ColoredMap {
 
     public static void main(String[] args) {
         Logger.getAnonymousLogger().log(Level.INFO,
                 "Colored Map"
         );
-        BufferedImage image = new BufferedImage(1800, 1600, BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(1800, 1600, Image.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         graphics.setColor(new Color(Color.TRANSLUCENT));
         graphics.fillRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
@@ -45,7 +48,8 @@ public class ColoredMap {
         csvReader.process();
         try {
             ImageIO.write(pixeler.getImage(), "jpg", Seriald.newOutputFile("ColoredMap"));
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
 
     }
 }

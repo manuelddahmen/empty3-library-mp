@@ -28,7 +28,9 @@ import org.jdom2.input.SAXBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -137,7 +139,7 @@ public class Detector {
     }
 
     public List<java.awt.Rectangle> getFaces(InputStream input, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) throws java.io.FileNotFoundException, java.io.IOException {
-        return getFaces(ImageIO.read(input), baseScale, scale_inc, increment, min_neighbors, doCannyPruning);
+        return getFaces(new one.empty3.libs.Image(ImageIO.read(input)), baseScale, scale_inc, increment, min_neighbors, doCannyPruning);
     }
 
     /*
@@ -152,7 +154,7 @@ public class Detector {
      * @param increment The shift of the window at each sub-step, in terms of percentage of the window size.
      * @return the list of rectangles containing searched objects, expressed in pixels.
      */
-    public List<java.awt.Rectangle> getFaces(BufferedImage image, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) {
+    public List<java.awt.Rectangle> getFaces(Image image, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) {
         List<Rectangle> ret = new ArrayList<Rectangle>();
         int width = image.getWidth();
         int height = image.getHeight();

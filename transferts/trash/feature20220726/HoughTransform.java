@@ -26,7 +26,7 @@ import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,8 +82,8 @@ public class HoughTransform extends ProcessFile {
 
     public boolean process(File in, File out) {
         // load the file using Java's imageIO library
-        java.awt.image.BufferedImage image = null;
-        image = ImageIO.read(in);
+        one.empty3.libs.Image image = null;
+        image = new Image(ImageIO.read(in));
         // create a hough transform object with the right dimensions
         width = image.getWidth();
         height = image.getHeight();
@@ -180,7 +180,7 @@ public class HoughTransform extends ProcessFile {
      * Adds points from an image. The image is assumed to be greyscale black and white, so all pixels that are
      * not black are counted as edges. The image should have the same dimensions as the one passed to the constructor.
      */
-    public void addPoints(java.awt.image.BufferedImage image) {
+    public void addPoints(one.empty3.libs.Image image) {
 
         // Now find edge points and update the hough array 
         for (int x = 0; x < image.getWidth(); x++) {
@@ -288,9 +288,9 @@ public class HoughTransform extends ProcessFile {
     /*
      * Gets the hough array as an image, in case you want to have a look at it.
      */
-    public javaAnd.awt.image.BufferedImage getHoughArrayImage() {
+    public javaAnd.awt.image.Image getHoughArrayImage() {
         int max = getHighestValue();
-        BufferedImage image = new javaAnd.awt.image.BufferedImage(maxTheta, doubleHeight, javaAnd.awt.image.BufferedImage.TYPE_INT_RGB);
+        Image image = new javaAnd.awt.image.Image(maxTheta, doubleHeight, javaAnd.awt.image.Image.TYPE_INT_RGB);
         for (int t = 0; t < maxTheta; t++) {
             for (int r = 0; r < doubleHeight; r++) {
                 double value = 255 * ((double) houghArray[t][r]) / max;

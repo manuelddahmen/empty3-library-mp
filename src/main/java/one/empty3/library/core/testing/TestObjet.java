@@ -45,7 +45,9 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
@@ -120,7 +122,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int resx = 640;
     private int resy = 480;
     private File dir = null;
-    private ECBufferedImage ri;
+    private ECImage ri;
     private String filename = "frame";
     private String fileExtension = "JPG";
     private boolean publish = true;
@@ -139,8 +141,8 @@ public abstract class TestObjet implements Test, Runnable {
     public String sousdossier;
     private boolean D3 = false;
     private ImageContainer biic;
-    private ECBufferedImage riG;
-    private ECBufferedImage riD;
+    private ECImage riG;
+    private ECImage riD;
     private File fileG;
     private File fileD;
     private boolean pause = false;
@@ -226,7 +228,7 @@ public abstract class TestObjet implements Test, Runnable {
         dimension = new Resolution(x, y);
     }
 
-    public BufferedImage img() {
+    public Image img() {
         return ri;
     }
 
@@ -311,7 +313,7 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
-        Graphics g = ((BufferedImage) ri).getGraphics();
+        Graphics g = ((Image) ri).getGraphics();
         g.setColor(Color.black);
         g.drawString(description, 0, 1100);
 
@@ -729,9 +731,9 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
-            ECBufferedImage eci = new ECBufferedImage(bi);
+            ECImage eci = new ECImage(bi);
             //biic.setImage(eci);
         } catch (Exception ex1) {
             ex1.printStackTrace();
@@ -758,9 +760,9 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
-            ECBufferedImage eci = new ECBufferedImage(bi);
+            ECImage eci = new ECImage(bi);
             //biic.setImage(eci);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -910,7 +912,6 @@ public abstract class TestObjet implements Test, Runnable {
                 if (LOG) {
                     Logger.getAnonymousLogger().log(Level.INFO, "No OpenGL");
                 }
-                str.getTestObjetJoglDrawer().setScene(scene());
             } else {
                 try {
                     timeStart = System.currentTimeMillis();
@@ -966,7 +967,7 @@ public abstract class TestObjet implements Test, Runnable {
                     if ((generate & GENERATE_MOVIE) > 0 && encoder != null && !(((generate & GENERATE_OPENGL) > 0))) {
 
                         try {
-                            encoder.encodeImage((BufferedImage) ri);
+                            encoder.encodeImage((Image) ri);
                         } catch (IOException e) {
                             e.printStackTrace();
                             reportException(e);
@@ -1058,7 +1059,7 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
-            ri = new ECBufferedImage(getResx(), getResy(), BufferedImage.TYPE_INT_ARGB);
+            ri = new ECImage(getResx(), getResy(), Image.TYPE_INT_ARGB);
         } else {
             afterRender();
 
@@ -1265,10 +1266,10 @@ public abstract class TestObjet implements Test, Runnable {
         }
     }
 
-    public void writeOnPictureAfterZ(BufferedImage bi) {
+    public void writeOnPictureAfterZ(Image bi) {
     }
 
-    public void writeOnPictureBeforeZ(BufferedImage bi) {
+    public void writeOnPictureBeforeZ(Image bi) {
     }
 
     public String getFolder() {
@@ -1358,7 +1359,7 @@ public abstract class TestObjet implements Test, Runnable {
         return str != null ? str.getJPanel1() : null;
     }
 
-    public ECBufferedImage getPicture() {
+    public ECImage getPicture() {
         return ri;
     }
 

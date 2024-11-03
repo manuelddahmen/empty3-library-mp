@@ -24,7 +24,7 @@ package one.empty3.library;
 
 import atlasgen.TextureOpSphere;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 /*__
  * Created by manue on 22-06-19.
@@ -34,14 +34,14 @@ public class HeightMapSphere extends HeightMapSurface {
     private ITexture heightMap;
     private double radius;
 
-    public HeightMapSphere(Axe axe, double radius, BufferedImage height) {
+    public HeightMapSphere(Axe axe, double radius, Image height) {
         super(new Sphere(axe, radius), height);
     }
 
 
     @Override
     public Point3D calculerPoint3D(double u, double v) {
-        throw new UnsupportedOperationException("calculer point de la sphere + BufferedImage");
+        throw new UnsupportedOperationException("calculer point de la sphere + Image");
     }
 }
 

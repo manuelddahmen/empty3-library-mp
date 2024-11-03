@@ -31,7 +31,7 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -357,7 +357,7 @@ public class Lines3 extends ProcessFile {
 
         });
 
-        BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
+        Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
         for (LineSegment line : lines) {
             int c = Colors.random().getRGB();
             if (line.getLength() >= 2) {
@@ -385,7 +385,7 @@ public class Lines3 extends ProcessFile {
             }
         }
 
-//            BufferedImage linesImg2 = new javaAnd.awt.image.BufferedImage(o.getColumns(), o.getLines(), javaAnd.awt.image.BufferedImage.TYPE_INT_RGB);
+//            Image linesImg2 = new javaAnd.awt.image.Image(o.getColumns(), o.getLines(), javaAnd.awt.image.Image.TYPE_INT_RGB);
 //
 //
 //            coefficients.forEach(doubles -> {

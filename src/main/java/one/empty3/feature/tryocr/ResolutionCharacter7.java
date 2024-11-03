@@ -35,7 +35,9 @@ import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -80,7 +82,7 @@ public class ResolutionCharacter7 implements Runnable {
     int step = 1;// Searched Characters size.
     PixM outRecompose;
     private boolean isExporting = true;
-    private BufferedImage read;
+    private Image read;
     private String name;
     private int shakeTimes;
     private double totalError;
@@ -95,11 +97,11 @@ public class ResolutionCharacter7 implements Runnable {
     private double STEPS_COMPARE_METHOD = 0.15;
 
 
-    public ResolutionCharacter7(BufferedImage read, String name) {
+    public ResolutionCharacter7(Image read, String name) {
         this(read, name, new File("testsResults"));
     }
 
-    public ResolutionCharacter7(BufferedImage read, String name, File dirOut) {
+    public ResolutionCharacter7(Image read, String name, File dirOut) {
         this.read = read;
         this.name = name;
         this.dirOut = dirOut;
@@ -112,7 +114,7 @@ public class ResolutionCharacter7 implements Runnable {
 
         //Logger.getAnonymousLogger().log(Level.INFO, "Test allocate (3000,3000) image");
 
-        //BufferedImage bufferedImage = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        //Image bufferedImage = new Image(3000, 3000, Image.TYPE_INT_RGB);
 
 
         File dir = new File("C:\\Users\\manue\\EmptyCanvasTest\\ocr");
@@ -130,7 +132,7 @@ public class ResolutionCharacter7 implements Runnable {
                     if (!Arrays.stream(javax.imageio.ImageIO.getReaderFileSuffixes()).noneMatch(s -> s.equals(extension)))
                         continue;
                     try {
-                        BufferedImage read = ImageIO.read(file);
+                        Image read = ImageIO.read(file);
 
                         String name = file.getName();
 

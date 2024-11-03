@@ -22,7 +22,7 @@
 
 package one.empty3.feature20220726;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 import one.empty3.library.Lumiere;
 
 import java.util.PrimitiveIterator;
@@ -39,7 +39,7 @@ public class M3 {
     protected int columnsIn;
     protected int linesIn;
     protected int compNo;
-    protected javaAnd.awt.image.BufferedImage image;
+    protected javaAnd.awt.image.Image image;
     private final int compCount = 4;
     private int currentX;
     private int currentY;
@@ -119,7 +119,7 @@ public class M3 {
     }
 
 
-    public M3(BufferedImage image, int columns, int lines, int columnsIn, int linesIn) {
+    public M3(Image image, int columns, int lines, int columnsIn, int linesIn) {
         this(columns, lines, columnsIn, linesIn);
         double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
@@ -138,7 +138,7 @@ public class M3 {
     }
 
     @Deprecated
-    public M3(BufferedImage image, int columnsIn, int linesIn) {
+    public M3(Image image, int columnsIn, int linesIn) {
         this(image.getWidth(), image.getHeight(), columnsIn, linesIn);
         this.image = image;
 

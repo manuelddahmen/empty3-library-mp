@@ -24,7 +24,7 @@ package one.empty3.feature20220726;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,11 +148,11 @@ public class Histogram {
         return circles;
     }
 
-    public static void testCircleSelect(java.awt.image.BufferedImage file, File directory, int levels, double min, double radiusIncr) {
+    public static void testCircleSelect(one.empty3.libs.Image file, File directory, int levels, double min, double radiusIncr) {
         for (int i = 0; i < levels; i++) {
-            java.awt.image.BufferedImage img = file;
-            BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-            BufferedImage img3 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+            one.empty3.libs.Image img = file;
+            Image img2 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+            Image img3 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
             Histogram histogram = new Histogram(new PixM(img), levels, min, radiusIncr, 0.1);
             int finalI = i;
             List<Circle> pointsOfInterest = histogram.getPointsOfInterest(0.1);

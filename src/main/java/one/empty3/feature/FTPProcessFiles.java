@@ -602,7 +602,7 @@ public class FTPProcessFiles {
         List<File> list = new ArrayList<>();
         // extraire les images
         int findex = 0;
-        BufferedImage image = null;
+        Image image = null;
         int i = 0;
 
         t.timeNext();

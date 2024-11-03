@@ -25,7 +25,7 @@
  */
 package atlasgen;
 
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.core.testing.ImageContainer;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.testing.TextAreaOutputStream;
@@ -35,7 +35,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Level;
@@ -49,7 +51,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
     /*__
      *
      */
-    private ECBufferedImage image = null;
+    private ECImage image = null;
     private ImageContainer biic;
     private boolean stop = false;
 
@@ -112,7 +114,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 
     }
 
-    public ShowTestResult(BufferedImage ri) {
+    public ShowTestResult(Image ri) {
         initComponents();
 
         loadImage(ri);
@@ -121,7 +123,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public ShowTestResult(ECBufferedImage ri) {
+    public ShowTestResult(ECImage ri) {
         initComponents();
 
         image = ri;
@@ -170,7 +172,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 
     public void dessine() {
         if (biic != null && biic.getImage() != null) {
-            image = new ECBufferedImage(biic.getImage());
+            image = new ECImage(biic.getImage());
             if (image != null) {
                 if (jPanel1 != null) {
                     Graphics g = jPanel1.getGraphics();
@@ -195,7 +197,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
     public void exceptionReception(Exception t) {
         this.throwable = t;
         try {
-            image = new ECBufferedImage(
+            image = new ECImage(
                     ImageIO.read(
                             getClass().getResourceAsStream("one/core/testing/skull-cross-bones-evil.ico")
                     )
@@ -575,8 +577,8 @@ public final class ShowTestResult extends JFrame implements Runnable {
         return vv;
     }
 
-    public void loadImage(BufferedImage ri) {
-        this.image = new ECBufferedImage(ri);
+    public void loadImage(Image ri) {
+        this.image = new ECImage(ri);
         if (image != null) {
             setSize(new Dimension(image.getWidth(), image.getHeight()));
         }

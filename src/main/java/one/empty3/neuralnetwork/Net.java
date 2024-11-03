@@ -111,7 +111,7 @@ public class Net<T extends Neuron> {
 
         while (t < maxIterations) {
             for (int n = 0; n < trainSet.size(); n++) {
-                PixM pixM = PixM.getPixM(ImageIO.read(trainSet.get(n)), RESOLUTION);
+                PixM pixM = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(trainSet.get(n))), RESOLUTION);
                 inputLayer.getNeurons().data2d.forEach(new Consumer<List<T>>() {
                     @Override
                     public void accept(List<T> ts) {

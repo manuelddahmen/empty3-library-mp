@@ -31,7 +31,9 @@ import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -129,7 +131,7 @@ public class PasteBlank extends ProcessFile {
         try {
             if (!in.getAbsolutePath().endsWith("jpg"))
                 return false;
-            BufferedImage read = ImageIO.read(in);
+            Image read = new one.empty3.libs.Image(ImageIO.read(in));
             PixM pixM = PixM.getPixM(read, maxRes);
             PixM pixM1 = pasteList(pixM, new ColorTexture(Color.BLACK));
             ImageIO.write(pixM1.normalize(0, 1).getImage(), "jpg", out);

@@ -25,7 +25,7 @@ package one.empty3.feature20220726;
 import java.io.File;
 import java.io.IOException;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 
@@ -70,7 +70,7 @@ public class BrushGradientMaximumColor extends ProcessFile {
                     }
             }
         }
-        ImageIO.write(pixM2.normalize(0, 1).getBufferedImage(), "jpg", out);
+        ImageIO.write(pixM2.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
 }

@@ -262,7 +262,7 @@ public class Main implements PropertyChangeListener {
                 zBuffer.scene(getDataModel().getScene());
                 zBuffer.setDisplayType(updateViewMain.getView().getzDiplayType());
                 zBuffer.draw();
-                ECBufferedImage image = zBuffer.image();
+                ECImage image = zBuffer.image();
                 try {
                     File file = new File(getDataModel().getNewImageFile());
                     ImageIO.write(image, "jpg", file);
@@ -1546,13 +1546,13 @@ public class Main implements PropertyChangeListener {
             } else {
                 if (evt.getNewValue().equals(-1)) {
                     try {
-                        this.getUpdateView().getzRunner().setLastImage(ImageIO.read(new File("resources/img/FAILED.PNG")));
+                        this.getUpdateView().getzRunner().setLastImage(new one.empty3.libs.Image(ImageIO.read(new File("resources/img/FAILED.PNG"))));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else if (evt.getNewValue().equals(0)) {
                     try {
-                        this.getUpdateView().getzRunner().setLastImage(ImageIO.read(new File("resources/img/WAITING.PNG")));
+                        this.getUpdateView().getzRunner().setLastImage(new one.empty3.libs.Image(ImageIO.read(new File("resources/img/WAITING.PNG"))));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -35,7 +35,8 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -345,7 +346,7 @@ public class CurveFitting extends ProcessFile {
 
         Logger.getAnonymousLogger().log(Level.INFO, curvePoints.toString());
 
-        BufferedImage image = normalize.getImage();
+        Image image = normalize.getImage();
 //
 //            Graphics graphics = image.getGraphics();
 //

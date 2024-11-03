@@ -22,7 +22,7 @@
 
 package one.empty3.library.core.script;
 
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.ITexture;
 import one.empty3.library.TextureCol;
 import one.empty3.library.TextureImg;
@@ -77,7 +77,7 @@ public class InterpreteTexture implements Interprete {
                 pass = true;
 
                 try {
-                    tc = new TextureImg(new ECBufferedImage(ImageIO.read(f)));
+                    tc = new TextureImg(new ECImage(ImageIO.read(f)));
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

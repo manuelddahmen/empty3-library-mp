@@ -27,7 +27,7 @@
  */
 package one.empty3.library.core.script;
 
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureImg;
 import one.empty3.library.core.tribase.TRISphere;
@@ -99,7 +99,7 @@ public class InterpreteSphere implements Interprete {
         TRISphere sphere = new TRISphere(centre, pos);
         try {
             sphere.texture(
-                    new TextureImg(new ECBufferedImage(ImageIO.read(file))));
+                    new TextureImg(new ECImage(ImageIO.read(file))));
 
             return sphere;
         } catch (IOException ex) {

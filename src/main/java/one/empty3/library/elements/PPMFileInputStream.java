@@ -43,7 +43,7 @@ public class PPMFileInputStream extends ByteArrayInputStream {
         this.reset();
         int read = this.read();
         if (read > 0) {
-            ECBufferedImage ppm = ECBufferedImage.ppm(getBytes(), "PPM");
+            ECImage ppm = ECImage.ppm(getBytes(), "PPM");
         }
     }
 }

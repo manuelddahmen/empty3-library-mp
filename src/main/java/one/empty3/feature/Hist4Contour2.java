@@ -24,6 +24,7 @@ package one.empty3.feature;
 
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
@@ -122,7 +123,7 @@ public class Hist4Contour2 extends ProcessFile {
         }
         PixM inP;
         try {
-            inP = PixM.getPixM(ImageIO.read(in), maxRes);
+            inP = PixM.getPixM(new ECImage(ImageIO.read(in)), maxRes);
         } catch (IOException e) {
             return false;
         }

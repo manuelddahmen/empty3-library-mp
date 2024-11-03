@@ -26,7 +26,10 @@ import one.empty3.feature.PixM;
 import one.empty3.feature.ProcessBean;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +47,7 @@ public abstract class ProcessFile extends ProcessNFiles {
                 || in.getAbsolutePath().toLowerCase().endsWith(".png")))
             return true;
         try {
-            BufferedImage read = ImageIO.read(in);
+            Image read = new ECImage(ImageIO.read(in));
             if (read != null) return true;
         } catch (IOException e) {
             e.printStackTrace();

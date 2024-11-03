@@ -29,7 +29,7 @@ import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -193,7 +193,7 @@ public class Lines5 extends ProcessFile {
 
         }
         // d'après pcount x, y et curve xy supprimer les courbes en trop.
-        BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
+        Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
 
         //bLines.setRGB(Color.RED);
         list3.forEach(point3DS -> {

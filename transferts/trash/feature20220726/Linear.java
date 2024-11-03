@@ -22,7 +22,7 @@
 
 package one.empty3.feature20220726;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -47,14 +47,14 @@ public class Linear {
         this.imagesM = imagesM;
     }
 
-    public Linear(BufferedImage... bufferedImages) {
+    public Linear(Image... bufferedImages) {
         type = TYPE_2D_2D;
         this.imagesM = null;
         images = new PixM[bufferedImages.length];
         final int[] i = {0};
-        Arrays.stream(bufferedImages).forEach(new Consumer<BufferedImage>() {
+        Arrays.stream(bufferedImages).forEach(new Consumer<Image>() {
             @Override
-            public void accept(BufferedImage bufferedImage) {
+            public void accept(Image bufferedImage) {
                 images[i[0]] = new PixM(bufferedImage.bufferedImage);
                 i[0]++;
             }

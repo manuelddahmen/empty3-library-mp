@@ -24,7 +24,8 @@ package one.empty3.feature20220726;
 
 import javaAnd.awt.image.imageio.ImageIO;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.logging.*;
 
@@ -36,12 +37,12 @@ public class WriteFile {
 
     }
 
-    public static boolean writeNext(BufferedImage imageJpeg, String name) {
+    public static boolean writeNext(Image imageJpeg, String name) {
         writeNext(name, imageJpeg);
         return true;
     }
 
-    public static void writeNext(String name, BufferedImage imageJpeg) {
+    public static void writeNext(String name, Image imageJpeg) {
 
         File n = new File(directory);
 

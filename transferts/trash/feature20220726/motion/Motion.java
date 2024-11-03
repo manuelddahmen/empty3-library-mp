@@ -24,7 +24,7 @@ package one.empty3.feature20220726.motion;
 
 import one.empty3.feature20220726.PixM;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.util.ArrayList;
 
@@ -34,17 +34,17 @@ import java.util.ArrayList;
  */
 public abstract class Motion /*extends ProcessFile */ {
     public static final int BUFFER_MAX_FRAMES = 26;
-    public ArrayList<BufferedImage> frames = new ArrayList<>();
+    public ArrayList<Image> frames = new ArrayList<>();
 
 
-    public boolean addFrame(BufferedImage bufferedImage) {
+    public boolean addFrame(Image bufferedImage) {
         if (bufferedImage != null) {
             this.frames.add(bufferedImage);
         }
         return frames.size() > BUFFER_MAX_FRAMES;
     }
 
-    public java.awt.image.BufferedImage processFrame() {
+    public one.empty3.libs.Image processFrame() {
         PixM frame1 = null;
         PixM frame2 = null;
         if (frames.size() == 0 || frames.get(0) == null)
@@ -65,6 +65,6 @@ public abstract class Motion /*extends ProcessFile */ {
         return process(frame1, frame2);
     }
 
-    public abstract java.awt.image.BufferedImage process(PixM frame1, PixM frame2);
+    public abstract one.empty3.libs.Image process(PixM frame1, PixM frame2);
 
 }

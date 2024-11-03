@@ -56,7 +56,7 @@ public class ProxyValue extends ProcessFile {
         p = (int) getProperties().getProperty("p");
 
         try {
-            original = PixM.getPixM(ImageIO.read(in), maxRes);
+            original = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), maxRes);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

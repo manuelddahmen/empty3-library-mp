@@ -32,7 +32,9 @@ package one.empty3.library;
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -41,17 +43,17 @@ import java.util.Objects;
  * @author manu
  */
 public class ImageTexture extends ITexture {
-    private StructureMatrix<ECBufferedImage> image = new StructureMatrix<>(0, ECBufferedImage.class);
+    private StructureMatrix<ECImage> image = new StructureMatrix<>(0, ECImage.class);
     private String nom = "texture";
     private int transparent = 0xFFFFFF00;
 
-    public ImageTexture(ECBufferedImage bi) {
+    public ImageTexture(ECImage bi) {
         image.setElem(bi);
     }
 
     public ImageTexture(File bif) {
         try {
-            image.setElem(new ECBufferedImage(Objects.requireNonNull(ImageIO.read(bif))));
+            image.setElem(new ECImage(Objects.requireNonNull(ImageIO.read(bif))));
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
         }
@@ -112,20 +114,20 @@ public class ImageTexture extends ITexture {
     }
 
 
-    public BufferedImage getEcBufferedImageStructureMatrix() {
+    public Image getEcImageStructureMatrix() {
         return image.getElem();
     }
 
-    public void setEcBufferedImageStructureMatrix(ECBufferedImage image) {
+    public void setEcImageStructureMatrix(ECImage image) {
         this.image.setElem(image);
         image = image;
     }
 
-    public ECBufferedImage getImage() {
+    public ECImage getImage() {
         return image.getElem();
     }
 
-    public void setImage(ECBufferedImage bi) {
+    public void setImage(ECImage bi) {
         image.setElem(bi);
         image.setElem(bi);
     }

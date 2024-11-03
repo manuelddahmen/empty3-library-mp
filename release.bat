@@ -3,4 +3,3 @@ call ./gradlew jreleaserConfig
 call ./gradlew clean
 call ./gradlew publish
 call ./gradlew jreleaserFullRelease
-./publish.bat

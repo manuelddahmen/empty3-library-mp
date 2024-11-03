@@ -29,7 +29,8 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,7 +49,7 @@ public class PixMAndroidVersion extends MBitmap {
         super(l, c);
     }
 
-    public PixMAndroidVersion(BufferedImage image) {
+    public PixMAndroidVersion(Image image) {
         super(image.getWidth(), image.getHeight());
         float[] colorComponents = new float[4];
         for (int i = 0; i < image.getWidth(); i++) {
@@ -63,7 +64,7 @@ public class PixMAndroidVersion extends MBitmap {
         }
     }
 
-    public PixMAndroidVersion(BufferedImage image, boolean isBitmap) {
+    public PixMAndroidVersion(Image image, boolean isBitmap) {
         super(image);
         /*
         float[] colorComponents = new float[4];
@@ -97,11 +98,11 @@ public class PixMAndroidVersion extends MBitmap {
         return new Point3D(dr, dg, db);
     }
 
-    public static one.empty3.feature20220726.PixMAndroidVersion getPixM(BufferedImage image, double maxRes) {
+    public static one.empty3.feature20220726.PixMAndroidVersion getPixM(Image image, double maxRes) {
         return getPixM(image, (int) maxRes);
     }
 
-    public static one.empty3.feature20220726.PixMAndroidVersion getPixM(BufferedImage image, int maxRes) {
+    public static one.empty3.feature20220726.PixMAndroidVersion getPixM(Image image, int maxRes) {
         double f = 1.0;
         if (maxRes <= 0) {
             f = 1.0;
@@ -199,12 +200,12 @@ public class PixMAndroidVersion extends MBitmap {
         return originValue;
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
 
         float[] f = new float[getCompCount()];
 
-        BufferedImage image = new BufferedImage(columns,
-                lines, BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(columns,
+                lines, Image.TYPE_INT_RGB);
 
 
         float[] rgba = new float[getCompCount()];

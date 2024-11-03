@@ -1,4 +1,4 @@
-///*
+/// *
 // *
 // *  * Copyright (c) 2024. Manuel Daniel Dahmen
 // *  *
@@ -28,7 +28,7 @@
 ////import one.empty3.neuralnetwork.LossFunction;
 //import one.empty3.neuralnetwork.Neuron;
 //
-//import java.awt.image.BufferedImage;
+//import one.empty3.libs.Image;
 //import java.io.File;
 //import java.util.function.Function;
 //import java.util.logging.Level;
@@ -95,7 +95,7 @@
 //        );
 //    }
 //
-//    private void loadImageInput(BufferedImage read, int maxRes, Neuron inputNeuron) {
+//    private void loadImageInput(Image read, int maxRes, Neuron inputNeuron) {
 //        PixM pixM = PixM.getPixM(read, maxRes);
 //        for (int i = 0; i < pixM.getColumns(); i++) {
 //            for (int j = 0; j < pixM.getLines(); j++) {

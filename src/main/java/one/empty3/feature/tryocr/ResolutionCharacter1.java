@@ -35,7 +35,9 @@ import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -67,7 +69,7 @@ public class ResolutionCharacter1 implements Runnable {
     private final double[] WHITE_DOUBLES = new double[]{1, 1, 1};
     private final double[] BLACK_DOUBLES = new double[]{0, 0, 0};
     int step = 1;// Searched Characters size.
-    private BufferedImage read;
+    private Image read;
     private String name;
     private int shakeTimes;
     private double totalError;
@@ -78,11 +80,11 @@ public class ResolutionCharacter1 implements Runnable {
     private Map<Character, Integer[]> characterMapH;
     private Map<Character, Integer[]> characterMapV;
 
-    public ResolutionCharacter1(BufferedImage read, String name) {
+    public ResolutionCharacter1(Image read, String name) {
         this(read, name, new File("testsResults"));
     }
 
-    public ResolutionCharacter1(BufferedImage read, String name, File dirOut) {
+    public ResolutionCharacter1(Image read, String name, File dirOut) {
         this.read = read;
         this.name = name;
         this.dirOut = dirOut;
@@ -100,7 +102,7 @@ public class ResolutionCharacter1 implements Runnable {
 
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-                    BufferedImage read = ImageIO.read(file);
+                    Image read = ImageIO.read(file);
 
                     String name = file.getName();
 

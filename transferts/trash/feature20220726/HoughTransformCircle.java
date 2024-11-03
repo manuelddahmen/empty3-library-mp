@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 //import java.util.function.Consumer;
 //
-//import javaAnd.awt.image.BufferedImage;
+//import javaAnd.awt.image.Image;
 //import javaAnd.awt.image.imageio.ImageIO;
 ////import one.empty3.feature20220726.HoughTransformOutput;
 //import one.empty3.io.ProcessFile;
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 //    public boolean process(File in, File out) {
 //        try {
 //
-//            BufferedImage grey = toGrayScale(in);
+//            Image grey = toGrayScale(in);
 //
 //            HoughTransformOutput.imgWidth = imgWidth = grey.getWidth();
 //            HoughTransformOutput.imgHeight = imgHeight = grey.getHeight();
@@ -90,9 +90,9 @@ import java.util.logging.Logger;
 //    }
 //
 //    //converts given file into a grayscale image
-//    private javaAnd.awt.image.BufferedImage toGrayScale(File f) throws Exception {
-//        BufferedImage img = ImageIO.read(f);
-//        BufferedImage grey = new javaAnd.awt.image.BufferedImage(img.getWidth(), img.getHeight(), javaAnd.awt.image.BufferedImage.TYPE_BYTE_GRAY);
+//    private javaAnd.awt.image.Image toGrayScale(File f) throws Exception {
+//        Image img = ImageIO.read(f);
+//        Image grey = new javaAnd.awt.image.Image(img.getWidth(), img.getHeight(), javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        grey.drawImage(img,0,0,0,0);
 //
 //        return grey;

@@ -24,6 +24,7 @@ package one.empty3.feature;
 
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -41,7 +42,7 @@ public class GradProcess extends ProcessFile {
         File file = in;
         PixM pix;
         try {
-            pix = PixM.getPixM(ImageIO.read(file), maxRes);
+            pix = PixM.getPixM(new ECImage(ImageIO.read(file)), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
             PixM[][] imagesMatrix = gf.filter(

@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  */
 public class TextureImg extends ITexture {
 
-    private StructureMatrix<ECBufferedImage> image = new StructureMatrix<>(0, ECBufferedImage.class);
+    private StructureMatrix<ECImage> image = new StructureMatrix<>(0, ECImage.class);
 
     private String nom = "texture";
 
@@ -58,7 +58,7 @@ public class TextureImg extends ITexture {
     public TextureImg() {
 
     }
-    public TextureImg(ECBufferedImage bi) {
+    public TextureImg(ECImage bi) {
         this.image.setElem(bi);
     }
 
@@ -100,11 +100,11 @@ public class TextureImg extends ITexture {
     }
 
 
-    public ECBufferedImage getImage() {
+    public ECImage getImage() {
         return image.getElem();
     }
 
-    public void setImage(ECBufferedImage image) {
+    public void setImage(ECImage image) {
         this.image.setElem(image);
     }
 

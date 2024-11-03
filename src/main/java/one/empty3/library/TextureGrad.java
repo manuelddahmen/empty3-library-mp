@@ -22,11 +22,11 @@
 
 package one.empty3.library;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class TextureGrad extends TextureMov {
-    private BufferedImage currentImg;
-    private BufferedImage nextImg;
+    private Image currentImg;
+    private Image nextImg;
 /*
     public TextureGrad(String s) {
         super(s);
@@ -53,7 +53,7 @@ public class TextureGrad extends TextureMov {
         return 0;
     }
 
-    public int[] getRGB(BufferedImage image, double u, double v) {
+    public int[] getRGB(Image image, double u, double v) {
         int x = (int) u * image.getWidth();
         int y = (int) v * image.getHeight();
         if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {

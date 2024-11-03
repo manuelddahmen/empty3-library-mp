@@ -3,11 +3,11 @@ import ru.sbtqa.monte.media.*;
 import ru.sbtqa.monte.media.image.Images;
 import ru.sbtqa.monte.media.FormatKeys.*;
 import java.io.*;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 import java.awt.image.IndexColorModel;
 import java.io.*;
 import java.util.Random;
@@ -42,9 +42,9 @@ try{
  MovieReader in = Registry.getInstance().getReader(file);
 if(in==null)
       throw new NullPointerException("in moviereader"+file.getCanonicalPath());
- //ArrayList<BufferedImage> frames=new ArrayList<BufferedImage> ();
+ //ArrayList<Image> frames=new ArrayList<Image> ();
  
- Format format = new Format(VideoFormatKeys.DataClassKey, BufferedImage.class);
+ Format format = new Format(VideoFormatKeys.DataClassKey, Image.class);
  int track = in.findTrack(0, new Format(FormatKeys.MediaTypeKey,MediaType.VIDEO));
  Codec codec=Registry.getInstance().getCodec(in.getFormat(track), format);
  
@@ -60,7 +60,7 @@ if(in==null)
  in.read(track, inbuf);
  codec.process(inbuf, codecbuf);
  if (!codecbuf.isFlag(BufferFlag.DISCARD)) {
- imgBuf.add(new ECBufferedImage(Images.cloneImage((BufferedImage)codecbuf.data))) ;
+ imgBuf.add(new ECImage(Images.cloneImage((Image)codecbuf.data))) ;
  
  }
  
@@ -71,7 +71,7 @@ if(in==null)
 /* finally {
  in.close();
  }
-// return frames.toArray(new BufferedImage[frames.size()]);
+// return frames.toArray(new Image[frames.size()]);
  
 }
 
@@ -125,7 +125,7 @@ if(in==null)
               HeightKey, 400);
      
      // Create a buffered image for this format
-        BufferedImage img = createImage(format);
+        Image img = createImage(format);
         Graphics2D g = img.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -194,11 +194,11 @@ if(in==null)
             }
 
             // Read images from the track
-            BufferedImage img = createImage(in.getFormat(track));
+            Image img = createImage(in.getFormat(track));
             
             do {
              in.read(track, img);
-                imgBuf.add(new ECBufferedImage(img));
+                imgBuf.add(new ECImage(img));
 if(imgBuf.size()>MAXSIZE)
    try {Thread.sleep(50);}catch(Exception ex){ex.printStackTrace();}
 in.read(track, img);
@@ -223,23 +223,23 @@ in.read(track, img);
         
     
 
-    private static BufferedImage createImage(Format format) {
+    private static Image createImage(Format format) {
         int depth = format.get(DepthKey);
         int width = format.get(WidthKey);
         int height = format.get(HeightKey);
         PixelFormat pixelFormat = format.get(PixelFormatKey);
 
         Random rnd = new Random(0); // use seed 0 to get reproducable output
-        BufferedImage img;
+        Image img;
         switch (depth) {
             case 24:
             default: {
-                img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+                img = new Image(width, height, Image.TYPE_INT_RGB);
                 break;
             }
             case 8:
                 if (pixelFormat == PixelFormat.GRAY) {
-                    img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+                    img = new Image(width, height, Image.TYPE_BYTE_GRAY);
                     break;
                 } else {
                     byte[] red = new byte[256];
@@ -252,12 +252,12 @@ in.read(track, img);
                     }
                     rnd.setSeed(0); // set back to 0 for reproducable output
                     IndexColorModel palette = new IndexColorModel(8, 256, red, green, blue);
-                    img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, palette);
+                    img = new Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
                     break;
                 }
             case 4:
                 if (pixelFormat == PixelFormat.GRAY) {
-                    img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+                    img = new Image(width, height, Image.TYPE_BYTE_GRAY);
                     break;
                 } else {
                     byte[] red = new byte[16];
@@ -270,7 +270,7 @@ in.read(track, img);
                     }
                     rnd.setSeed(0); // set back to 0 for reproducable output
                     IndexColorModel palette = new IndexColorModel(4, 16, red, green, blue);
-                    img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, palette);
+                    img = new Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
                     break;
                 }
         }

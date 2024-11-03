@@ -26,7 +26,9 @@ import one.empty3.library.core.nurbs.*;
 import one.empty3.pointset.PCont;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class ZBufferImplRasterVersion extends Representable implements ZBuffer {
     protected boolean colorationActive = false;
     protected double angleX = Math.PI / 3;
     protected double angleY = Math.PI / 3;
-    protected ECBufferedImage bi;
+    protected ECImage bi;
     protected int ha;
     protected int la;
     ZBufferImplRasterVersion that;
@@ -433,12 +435,12 @@ public class ZBufferImplRasterVersion extends Representable implements ZBuffer {
     }
 
     @Override
-    public ECBufferedImage image() {
+    public ECImage image() {
         return imageFromRaster();
     }
 
     @Override
-    public ECBufferedImage imageInvX() {
+    public ECImage imageInvX() {
         return null;
     }
 
@@ -456,9 +458,9 @@ public class ZBufferImplRasterVersion extends Representable implements ZBuffer {
     }
 
 
-    public ECBufferedImage imageFromRaster() {
+    public ECImage imageFromRaster() {
 
-        ECBufferedImage bi2 = new ECBufferedImage(la, ha, ECBufferedImage.TYPE_INT_RGB);
+        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
         bi2.getRaster().setRect(ime.ime.wr);
         return bi2;
 
@@ -1515,7 +1517,7 @@ public class ZBufferImplRasterVersion extends Representable implements ZBuffer {
                 }
             }
             if (wr == null) {
-                bi = new ECBufferedImage(new BufferedImage(la, ha, BufferedImage.TYPE_INT_ARGB));
+                bi = new ECImage(new Image(la, ha, Image.TYPE_INT_ARGB));
 
             }
             wr = bi.getRaster();

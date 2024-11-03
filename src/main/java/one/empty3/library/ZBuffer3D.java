@@ -26,9 +26,9 @@ public interface ZBuffer3D extends ZBuffer {
 
     void genererEtRetourner(Scene sc);
 
-    ECBufferedImage imageDroite();
+    ECImage imageDroite();
 
-    ECBufferedImage imageGauche();
+    ECImage imageGauche();
 
     int LR();
 

@@ -29,7 +29,9 @@ import one.empty3.library.Point2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -119,9 +121,9 @@ public class PartMatch extends ProcessFile {
         featuresDescriptors = new ArrayList<>();
 
         try {
-            PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM pix = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), maxRes);
 
-            BufferedImage outImg = pix.getImage();
+            Image outImg = pix.getImage();
 
             Graphics g = outImg.getGraphics();
 

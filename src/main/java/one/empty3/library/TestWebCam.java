@@ -24,7 +24,8 @@ package one.empty3.library;/*
  * 2013 Manuel Dahmen
  */
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -43,7 +44,7 @@ public class TestWebCam {
         if (!isOpen) {
             webcam.open();
         }
-        BufferedImage image = webcam.getImage();
+        Image image = webcam.getImage();
         try {
             ImageIO.write(image, "PNG", new File("test.png"));
         } catch (IOException ex) {

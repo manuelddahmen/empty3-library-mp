@@ -23,10 +23,8 @@
 package one.empty3.library;
 
 
+import one.empty3.libs.Image;
 
-
-
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.io.File;
 
@@ -36,7 +34,7 @@ public abstract class VideoDecoder extends Thread {
     protected File file;
     protected boolean stop = false;
     protected static final long MAXSIZE = 4;
-    protected ArrayList<ECBufferedImage> imgBuf = new ArrayList();
+    protected ArrayList<ECImage> imgBuf = new ArrayList();
 
 
     /***
@@ -57,10 +55,10 @@ public abstract class VideoDecoder extends Thread {
         return eof;
     }
 
-    public ECBufferedImage current() {
+    public ECImage current() {
 
-        if(!imgBuf.isEmpty()) {
-            ECBufferedImage c = imgBuf.get(0);
+        if (!imgBuf.isEmpty()) {
+            ECImage c = imgBuf.get(0);
             imgBuf.remove(0);
             return c;
         } else {

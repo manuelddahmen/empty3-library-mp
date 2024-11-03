@@ -27,7 +27,8 @@ import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
@@ -54,7 +55,7 @@ public class Vectorize extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         lists = new ArrayList<ArrayList<Point3D>>();
-        BufferedImage read = ImageIO.read(in);
+        Image read = new one.empty3.libs.Image(ImageIO.read(in));
         if (read == null)
             return false;
         pixM = new PixM(read);

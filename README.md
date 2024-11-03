@@ -125,12 +125,12 @@ matrix c(x,y)
 
 ## Formats et classes d'images.
 
-- BufferedImage Int Rgb (sans rgb)
+- Image Int Rgb (sans rgb)
 - format jpg en sortie
 - PixM components matrix of pictures. color component based.
 - M3 components
     + matrix (columnsIn, linesIn) internal matrix at x, y
-- conversion to BufferedImage, minMax normalize linear
+- conversion to Image, minMax normalize linear
 - gradient. dx, dy, phase atan dy/dy atan dx/dy
 - detecteur de contours
 

@@ -27,7 +27,7 @@
  */
 package one.empty3.library;
 
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 import one.empty3.library.core.nurbs.*;
 import one.empty3.library.core.tribase.Precomputable;
 import one.empty3.library.objloader.E3Model;
@@ -72,7 +72,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     protected boolean colorationActive = false;
     protected double angleX = Math.PI / 3;
     protected double angleY = Math.PI / 3;
-    protected ECBufferedImage bi;
+    protected ECImage bi;
     protected int ha;
     protected int la;
     // PARAMETRES
@@ -550,9 +550,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = height;
     }
 
-    public ECBufferedImage image() {
+    public ECImage image() {
 
-        ECBufferedImage bi2 = new ECBufferedImage(la, ha, ECBufferedImage.TYPE_INT_RGB);
+        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -566,8 +566,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     @Override
-    public ECBufferedImage imageInvX() {
-        ECBufferedImage bi2 = new ECBufferedImage(la, ha, ECBufferedImage.TYPE_INT_RGB);
+    public ECImage imageInvX() {
+        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -584,12 +584,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     //??
-    public ECBufferedImage image2() {
+    public ECImage image2() {
         //return image2();
 
-//        BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_RGB);
+//        Image bi = new Image(la, ha, Image.TYPE_INT_RGB);
 //        bi.setRGB(0, 0, la, ha, getData(), 0, la);
-//        return new ECBufferedImage(bi);
+//        return new ECImage(bi);
         return image();
 
     }
@@ -794,7 +794,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
     }
 
-    public Image rendu() {
+    public one.empty3.libs.Image rendu() {
         return null;
     }
 
@@ -962,7 +962,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 face.getU1(), face.getU2(), face.getV1(), face.getV2(), null);
     }
 
-    public void tracerQuadInverse(E3Model.FaceWithUv face, Polygon polygonOnImage, BufferedImage original, double u, double v) {
+    public void tracerQuadInverse(E3Model.FaceWithUv face, Polygon polygonOnImage, Image original, double u, double v) {
         Polygon polygon = face.getPolygon();
         tracerQuad(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1),
                 polygon.getPoints().getElem(2), polygon.getPoints().getElem(3), face.texture(),

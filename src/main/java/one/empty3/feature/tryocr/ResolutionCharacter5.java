@@ -35,7 +35,9 @@ import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -78,7 +80,7 @@ public class ResolutionCharacter5 implements Runnable {
     boolean[] testedRectangleBorder = new boolean[4];
     int step = 1;// Searched Characters size.
     PixM outRecompose;
-    private BufferedImage read;
+    private Image read;
     private String name;
     private int shakeTimes;
     private double totalError;
@@ -90,11 +92,11 @@ public class ResolutionCharacter5 implements Runnable {
     private Map<Character, Integer[]> characterMapV;
     private int countRects = 0;
 
-    public ResolutionCharacter5(BufferedImage read, String name) {
+    public ResolutionCharacter5(Image read, String name) {
         this(read, name, new File("testsResults"));
     }
 
-    public ResolutionCharacter5(BufferedImage read, String name, File dirOut) {
+    public ResolutionCharacter5(Image read, String name, File dirOut) {
         this.read = read;
         this.name = name;
         this.dirOut = dirOut;
@@ -116,7 +118,7 @@ public class ResolutionCharacter5 implements Runnable {
 
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-                    BufferedImage read = ImageIO.read(file);
+                    Image read = ImageIO.read(file);
 
                     String name = file.getName();
 

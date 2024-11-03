@@ -36,7 +36,7 @@ public int pointsSize = 3;
   // private ColorDist [][][] cds;
     
    public void initFrame() {
-      BufferedImage image = img();
+      Image image = img();
       for(int i= 0;i<getResx(); i++)
     
 

@@ -28,15 +28,17 @@
 package one.empty3.library.core.tribase;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.util.Map.Entry;
 
 @Deprecated
 public abstract class BaseGenerator {
 
-    protected BufferedImage buffer;
+    protected Image buffer;
     protected Component comp;
-    protected BufferedImage image;
+    protected Image image;
     private int x;
     private int y;
 
@@ -74,7 +76,7 @@ public abstract class BaseGenerator {
     }
 
     public void renew() {
-        image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
+        image = new Image(x, y, Image.TYPE_INT_RGB);
     }
 
     public void save() {
@@ -84,8 +86,8 @@ public abstract class BaseGenerator {
         for (Entry<String, Object> entry : params.entrySet()) {
             if (entry.getKey().startsWith("global") | entry.getKey().startsWith(this.getClass().getSimpleName())) {
                 setField(entry.getKey().substring(
-                        entry.getKey().indexOf(".") + 1,
-                        entry.getKey().indexOf("=")),
+                                entry.getKey().indexOf(".") + 1,
+                                entry.getKey().indexOf("=")),
                         entry.getKey().substring(
                                 entry.getKey().indexOf("="))
                 );

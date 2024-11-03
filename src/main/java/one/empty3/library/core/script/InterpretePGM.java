@@ -42,7 +42,7 @@ public class InterpretePGM implements Interprete {
 
     @Override
     public Object interprete(String text, int pos) throws InterpreteException {
-        ECBufferedImage ec;
+        ECImage ec;
 
         InterpretesBase ib = new InterpretesBase();
         ArrayList<Integer> p = new ArrayList<Integer>();
@@ -82,7 +82,7 @@ public class InterpretePGM implements Interprete {
 
         pos = text.indexOf("\n", pos) + 1;
 
-        return new ECBufferedImage(x, y, ECBufferedImage.TYPE_INT_RGB);
+        return new ECImage(x, y, ECImage.TYPE_INT_RGB);
 
     }
 

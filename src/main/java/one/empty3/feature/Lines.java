@@ -151,7 +151,7 @@ public class Lines extends ProcessFile {
         listTmpY = new ArrayList<Double>();
         listTmpZ = new ArrayList<Double>();
         try {
-            pixM = new PixM(ImageIO.read(in));
+            pixM = new PixM(new one.empty3.libs.Image(ImageIO.read(in)));
             PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
             p = new int[pixM.getColumns()][pixM.getLines()];

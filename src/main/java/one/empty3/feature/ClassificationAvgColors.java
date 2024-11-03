@@ -23,10 +23,13 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,7 +48,7 @@ public class ClassificationAvgColors extends ProcessFile {
         try {
             // Processed by "classification
             // Non filtered image
-            BufferedImage original = ImageIO.read(in);
+            Image original = new ECImage(ImageIO.read(in));
             PixM pixMoriginal = new PixM(original);
             PixM toProcess = new PixM(original);
             Map<Integer, double[]> c = classification.k_clusterer.centroids;
@@ -84,9 +87,11 @@ public class ClassificationAvgColors extends ProcessFile {
                             sumI);
                 }
             });
-        } catch (Exception ex) {ex.printStackTrace();}
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-        
+
         return true;
     }
 }

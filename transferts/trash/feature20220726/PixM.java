@@ -29,11 +29,12 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PixM extends MBufferedImage {
+public class PixM extends MImage {
     public static final int COMP_RED = 0;
     public static final int COMP_GREEN = 1;
     public static final int COMP_BLUE = 2;
@@ -46,7 +47,7 @@ public class PixM extends MBufferedImage {
         super(l, c);
     }
 
-    public PixM(java.awt.image.BufferedImage image) {
+    public PixM(one.empty3.libs.Image image) {
         super(image.getWidth(), image.getHeight());
         float[] colorComponents = new float[4];
         for (int i = 0; i < image.getWidth(); i++) {
@@ -61,7 +62,7 @@ public class PixM extends MBufferedImage {
         }
     }
 
-    public PixM(java.awt.image.BufferedImage image, boolean isBufferedImage) {
+    public PixM(one.empty3.libs.Image image, boolean isImage) {
         super(image);
         /*
         float[] colorComponents = new float[4];
@@ -84,8 +85,8 @@ public class PixM extends MBufferedImage {
                 set(i, j, distances[i][j]);
     }
 
-    public static <T> PixM getPixM(java.awt.image.BufferedImage BufferedImage) {
-        PixM pixM = new PixM(BufferedImage);
+    public static <T> PixM getPixM(one.empty3.libs.Image Image) {
+        PixM pixM = new PixM(Image);
         return pixM;
     }
 
@@ -99,11 +100,11 @@ public class PixM extends MBufferedImage {
         return new Point3D(dr, dg, db);
     }
 
-    public static PixM getPixM(java.awt.image.BufferedImage image, double maxRes) {
+    public static PixM getPixM(one.empty3.libs.Image image, double maxRes) {
         return getPixM(image, (int) maxRes);
     }
 
-    public static PixM getPixM(java.awt.image.BufferedImage image, int maxRes) {
+    public static PixM getPixM(one.empty3.libs.Image image, int maxRes) {
         double f = 1.0;
         if (maxRes <= 0) {
             f = 1.0;
@@ -201,12 +202,12 @@ public class PixM extends MBufferedImage {
         return originValue;
     }
 
-    public java.awt.image.BufferedImage getImage() {
+    public one.empty3.libs.Image getImage() {
 
         double[] f = new double[getCompCount()];
 
-        java.awt.image.BufferedImage image = new BufferedImage(columns,
-                lines, java.awt.image.BufferedImage.TYPE_INT_RGB);
+        one.empty3.libs.Image image = new Image(columns,
+                lines, one.empty3.libs.Image.TYPE_INT_RGB);
 
 
         double[] rgba = new double[getCompCount()];
@@ -532,7 +533,7 @@ public class PixM extends MBufferedImage {
     }
 
     private GMatrix toGMatrix() {
-        GMatrix gMatrix = new GMatrix(PixM.getPixM(BufferedImage));
+        GMatrix gMatrix = new GMatrix(PixM.getPixM(Image));
         return gMatrix;
     }
 
@@ -688,8 +689,8 @@ public class PixM extends MBufferedImage {
                             vc[c] = copy.get(i, j);
                             set(i2, j2, vc[c]);
                         }
-                        if (BufferedImage != null) {
-                            BufferedImage.setRGB(i2, j2, Lumiere.getInt(vc));
+                        if (Image != null) {
+                            Image.setRGB(i2, j2, Lumiere.getInt(vc));
                         }
                     }
                 }

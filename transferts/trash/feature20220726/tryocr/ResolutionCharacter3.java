@@ -12,7 +12,7 @@
 //import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 //
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.BufferedImage;
+//import javaAnd.awt.image.Image;
 //import java.io.File;
 //import java.io.IOException;
 //import java.util.List;
@@ -53,7 +53,7 @@ import java.util.logging.Logger;
 //    public boolean cEchoing = false;
 //    int step = 1;// Searched Characters size.
 //    PixM outRecompose;
-//    private javaAnd.awt.image.BufferedImage read;
+//    private javaAnd.awt.image.Image read;
 //    private String name;
 //    private int shakeTimes;
 //    private double totalError;
@@ -65,11 +65,11 @@ import java.util.logging.Logger;
 //    private Map<Character, Integer[]> characterMapV;
 //    private int countRects = 0;
 //
-//    public ResolutionCharacter3(BufferedImage read, String name) {
+//    public ResolutionCharacter3(Image read, String name) {
 //        this(read, name, new File("testsResults"));
 //    }
 //
-//    public ResolutionCharacter3(BufferedImage read, String name, File dirOut) {
+//    public ResolutionCharacter3(Image read, String name, File dirOut) {
 //        this.read = read;
 //        this.name = name;
 //        this.dirOut = dirOut;
@@ -91,7 +91,7 @@ import java.util.logging.Logger;
 //
 //            for (File file : Objects.requireNonNull(dir.listFiles())) {
 //                if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-//                    BufferedImage read = ImageIO.read(file);
+//                    Image read = ImageIO.read(file);
 //
 //                    String name = file.getName();
 //

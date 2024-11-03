@@ -23,19 +23,15 @@
 package one.empty3.exp;
 
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;
-import one.empty3.feature.MultiLinkList;
 import one.empty3.feature.PixM;
-import one.empty3.feature.V;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
-import one.empty3.library.core.nurbs.F;
+import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Voronoi extends ProcessFile {
     private ArrayList<Point3D> pointsA = new ArrayList<>();
@@ -49,7 +45,7 @@ public class Voronoi extends ProcessFile {
             initPixMmIn(mIn);
 
             mOut = voronoi(mIn, mOut);
-            BufferedImage image = mOut.getImage();
+            Image image = mOut.getImage();
             ImageIO.write(image, "jpg", new File("results/voronoi.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +71,7 @@ public class Voronoi extends ProcessFile {
 
             PixM mOut = new PixM(mIn.getColumns(), mIn.getLines());
             voronoi(mIn, mOut);
-            BufferedImage image = mIn.getImage();
+            Image image = mIn.getImage();
             ImageIO.write(image, "jpg", out);
         } catch (Exception e) {
             e.printStackTrace();

@@ -23,18 +23,18 @@
 package one.empty3.library.core.testing;
 
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class ImageContainer {
 
-    private BufferedImage biic;
+    private Image biic;
     private String str = "";
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return biic;
     }
 
-    public void setImage(BufferedImage biic1) {
+    public void setImage(Image biic1) {
         biic = biic1;
     }
 

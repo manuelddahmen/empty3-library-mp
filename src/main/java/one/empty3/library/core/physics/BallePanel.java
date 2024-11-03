@@ -18,12 +18,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class BallePanel extends DataPanel implements Runnable {
     private static final long serialVersionUID = 4876595577262483236L;
     Bille[] positions;
-    BufferedImage bi;
+    Image bi;
     private int noBilles = 20;
     private boolean init;
     private double distanceSouris = 10;
@@ -132,7 +132,7 @@ public class BallePanel extends DataPanel implements Runnable {
         init = true;
     }
 
-    public void afficher(BufferedImage bi) {
+    public void afficher(Image bi) {
 
         Graphics g = bi.getGraphics();
 
@@ -175,7 +175,7 @@ public class BallePanel extends DataPanel implements Runnable {
         f.configurer(positions);
 
 
-        bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        bi = new Image(getWidth(), getHeight(), Image.TYPE_INT_RGB);
         Graphics g = bi.getGraphics();
 
 

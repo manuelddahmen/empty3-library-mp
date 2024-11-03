@@ -106,7 +106,7 @@ public class Histogram extends ProcessFile {
             return false;
         PixM inP;
         try {
-            inP = PixM.getPixM(ImageIO.read(in), maxRes);
+            inP = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), maxRes);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

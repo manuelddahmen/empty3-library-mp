@@ -24,12 +24,12 @@ package one.empty3.feature20220726.motion;
 
 import one.empty3.feature20220726.PixM;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class WebcamMotion extends Motion {
 
     @Override
-    public BufferedImage process(PixM frame1, PixM frame2) {
+    public Image process(PixM frame1, PixM frame2) {
         return null;
     }
 }

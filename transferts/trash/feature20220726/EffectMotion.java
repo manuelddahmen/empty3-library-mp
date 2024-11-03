@@ -24,12 +24,12 @@ package one.empty3.feature20220726;
 
 import one.empty3.feature20220726.motion.Motion;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public
 class EffectMotion extends Motion {
     @Override
-    public BufferedImage process(PixM frame1, PixM frame2) {
+    public Image process(PixM frame1, PixM frame2) {
         return frame2.getImage();
     }
 }

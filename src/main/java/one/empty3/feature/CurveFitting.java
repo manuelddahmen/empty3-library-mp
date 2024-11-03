@@ -25,15 +25,14 @@ package one.empty3.feature;
 import one.empty3.feature.app.replace.java.awt.Color;
 import one.empty3.feature.shape.Rectangle;
 import one.empty3.io.ProcessFile;
-import one.empty3.library.Axe;
-import one.empty3.library.Circle;
-import one.empty3.library.ColorTexture;
-import one.empty3.library.Point3D;
+import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -248,7 +247,7 @@ public class CurveFitting extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            pix = PixM.getPixM(ImageIO.read(in), maxRes);
+            pix = PixM.getPixM(new ECImage(ImageIO.read(in)), maxRes);
 
 
             init();
@@ -346,7 +345,7 @@ public class CurveFitting extends ProcessFile {
 
             Logger.getAnonymousLogger().log(Level.INFO, "" + curvePoints);
 
-            BufferedImage image = normalize.getImage();
+            Image image = normalize.getImage();
 
             Graphics graphics = image.getGraphics();
 

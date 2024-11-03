@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -39,7 +40,7 @@ public class DericheFilterProcess extends ProcessFile {
     public boolean process(File in, File out) {
         PixM pixM = null;
         try {
-            pixM = PixM.getPixM(ImageIO.read(in), maxRes);
+            pixM = PixM.getPixM(new ECImage(ImageIO.read(in)), maxRes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

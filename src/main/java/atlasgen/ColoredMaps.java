@@ -27,7 +27,9 @@ import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -61,16 +63,16 @@ public class ColoredMaps {
 
 
         myDims.forEach((countryCode, myDim) -> {
-            Logger.getAnonymousLogger().log(Level.INFO, 
+            Logger.getAnonymousLogger().log(Level.INFO,
                     "Colored Maps map " + countryCode
             );
             try {
-                BufferedImage image = new BufferedImage(1800,
+                Image image = new Image(1800,
                         (int)
                                 Ratio.imageHeight(myDim.latitudeExtend(),
                                         myDim.longitudeExtend(),
                                         0,
-                                        1800), BufferedImage.TYPE_INT_RGB);
+                                        1800), Image.TYPE_INT_RGB);
                 Pixeler pixeler = new Pixeler(image);
                 Graphics graphics = image.getGraphics();
                 graphics.setColor(new Color(Color.TRANSLUCENT));

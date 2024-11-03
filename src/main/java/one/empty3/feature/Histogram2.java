@@ -26,7 +26,10 @@ import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -185,18 +188,18 @@ public class Histogram2 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             File directory = new File(out.getParent());
-            PixM imageCoutours = new PixM(ImageIO.read(in));
+            PixM imageCoutours = new PixM(new ECImage(ImageIO.read(in)));
             this.m = imageCoutours;
-            BufferedImage file = m.getImage();
+            Image file = m.getImage();
 
             int levels = 10;
             double min = 0.0;
             double radiusIncr = 2;
 
 
-            BufferedImage img = file;
-            BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-            BufferedImage img3 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Image img = file;
+            Image img2 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+            Image img3 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
 
 
             List<Circle> pointsOfInterest = getPointsOfInterest(4.0);

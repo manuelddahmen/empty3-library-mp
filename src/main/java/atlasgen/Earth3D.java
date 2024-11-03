@@ -27,7 +27,7 @@ import be.manudahmen.empty3.ZBufferFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 import java.io.File;
 import java.io.IOException;
 */

@@ -30,7 +30,8 @@ package one.empty3.library.core.extra;
 import one.empty3.library.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 /*__
  * @author MANUEL DAHMEN
@@ -41,7 +42,7 @@ import java.awt.image.BufferedImage;
  */
 public class SimpleSphereAvecTexture extends SimpleSphere {
 
-    private BufferedImage img;
+    private Image img;
     private Axe axe;
     private double angle;
     private String fichier;
@@ -56,13 +57,13 @@ public class SimpleSphereAvecTexture extends SimpleSphere {
     }
 
     public SimpleSphereAvecTexture(Point3D c, double r, Color col,
-                                   BufferedImage bufferedImage) {
+                                   Image image) {
         super(c, r, col);
-        texture(bufferedImage);
+        texture(new ImageTexture((ECImage) image));
     }
 
     public SimpleSphereAvecTexture(Point3D c, Matrix33 m3d, double angle, double r,
-                                   Color col, ECBufferedImage img) {
+                                   Color col, ECImage img) {
         super(c, r, col);
         this.axe = axe;
         this.angle = angle;
@@ -109,8 +110,8 @@ public class SimpleSphereAvecTexture extends SimpleSphere {
         return t;
     }
 
-    public void texture(BufferedImage bufferedImage) {
-        this.img = bufferedImage;
+    public void texture(Image Image) {
+        this.img = Image;
     }
 
     @Override

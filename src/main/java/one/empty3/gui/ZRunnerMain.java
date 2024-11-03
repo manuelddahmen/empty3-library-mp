@@ -26,14 +26,14 @@ import one.empty3.library.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.IOException;
 import java.util.ConcurrentModificationException;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,12 +90,11 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
     public void run() {
         boolean renderedImageOK = false;
         log.info("running renderer loop....");
-        new Thread()
-        {
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                while(running) {
+                while (running) {
                     if (updateViewMain != null && updateViewMain.getWidth() > 0 && updateViewMain.getHeight() > 0) {
                         Graphics updateViewGraphics = updateViewMain.getGraphics();
                         if (lastImage != null) {
@@ -145,29 +144,26 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
                     zBuffer.draw(scene);
                     addRepere(scene);
                     lastImage = zBuffer.image();
-                    changeSupport.firePropertyChange("renderedImageOK", null , lastImage);
+                    changeSupport.firePropertyChange("renderedImageOK", null, lastImage);
                     renderedImageOK = true;
                     propertyChanged = false;
                     updateGraphics = false;
                     drawSuccess();
 
-                    } catch (NullPointerException ex)
-                {
+                } catch (NullPointerException ex) {
                     changeSupport.firePropertyChange("renderedImageOK", null, 0);
                     drawFailed();
                     renderedImageOK = true;
                     ex.printStackTrace();
-                }
-                catch (ConcurrentModificationException ex) {
+                } catch (ConcurrentModificationException ex) {
                     changeSupport.firePropertyChange("renderedImageOK", null, 0);
                     drawFailed();
                     renderedImageOK = true;
                     log.warning("Wait concurrent modification");
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                     drawFailed();
-                    changeSupport.firePropertyChange("renderedImageOK", null,-1);
+                    changeSupport.firePropertyChange("renderedImageOK", null, -1);
                 }
             }
             try {
@@ -184,15 +180,18 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
         graphics.setColor(Color.GREEN);
         try {
             graphics.drawImage(ImageIO.read(new File("resources/img/RENDEREDOK.PNG")), 0, 0, 50, 50, null);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
 
     }
+
     private void drawFailed() {
         Graphics graphics = updateViewMain.getGraphics();
         graphics.setColor(Color.RED);
         try {
             graphics.drawImage(ImageIO.read(new File("resources/img/FAILED.PNG")), 0, 0, 50, 50, null);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
 
     }
 
@@ -247,7 +246,7 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
         this.stopCurrentRender = stopCurrentRender;
     }
 
-    public void setLastImage(BufferedImage lastImage) {
+    public void setLastImage(Image lastImage) {
         this.lastImage = lastImage;
     }
 

@@ -62,9 +62,9 @@ public class K_Clusterer extends ReadDataset {
         final PixM pix;
         try {
             if (res > 0)
-                pix = PixM.getPixM(ImageIO.read(in), res);
+                pix = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), res);
             else
-                pix = new PixM(ImageIO.read(in));
+                pix = new PixM(new one.empty3.libs.Image(ImageIO.read(in)));
             PixM pix2 = new PixM(
                     pix.getColumns(),
                     pix.getLines()

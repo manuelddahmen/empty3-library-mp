@@ -32,7 +32,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -417,7 +419,7 @@ public class MeshGEditorThread extends Thread implements PropertyChangeListener 
                     for (int j = -2; j <= 2; j++) {
                         int x = (int) point.getX() + i;
                         int y = (int) point.getY() + j;
-                        BufferedImage lastImage = (BufferedImage) getMain().getUpdateView().getzRunner().getLastImage();
+                        Image lastImage = (Image) getMain().getUpdateView().getzRunner().getLastImage();
                         if ((x >= 0) && (x < lastImage.getWidth()) && (y >= 0) && (y < lastImage.getHeight())) {
                             lastImage.setRGB(x, y, color.getRGB());
                         }

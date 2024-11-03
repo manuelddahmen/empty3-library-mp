@@ -23,8 +23,10 @@
 import one.empty3.growth.graphics.Rotation2;
 import one.empty3.library.Point3D;
 import one.empty3.growth.test.TestCaseExtended;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 /*
 public class TestRotation2_methodeBis extends TestCaseExtended {
 
@@ -154,7 +156,7 @@ public class TestRotation2_methodeBis extends TestCaseExtended {
     }
 
     public void testRotation360deg300RandomAxe() {
-        BufferedImage image = new BufferedImage(1600, 1200, BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(1600, 1200, Image.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.YELLOW);
         Point3D y = Point3D.O0;

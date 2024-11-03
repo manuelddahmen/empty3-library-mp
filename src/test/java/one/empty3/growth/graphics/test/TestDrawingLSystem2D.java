@@ -33,7 +33,9 @@ import org.junit.runners.JUnit4;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -128,7 +130,7 @@ public class TestDrawingLSystem2D extends TestCaseExtended {
         symbolSequence.add(new Symbol('A'));
         lSystem.setCurrentSymbols(symbolSequence);
 
-        turtle2D = new Turtle2D(new BufferedImage(1600, 1200, BufferedImage.TYPE_INT_RGB));
+        turtle2D = new Turtle2D(new Image(1600, 1200, Image.TYPE_INT_RGB));
         turtle2D.setZeColor(Color.RED);
 
 
@@ -336,7 +338,7 @@ public class TestDrawingLSystem2D extends TestCaseExtended {
             lSystem.applyRules();
             Logger.getAnonymousLogger().log(Level.INFO, "t::" + lSystem.getT());
             if (i < n - 1 && writeIntermediateImages) {
-                BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+                Image bufferedImage = new Image(width, height, Image.TYPE_INT_RGB);
                 turtle2D = new Turtle2D(bufferedImage);
                 turtle2D.setZeColor(Color.WHITE);
                 DrawingLSystem2D drawingLSystem2D = new DrawingLSystem2D(turtle2D, lSystem, map);

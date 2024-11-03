@@ -22,10 +22,11 @@
 
 package one.empty3.feature.app.replace.javax.imageio;
 
-//import android.graphics.BufferedImage;
-//import android.graphics.BufferedImageFactory;
+//import android.graphics.Image;
+//import android.graphics.ImageFactory;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ImageIO {
-    public static java.awt.image.BufferedImage read(File file) {
+    public static one.empty3.libs.Image read(File file) {
         try {
             javax.imageio.ImageIO.read(file);
         } catch (IOException e) {
@@ -44,7 +45,7 @@ public class ImageIO {
             if (!file.isDirectory()) {
                 if (file.exists()) {
                     FileInputStream fileInputStream = new FileInputStream(file);
-                    java.awt.image.BufferedImage bufferedImage2 = javax.imageio.ImageIO.read(fileInputStream);
+                    one.empty3.libs.Image bufferedImage2 = new one.empty3.libs.Image(javax.imageio.ImageIO.read(fileInputStream));
                     fileInputStream.close();
                     fileInputStream = null;
                     return bufferedImage2;
@@ -59,7 +60,7 @@ public class ImageIO {
         }
     }
 
-    public static boolean write(BufferedImage imageOut, String jpg, File out) {
+    public static boolean write(Image imageOut, String jpg, File out) {
 
         try {
             javax.imageio.ImageIO.write(imageOut, "jpg", out);
@@ -91,19 +92,19 @@ public class ImageIO {
         return true;*/
     }
     /*
-    public static BufferedImage read(File file) {
+    public static Image read(File file) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
-            BufferedImage BufferedImage = BufferedImageFactory.decodeStream(fileInputStream);
+            Image Image = ImageFactory.decodeStream(fileInputStream);
             fileInputStream.close();
-            return BufferedImage;
+            return Image;
         
         return null;
     }
 
-    public static boolean write(BufferedImage imageOut, String jpg, File out) throws IOException {
+    public static boolean write(Image imageOut, String jpg, File out) throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream(out);
-        imageOut.compress(BufferedImage.CompressFormat.JPEG, 10, fileOutputStream);
+        imageOut.compress(Image.CompressFormat.JPEG, 10, fileOutputStream);
         fileOutputStream.close();
         return false;
     }*/

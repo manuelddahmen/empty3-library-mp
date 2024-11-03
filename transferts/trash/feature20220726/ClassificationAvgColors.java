@@ -22,7 +22,8 @@
 
 package one.empty3.feature20220726;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class ClassificationAvgColors extends ProcessFile {
         classification.process(in, out);
         // Processed by "classification
         // Non filtered image
-        BufferedImage original = ImageIO.read(in);
+        Image original = ImageIO.read(in);
         PixM pixMOriginal = new PixM(Objects.requireNonNull(original));
         PixM toProcess = new PixM(original);
         Map<Integer, double[]> c = classification.kClusterer.centroids;

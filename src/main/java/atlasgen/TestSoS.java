@@ -29,9 +29,10 @@ import one.empty3.library.core.testing.TestObjetSub;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,18 +63,19 @@ public class TestSoS extends TestObjetSub {
     private Point3D sphereDest = Point3D.Y;
     ITexture colorTextureSurface = new TextureCol(Color.GREEN);
     private double segemntSize = 1;
-    private BufferedImage bufferedImageHeightMap;
-    private BufferedImage bufferedImageTexture;
+    private Image bufferedImageHeightMap;
+    private Image bufferedImageTexture;
     TextureOpSphere textureOpSphere;
+
     public void ginit() {
         list = new File("res/img/planets").list();
         planetNo = 0;
         assert list != null;
         setMaxFrames(360 * list.length);
         try {
-            bufferedImageHeightMap = ImageIO.read(new File("res/img/gebco_08_rev_elev_21600x10800.png"));
-            bufferedImageTexture = ImageIO.read(new File("res/img/planets/" + list[planetNo]));
-            TextureImg textureImg = new TextureImg(new ECBufferedImage(bufferedImageTexture));
+            bufferedImageHeightMap = new ECImage(ImageIO.read(new File("res/img/gebco_08_rev_elev_21600x10800.png")));
+            bufferedImageTexture = new ECImage(ImageIO.read(new File("res/img/planets/" + list[planetNo])));
+            TextureImg textureImg = new TextureImg(new ECImage(bufferedImageTexture));
             textureOpSphere = new TextureOpSphere(textureImg);
 
             if (frame() % 361 == 360)
@@ -132,7 +134,7 @@ public class TestSoS extends TestObjetSub {
                 representableConteneur.add(pcOnPs);
 
             }
-         }
+        }
         camera = new CameraInPath(new Circle(
                 new Axe(Point3D.O0.plus(Point3D.X), Point3D.O0.moins(Point3D.X)), RADIUS * 4));
 

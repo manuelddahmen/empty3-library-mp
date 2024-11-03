@@ -26,7 +26,8 @@ import java.awt.Color;
 
 import one.empty3.io.ProcessFile;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.io.File;
 
 import javaAnd.awt.image.imageio.ImageIO;
@@ -42,7 +43,7 @@ public class IsleProcess extends ProcessFile {
         File file = in;
 
         PixM pix = null;
-        BufferedImage img = null;
+        Image img = null;
         try {
             img = ImageIO.read(file);
             pix = PixM.getPixM(img, -10.0);

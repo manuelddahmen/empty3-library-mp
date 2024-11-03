@@ -28,7 +28,7 @@ package one.empty3.library.core.testing2;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import net.miginfocom.swing.MigLayout;
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.core.testing.*;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
@@ -39,7 +39,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -58,7 +60,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
      */
     private static final long serialVersionUID = -7844993762133687210L;
     private final JTextArea jTextAreaMessage = new JTextArea("");
-    private ECBufferedImage image = null;
+    private ECImage image = null;
     private ImageContainer biic;
     private boolean stop = false;
 
@@ -97,7 +99,6 @@ public final class ShowTestResult extends JFrame implements Runnable {
     private JTable jTableEquations = new JTable();
     private boolean displaying = true;
     private ViewerFrame windowGl = null;
-    private TestObjetJoglDrawer testObjetJoglDrawer;
 
     /*__
      * Creates new form ShowTestResult
@@ -123,7 +124,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 
     }
 
-    public ShowTestResult(BufferedImage ri) {
+    public ShowTestResult(Image ri) {
         initComponents();
 
         loadImage(ri);
@@ -132,7 +133,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public ShowTestResult(ECBufferedImage ri) {
+    public ShowTestResult(ECImage ri) {
         initComponents();
 
         image = ri;
@@ -181,7 +182,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 
     public void dessine() {
         if (biic != null && biic.getImage() != null) {
-            image = new ECBufferedImage(biic.getImage());
+            image = new ECImage(biic.getImage());
             if (image != null) {
                 if (jPanel1 != null) {
                     Graphics g = jPanel1.getGraphics();
@@ -372,7 +373,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
                 for (File file : files) {
                     if (file.isFile() && file.exists()) {
                         try {
-                            BufferedImage read = ImageIO.read(file);
+                            Image read = new ECImage(ImageIO.read(file));
                             if (read != null) {
                                 assert encoder != null;
                                 encoder.encodeImage(read);
@@ -402,7 +403,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
     public void exceptionReception(Exception t) {
         this.throwable = t;
         try {
-            image = new ECBufferedImage(
+            image = new ECImage(
                     ImageIO.read(
                             getClass().getResourceAsStream("one/empty3/library/core/testing2/RESULT_FAILURE.png")
                     )
@@ -660,9 +661,6 @@ public final class ShowTestResult extends JFrame implements Runnable {
                     windowGl = new
 
                             ViewerFrame("TestObjet : " + testRef.getClass());
-                    testObjetJoglDrawer = new
-
-                            TestObjetJoglDrawer(windowGl, testRef.scene());
                     if (!windowGl.isVisible()) {
                         windowGl.setVisible(true);
 
@@ -724,8 +722,8 @@ public final class ShowTestResult extends JFrame implements Runnable {
         return vv;
     }
 
-    public void loadImage(BufferedImage ri) {
-        this.image = new ECBufferedImage(ri);
+    public void loadImage(Image ri) {
+        this.image = new ECImage(ri);
         if (image != null) {
             setSize(new Dimension(image.getWidth(), image.getHeight()));
         }
@@ -801,12 +799,5 @@ public final class ShowTestResult extends JFrame implements Runnable {
         this.windowGl = windowGl;
     }
 
-    public TestObjetJoglDrawer getTestObjetJoglDrawer() {
-        return testObjetJoglDrawer;
-    }
-
-    public void setTestObjetJoglDrawer(TestObjetJoglDrawer testObjetJoglDrawer) {
-        this.testObjetJoglDrawer = testObjetJoglDrawer;
-    }
 }
 

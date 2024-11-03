@@ -101,7 +101,7 @@ public class TextureEditor extends JPanel {
                 if (Arrays.stream(extensionsImg).anyMatch(s -> s.equals(finalF.getAbsolutePath().substring(finalF.getAbsolutePath().lastIndexOf(".")).toLowerCase()))) {
                     try {
                         tableModelTexture.getLines().add(new TableModelTexture.ModelLine(f, new TextureImg(
-                                new ECBufferedImage(ImageIO.read(f))), TextureImg.class));
+                                new ECImage(ImageIO.read(f))), TextureImg.class));
                         done = true;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -200,7 +200,7 @@ public class TextureEditor extends JPanel {
                 {
                     if (choiceTexType == 1) {
                         try {
-                            TextureImg textureImg = new TextureImg(new ECBufferedImage(ImageIO.read(sel)));
+                            TextureImg textureImg = new TextureImg(new ECImage(ImageIO.read(sel)));
                             getMain().getDataModel().addTexture(textureImg);
                             tableModelTexture.getLines().add(new TableModelTexture.ModelLine(sel, textureImg, textureImg.getClass()));
                         } catch (IOException e1) {

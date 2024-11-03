@@ -31,7 +31,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 @RunWith(JUnit4.class)
 public class TestRotation2_methodeBis extends TestCaseExtended {
@@ -189,7 +190,7 @@ public class TestRotation2_methodeBis extends TestCaseExtended {
 
     @Test
     public void testRotation360deg300RandomAxe() {
-        BufferedImage image = new BufferedImage(1600, 1200, BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(1600, 1200, Image.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.YELLOW);
         Point3D y = Point3D.O0;

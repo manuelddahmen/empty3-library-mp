@@ -26,7 +26,9 @@ import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -274,19 +276,19 @@ public class RegionLineCorner extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             File directory = new File(out.getParent());
-            PixM imageCoutours = PixM.getPixM(ImageIO.read(in), 500.0);
+            PixM imageCoutours = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), 500.0);
             this.m = imageCoutours;
-            BufferedImage file = m.getImage();
+            Image file = m.getImage();
 
             int levels = 10;
             double min = 0.0;
             double radiusIncr = 2;
             for (int i = 0; i < levels; i++) {
 
-                BufferedImage img = file;
-                BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-                BufferedImage img3 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-                BufferedImage img4 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+                Image img = file;
+                Image img2 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+                Image img3 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+                Image img4 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
 
                 int finalI = i;
                 List<Circle> pointsOfInterest = getPointsOfInterest(levels);

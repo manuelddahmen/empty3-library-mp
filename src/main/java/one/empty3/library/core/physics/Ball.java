@@ -26,7 +26,8 @@ package one.empty3.library.core.physics;
 import one.empty3.library.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
 
 
 public class Ball {
@@ -40,11 +41,11 @@ public class Ball {
     public double masse;
     public double energie;
     public Point3D position;
-    public BufferedImage texture;
+    public Image texture;
     public Matrix33 rotation;
 
     public Ball(String nom, Color color, Point3D vitesse, double masse,
-                double energie, Point3D position, BufferedImage texture,
+                double energie, Point3D position, Image texture,
                 Matrix33 rotation) {
         super();
         this.nom = nom;

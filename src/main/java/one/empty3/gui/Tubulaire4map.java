@@ -22,25 +22,26 @@
 
 package one.empty3.gui;
 
-import one.empty3.library.ECBufferedImage;
+import one.empty3.library.ECImage;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.Tubulaire3;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class Tubulaire4map extends Tubulaire3 {
 
-    private StructureMatrix<ECBufferedImage> mapVolume = new StructureMatrix<>(0, ECBufferedImage.class);
+    private StructureMatrix<ECImage> mapVolume = new StructureMatrix<>(0, ECImage.class);
 
     public Tubulaire4map() {
         super();
-        mapVolume.setElem(new ECBufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB));
+        mapVolume.setElem(new ECImage(100, 100, Image.TYPE_INT_ARGB));
     }
-    public void updateBufferedImage(BufferedImage bufferedImage) {
-        this.mapVolume.setElem(new ECBufferedImage(bufferedImage));
+
+    public void updateImage(Image Image) {
+        this.mapVolume.setElem(new ECImage(Image));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Tubulaire4map extends Tubulaire3 {
     @Override
     public Point3D calculerPoint3D(double v, double u) { // INVERSER u,v => v,u . Ne suffit pas : problème de trous dans l'affichage.
         Point3D[] vectPerp = vectPerp(v, u);
-        double  lum = Lumiere.getDoubles(mapVolume.getElem().getRGB(getX(v), getY(u)))[0];
+        double lum = Lumiere.getDoubles(mapVolume.getElem().getRGB(getX(v), getY(u)))[0];
         Point3D plus = getSoulCurve().getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(((FctXY) getDiameterFunction().getElem()).result(u) * lum).mult(Math.cos(2 * Math.PI * v))).plus(
                 vectPerp[2].mult(((FctXY) getDiameterFunction().getElem()).result(u) * lum).mult(Math.sin(2 * Math.PI * v)));
@@ -68,9 +69,10 @@ public class Tubulaire4map extends Tubulaire3 {
     }
 
     private int getX(double u) {
-        return (int)(u*(mapVolume.getElem().getWidth()-1));
+        return (int) (u * (mapVolume.getElem().getWidth() - 1));
     }
+
     private int getY(double v) {
-        return (int)(v*(mapVolume.getElem().getHeight()-1));
+        return (int) (v * (mapVolume.getElem().getHeight() - 1));
     }
 }

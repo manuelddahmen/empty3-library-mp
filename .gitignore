@@ -41,7 +41,7 @@ Temporary Items
 # Windows
 # =========================
 
-# Windows ecBufferedImageStructureMatrix file caches
+# Windows ecImageStructureMatrix file caches
 Thumbs.db
 ehthumbs.db
 

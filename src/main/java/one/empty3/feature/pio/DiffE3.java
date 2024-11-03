@@ -213,7 +213,7 @@ private int sizeElement = 20, elementSize=20;
 
             if (!in.getName().endsWith(".jpg"))
                 return false;
-            PixM pi = new PixM(ImageIO.read(in));
+            PixM pi = new PixM(new one.empty3.libs.Image(ImageIO.read(in)));
             moutA = pi;
             moutB = pi;
             // work on featutes

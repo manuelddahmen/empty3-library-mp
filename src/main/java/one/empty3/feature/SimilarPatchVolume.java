@@ -27,7 +27,9 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
@@ -45,8 +47,8 @@ public class SimilarPatchVolume {
             Time.from(Instant.now()).toString().replace(' ', '_').replace('|', '_')
                     .replace('\\', '_').replace('/', '_').replace(':', '_')
             + "/");
-    //private BufferedImage image2;
-    private BufferedImage image1;
+    //private Image image2;
+    private Image image1;
 
     /*
     public static void makeGoodOutput(File original, File folderOutput) {
@@ -60,7 +62,7 @@ public class SimilarPatchVolume {
         }
     }
 */
-    public static void work(File dir, BufferedImage imageToWrite, String outputFilename) throws IOException {
+    public static void work(File dir, Image imageToWrite, String outputFilename) throws IOException {
         File dir1 = new File(dir.getAbsolutePath() + "/" + outputFilename.substring(0,
                 outputFilename.lastIndexOf("/")));
         File file = new File(dir.getAbsolutePath() + "/" + outputFilename);
@@ -89,7 +91,7 @@ public class SimilarPatchVolume {
         new SimilarPatchVolume().exec();
     }
 
-    public BufferedImage getImageFromDir(String filename1) {
+    public Image getImageFromDir(String filename1) {
         String s0 = filename1.substring(filename1.lastIndexOf(".") + 1);
         if ((Arrays.asList(ImageIO.getReaderMIMETypes()).contains(s0))) {
             Logger.getAnonymousLogger().log(Level.INFO, "No ImageReader for " + s0 + " from file" + filename1);
@@ -235,9 +237,9 @@ public class SimilarPatchVolume {
 
         }
     */
-    public static BufferedImage hideAlpha(File input) throws IOException {
+    public static Image hideAlpha(File input) throws IOException {
         // Read input
-        BufferedImage inputImage = ImageIO.read(input);
+        Image inputImage = new one.empty3.libs.Image(ImageIO.read(input));
 
         // Make any transparent parts white
         if (inputImage.getTransparency() == Transparency.TRANSLUCENT) {

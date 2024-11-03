@@ -27,14 +27,12 @@ import one.empty3.library.Point2D
 import one.empty3.library.Point3D
 import one.empty3.library.StructureMatrix
 import one.empty3.library1.shader.Vec
-import org.bridj.cpp.std.list
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import java.io.File
 import kotlin.Array
-import kotlin.math.pow
 
 /**
  * Test class for AlgebraicTree.

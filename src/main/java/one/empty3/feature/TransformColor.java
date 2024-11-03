@@ -33,7 +33,7 @@ public class TransformColor extends ProcessFile {
     public boolean process(File in, File out) {
         try {
 
-            PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM pix = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(in)), maxRes);
 
             for (int i = 0; i < pix.getColumns(); i++) {
                 for (int j = 0; j < pix.getLines(); j++) {

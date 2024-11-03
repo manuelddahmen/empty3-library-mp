@@ -29,7 +29,7 @@ import one.empty3.feature20220726.PixM;
 import one.empty3.library.Lumiere;
 
 import javaAnd.awt.*;
-import javaAnd.awt.image.BufferedImage;
+import javaAnd.awt.image.Image;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -38,12 +38,12 @@ import java.util.logging.Logger;
 
 public class FeatureMotion extends Motion {
     @Override
-    public java.awt.image.BufferedImage process(PixM frame1, PixM frame2) {
+    public one.empty3.libs.Image process(PixM frame1, PixM frame2) {
         FeatureMatch featureMatch = new FeatureMatch();
 
         List<double[]> match = featureMatch.match(frame1, frame2);
 
-        BufferedImage bufferedImage = new javaAnd.awt.image.BufferedImage(frame1.getColumns(), frame1.getLines(), javaAnd.awt.image.BufferedImage.TYPE_INT_RGB);
+        Image bufferedImage = new javaAnd.awt.image.Image(frame1.getColumns(), frame1.getLines(), javaAnd.awt.image.Image.TYPE_INT_RGB);
 
         for (int i = 0; i < frame1.getColumns(); i++) {
             for (int j = 0; j < frame1.getLines(); j++) {

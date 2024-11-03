@@ -24,7 +24,9 @@ package one.empty3.feature;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +43,7 @@ public class HoughTransformOutput {
     static int imgHeight;
 
     public static void writeImage(int[][] imgArray, File outFile) throws Exception {
-        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        Image img = new Image(imgWidth, imgHeight, Image.TYPE_INT_ARGB);
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
                 img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
@@ -51,7 +53,7 @@ public class HoughTransformOutput {
     }
 
     public static void writeImage(double[][] imgArray, File outFile) throws Exception {
-        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY);
+        Image img = new Image(imgWidth, imgHeight, Image.TYPE_BYTE_GRAY);
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
                 img.setRGB(i, j, (int) imgArray[i][j]);
@@ -60,12 +62,12 @@ public class HoughTransformOutput {
         ImageIO.write(img, "png", outFile);
     }
 
-    public static void writeImage(BufferedImage image, File outFile) throws Exception {
+    public static void writeImage(Image image, File outFile) throws Exception {
         ImageIO.write(image, "png", outFile);
     }
 
     public static void writeImage(double[][] sobelArray, File outFile, int threshold) throws Exception {
-        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY);
+        Image img = new Image(imgWidth, imgHeight, Image.TYPE_BYTE_GRAY);
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
                 if (sobelArray[i][j] > threshold) {
@@ -76,7 +78,7 @@ public class HoughTransformOutput {
         ImageIO.write(img, "png", outFile);
     }
 
-    public static void superimposeCircles(List<CircleHit> hits, BufferedImage in, File out) {
+    public static void superimposeCircles(List<CircleHit> hits, Image in, File out) {
         Graphics2D g = in.createGraphics();
         g.setColor(Color.RED);
         for (int circles = 0; circles < drawnCircles; circles++) {
@@ -100,9 +102,9 @@ public class HoughTransformOutput {
     }
 
     public static void superimposeCircles(List<CircleHit> hits, double[][] sobelTotal, File out) throws Exception {
-        BufferedImage totalCircles = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        Image totalCircles = new Image(imgWidth, imgHeight, Image.TYPE_INT_ARGB);
 
-        BufferedImage total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
+        Image total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
         totalCircles.getGraphics().drawImage(total, 0, 0, null);
         Graphics2D g = totalCircles.createGraphics();
         g.setColor(Color.RED);
@@ -122,8 +124,8 @@ public class HoughTransformOutput {
         ImageIO.write(totalCircles, "png", out);
     }
 
-    public static BufferedImage scaledSobelResult(double[][] sobelTotal) {
-        BufferedImage total = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY);
+    public static Image scaledSobelResult(double[][] sobelTotal) {
+        Image total = new Image(imgWidth, imgHeight, Image.TYPE_BYTE_GRAY);
         double max = 0;
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
@@ -156,9 +158,9 @@ public class HoughTransformOutput {
 
 
     //changes the brightness of an image by the factor given
-    private static BufferedImage changeBrightness(float brightenFactor, BufferedImage image) {
+    private static Image changeBrightness(float brightenFactor, Image image) {
         RescaleOp op = new RescaleOp(brightenFactor, 0, null);
-        image = op.filter(image, image);
+        image = new Image(op.filter(image, image));
         return image;
     }
 }

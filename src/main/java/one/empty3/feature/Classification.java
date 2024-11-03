@@ -23,18 +23,21 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.library.ECImage;
 import one.empty3.library.Lumiere;
 import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
+import one.empty3.libs.Image;
+
 import java.io.File;
 import java.util.Random;
 
 public class Classification extends ProcessFile {
     Random random = new Random();
-    private BufferedImage imageOut;
+    private Image imageOut;
     private int SIZE = 5;
     private double ratio = 0.3;
     private double threshold = 0.3;
@@ -45,15 +48,15 @@ public class Classification extends ProcessFile {
         if (!in.getName().endsWith(".jpg"))
             return false;
         PixM selectPointColorMassAglo = null;
-        BufferedImage read = null;
+        Image read = null;
         try {
-            read = ImageIO.read(in);
+            read = new ECImage(ImageIO.read(in));
             selectPointColorMassAglo = PixM.getPixM(read, maxRes);
         } catch (Exception ex) {
         }
 
         try {
-            imageOut = ImageIO.read(in);
+            imageOut = new ECImage(ImageIO.read(in));
         } catch (Exception ex) {
         }
 

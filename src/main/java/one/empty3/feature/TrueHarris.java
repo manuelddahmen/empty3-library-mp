@@ -22,7 +22,7 @@
 
 package one.empty3.feature;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
 
 public class TrueHarris extends FilterPixM {
 
@@ -47,11 +47,11 @@ public class TrueHarris extends FilterPixM {
 
         //double r = (sSx2 * sSy2 - sSxy * sSxy);// / (sSx2 + sSy2);
         //double r = (Ix2 + Iy2 - Ix * Iy - Ixy) ;// / (sSx2 + sSy2);
-        double r = Math.abs(0.5-get(i,j));
+        double r = Math.abs(0.5 - get(i, j));
         return r;
     }
 
     public double pow2(double a) {
-        return a*a;
+        return a * a;
     }
 }

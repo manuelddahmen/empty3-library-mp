@@ -6,7 +6,7 @@
 //
 //import javaAnd.awt.image.imageio.ImageIO;
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.BufferedImage;
+//import javaAnd.awt.image.Image;
 //import java.io.FileInputStream;
 //import java.io.InputStream;
 //import java.util.List;
@@ -131,7 +131,7 @@ import java.util.logging.Logger;
 //     * @param increment The shift of the window at each sub-step, in terms of percentage of the window size.
 //     * @return the list of rectangles containing searched objects, expressed in pixels.
 //     */
-//    public List<java.awt.Rectangle> getFaces(BufferedImage image, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) {
+//    public List<java.awt.Rectangle> getFaces(Image image, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) {
 //        List<Rectangle> ret = new ArrayList<Rectangle>();
 //        int width = image.getWidth();
 //        int height = image.getHeight();

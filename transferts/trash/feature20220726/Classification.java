@@ -29,7 +29,8 @@ import java.util.Objects;
 import java.util.Random;
 
 import java.awt.Color;
-import javaAnd.awt.image.BufferedImage;
+
+import javaAnd.awt.image.Image;
 import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
@@ -37,7 +38,7 @@ import one.empty3.library.core.lighting.Colors;
 
 public class Classification extends ProcessFile {
     Random random = new Random();
-    private java.awt.image.BufferedImage imageOut;
+    private one.empty3.libs.Image imageOut;
     private int SIZE = 5;
     private double ratio = 0.3;
     private double threshold = 0.3;
@@ -50,7 +51,8 @@ public class Classification extends ProcessFile {
             tempFile = File.createTempFile("effectClassification-", ".jpg");
             Lines7luckyLinesOutline lines7luckyLinesOutline = new Lines7luckyLinesOutline();
             lines7luckyLinesOutline.process(in, tempFile);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         //!!! Border effect
         in = tempFile;
@@ -64,7 +66,7 @@ public class Classification extends ProcessFile {
         if (!in.getName().endsWith(".jpg"))
             return false;
         PixM selectPointColorMassAglo = null;
-        java.awt.image.BufferedImage read = null;
+        one.empty3.libs.Image read = null;
         read = Objects.requireNonNull(ImageIO.read(in));
         selectPointColorMassAglo = PixM.getPixM(read, maxRes);
         imageOut = ImageIO.read(in);

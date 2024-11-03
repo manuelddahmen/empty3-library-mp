@@ -30,7 +30,8 @@ import one.empty3.library.core.nurbs.FunctionSurface;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library1.tree.AlgebraicFormulaSyntaxException;
 
-import java.awt.image.BufferedImage;
+import one.empty3.libs.Image;
+
 import java.util.ArrayList;
 
 /**
@@ -41,7 +42,7 @@ public class HeightMapSurfaceXYZ extends HeightMapSurface {
     public HeightMapSurfaceXYZ(){
         super();
     }
-    public HeightMapSurfaceXYZ(ParametricSurface ps, BufferedImage image) {
+    public HeightMapSurfaceXYZ(ParametricSurface ps, Image image) {
         super(ps, image);
     }
 }
