@@ -25,6 +25,8 @@ package one.empty3.feature;
 import one.empty3.feature.app.replace.java.awt.Color;
 import one.empty3.feature.shape.Rectangle;
 import one.empty3.io.ProcessFile;
+import one.empty3.*;
+import one.empty3.ECImage;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 

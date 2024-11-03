@@ -30,6 +30,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 //import com.xuggle.mediatool.MediaListenerAdapter;
 
 import java.awt.*;

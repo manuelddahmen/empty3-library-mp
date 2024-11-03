@@ -22,12 +22,14 @@
 
 package one.empty3.gui;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

@@ -23,6 +23,7 @@
 package one.empty3.library.objloader;
 
 import com.jogamp.opengl.GL2;
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
 

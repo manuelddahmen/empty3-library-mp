@@ -27,6 +27,7 @@
  */
 package one.empty3.library.core.tribase;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 public interface IFct1D3D {

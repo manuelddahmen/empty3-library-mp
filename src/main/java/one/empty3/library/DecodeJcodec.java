@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.api.awt.AWTFrameGrab;
@@ -44,6 +47,7 @@ import org.jcodec.scale.Transform;
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.io.FileNotFoundException;

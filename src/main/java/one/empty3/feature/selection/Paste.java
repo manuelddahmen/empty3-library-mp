@@ -24,6 +24,8 @@ package one.empty3.feature.selection;
 
 import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
+import one.empty3.*;
+import one.empty3.ECImage;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricCurve;
 

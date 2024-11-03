@@ -24,7 +24,7 @@ package one.empty3.feature20220726.motion;
 
 import one.empty3.feature20220726.PixM;
 
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
 
 import java.util.ArrayList;
 

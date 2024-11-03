@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class TRIGeneratorUtil {
 
     public static TRIObject P32DTriQuad(Point3D[] points, int dimx, int dimy) {

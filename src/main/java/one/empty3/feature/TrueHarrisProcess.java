@@ -30,6 +30,7 @@ import one.empty3.io.ProcessFile;
 import java.io.File;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 public class TrueHarrisProcess extends ProcessFile {
 

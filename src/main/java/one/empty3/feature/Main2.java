@@ -26,6 +26,7 @@ package one.empty3.feature;
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.io.IOException;

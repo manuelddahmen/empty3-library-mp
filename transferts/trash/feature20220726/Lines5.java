@@ -29,7 +29,8 @@ import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.io.File;
 import java.io.IOException;

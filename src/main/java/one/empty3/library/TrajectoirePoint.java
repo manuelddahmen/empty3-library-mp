@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class TrajectoirePoint implements Trajectoire {
 
     private Point3D[] points;

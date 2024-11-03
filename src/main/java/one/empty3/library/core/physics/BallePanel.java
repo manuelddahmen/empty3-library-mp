@@ -12,6 +12,7 @@
 /*
 package one.empty3.library.core.physics;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 public class BallePanel extends DataPanel implements Runnable {
     private static final long serialVersionUID = 4876595577262483236L;

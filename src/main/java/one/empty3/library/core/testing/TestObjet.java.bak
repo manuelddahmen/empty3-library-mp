@@ -38,6 +38,7 @@
  */
 package one.empty3.library.core.testing;
 
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.export.ObjExport;
 import one.empty3.library.core.export.STLExport;
@@ -57,6 +58,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;

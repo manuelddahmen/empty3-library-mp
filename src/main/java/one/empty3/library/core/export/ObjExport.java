@@ -23,6 +23,7 @@
 
 package one.empty3.library.core.export;
 
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.exporters.obj.Exporter;

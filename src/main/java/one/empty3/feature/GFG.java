@@ -27,12 +27,15 @@
 //
 //import  one.empty3.feature.app.replace.javax.imageio.ImageIO;
 //import one.empty3.io.ProcessFile;
-//import one.empty3.library.*;
+//import one.empty3.*;
+import one.empty3.ECImage;
+import one.empty3.library.*;
 //import one.empty3.library.core.math.Matrix;
 //import one.empty3.library.core.nurbs.Fct1D_1D;
 //
 //import java.awt.*;
 //import one.empty3.libs.Image;
+import one.empty3.ECImage;
 //import java.io.File;
 //import java.io.IOException;
 //

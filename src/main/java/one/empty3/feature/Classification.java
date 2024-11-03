@@ -23,7 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.Lumiere;
 import one.empty3.library.core.lighting.Colors;
 
@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.util.Random;

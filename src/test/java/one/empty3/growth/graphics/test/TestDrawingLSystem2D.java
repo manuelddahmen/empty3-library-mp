@@ -35,6 +35,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.awt.image.RenderedImage;
 import java.io.File;

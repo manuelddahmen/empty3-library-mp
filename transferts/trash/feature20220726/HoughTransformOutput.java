@@ -2,7 +2,7 @@
 //
 //import javaAnd.awt.image.imageio.ImageIO;
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.Image;
+//import one.empty3.libs.Image;
 //import javaAnd.awt.image.Graphics2D;
 //
 //import java.awt.image.RescaleOp;

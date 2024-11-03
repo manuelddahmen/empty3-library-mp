@@ -25,6 +25,7 @@
  */
 package one.empty3.library.core.script;
 
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
 import one.empty3.library.core.extra.*;

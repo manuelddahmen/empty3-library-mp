@@ -20,7 +20,10 @@
  *
  */
 
-package one.empty3.library;/*
+package one.empty3.library;
+
+
+import one.empty3.ECImage;/*
  * 2013 Manuel Dahmen
  */
 

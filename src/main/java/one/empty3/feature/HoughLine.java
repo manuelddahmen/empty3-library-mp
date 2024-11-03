@@ -23,6 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 /*
  * Represents a linear line as detected by the hough transform.

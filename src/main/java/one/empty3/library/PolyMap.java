@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 /*__
  * Represents polygons built on a up axis. Each point of one polygon is joint by
  * his neighbors left, right, up down '''

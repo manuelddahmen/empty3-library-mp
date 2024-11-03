@@ -30,7 +30,7 @@ import java.util.Random;
 
 import java.awt.Color;
 
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
 import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;

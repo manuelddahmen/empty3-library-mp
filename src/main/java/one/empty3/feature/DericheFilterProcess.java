@@ -23,7 +23,7 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;

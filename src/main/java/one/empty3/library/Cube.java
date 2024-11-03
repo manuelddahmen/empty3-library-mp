@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class Cube extends Representable implements TRIGenerable {
     private StructureMatrix<Double> cote = new StructureMatrix<>(0, Double.class);
     private StructureMatrix<Point3D> position0 = new StructureMatrix<>(0, Point3D.class);

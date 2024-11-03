@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 /*__
  * Created by manuel Dahmen manuel.dahmen@gmail.com on 08-10-15.
  */

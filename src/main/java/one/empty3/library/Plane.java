@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import one.empty3.library.core.tribase.Plan3D;
 
 public class Plane extends Plan3D {

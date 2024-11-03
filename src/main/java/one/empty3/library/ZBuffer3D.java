@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public interface ZBuffer3D extends ZBuffer {
 
     void genererEtRetourner(Scene sc);

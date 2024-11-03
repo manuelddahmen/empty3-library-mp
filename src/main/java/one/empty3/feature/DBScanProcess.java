@@ -26,7 +26,7 @@ import one.empty3.feature.kmeans.K_Clusterer;
 import one.empty3.feature.kmeans.MakeDataset;
 import one.empty3.feature.kmeans.ReadDataset;
 import one.empty3.io.ProcessFile;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;

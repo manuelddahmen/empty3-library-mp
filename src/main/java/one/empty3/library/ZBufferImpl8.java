@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.Point3DS;
@@ -36,6 +39,7 @@ import one.empty3.pointset.PCont;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.util.Iterator;
 import java.util.List;

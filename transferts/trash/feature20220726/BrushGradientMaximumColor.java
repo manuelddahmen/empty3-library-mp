@@ -25,7 +25,7 @@ package one.empty3.feature20220726;
 import java.io.File;
 import java.io.IOException;
 
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
 import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 

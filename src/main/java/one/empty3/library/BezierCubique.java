@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;

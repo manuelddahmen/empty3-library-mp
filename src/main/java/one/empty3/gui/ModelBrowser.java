@@ -25,6 +25,7 @@
  */
 package one.empty3.gui;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import java.io.File;

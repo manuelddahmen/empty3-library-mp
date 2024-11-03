@@ -31,6 +31,7 @@ import one.empty3.growth.SymbolSequence;
 import one.empty3.growth.graphics.Rotation;
 import one.empty3.growth.graphics.Rotation2;
 import one.empty3.growth.graphics.Turtle3D_1;
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.testing.TestObjetStub;
 import one.empty3.library.core.tribase.TRISphere;
@@ -42,6 +43,7 @@ import org.junit.runners.JUnit4;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

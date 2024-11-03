@@ -1,5 +1,8 @@
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class Point3D extends vec {
 public Point3D(int n) {
           super(n);

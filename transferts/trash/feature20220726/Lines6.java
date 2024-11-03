@@ -30,7 +30,7 @@ import one.empty3.library.Point3D;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
 import one.empty3.library.core.lighting.Colors;
 
 import java.io.File;

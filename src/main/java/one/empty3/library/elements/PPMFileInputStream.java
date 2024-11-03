@@ -22,6 +22,8 @@
 
 package one.empty3.library.elements;
 
+import one.empty3.*;
+import one.empty3.ECImage;
 import one.empty3.library.*;
 
 import java.io.ByteArrayInputStream;
@@ -43,7 +45,7 @@ public class PPMFileInputStream extends ByteArrayInputStream {
         this.reset();
         int read = this.read();
         if (read > 0) {
-            ECImage ppm = ECImage.ppm(getBytes(), "PPM");
+            //ECImage ppm = ECImage.ppm(getBytes(), "PPM");
         }
     }
 }

@@ -23,6 +23,7 @@
 package one.empty3.library.shader;
 
 import one.empty3.library1.tree.*;
+import one.empty3.*;
 import one.empty3.library.*;
 
 /*__

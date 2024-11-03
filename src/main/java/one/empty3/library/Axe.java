@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class Axe extends Representable{
 
     private StructureMatrix<Point3D> p1 =  new StructureMatrix<>(0, Point3D.class);

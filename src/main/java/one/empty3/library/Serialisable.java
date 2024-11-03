@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 

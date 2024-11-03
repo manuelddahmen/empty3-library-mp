@@ -30,6 +30,7 @@ import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
+import one.empty3.*;
 import one.empty3.library.*;
 
 import javax.swing.*;

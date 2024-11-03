@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintWriter;

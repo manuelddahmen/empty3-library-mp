@@ -23,6 +23,7 @@
 package one.empty3.feature20220726.tryocr;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.io.File;
 import java.util.ArrayList;

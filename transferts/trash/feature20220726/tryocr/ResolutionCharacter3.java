@@ -12,7 +12,7 @@
 //import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 //
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.Image;
+//import one.empty3.libs.Image;
 //import java.io.File;
 //import java.io.IOException;
 //import java.util.List;

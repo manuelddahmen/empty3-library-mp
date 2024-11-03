@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class Barycentre {
 
     public Point3D position = Point3D.O0;

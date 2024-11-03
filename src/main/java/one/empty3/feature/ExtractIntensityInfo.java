@@ -22,7 +22,7 @@
 
 package one.empty3.feature;
 
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.io.ProcessFile;
 

@@ -27,6 +27,8 @@
 package one.empty3.gui;
 
 import net.miginfocom.swing.MigLayout;
+import one.empty3.*;
+import one.empty3.ECImage;
 import one.empty3.library.*;
 import one.empty3.library.core.export.STLExport;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
@@ -128,12 +130,7 @@ public class ModelingInterface extends JFrame {
         tubulaire4.getSoulCurve().getElem().getCoefficients().setElem(new Point3D(0., 0.25, -10.), 3);
         tubulaire4.getDiameterFunction().setElem(new FctXY());
         tubulaire4.getDiameterFunction().getElem().setFormulaX("20.0");
-        try {
-            tubulaire4.texture(new TextureImg(ECImage.getFromFile(new File("sauvegardes/WIN_20210622_09_55_55_Pro.jpg"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-            tubulaire4.texture(new ColorTexture(Color.WHITE));
-        }
+        tubulaire4.texture(new TextureImg(ECImage.getFromFile(new File("sauvegardes/WIN_20210622_09_55_55_Pro.jpg"))));
         tubulaire4.setIncrU(0.01);
         tubulaire4.setIncrV(0.1);
 

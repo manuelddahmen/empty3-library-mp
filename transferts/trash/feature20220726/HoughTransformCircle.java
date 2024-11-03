@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 
 //import java.util.function.Consumer;
 //
-//import javaAnd.awt.image.Image;
+//import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 //import javaAnd.awt.image.imageio.ImageIO;
 ////import one.empty3.feature20220726.HoughTransformOutput;
 //import one.empty3.io.ProcessFile;

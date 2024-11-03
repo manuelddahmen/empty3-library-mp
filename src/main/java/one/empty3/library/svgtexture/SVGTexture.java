@@ -23,6 +23,7 @@
 package one.empty3.library.svgtexture;
 
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import java.io.File;

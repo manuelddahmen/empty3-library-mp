@@ -26,6 +26,7 @@
 //
 //import javax.imageio.ImageIO;
 //import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 //import java.io.File;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;

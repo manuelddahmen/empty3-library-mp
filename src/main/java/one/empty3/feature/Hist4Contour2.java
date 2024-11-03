@@ -24,7 +24,7 @@ package one.empty3.feature;
 
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;

@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public interface ZS3D {
 
     void addToBuffer(Representable r);

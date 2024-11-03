@@ -27,6 +27,7 @@ import java.io.*;
 import java.util.*;
 
 import one.empty3.io.ProcessFile;
+import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.*;
 

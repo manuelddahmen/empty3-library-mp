@@ -24,6 +24,7 @@ package one.empty3.growth.graphics.test;
 
 import one.empty3.growth.test.TestCaseExtended;
 import one.empty3.growth.graphics.Turtle3D;
+import one.empty3.*;
 import one.empty3.library.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

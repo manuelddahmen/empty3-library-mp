@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class Perspective {
 
     public static final int P_CUBIQUE_ISOMETRIQUE = 0;

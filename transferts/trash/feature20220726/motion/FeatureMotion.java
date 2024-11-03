@@ -29,7 +29,7 @@ import one.empty3.feature20220726.PixM;
 import one.empty3.library.Lumiere;
 
 import javaAnd.awt.*;
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
 
 import java.util.List;
 import java.util.logging.Level;

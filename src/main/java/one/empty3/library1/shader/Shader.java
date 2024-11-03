@@ -33,7 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-import javaAnd.awt.image.Image;
+import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 /***
  * vn(int n)

@@ -27,6 +27,7 @@ import java.awt.Color;
 import one.empty3.io.ProcessFile;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.io.File;
 

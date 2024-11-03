@@ -30,6 +30,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

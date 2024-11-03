@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

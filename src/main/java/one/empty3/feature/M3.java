@@ -25,6 +25,7 @@ package one.empty3.feature;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.util.PrimitiveIterator;
 import java.util.Random;

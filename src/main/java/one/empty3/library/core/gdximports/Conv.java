@@ -27,6 +27,7 @@
  */
 package one.empty3.library.core.gdximports;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 /*__

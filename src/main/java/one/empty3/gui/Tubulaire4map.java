@@ -22,7 +22,7 @@
 
 package one.empty3.gui;
 
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;
@@ -30,6 +30,7 @@ import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.Tubulaire3;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 public class Tubulaire4map extends Tubulaire3 {
 

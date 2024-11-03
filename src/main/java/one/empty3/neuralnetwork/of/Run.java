@@ -29,6 +29,7 @@
 //import one.empty3.neuralnetwork.Neuron;
 //
 //import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 //import java.io.File;
 //import java.util.function.Function;
 //import java.util.logging.Level;

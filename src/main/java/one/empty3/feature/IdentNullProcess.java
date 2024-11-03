@@ -26,6 +26,7 @@ import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.io.IOException;

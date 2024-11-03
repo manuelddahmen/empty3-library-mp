@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import one.empty3.library.core.lighting.Infini;
 import one.empty3.library.core.nurbs.CurveElem;
 import one.empty3.library.core.nurbs.ParametricCurve;

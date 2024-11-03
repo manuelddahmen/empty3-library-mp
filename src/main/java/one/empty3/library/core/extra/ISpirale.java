@@ -27,7 +27,9 @@
  */
 package one.empty3.library.core.extra;
 
+import one.empty3.*;
 import one.empty3.library.*;
+import one.empty3.*;
 import one.empty3.library.*;
 
 public interface ISpirale {

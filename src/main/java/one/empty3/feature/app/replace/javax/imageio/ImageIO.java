@@ -26,6 +26,7 @@ package one.empty3.feature.app.replace.javax.imageio;
 //import android.graphics.ImageFactory;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.io.FileInputStream;

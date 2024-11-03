@@ -30,6 +30,7 @@ package one.empty3.library.core.tribase;
 import java.awt.*;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.util.Map.Entry;
 

@@ -27,7 +27,7 @@ import one.empty3.io.ProcessFile;
 import javax.imageio.ImageIO;
 import java.awt.*;
 
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.libs.Image;
 
 import java.io.File;

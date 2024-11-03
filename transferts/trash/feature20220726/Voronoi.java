@@ -28,6 +28,7 @@ import one.empty3.library.Point3D;
 import javaAnd.awt.image.imageio.ImageIO;
 
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 
 import java.io.File;
 import java.util.ArrayList;

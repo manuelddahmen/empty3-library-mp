@@ -22,6 +22,7 @@
 
 package one.empty3.library.shader;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 public class Vec {

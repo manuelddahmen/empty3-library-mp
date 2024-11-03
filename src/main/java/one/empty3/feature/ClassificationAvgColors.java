@@ -23,12 +23,13 @@
 package one.empty3.feature;
 
 import one.empty3.io.ProcessFile;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.io.IOException;

@@ -24,6 +24,7 @@ package one.empty3.gui;
 
 //import com.sun.org.apache.regexp.internal.RE;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import javax.swing.event.TableModelEvent;

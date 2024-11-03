@@ -21,6 +21,9 @@
  */
 
 package one.empty3.library;
+
+
+import one.empty3.ECImage;
 import java.util.*;
 /**
 * mettre dans des espaces et les supprimer

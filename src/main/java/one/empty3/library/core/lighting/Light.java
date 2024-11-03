@@ -21,6 +21,7 @@
  */
 
 package one.empty3.library.core.lighting;
+import one.empty3.*;
 import one.empty3.library.*;
 import java.awt.Color;
 import java.util.Arrays;

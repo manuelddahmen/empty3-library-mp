@@ -26,6 +26,7 @@ package one.empty3.library.core.testing;
 import java.awt.Color;
 import java.awt.Graphics;
 import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 import java.io.File;
 
 import org.slf4j.Logger;

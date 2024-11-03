@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;

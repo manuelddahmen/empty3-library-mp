@@ -30,6 +30,7 @@
  */
 package one.empty3.library.core.animation;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import java.lang.reflect.InvocationTargetException;

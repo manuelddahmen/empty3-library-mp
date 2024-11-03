@@ -25,7 +25,11 @@
  */
 package one.empty3.library;
 
-import javaAnd.awt.image.Image;
+
+import one.empty3.ECImage;
+
+import one.empty3.libs.Image;
+import one.empty3.ECImage;
 import one.empty3.feature.PixM;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
@@ -316,7 +320,7 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
                         //        (int)(double)positionOnPicture.get(1), paint);
                         //pixels++;
                     } else if (isDrawingOnImage && i < bitmap.getWidth() && i >= 0 && j < bitmap.getHeight() && j >= 0) {
-                        bitmap.setPixel((int) i, (int) j, colorTemp);
+                        bitmap.setRgb((int) i, (int) j, colorTemp);
                         pixM.setValues(xMap, yMap, fillColorArrayPolygon);
                         pixels++;
 

@@ -25,6 +25,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import one.empty3.library.core.TemporalComputedObject3D;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.tests.Path;

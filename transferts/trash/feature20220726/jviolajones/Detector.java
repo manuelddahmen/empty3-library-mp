@@ -6,7 +6,8 @@
 //
 //import javaAnd.awt.image.imageio.ImageIO;
 //import javaAnd.awt.*;
-//import javaAnd.awt.image.Image;
+//import one.empty3.libs.Image;
+import one.empty3.library.ECImage;
 //import java.io.FileInputStream;
 //import java.io.InputStream;
 //import java.util.List;

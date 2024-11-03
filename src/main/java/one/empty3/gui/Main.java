@@ -23,6 +23,8 @@
 package one.empty3.gui;
 
 import net.miginfocom.swing.MigLayout;
+import one.empty3.*;
+import one.empty3.ECImage;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.script.Loader;

@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.ParametricVolume;
 import one.empty3.library.core.nurbs.Quad2Volume;

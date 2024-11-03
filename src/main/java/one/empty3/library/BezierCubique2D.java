@@ -27,6 +27,9 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 public class BezierCubique2D extends Representable {
 
     public static final int DIM2 = 200;

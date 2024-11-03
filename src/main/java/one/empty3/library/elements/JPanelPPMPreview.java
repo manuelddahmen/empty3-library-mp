@@ -22,7 +22,7 @@
 
 package one.empty3.library.elements;
 
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.Scene;
 
 import javax.swing.*;
@@ -59,7 +59,7 @@ public class JPanelPPMPreview extends JPanel {
         // Read String
         // Complete with white, transparent or black
 
-        ECImage ecImage = new ECImage(ppmFileInputStream);
+        //ECImage ecImage = new ECImage(ppmFileInputStream);
 
     }
 }

@@ -22,6 +22,9 @@
 
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 /*__
  * Created by Win on 28-08-18.
  */

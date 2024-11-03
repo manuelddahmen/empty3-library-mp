@@ -1,4 +1,7 @@
 /*package one.empty3.library;
+
+
+import one.empty3.ECImage;
 import ru.sbtqa.monte.media.*;
 import ru.sbtqa.monte.media.image.Images;
 import ru.sbtqa.monte.media.FormatKeys.*;

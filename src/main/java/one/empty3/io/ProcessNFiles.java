@@ -25,12 +25,13 @@ package one.empty3.io;
 import one.empty3.feature.PixM;
 import one.empty3.feature.ProcessBean;
 import one.empty3.feature.process.InProcessCode;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.core.script.Code;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
+import one.empty3.ECImage;
 
 import java.io.File;
 import java.util.ArrayList;

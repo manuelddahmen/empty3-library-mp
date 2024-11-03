@@ -21,7 +21,8 @@
  */
 
 package one.empty3.library1.tree;
-/*import one.empty3.library.*;
+/*import one.empty3.*;
+import one.empty3.library.*;
 public class ArrayTreeNodeType extends TreeNodeType {
     private StructureMatrix list;
 // todo des que tu as un separateur tu dois recommener avant quil soit pas la

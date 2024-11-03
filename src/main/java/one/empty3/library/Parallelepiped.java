@@ -20,7 +20,10 @@
  *
  */
 
-package one.empty3.library;/*
+package one.empty3.library;
+
+
+import one.empty3.ECImage;/*
  * Copyright (c) 2017. Tous les fichiers dans ce programme sont soumis à la License Publique Générale GNU créée par la Free Softxware Association, Boston.
  * La plupart des licenses de parties tièrces sont compatibles avec la license principale.
  * Les parties tierces peuvent être soumises à d'autres licenses.

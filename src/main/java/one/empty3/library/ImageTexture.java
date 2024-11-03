@@ -27,8 +27,12 @@
  */
 package one.empty3.library;
 
+
+import one.empty3.ECImage;
+
 //import org.monte.media.avi.AVIReader;
 
+import one.empty3.ECImage;
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 
 import java.awt.*;

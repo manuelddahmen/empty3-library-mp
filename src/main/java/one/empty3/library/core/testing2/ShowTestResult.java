@@ -28,7 +28,7 @@ package one.empty3.library.core.testing2;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import net.miginfocom.swing.MigLayout;
-import one.empty3.library.ECImage;
+import one.empty3.ECImage;
 import one.empty3.library.core.testing.ImageContainer;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.testing.TextAreaOutputStream;

@@ -30,6 +30,7 @@
  */
 package one.empty3.library.core.nurbs;
 
+import one.empty3.*;
 import one.empty3.library.*;
 
 import java.util.AbstractMap;
