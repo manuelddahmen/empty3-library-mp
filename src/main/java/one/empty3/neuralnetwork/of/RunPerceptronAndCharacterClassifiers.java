@@ -22,9 +22,9 @@
 
 package one.empty3.neuralnetwork.of;
 
-import atlasgen.CsvAction;
-import atlasgen.CsvLine;
-import atlasgen.CsvReader;
+import one.empty3.csv.CsvAction;
+import one.empty3.csv.CsvLine;
+import one.empty3.csv.CsvReader;
 import one.empty3.neuralnetwork.HiddenNeuron;
 import one.empty3.neuralnetwork.Net;
 import one.empty3.neuralnetwork.Neuron;

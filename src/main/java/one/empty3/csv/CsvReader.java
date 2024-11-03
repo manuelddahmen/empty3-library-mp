@@ -20,7 +20,7 @@
  *
  */
 
-package atlasgen; /*__
+package one.empty3.csv; /*__
  * Created by manushell on 19-06-18.
  */
 
@@ -29,8 +29,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class CsvReader {

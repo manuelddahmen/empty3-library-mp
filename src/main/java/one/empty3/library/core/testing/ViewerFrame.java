@@ -22,8 +22,6 @@
 
 package one.empty3.library.core.testing;
 
-import one.empty3.library.Scene;
-
 import javax.swing.*;
 
 public class ViewerFrame extends JFrame {

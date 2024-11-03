@@ -341,8 +341,9 @@ signing {
     useGpgCmd()
     //useInMemoryPgpKeys(signingKey, signingPassword)
 
-    sign publishing.publications
-    sign configurations.archives
+  //  sign publishing.publications
+  //  sign configurations.archives
+
 }
 
 /*
@@ -646,12 +647,11 @@ jreleaser {
                     active = 'ALWAYS'
                     url = 'https://central.sonatype.com/api/v1/publisher'
                     gitRootSearch = false
-                    stagingRepository('build/staging-deploy')
                     username = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_USERNAME')
+                    password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     authorization = 'BASIC'
                     // Password for login into the MAVENCENTRAL service.
                     //
-                    password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     // List of directories where staged artifacts can be found.
                     stagingRepository('build/staging-deploy')
 

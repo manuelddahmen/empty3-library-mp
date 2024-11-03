@@ -22,9 +22,7 @@
 
 package one.empty3.neuralnetwork;
 
-import atlasgen.CsvLine;
-import atlasgen.CsvReader;
-import atlasgen.CsvWriter;
+import one.empty3.csv.*;
 
 import java.io.File;
 import java.util.Arrays;

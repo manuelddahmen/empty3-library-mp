@@ -35,6 +35,7 @@ import one.empty3.library.core.export.STLExport;
 import one.empty3.library.core.script.ExtensionFichierIncorrecteException;
 import one.empty3.library.core.script.Loader;
 import one.empty3.library.core.script.VersionNonSupporteeException;
+import one.empty3.libs.Image;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
@@ -45,14 +46,15 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
-
-import one.empty3.libs.Image;
-
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -313,7 +315,7 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
-        Graphics g = ((Image) ri).getGraphics();
+        Graphics g = ((BufferedImage)((Image) ri)).getGraphics();
         g.setColor(Color.black);
         g.drawString(description, 0, 1100);
 

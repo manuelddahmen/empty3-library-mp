@@ -22,7 +22,7 @@
 
 package one.empty3.feature.tryocr;
 
-import atlasgen.CsvWriter;
+import one.empty3.csv.*;
 import one.empty3.feature.Linear;
 import one.empty3.feature.PixM;
 import one.empty3.feature.app.replace.javax.imageio.ImageIO;

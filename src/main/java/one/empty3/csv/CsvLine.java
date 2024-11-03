@@ -20,21 +20,38 @@
  *
  */
 
-package atlasgen;
+package one.empty3.csv;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /*__
- * Created by Win on 10-07-18.
+ * Created by manue on 19-06-18.
  */
-public class Ratio {
-    public static double
-    imageHeight(
-            double latitudeExtension,
-            double longitudeExtension,
-            double ratioLatitudePerLongitude,
-            int imageWidth) {
-        if (ratioLatitudePerLongitude <= 0)
-            ratioLatitudePerLongitude = 1;
-        return latitudeExtension / longitudeExtension /
-                ratioLatitudePerLongitude * imageWidth;
+public class CsvLine {
+    List<String> fieldName;
+    String[] value;
+
+    public CsvLine(List<String> fieldName, String[] value) {
+        this.fieldName = fieldName;
+        this.value = value;
+    }
+
+    public List<String> getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(List<String> fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public String[] getValue() {
+        return value;
+    }
+
+    public void setValue(String[] value) {
+        this.value = value;
     }
 }

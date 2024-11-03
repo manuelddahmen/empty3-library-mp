@@ -29,7 +29,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.library.ECImage;
-import one.empty3.library.core.testing.*;
+import one.empty3.library.core.testing.ImageContainer;
+import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.TextAreaOutputStream;
+import one.empty3.library.core.testing.ViewerFrame;
+import one.empty3.libs.Image;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
@@ -39,9 +43,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import one.empty3.libs.Image;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -629,7 +630,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
         setLocationRelativeTo(getOwner());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Runtime runtime = Runtime.getRuntime();
         try {
             runtime.exec("explorer \"" + testRef.getSubfolder().getAbsolutePath() + "\"");
@@ -638,11 +639,11 @@ public final class ShowTestResult extends JFrame implements Runnable {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         testRef.PAUSE();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         testRef.stop();
         stop = true;
         dispose();
@@ -652,7 +653,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
         testRef.setGenerate(testRef.getGenerate() | ((value ? 1 : 0) | GEN_OPT));
     }
 
-    private void jCheckBoxOGLActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jCheckBoxOGLActionPerformed(ActionEvent evt) {
         toggleTestOption(TestObjet.GENERATE_OPENGL, jCheckBoxOGL.isSelected());
         if ((testRef.getGenerate() & TestObjet.GENERATE_OPENGL) > 0
                 && windowGl == null) {
@@ -670,19 +671,19 @@ public final class ShowTestResult extends JFrame implements Runnable {
         }
     }
 
-    private void jCheckBoxModelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxModelesActionPerformed
+    private void jCheckBoxModelesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxModelesActionPerformed
         toggleTestOption(TestObjet.GENERATE_MODEL, jCheckBoxModeles.isSelected());
     }//GEN-LAST:event_jCheckBoxModelesActionPerformed
 
-    private void jCheckBoxFilmRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFilmRecActionPerformed
+    private void jCheckBoxFilmRecActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFilmRecActionPerformed
         toggleTestOption(TestObjet.GENERATE_MOVIE, jCheckBoxFilmRec.isSelected());
     }//GEN-LAST:event_jCheckBoxFilmRecActionPerformed
 
-    private void jCheckBoxImagesRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxImagesRecActionPerformed
+    private void jCheckBoxImagesRecActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxImagesRecActionPerformed
         toggleTestOption(TestObjet.GENERATE_IMAGE, jCheckBoxImagesRec.isSelected());
     }//GEN-LAST:event_jCheckBoxImagesRecActionPerformed
 
-    private void jButtonDemarrerNouveauFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDemarrerNouveauFilmActionPerformed
+    private void jButtonDemarrerNouveauFilmActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonDemarrerNouveauFilmActionPerformed
         testRef.startNewMovie();
         jTextField2.setText("New movie" + ++movieNo);
     }//GEN-LAST:event_jButtonDemarrerNouveauFilmActionPerformed
@@ -699,7 +700,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
     private void jSliderXYZPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jSliderXYZPropertyChange
     }//GEN-LAST:event_jSliderXYZPropertyChange
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButton5ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String sx = "0", sy = "0", sz = "0";
         sx = (String) jTableEquations.getCellEditor(0, 1).getCellEditorValue();
         sy = (String) jTableEquations.getCellEditor(1, 1).getCellEditorValue();
@@ -713,7 +714,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 */
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void formWindowClosing(WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         testRef.stop();
     }//GEN-LAST:event_formWindowClosing
 

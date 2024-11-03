@@ -26,9 +26,9 @@
 
 package one.empty3.library.core.testing;
 
-import javax.swing.*;
+import net.miginfocom.swing.MigLayout;
 
-import net.miginfocom.swing.*;
+import javax.swing.*;
 
 /**
  * My class description missing

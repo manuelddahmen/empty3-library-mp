@@ -20,10 +20,14 @@
  *
  */
 
-package atlasgen;
+package one.empty3.csv;
 
 /*__
- * Created by manue on 30-05-19.
+ * Created by Manuel Dahmen
+ * on 19-06-18.
  */
-public class FastViewer {
+public interface CsvAction {
+    public void init();
+
+    public void processLine(CsvLine csvLine);
 }

@@ -26,7 +26,7 @@ import java.awt.*;
 import atlasgen.Action;
 import atlasgen.CsvLine;
 import atlasgen.CsvReader;
-import atlasgen.CsvWriter;
+import one.empty3.csv.*;
 import com.intellij.uiDesigner.core.*;
 import one.empty3.neuralnetwork.Main;
 

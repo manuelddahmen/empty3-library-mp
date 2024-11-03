@@ -20,7 +20,7 @@
  *
  */
 
-package atlasgen;
+package one.empty3.csv;
 
 import java.io.File;
 import java.io.FileNotFoundException;
