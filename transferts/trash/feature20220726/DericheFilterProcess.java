@@ -38,10 +38,10 @@ public class DericheFilterProcess extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        PixM pixM = PixM.getPixM(ImageIO.read(in), maxRes);
+        PixM pixM = PixM.getPixM(new Image(in), maxRes);
 
 
-        ImageIO.write(pixM.getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(pixM.getImage(), "jpg", out);
 
 
         return false;

@@ -127,7 +127,7 @@ public class DBScan extends ProcessFile {
             String s = in.getAbsoluteFile() + ".csv";
             MakeDataset makeDataset = new MakeDataset(in, new File(s), maxRes);
 
-            PixM p = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
+            PixM p = PixM.getPixM(Objects.requireNonNull(new Image(in)), maxRes);
             init(maxRes, minPoints);
             ReadDataset readDataset = new ReadDataset();
             readDataset.read(new File(s));
@@ -144,7 +144,7 @@ public class DBScan extends ProcessFile {
                             colorCluster.getGreen(), colorCluster.getBlue());
                 }
             }
-            ImageIO.write(p.getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(p.getImage(), "jpg", out);
 
         } catch (Exception ex) {
         }

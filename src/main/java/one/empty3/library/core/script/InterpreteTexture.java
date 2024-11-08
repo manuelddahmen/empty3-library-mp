@@ -22,13 +22,15 @@
 
 package one.empty3.library.core.script;
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
 import one.empty3.library.TextureCol;
 import one.empty3.library.TextureImg;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import one.empty3.libs.*;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -76,12 +78,7 @@ public class InterpreteTexture implements Interprete {
                 pos = inf.getPosition();
                 pass = true;
 
-                try {
-                    tc = new TextureImg(new ECImage(ImageIO.read(f)));
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                tc = new TextureImg(new Image((Image) new Image(1,1,1).getFromFile(f)));
             } catch (InterpreteException ex) {
             }
         }

@@ -192,9 +192,9 @@ public class Histogram {
             File fileToWrite3 = new File(directory.getAbsolutePath()
                     + "level" + finalI + "_NEW_RGB.jpg");
             fileToWrite.mkdirs();
-            ImageIO.write(img, "JPEG", fileToWrite);
-            ImageIO.write(img, "JPEG", fileToWrite2);
-            ImageIO.write(img, "JPEG", fileToWrite3);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
 
         }
     }

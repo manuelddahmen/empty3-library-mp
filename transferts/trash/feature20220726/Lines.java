@@ -151,7 +151,7 @@ public class Lines extends ProcessFile {
         listTmpX = new ArrayList<Double>();
         listTmpY = new ArrayList<Double>();
         listTmpZ = new ArrayList<Double>();
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
         p = new int[pixM.getColumns()][pixM.getLines()];
@@ -231,7 +231,7 @@ public class Lines extends ProcessFile {
             Color r = new Color((float) r(), (float) r(), (float) r());
             p3s.forEach(point3D -> o.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.));
         });
-        ImageIO.write(o.normalize(0.0, 1.0).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", out);
         return true;
     }
 

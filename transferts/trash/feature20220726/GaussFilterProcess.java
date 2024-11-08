@@ -42,7 +42,7 @@ public class GaussFilterProcess extends ProcessFile {
         Image img = null;
 
         try {
-            img = ImageIO.read(in);
+            img = new Image(in);
             pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {
@@ -77,7 +77,7 @@ public class GaussFilterProcess extends ProcessFile {
 
         try {
 
-            ImageIO.write(normalize.getImage(), "JPEG", out);
+            new Image(1,1,1.saveToFile(normalize.getImage(), "JPEG", out);
             return true;
         } catch (Exception ex) {
 

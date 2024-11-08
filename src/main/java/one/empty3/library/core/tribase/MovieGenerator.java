@@ -27,6 +27,8 @@
  */
 package one.empty3.library.core.tribase;
 
+import one.empty3.libs.*;
+
 import java.awt.*;
 
 public class MovieGenerator extends BaseGenerator {

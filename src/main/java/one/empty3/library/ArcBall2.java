@@ -23,9 +23,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Created by manue on 06-11-19.

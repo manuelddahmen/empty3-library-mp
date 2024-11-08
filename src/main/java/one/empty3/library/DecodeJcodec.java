@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
@@ -47,7 +47,7 @@ import org.jcodec.scale.Transform;
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,7 +89,7 @@ public class DecodeJcodec extends VideoDecoder {
                         e.printStackTrace();
                     }
                     if (frame != null) {
-                        imgBuf.add(new ECImage(frame));
+                        imgBuf.add(new Image(frame));
                     }
                     i++;
                 } else {

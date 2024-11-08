@@ -30,7 +30,7 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,7 +100,7 @@ public class Lines5 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -286,7 +286,7 @@ public class Lines5 extends ProcessFile {
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));
 
-        ImageIO.write(bLines, "jpg", out);
+        new Image(1,1,1.saveToFile(bLines, "jpg", out);
         return true;
 
     }

@@ -79,7 +79,7 @@ import java.util.logging.Logger;
 //
 //            for (File file : Objects.requireNonNull(dir.listFiles())) {
 //                if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-//                    Image read = ImageIO.read(file);
+//                    Image read = new Image(file);
 //
 //                    String name = file.getName();
 //
@@ -113,9 +113,9 @@ import java.util.logging.Logger;
 //        output.plotCurve(new Rectangle(10, 10, output.getColumns() - 20, output.getLines() - 20), texture);
 //
 //        try {
-//            ImageIO.write(input.getImage(), "jpg",
+//            new Image(1,1,1.saveToFile(input.getImage(), "jpg",
 //                    new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "INPUT.jpg")));
-//            ImageIO.write(output.getImage(), "jpg",
+//            new Image(1,1,1.saveToFile(output.getImage(), "jpg",
 //                    new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "OUTPUT.jpg")));
 //        } catch (IOException ex) {
 //            throw new RuntimeException(ex);

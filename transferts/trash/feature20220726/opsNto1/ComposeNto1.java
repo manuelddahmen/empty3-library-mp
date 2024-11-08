@@ -39,10 +39,10 @@ public class ComposeNto1 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             boolean success = false;
-            PixM inpix = PixM.getPixM(ImageIO.read(in), maxRes);
-            PixM outpix = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM inpix = PixM.getPixM(new Image(in), maxRes);
+            PixM outpix = PixM.getPixM(new Image(in), maxRes);
             //success = processMem(inpix, outpix);
-            ImageIO.write(outpix.getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(outpix.getImage(), "jpg", out);
             return success;
         } catch (Exception ex) {}
 

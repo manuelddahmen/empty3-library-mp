@@ -22,7 +22,7 @@
 
 package one.empty3.library.core.physics;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.net.URL;
 
 

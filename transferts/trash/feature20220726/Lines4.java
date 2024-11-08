@@ -98,7 +98,7 @@ public class Lines4 extends ProcessFile {
         if (!in.getName().endsWith("jpg"))
             return false;
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         lists.add(new ArrayList<>());
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -373,7 +373,7 @@ public class Lines4 extends ProcessFile {
                 }
             }
         }
-        ImageIO.write(o.getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(o.getImage(), "jpg", out);
 
         return true;
 

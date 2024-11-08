@@ -33,7 +33,9 @@ package one.empty3.library.core.script;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.extra.SimpleSphere;
 
-import java.awt.*;
+import one.empty3.libs.*;
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.ArrayList;
 
 /*__
@@ -73,7 +75,7 @@ public class InterpreteSimpleSphere implements Interprete {
     public Object interprete(String text, int pos) throws InterpreteException {
         Point3D c = null;
         double r = 1;
-        Color col = Color.black;
+        Color col = new Color(Color.black);
 
         InterpretesBase ib;
         InterpretePoint3DBAK ip;

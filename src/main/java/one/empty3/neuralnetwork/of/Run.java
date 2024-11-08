@@ -29,7 +29,7 @@
 //import one.empty3.neuralnetwork.Neuron;
 //
 //import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 //import java.io.File;
 //import java.util.function.Function;
 //import java.util.logging.Level;
@@ -60,7 +60,7 @@ import one.empty3.library.ECImage;
 //        }
 //
 //        Matrix matrixRandomInput = new Matrix(x, sqrt, sqrt);
-//        run.loadImageInput(ImageIO.read(new File(file)), sqrt, run.inputNeuron);
+//        run.loadImageInput(new Image(new File(file)), sqrt, run.inputNeuron);
 //        Matrix matrixNeuron = new Matrix(run.inputNeuron.getW(), sqrt, sqrt);
 //        Matrix actual =
 //                matrixNeuron.multiply(matrixRandomInput).softmax();
@@ -92,7 +92,7 @@ import one.empty3.library.ECImage;
 //    }
 //
 //    public void train(File inputFile, File outputFile) {
-//        loadImageInput(ImageIO.read(dir), MAX_RES, inputNeuron
+//        loadImageInput(new Image(dir), MAX_RES, inputNeuron
 //        );
 //    }
 //

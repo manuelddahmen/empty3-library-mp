@@ -31,9 +31,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Meta Description missing
@@ -41,7 +41,7 @@ import java.awt.*;
  */
 public final class LumierePonctuellePeriodique extends Lumiere {
 
-    private Color couleurLumiere = Color.RED;
+    private Color couleurLumiere = new Color(Color.RED);
     private Point3D position;
     private double k = 1;
     private double r0 = 11;
@@ -56,8 +56,8 @@ public final class LumierePonctuellePeriodique extends Lumiere {
         double x = (n.norme1().prodScalaire(position.moins(p).norme1()) + 1) / 2;
         double r = x;
         Color couleurObjet = new Color(base);
-        return new Color((float) ((couleurObjet.getRed() / 256.0) * r + (couleurLumiere.getRed() / 256.0) * (1 - r)), (float) ((couleurObjet.getGreen() / 256.0) * r + (couleurLumiere.getGreen() / 256.0) * (1 - r)), (float) ((couleurObjet.getBlue()
-                / 256.0) * r + (couleurLumiere.getBlue() / 256.0) * (1 - r))).getRGB();
+        return new Color(Lumiere.getIntFromFloats((float) ((couleurObjet.getRed() / 256.0) * r + (couleurLumiere.getRed() / 256.0) * (1 - r)), (float) ((couleurObjet.getGreen() / 256.0) * r + (couleurLumiere.getGreen() / 256.0) * (1 - r)), (float) ((couleurObjet.getBlue()
+                / 256.0) * r + (couleurLumiere.getBlue() / 256.0) * (1 - r)))).getRGB();
     }
 
     public void r0(int r0) {

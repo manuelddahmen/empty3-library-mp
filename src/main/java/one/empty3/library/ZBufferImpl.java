@@ -28,9 +28,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.libs.Image;
 import one.empty3.library.core.nurbs.*;
 import one.empty3.library.core.tribase.Precomputable;
@@ -38,7 +38,7 @@ import one.empty3.library.objloader.E3Model;
 import one.empty3.library1.shader.Vec;
 import one.empty3.pointset.PCont;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +76,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     protected boolean colorationActive = false;
     protected double angleX = Math.PI / 3;
     protected double angleY = Math.PI / 3;
-    protected ECImage bi;
+    protected Image bi;
     protected int ha;
     protected int la;
     // PARAMETRES
@@ -103,7 +103,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public ZBufferImpl() {
         that = this;
         scene = new Scene();
-        texture(new TextureCol(Color.BLACK));
+        texture(new TextureCol(Color.BLACK.getRGB()));
     }
 
     public ZBufferImpl(int l, int h) {
@@ -126,12 +126,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         this.ime = new ImageMap(la, ha).getIme();
     }
 
-
-    public ZBufferImpl(Resolution resolution) {
-
-
-        this(resolution.x(), resolution.y());
-    }
 
     public void copyResourceFiles(File destDirectory) {
     }
@@ -554,9 +548,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = height;
     }
 
-    public ECImage image() {
+    public Image image() {
 
-        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
+        Image bi2 = new Image(la, ha, Image.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -570,8 +564,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     @Override
-    public ECImage imageInvX() {
-        ECImage bi2 = new ECImage(la, ha, ECImage.TYPE_INT_RGB);
+    public Image imageInvX() {
+        Image bi2 = new Image(la, ha, Image.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -588,12 +582,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     //??
-    public ECImage image2() {
+    public Image image2() {
         //return image2();
 
 //        Image bi = new Image(la, ha, Image.TYPE_INT_RGB);
 //        bi.setRGB(0, 0, la, ha, getData(), 0, la);
-//        return new ECImage(bi);
+//        return new Image(bi);
         return image();
 
     }
@@ -745,9 +739,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public void itereMaxDist(List<Double> points, ParametricCurve pc, double pStart, double pEnd, ParametricVolume v) {
         Point3D p2start = v.calculerPoint3D(pc.calculerPoint3D(pStart));
         Point3D p2End = v.calculerPoint3D(pc.calculerPoint3D(pEnd));
-        double dist = Point2D.dist(
-                new Point2D(camera().coordonneesPoint2D(p2start, this)),
-                new Point2D(camera().coordonneesPoint2D(p2End, this)));
+        double dist = Point.distance(
+                new Point(camera().coordonneesPoint2D(p2start, this)),
+                new Point(camera().coordonneesPoint2D(p2End, this)));
         if (dist <= 1.0) {
             points.add(pStart);
             points.add(pEnd);
@@ -1121,7 +1115,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.RED);
+                    TextureCol col = new TextureCol(Color.RED.getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1229,7 +1223,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.RED);
+                    TextureCol col = new TextureCol(Color.RED.getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1884,7 +1878,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             if (texture.getColorAt(u, v) != texture.getTransparent()
                     && ime.testDeep(p, texture.getColorAt(u, v))) {
                 Point point = camera().coordonneesPoint2D(p, that);
-                int x = point.x, y = point.y;
+                int x = (int) point.x, y = (int) point.y;
                 ime.getuMap()[x][y] = u;
                 ime.getvMap()[x][y] = v;
                 ime.getrMap()[x][y] = representable;

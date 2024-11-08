@@ -21,7 +21,7 @@
  */
 
 package one.empty3.feature;
-
+import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Lumiere;
@@ -30,8 +30,6 @@ import one.empty3.library.core.nurbs.ParametricCurve;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-
-import one.empty3.libs.Image;
 
 public class PixM extends M {
     public static final int COMP_RED = 0;
@@ -666,7 +664,7 @@ public class PixM extends M {
     }
 
     public Image getImage() {
-        Image image = new Image(columns,
+        one.empty3.libs.Image image = new one.empty3.libs.Image(columns,
                 lines, Image.TYPE_INT_RGB);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
@@ -678,3 +676,4 @@ public class PixM extends M {
 
     }
 }
+

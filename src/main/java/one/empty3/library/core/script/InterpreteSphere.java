@@ -27,12 +27,13 @@
  */
 package one.empty3.library.core.script;
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureImg;
 import one.empty3.library.core.tribase.TRISphere;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,15 +98,10 @@ public class InterpreteSphere implements Interprete {
         this.position = pos;
 
         TRISphere sphere = new TRISphere(centre, pos);
-        try {
-            sphere.texture(
-                    new TextureImg(new ECImage(ImageIO.read(file))));
+        sphere.texture(
+                new TextureImg(new Image((Image) new Image(1,1,1).getFromFile(file))));
 
-            return sphere;
-        } catch (IOException ex) {
-            Logger.getLogger(InterpreteSphere.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        return sphere;
     }
 
 

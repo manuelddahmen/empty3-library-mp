@@ -23,7 +23,7 @@
 package one.empty3.library.core.script;
 
 import one.empty3.*;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.*;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class InterpretePGM implements Interprete {
 
     @Override
     public Object interprete(String text, int pos) throws InterpreteException {
-        ECImage ec;
+        Image ec;
 
         InterpretesBase ib = new InterpretesBase();
         ArrayList<Integer> p = new ArrayList<Integer>();
@@ -84,7 +84,7 @@ public class InterpretePGM implements Interprete {
 
         pos = text.indexOf("\n", pos) + 1;
 
-        return new ECImage(x, y, ECImage.TYPE_INT_RGB);
+        return new Image(x, y, Image.TYPE_INT_RGB);
 
     }
 

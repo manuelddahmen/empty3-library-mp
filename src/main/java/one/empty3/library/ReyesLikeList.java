@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import javaAnd.awt.Point;
 
@@ -53,7 +53,7 @@ public class ReyesLikeList {
         return true;
     }
 
-    public void render(ECImage image) {
+    public void render(Image image) {
         for(int i=0; i<idx; i++) {
             image.setRGB((int) listsPolygons[idx][12],
                     (int) listsPolygons[idx][13],

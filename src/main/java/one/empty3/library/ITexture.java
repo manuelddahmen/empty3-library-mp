@@ -31,11 +31,11 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 //import com.xuggle.mediatool.MediaListenerAdapter;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.HashMap;
 
 /*__

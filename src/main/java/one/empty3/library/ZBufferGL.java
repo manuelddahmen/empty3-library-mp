@@ -23,12 +23,12 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.ParametricVolume;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.File;
 
 /*__
@@ -68,12 +68,12 @@ public class ZBufferGL implements ZBuffer {
     }
 
     @Override
-    public ECImage image() {
+    public Image image() {
         return null;
     }
 
     @Override
-    public ECImage imageInvX() {
+    public Image imageInvX() {
         return null;
     }
 

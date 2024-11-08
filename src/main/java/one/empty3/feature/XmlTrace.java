@@ -1,4 +1,4 @@
-/*
+package one.empty3.feature;/*
 XmlTrace
 
 for (Node node : nodes) {

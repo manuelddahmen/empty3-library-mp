@@ -28,9 +28,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 import one.empty3.libs.Image;
 
@@ -75,7 +75,7 @@ public class CourbeDeImage {
         return image;
     }
 
-    public void setImage(ECImage image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 

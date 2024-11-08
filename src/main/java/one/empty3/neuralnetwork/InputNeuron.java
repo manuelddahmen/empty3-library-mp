@@ -23,9 +23,11 @@
 package one.empty3.neuralnetwork;
 
 import one.empty3.feature.PixM;
+import one.empty3.libs.Image;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -52,28 +54,22 @@ public class InputNeuron extends Neuron {
 
     public boolean loadData(File file) throws Exception {
         PixM p = null;
-        try {
-            if (ImageIO.getImageReaders(file) == null)
-                return false;
-            if (!Arrays.asList("jpg", "png").contains(file.getAbsolutePath().substring(
-                    file.getAbsolutePath().length() - 3, file.getAbsolutePath().length())))
-                return false;
-            p = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(file)), Config.RES);
-            this.setW(new double[Config.RES * Config.RES * 3]);
-            for (int j = 0; j < Config.RES; j++)
-                for (int i = 0; i < Config.RES; i++) {
-                    for (int comp = 0; comp < p.getCompCount(); comp++) {
-                        p.setCompNo(comp);
-                        this.getW()[ordPix(i, j, comp)] = p.get(i, j);
-                    }
+        if (ImageIO.getImageReaders(file) == null)
+            return false;
+        if (!Arrays.asList("jpg", "png").contains(file.getAbsolutePath().substring(
+                file.getAbsolutePath().length() - 3, file.getAbsolutePath().length())))
+            return false;
+        p = PixM.getPixM(new Image((Image) new Image(1,1,1).getFromFile(file)), Config.RES);
+        this.setW(new double[Config.RES * Config.RES * 3]);
+        for (int j = 0; j < Config.RES; j++)
+            for (int i = 0; i < Config.RES; i++) {
+                for (int comp = 0; comp < p.getCompCount(); comp++) {
+                    p.setCompNo(comp);
+                    this.getW()[ordPix(i, j, comp)] = p.get(i, j);
                 }
-            this.uri = file;
-            return true;
-        } catch (IIOException exception) {
-            Logger.getAnonymousLogger().log(Level.INFO, "Error reading image. Returns");
-            throw new Exception(exception);
-
-        }
+            }
+        this.uri = file;
+        return true;
     }
 
     private int ordPix(int i, int j, int comp) {

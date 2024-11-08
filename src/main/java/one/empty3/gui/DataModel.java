@@ -24,7 +24,6 @@ package one.empty3.gui;
 
 
 import nu.xom.*;
-import one.empty3.*;
 import one.empty3.library.*;
 
 import java.beans.PropertyChangeEvent;

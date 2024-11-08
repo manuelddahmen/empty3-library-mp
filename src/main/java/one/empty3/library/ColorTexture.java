@@ -23,38 +23,38 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * @author Manuel Dahmen
  */
 public class ColorTexture extends ITexture {
 
-    private StructureMatrix<Color> color = new StructureMatrix<Color>(0, Color.class);
+    private StructureMatrix<Integer> color = new StructureMatrix<>(0, Integer.class);
 
     public ColorTexture() {
-        color.setElem(Color.BLACK);
+        color.setElem(Color.BLACK.getRGB());
     }
 
     public ColorTexture(Color c) {
         this();
         if (c != null) {
-            color.setElem(c);
+            color.setElem(c.getRGB());
         }
     }
 
     public ColorTexture(int colorAt) {
-        this(Lumiere.getColor(colorAt));
+        color.setElem(colorAt);
     }
 
-    public Color color() {
+    public int color() {
         return color.getElem();
     }
 
     public void color(Color c) {
-        color.setElem(c);
+        color.setElem(c.getRGB());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ColorTexture extends ITexture {
     }
 
     public int getColorAt(double x, double y) {
-        return color.getElem().getRGB();
+        return color.getElem();
     }
 
     public void timeNext() {
@@ -94,14 +94,14 @@ public class ColorTexture extends ITexture {
      */
     public Color getMaillageTexturedColor(int numQuadX, int numQuadY, double x,
                                           double y) {
-        return color.getElem();
+        return new Color(color.getElem());
     }
 
-    public StructureMatrix<Color> getColor() {
+    public StructureMatrix<Integer> getColor() {
         return color;
     }
 
-    public void setColor(StructureMatrix<Color> color) {
+    public void setColor(StructureMatrix<Integer> color) {
         this.color = color;
     }
 }

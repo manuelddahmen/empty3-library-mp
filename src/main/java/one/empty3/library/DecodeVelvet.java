@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import one.empty3.libs.Image;
 
@@ -55,7 +55,7 @@ import javax.sound.sampled.AudioFormat;
 	    IVideoFrame videoFrame;
 	    while ((videoFrame = videoStream.nextFrame()) != null) {
 	   	    Image image = videoFrame.image();
-	   	    imgBuf. add(new ECImage(image) );
+	   	    imgBuf. add(new Image(image) );
                     while(imgBuf.size()>4*/
 /*MAX_SIZE*//*
 )

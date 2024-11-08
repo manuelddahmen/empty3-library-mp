@@ -25,10 +25,15 @@ package one.empty3.growth.graphics;
 import one.empty3.library.Matrix33;
 import one.empty3.library.Point3D;
 
+import one.empty3.library.Rectangle;
+import one.empty3.libs.*;
+import one.empty3.libs.Color;
+import one.empty3.libs.Image;
+
 import java.awt.*;
 
 public class Turtle2D {
-    private Color zeColor = Color.GRAY;
+    private Color zeColor = new Color(Color.GRAY.getRGB());
 
     private Matrix33 theRot(double angle) {
         return new Matrix33(new double[]
@@ -68,6 +73,9 @@ public class Turtle2D {
 
     public void setZeColor(Color zeColor) {
         this.zeColor = zeColor;
+    }
+    public void setZeColor(int zeColor) {
+        this.zeColor = new Color(zeColor);
     }
 
     public void setPosition(Point3D position) {

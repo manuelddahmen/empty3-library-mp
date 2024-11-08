@@ -27,7 +27,8 @@
  */
 package one.empty3.library.core.script;
 
-import java.awt.*;
+import one.empty3.library.Lumiere;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 
 public class InterpreteCouleur implements Interprete {
@@ -69,8 +70,8 @@ public class InterpreteCouleur implements Interprete {
         ArrayList<Object> os = ib.read(text, pos);
         this.pos = ib.getPosition();
 
-        return new Color((Integer) os.get(3), (Integer) os.get(7),
-                (Integer) os.get(11));
+        return new Color(Lumiere.getIntFromFloats((Integer) os.get(3), (Integer) os.get(7),
+                (Integer) os.get(11)));
     }
 
     @Override

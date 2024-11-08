@@ -31,9 +31,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Meta Description missing
@@ -65,7 +65,4 @@ public class ECDim {
         this.dimy = dimy;
     }
 
-    public Dimension getAwt() {
-        return new Dimension(getDimx(), getDimy());
-    }
 }

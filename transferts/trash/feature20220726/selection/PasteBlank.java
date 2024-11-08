@@ -33,7 +33,7 @@ import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,10 +131,10 @@ public class PasteBlank extends ProcessFile {
     public boolean process(File in, File out) {
         if (!in.getAbsolutePath().endsWith("jpg"))
             return false;
-        Image read = new one.empty3.libs.Image(ImageIO.read(in));
+        Image read = new one.empty3.libs.Image(new Image(in));
         PixM pixM = PixM.getPixM(read, maxRes);
         PixM pixM1 = pasteList(pixM, new ColorTexture(Color.BLACK));
-        ImageIO.write(pixM1.normalize(0, 1).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(pixM1.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
 

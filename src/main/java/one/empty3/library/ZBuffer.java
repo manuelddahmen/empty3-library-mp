@@ -31,13 +31,12 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import one.empty3.ECImage;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.ParametricVolume;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.File;
 
 /*__
@@ -90,9 +89,9 @@ public interface ZBuffer {
      *
      * @return image
      */
-    ECImage image();
+    Image image();
 
-    ECImage imageInvX();
+    Image imageInvX();
 
     /*__
      * Verrou

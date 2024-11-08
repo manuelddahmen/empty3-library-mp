@@ -28,9 +28,11 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
+
+import java.awt.Graphics;
 
 public class AntiAliasing {
 
@@ -41,9 +43,9 @@ public class AntiAliasing {
     public static Image antiAliasing(ZBuffer z, int echelle, int id) {
         int dimx = z.resX();
         int dimy = z.resY();
-        ECImage img = z.image();
-        Image scaled = new ECImage(dimx / echelle, dimy / echelle,
-                ECImage.TYPE_INT_RGB);
+        Image img = z.image();
+        Image scaled = new Image(dimx / echelle, dimy / echelle,
+                Image.TYPE_INT_RGB);
         Graphics g = scaled.getGraphics();
 
         g.setColor(Color.white);
@@ -71,7 +73,7 @@ public class AntiAliasing {
                 colors[i][j] /= (echelle * echelle);
 
             }
-            g.setColor(new Color(colors[i][0], colors[i][1], colors[i][2]));
+            g.setColor(new Color(Lumiere.getInt(colors[i][0], colors[i][1], colors[i][2])));
             g.drawLine(i % (dimx / echelle), i / (dimx / echelle), i
                     % (dimx / echelle), i / (dimx / echelle));
         }

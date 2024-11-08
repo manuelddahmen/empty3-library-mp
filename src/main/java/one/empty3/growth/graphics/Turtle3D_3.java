@@ -25,7 +25,7 @@ package one.empty3.growth.graphics;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 /***
  * vn(int n)

@@ -23,11 +23,11 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 //import com.xuggle.mediatool.IMediaReader;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 import one.empty3.libs.Image;
 

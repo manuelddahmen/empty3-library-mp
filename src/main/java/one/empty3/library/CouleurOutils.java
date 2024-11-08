@@ -28,9 +28,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * @author manuel
@@ -58,7 +58,7 @@ public class CouleurOutils {
                 res[i] = 255;
             }
         }
-        return new Color(res[0], res[1], res[2]);
+        return new Color(Lumiere.getIntFromInts(res[0], res[1], res[2]));
     }
 
     public static String couleurID() {
@@ -67,11 +67,11 @@ public class CouleurOutils {
 
     public static Color couleurRatio(Color c1, Color c2, double r) {
 
-        return new Color(
+        return new Color(Lumiere.getInt(
                 (float) (c1.getRed() * r + c2.getRed() * (1 - r)),
                 (float) (c1.getGreen() * r + c2.getGreen() * (1 - r)),
                 (float) (c1.getBlue() * r + c2.getBlue() * (1 - r))
-        );
+        ));
     }
 
     public static String toStringColor(Color couleur) {
@@ -84,8 +84,8 @@ public class CouleurOutils {
     }
 
     public Color randomColor() {
-        return new Color((float) Math.random(),
+        return new Color(Lumiere.getInt((float) Math.random(),
                 (float) Math.random(),
-                (float) Math.random());
+                (float) Math.random()));
     }
 }

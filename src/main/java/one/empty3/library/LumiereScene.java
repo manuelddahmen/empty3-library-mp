@@ -28,7 +28,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 /*__
  * *
@@ -36,7 +36,7 @@ import one.empty3.ECImage;
  * PACKAGE be.ibiiztera.md.pmatrix.pushmatrix OWNER DAHMEN MANUEL
  */
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 
 public class LumiereScene {/*
@@ -133,7 +133,7 @@ public class LumiereScene {/*
 
             float[] f = synthese(ratio, colors);
 
-            synthese = new Color(f[0], f[1], f[2]);
+            synthese = new Color(Lumiere.getIntFromFloats(f[0], f[1], f[2]));
         }
 
         return new TextureCol(synthese);

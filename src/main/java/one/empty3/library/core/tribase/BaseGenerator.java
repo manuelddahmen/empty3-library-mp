@@ -27,11 +27,12 @@
  */
 package one.empty3.library.core.tribase;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
+import java.awt.*;
 import java.util.Map.Entry;
 
 @Deprecated

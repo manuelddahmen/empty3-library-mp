@@ -99,7 +99,7 @@ public class Lines3 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         lists.add(new ArrayList<>());
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -405,7 +405,7 @@ public class Lines3 extends ProcessFile {
             }
         });
 
-        ImageIO.write(img3.normalize(0.0, 1.0).getImage(), "jpg",
+        new Image(1,1,1.saveToFile(img3.normalize(0.0, 1.0).getImage(), "jpg",
                 new File(out.getAbsolutePath()));
         return true;
 

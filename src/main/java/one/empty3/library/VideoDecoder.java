@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 
 import one.empty3.libs.Image;
@@ -37,7 +37,7 @@ public abstract class VideoDecoder extends Thread {
     protected File file;
     protected boolean stop = false;
     protected static final long MAXSIZE = 4;
-    protected ArrayList<ECImage> imgBuf = new ArrayList();
+    protected ArrayList<Image> imgBuf = new ArrayList();
 
 
     /***
@@ -58,10 +58,10 @@ public abstract class VideoDecoder extends Thread {
         return eof;
     }
 
-    public ECImage current() {
+    public Image current() {
 
         if (!imgBuf.isEmpty()) {
-            ECImage c = imgBuf.get(0);
+            Image c = imgBuf.get(0);
             imgBuf.remove(0);
             return c;
         } else {

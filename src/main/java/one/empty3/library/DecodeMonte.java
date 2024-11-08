@@ -1,14 +1,14 @@
 /*package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import ru.sbtqa.monte.media.*;
 import ru.sbtqa.monte.media.image.Images;
 import ru.sbtqa.monte.media.FormatKeys.*;
 import java.io.*;
 import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.awt.geom.Line2D;
 import one.empty3.libs.Image;
 import java.awt.image.IndexColorModel;
@@ -63,7 +63,7 @@ if(in==null)
  in.read(track, inbuf);
  codec.process(inbuf, codecbuf);
  if (!codecbuf.isFlag(BufferFlag.DISCARD)) {
- imgBuf.add(new ECImage(Images.cloneImage((Image)codecbuf.data))) ;
+ imgBuf.add(new Image(Images.cloneImage((Image)codecbuf.data))) ;
  
  }
  
@@ -201,7 +201,7 @@ if(in==null)
             
             do {
              in.read(track, img);
-                imgBuf.add(new ECImage(img));
+                imgBuf.add(new Image(img));
 if(imgBuf.size()>MAXSIZE)
    try {Thread.sleep(50);}catch(Exception ex){ex.printStackTrace();}
 in.read(track, img);

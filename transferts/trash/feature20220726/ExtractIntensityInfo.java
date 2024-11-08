@@ -31,7 +31,7 @@ import one.empty3.io.ProcessFile;
 import javaAnd.awt.*;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class ExtractIntensityInfo extends
     public boolean process(File in, File out) {
         Image img = null;
         try {
-            img = ImageIO.read(in);
+            img = new Image(in);
         } catch (Exception rx) {
         }
         PixM pix = PixM.getPixM(img, -1);
@@ -142,7 +142,7 @@ public class ExtractIntensityInfo extends
 
 
         try {
-            ImageIO.write(pix.getImage(),
+            new Image(1,1,1.saveToFile(pix.getImage(),
                     "JPEG", out);
         } catch (Exception ex) {
         }

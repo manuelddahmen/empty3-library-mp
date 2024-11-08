@@ -96,7 +96,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
         listTmpY = new ArrayList<>();
         listTmpZ = new ArrayList<>();
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         lists.add(new ArrayList<>());
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -332,7 +332,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
                 }
             }
 */
-        ImageIO.write(img3.normalize(0, 1).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(img3.normalize(0, 1).getImage(), "jpg", out);
 
         return true;
 

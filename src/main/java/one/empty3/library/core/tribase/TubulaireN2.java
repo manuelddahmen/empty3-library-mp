@@ -41,7 +41,7 @@ import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,7 +62,7 @@ public class TubulaireN2 extends ParametricSurface {
 
     public TubulaireN2(ParametricCurve curve, double diameter) {
         soulCurve.setElem(curve);
-        soulCurve.getElem().texture(new ColorTexture(Color.BLACK));
+        soulCurve.getElem().texture(new ColorTexture(Color.BLACK.getRGB()));
         FctXY fctXY = new FctXY();
         fctXY.setFormulaX("" + diameter);
         diameterFunction.setElem(fctXY);

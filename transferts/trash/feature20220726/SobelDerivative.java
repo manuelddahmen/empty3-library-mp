@@ -79,7 +79,7 @@ public class SobelDerivative extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        PixM p = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
+        PixM p = PixM.getPixM(Objects.requireNonNull(new Image(in)), maxRes);
         PixM pOut = p.copy();
         for (int j = 0; j < p.getLines(); j++) {
             for (int i = 0; i < p.getColumns(); i++) {
@@ -91,7 +91,7 @@ public class SobelDerivative extends ProcessFile {
                 }
             }
         }
-        ImageIO.write(pOut.normalize(0, 1).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(pOut.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
 }

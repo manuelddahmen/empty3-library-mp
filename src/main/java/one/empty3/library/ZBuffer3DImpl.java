@@ -23,13 +23,13 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 /*
  public class ZBuffer3DImpl extends ZBufferImpl implements ZBuffer3D {
  protected int lr;
- private ECImage imageGauche;
- private ECImage imageDroite;
+ private Image imageGauche;
+ private Image imageDroite;
 
  public ZBuffer3DImpl(int l, int h) {
  super(l, h);
@@ -53,13 +53,13 @@ import one.empty3.ECImage;
  }
 
  @Override
- public ECImage imageDroite() {
+ public Image imageDroite() {
  return imageDroite;
 
  }
 
  @Override
- public ECImage imageGauche() {
+ public Image imageGauche() {
  return imageGauche;
  }
 

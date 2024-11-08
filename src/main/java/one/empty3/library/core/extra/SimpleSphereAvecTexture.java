@@ -28,10 +28,10 @@
 package one.empty3.library.core.extra;
 
 import one.empty3.*;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 import one.empty3.libs.Image;
 
@@ -61,11 +61,11 @@ public class SimpleSphereAvecTexture extends SimpleSphere {
     public SimpleSphereAvecTexture(Point3D c, double r, Color col,
                                    Image image) {
         super(c, r, col);
-        texture(new ImageTexture((ECImage) image));
+        texture(new ImageTexture((Image) image));
     }
 
     public SimpleSphereAvecTexture(Point3D c, Matrix33 m3d, double angle, double r,
-                                   Color col, ECImage img) {
+                                   Color col, Image img) {
         super(c, r, col);
         this.axe = axe;
         this.angle = angle;

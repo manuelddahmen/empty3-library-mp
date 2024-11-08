@@ -27,7 +27,7 @@ import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -383,7 +383,7 @@ public class GLModel {
             int faceLength = ((int[]) (faces.get(i))).length;
             Color color = null;
             if (i == nextmat) {
-                color = new Color((materials.getKd(nextmatname))[0], (materials.getKd(nextmatname))[1], (materials.getKd(nextmatname))[2], (materials.getd(nextmatname)));
+                color = new Color(Lumiere.getIntFromFloats((materials.getKd(nextmatname))[0], (materials.getKd(nextmatname))[1], (materials.getKd(nextmatname))[2], (materials.getd(nextmatname))));
                 matcount++;
                 if (matcount < totalmats) {
                     nextmatnamearray = (String[]) (mattimings.get(matcount));
@@ -429,11 +429,11 @@ public class GLModel {
                 float tempy = ((float[]) vertexsets.get(tempfaces[w] - 1))[1];
                 float tempz = ((float[]) vertexsets.get(tempfaces[w] - 1))[2];
                 face[w] = new Point3D(1.0 * tempx, 1.0 * tempy, 1.0 * tempz);
-                face[w].texture(new ColorTexture((color != null) ? color : Color.WHITE));
+                face[w].texture(new ColorTexture((color != null) ? color : new Color(Color.WHITE.getRGB())));
             }
 
             if (color == null)
-                color = Color.WHITE;
+                color = new Color(Color.WHITE);
             Representable r = null;
             if (faceLength >= 4) {
                 r = new Polygon(face, color);

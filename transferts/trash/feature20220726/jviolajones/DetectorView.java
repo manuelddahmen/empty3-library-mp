@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 //    public DetectorView(File img, String XMLFile) throws FileNotFoundException, IOException {
 //        Image image = null;
 //        try {
-//            image = ImageIO.read(img);
+//            image = new Image(img);
 //        } catch (IOException e) {
 //            // TODO Auto-generated catch block
 //            e.printStackTrace();

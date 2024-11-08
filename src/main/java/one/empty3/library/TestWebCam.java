@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;/*
+import one.empty3.libs.Image;/*
  * 2013 Manuel Dahmen
  */
 
@@ -49,7 +49,7 @@ public class TestWebCam {
         }
         Image image = webcam.getImage();
         try {
-            ImageIO.write(image, "PNG", new File("test.png"));
+            new Image(1,1,1.saveToFile(image, "PNG", new File("test.png"));
         } catch (IOException ex) {
             Logger.getLogger(TestWebCam.class.getName()).log(Level.SEVERE, null, ex);
         }

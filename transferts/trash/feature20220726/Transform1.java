@@ -48,7 +48,7 @@ public class Transform1 extends ProcessFile {
         File file = in;
         PixM pixMOriginal = null;
         try {
-            pixMOriginal = PixM.getPixM(ImageIO.read(file), 500.0);
+            pixMOriginal = PixM.getPixM(new Image(file), 500.0);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -137,7 +137,7 @@ public class Transform1 extends ProcessFile {
      WriteFile.writeNext("radial grad"+file.getName(), rad.normalize(0.,1.).getImage());
      */
         try {
-            ImageIO.write(plext3.getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(plext3.getImage(), "jpg", out);
         } catch (Exception ex) {
             return false;
         }

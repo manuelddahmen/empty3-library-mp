@@ -30,7 +30,7 @@
  */
 package one.empty3.library.colorcomp;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Meta Description missing

@@ -23,13 +23,12 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
 
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.ParametricVolume;
 import one.empty3.library.core.nurbs.Quad2Volume;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class Camera2Quad extends Camera {
     protected final StructureMatrix<Polygon> near = new StructureMatrix(0, Polygon.class);

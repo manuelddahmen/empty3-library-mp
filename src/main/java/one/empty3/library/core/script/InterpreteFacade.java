@@ -36,7 +36,7 @@ import one.empty3.library.core.tribase.TRIEllipsoide;
 import one.empty3.library.core.tribase.TRISphere;
 import one.empty3.library.core.tribase.Tubulaire;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -323,7 +323,7 @@ public class InterpreteFacade {
 
     public Color interpreteColor() throws InterpreteException {
         InterpreteCouleur pc = new InterpreteCouleur();
-        Color c = Color.BLACK;
+        Color c = new Color(Color.BLACK.getRGB());
         try {
             c = (Color) pc.interprete(text, pos);
             pos = pc.getPosition();

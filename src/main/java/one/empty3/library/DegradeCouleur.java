@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;/*
+import one.empty3.libs.Image;/*
  * Copyright (c) 2016. Tous les fichiers dans ce programme sont soumis à la License Publique Générale GNU créée par la Free Softxware Association, Boston.
  * La plupart des licenses de parties tièrces sont compatibles avec la license principale.
  * Les parties tierces peuvent être soumises à d'autres licenses.
@@ -38,7 +38,7 @@ import one.empty3.ECImage;/*
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public interface DegradeCouleur {
 

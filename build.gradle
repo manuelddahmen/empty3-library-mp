@@ -42,24 +42,25 @@ tasks.withType(JavaCompile).configureEach {
 configurations {
     desktopCompile
     androidCompile
+    testCompile
 
     compileOnly.extendsFrom desktopCompile
-    testCompile.extendsFrom desktopCompile // Assuming tests run on the desktop
+    testOnly.extendsFrom desktopCompile
 
     desktop {
         extendsFrom desktopCompile
-        //extendsFrom runtime
+//        extendsFrom runtime
     }
     android {
         extendsFrom androidCompile
-        //extendsFrom runtime
+//        extendsFrom runtime
+    }
+    test {
+        extendsFrom testCompile
+
     }
 }
 
-dependencies {
-    androidCompile "one.empty3.libs:partial-android:0.0.1"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.1"
-}
 sourceSets {
     main {
         java {
@@ -331,6 +332,7 @@ tasks.register('FaceDetectAppEditor', JavaExec) {
     mainClass = "one.empty3.apps.facedetect.JFrameEditPolygonsMappings"
     args ''
     dependsOn(jar)
+
 }
 
 
@@ -339,48 +341,9 @@ signing {
     def signingPassword = load.get("signing.password")
 
     useGpgCmd()
-    //useInMemoryPgpKeys(signingKey, signingPassword)
-
-  //  sign publishing.publications
-  //  sign configurations.archives
 
 }
 
-/*
-repositories {
-    google()
-    mavenCentral()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    maven {
-        url = uri("https://repo1.maven.org/maven2/")
-    }
-
-    maven {
-        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    }
-    maven {
-        url = uri("https://repository.sonatype.org/content/groups/public/")
-    }
-    maven {
-        url = uri("https://mvnrepository.com/")
-    }
-    maven {
-        url = uri("https://maven.scijava.org/content/repositories/public/")
-    }
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
-    maven {
-        url "https://maven.jzy3d.org/releases/"
-    }
-    maven {
-        url "https://www.jetbrains.com/intellij-repository/releases"
-    }
-    //flatDir dirs: "${rootDir}/lib"
-}
-*/
 repositories {
     mavenCentral()
     maven {
@@ -398,10 +361,20 @@ repositories {
         url "https://mvnrepository.com/"
     }
 }
-
+compileTestKotlin {
+    dependencies {
+      //  implementation 'one.empty3.libs:commmons-mp:2024.11.8'
+    }
+}
 dependencies {
+    androidCompile "one.empty3.libs:partial-android:0.0.5"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.3"
+    implementation "one.empty3.libs:commons-mp:0.0.4"
+    testCompileOnly "one.empty3.libs:partial-desktop:0.0.3"
+    testRuntimeOnly "one.empty3.libs:partial-desktop:0.0.3"
+    implementation 'org.springframework.boot:spring-boot-starters:2.2.13.RELEASE'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     def googleJavaFormatVersion = '1.6'
-    implementation group: 'one.empty3.libs', name: 'commmons-mp', version: '0.0.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     implementation 'junit:junit:4.13.2'
     testImplementation project(path: ':')
@@ -452,6 +425,8 @@ sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+
+
 tasks.register('copyTask', Copy) {
     // duplicateStrategy = DuplicatesStrategy.WARN
     from 'src/main/java/'
@@ -489,13 +464,13 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2024.11.3-2'
+def versionName = '2024.11.8'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2024.11.3-2'
+            version = '2024.11.8'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -511,7 +486,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2024.11.3-2'
+                version '2024.11.8'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -595,8 +570,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2024.11.3-2'
-        version = '2024.11.3-2'
+        java.version = '2024.11.8'
+        version = '2024.11.8'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

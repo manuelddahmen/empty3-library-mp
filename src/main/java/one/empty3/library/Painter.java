@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 /*__
  * Created by manuel Dahmen manuel.dahmen@gmail.com on 08-10-15.

@@ -30,7 +30,7 @@ package one.empty3.library.core.extra;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class Tourbillon extends Representable implements
         TRIConteneur {
@@ -49,10 +49,10 @@ public class Tourbillon extends Representable implements
         // this.axe = new Axe(new Point3D(0, 0, 0), new Point3D(0, 1, 0));
         this.obj = new PObjet();
         this.tours = 4.0;
-        Color[] colors = new Color[]{Color.red, Color.green, Color.blue,
-                Color.orange, Color.cyan, Color.darkGray, Color.black,
-                Color.gray, Color.lightGray, Color.magenta, Color.pink,
-                Color.yellow};
+        int[] colors = new int[]{Color.red.getRGB(), Color.green.getRGB(), Color.blue.getRGB(),
+                Color.orange.getRGB(), Color.cyan.getRGB(), Color.darkGray.getRGB(), Color.black.getRGB(),
+                Color.gray.getRGB(), Color.lightGray.getRGB(), Color.magenta.getRGB(), Color.pink.getRGB(),
+                Color.yellow.getRGB()};
 
         double angle = 0.0;
 
@@ -63,7 +63,7 @@ public class Tourbillon extends Representable implements
 
         for (int j = 0; j < dimy; j++) {
 
-            Color c = colors[j];
+            Color c = new Color(colors[j]);
 
             angle += 2.0 * Math.PI / (dimy - 1);
 

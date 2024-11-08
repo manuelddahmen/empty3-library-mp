@@ -23,14 +23,9 @@
 package one.empty3.feature;
 
 import java.awt.*;
-
-import one.empty3.libs.Image;
-import one.empty3.ECImage;
-
+import java.awt.image.BufferedImage;
 import java.util.PrimitiveIterator;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class M3 {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
@@ -41,7 +36,7 @@ public class M3 {
     protected final int columnsIn;
     protected final int linesIn;
     protected int compNo;
-    protected Image image;
+    protected BufferedImage image;
     private final int compCount = 4;
     private int currentX;
     private int currentY;
@@ -121,7 +116,7 @@ public class M3 {
     }
 
 
-    public M3(Image image, int columns, int lines, int columnsIn, int linesIn) {
+    public M3(BufferedImage image, int columns, int lines, int columnsIn, int linesIn) {
         this(columns, lines, columnsIn, linesIn);
         float[] colorComponents = new float[getCompCount()];
         for (int i = 0; i < columns; i++) {
@@ -140,7 +135,7 @@ public class M3 {
     }
 
     @Deprecated
-    public M3(Image image, int columnsIn, int linesIn) {
+    public M3(BufferedImage image, int columnsIn, int linesIn) {
         this(image.getWidth(), image.getHeight(), columnsIn, linesIn);
         this.image = image;
 

@@ -27,13 +27,15 @@
  */
 package one.empty3.library.core.script;
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
 import one.empty3.library.TextureCol;
 import one.empty3.library.TextureImg;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import one.empty3.libs.*;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -89,7 +91,7 @@ public class InterpreteTColor implements Interprete {
                 inf.setRepertoire(repertoire);
                 File f = (File) inf.interprete(text, pos);
 
-                ECImage bi = new ECImage(ImageIO.read(f));
+                Image bi = new Image((Image) new Image(1,1,1).getFromFile(f));
 
                 tc = new TextureImg(bi);
 
@@ -97,20 +99,13 @@ public class InterpreteTColor implements Interprete {
                 /*
                  InterpretePGM iPGM = new InterpretePGM();
 				
-                 ECImage ec = (ECImage) iPGM.interprete(text, pos);
+                 Image ec = (Image) iPGM.interprete(text, pos);
 				
                  tc = new TextureCol(ec);
 				
                  this.pos = inf.getPosition();
                  */
                 success = true;
-            } catch (FileNotFoundException ex2) {
-                Logger.getLogger(InterpreteTColor.class.getName()).log(Level.SEVERE, null, ex);
-                System.err.println("File not found");
-
-            } catch (IOException ex1) {
-                Logger.getLogger(InterpreteTColor.class.getName()).log(Level.SEVERE, null, ex);
-                System.err.println("IO error");
             } catch (InterpreteException ex3) {
                 Logger.getLogger(InterpreteTColor.class.getName()).log(Level.SEVERE, null, ex);
                 System.err.println("Interprete Error");

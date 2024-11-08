@@ -38,7 +38,7 @@ public class GradProcess extends ProcessFile {
         File file = in;
         PixM pix;
         try {
-            pix = PixM.getPixM(ImageIO.read(file), maxRes);
+            pix = PixM.getPixM(new Image(file), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
             PixM[][] imagesMatrix = gf.filter(
@@ -46,7 +46,7 @@ public class GradProcess extends ProcessFile {
                             pix, 2, 2)
             ).getImagesMatrix();
 
-            ImageIO.write(imagesMatrix[0][0].normalize(0.0, 1.0).getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(imagesMatrix[0][0].normalize(0.0, 1.0).getImage(), "jpg", out);
 
             addSource(out);
             return true;

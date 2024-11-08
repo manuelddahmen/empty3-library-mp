@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 public class TextureMorphing extends ITexture {
     private final ITexture texture2;

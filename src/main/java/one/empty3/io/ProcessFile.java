@@ -27,9 +27,10 @@ import one.empty3.feature.ProcessBean;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.libs.Image;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,18 +41,15 @@ public abstract class ProcessFile extends ProcessNFiles {
     public ProcessBean bean;
     private File outputDirectory = null;
     private List<File> imagesStack = new ArrayList<>();
-
+    public static boolean shouldOverwrite = false;
 
     protected static boolean isImage(File in) {
         if (in != null && (in.getAbsolutePath().toLowerCase().endsWith(".jpg")
                 || in.getAbsolutePath().toLowerCase().endsWith(".png")))
             return true;
-        try {
-            Image read = new ECImage(ImageIO.read(in));
-            if (read != null) return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Image read = new Image((BufferedImage) new Image(1,1,1).getFromFile(in));
+        if (read != null) return true;
         return false;
     }
 

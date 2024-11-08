@@ -24,6 +24,8 @@ package one.empty3.feature;
 
 import one.empty3.libs.Image;
 
+import java.awt.image.BufferedImage;
+
 public abstract class FilterPixM extends PixM {
     public final static int NORM_NONE = 0;
     public final static int NORM_MEAN = 1;

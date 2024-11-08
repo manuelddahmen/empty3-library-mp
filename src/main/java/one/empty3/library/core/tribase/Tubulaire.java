@@ -35,7 +35,7 @@ package one.empty3.library.core.tribase;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 public class Tubulaire extends Representable implements TRIGenerable, TRIConteneur {
 
     public float PERCENT = 0.05f;
-    private Color couleur = Color.BLUE;
+    private Color couleur = new Color(Color.BLUE.getRGB());
     private String id;
     private ArrayList<Point3D> points;
     //private double ratio;
@@ -129,9 +129,9 @@ public class Tubulaire extends Representable implements TRIGenerable, TRIContene
                 for (int i = 3; i < tour1.size() - 1; i++) {
                     TRI t1 = new TRI(tour0.get(i), tour1.get(i), tour1.get(i + 1), couleur);
                     TRI t2 = new TRI(tour0.get(i), tour0.get(i + 1), tour1.get(i + 1), couleur);
-                    t1.setCouleur(CouleurOutils.couleurFactio(couleur, Color.white, t1, new Point3D(0d, 0d, 1d), false));
-                    t2.setCouleur(CouleurOutils.couleurFactio(couleur, Color.white, t1, new Point3D(0d, 0d, 1d), false));
-                    t1.setCouleur(CouleurOutils.couleurFactio(couleur, Color.white, t1, new Point3D(0d, 0d, 1d), false));
+                    t1.setCouleur(CouleurOutils.couleurFactio(couleur, new Color(Color.white.getRGB()), t1, new Point3D(0d, 0d, 1d), false));
+                    t2.setCouleur(CouleurOutils.couleurFactio(couleur, new Color(Color.white.getRGB()), t1, new Point3D(0d, 0d, 1d), false));
+                    t1.setCouleur(CouleurOutils.couleurFactio(couleur, new Color(Color.white.getRGB()), t1, new Point3D(0d, 0d, 1d), false));
                     t1.setCouleur(couleur);
                     t2.setCouleur(couleur);
                     tris.add(t1);

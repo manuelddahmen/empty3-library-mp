@@ -23,15 +23,15 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * @author Atelier
  */
 public class LumierePointSimple extends LumierePoint {
-    public static final Lumiere PARDEFAUT = new LumierePointSimple(Color.WHITE,
+    public static final Lumiere PARDEFAUT = new LumierePointSimple(new Color(Color.WHITE),
             Point3D.O0, 2.0);
     float[] f = new float[3];
     private Color couleur;
@@ -75,7 +75,7 @@ public class LumierePointSimple extends LumierePoint {
                 f[i] = 0f;
             }
         }
-        return new Color(f[0], f[1], f[2]).getRGB();
+        return new Color(Lumiere.getInt(f[0], f[1], f[2])).getRGB();
     }
 
     public float[] getF() {

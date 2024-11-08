@@ -28,12 +28,12 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 //import org.monte.media.avi.AVIReader;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import java.util.logging.Logger;
  */
 public class TextureImg extends ITexture {
 
-    private StructureMatrix<ECImage> image = new StructureMatrix<>(0, ECImage.class);
+    private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
 
     private String nom = "texture";
 
@@ -61,7 +61,7 @@ public class TextureImg extends ITexture {
     public TextureImg() {
 
     }
-    public TextureImg(ECImage bi) {
+    public TextureImg(Image bi) {
         this.image.setElem(bi);
     }
 
@@ -103,11 +103,11 @@ public class TextureImg extends ITexture {
     }
 
 
-    public ECImage getImage() {
+    public Image getImage() {
         return image.getElem();
     }
 
-    public void setImage(ECImage image) {
+    public void setImage(Image image) {
         this.image.setElem(image);
     }
 
@@ -154,7 +154,7 @@ public class TextureImg extends ITexture {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try {
-            ImageIO.write(image.getElem(), "jpg", bos);
+            image.getElem().saveToFile(getFile());
             byte[] imageBytes = bos.toByteArray();
     
             Base64.Encoder encoder =Base64.getEncoder();

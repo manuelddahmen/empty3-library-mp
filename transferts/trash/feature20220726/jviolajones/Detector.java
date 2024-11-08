@@ -7,7 +7,7 @@
 //import javaAnd.awt.image.imageio.ImageIO;
 //import javaAnd.awt.*;
 //import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 //import java.io.FileInputStream;
 //import java.io.InputStream;
 //import java.util.List;
@@ -117,7 +117,7 @@ import java.util.logging.Logger;
 //    }
 //
 //    public List<java.awt.Rectangle> getFaces(InputStream input, float baseScale, float scale_inc, float increment, int min_neighbors, boolean doCannyPruning) throws java.io.FileNotFoundException, java.io.IOException {
-//        return getFaces(ImageIO.read(input), baseScale, scale_inc, increment, min_neighbors, doCannyPruning);
+//        return getFaces(new Image(input), baseScale, scale_inc, increment, min_neighbors, doCannyPruning);
 //    }
 //
 //    /*

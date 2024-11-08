@@ -276,7 +276,7 @@ public class RegionLineCorner extends ProcessFile {
 
     public boolean process(File in, File out) {
         File directory = new File(out.getParent());
-        PixM imageCoutours = PixM.getPixM(ImageIO.read(in), 500.0);
+        PixM imageCoutours = PixM.getPixM(new Image(in), 500.0);
         this.m = imageCoutours;
         one.empty3.libs.Image file = m.getImage();
 
@@ -339,11 +339,11 @@ public class RegionLineCorner extends ProcessFile {
             File fileToWrite3 = new File(directory.getAbsolutePath()
                     + "level" + finalI + "_NEW_RGB.jpg");
             //fileToWrite.mkdirs();
-            ImageIO.write(img4, "JPEG", out);
+            new Image(1,1,1.saveToFile(img4, "JPEG", out);
             /*
-            ImageIO.write(img, "JPEG", fileToWrite);
-            ImageIO.write(img, "JPEG", fileToWrite2);
-            ImageIO.write(img, "JPEG", fileToWrite3);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
+            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
 */
         }
 

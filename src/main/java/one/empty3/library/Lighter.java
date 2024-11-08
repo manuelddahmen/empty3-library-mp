@@ -23,9 +23,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class Lighter implements IBasicLighter {
 
@@ -56,7 +56,7 @@ public class Lighter implements IBasicLighter {
             }
         }
 
-        return new Color(colorsComp[0], colorsComp[1], colorsComp[2]);
+        return new Color(Lumiere.getIntFromFloats(colorsComp[0], colorsComp[1], colorsComp[2]));
     }
 
     public void config(Point3D pointLumiere, double intensite, double rayonEnglobant) {

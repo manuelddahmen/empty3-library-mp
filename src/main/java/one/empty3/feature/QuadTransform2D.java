@@ -25,12 +25,10 @@ package one.empty3.feature;
 import one.empty3.library.Point3D;
 
 import java.awt.*;
-
-import one.empty3.libs.Image;
-import one.empty3.ECImage;
+import java.awt.image.BufferedImage;
 
 public class QuadTransform2D {
-    private Image i1, i2;
+    private BufferedImage i1, i2;
     private Point3D[] p1;
     private Point3D[] p2;
 
@@ -60,7 +58,7 @@ public class QuadTransform2D {
         }
     }
 
-    public QuadTransform2D(Image i1, Image i2, Point3D[] p1, Point3D[] p2) {
+    public QuadTransform2D(BufferedImage i1, BufferedImage i2, Point3D[] p1, Point3D[] p2) {
         this.i1 = i1;
         this.i2 = i2;
         this.p1 = p1;

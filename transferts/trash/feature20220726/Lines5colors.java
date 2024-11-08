@@ -102,7 +102,7 @@ public class Lines5colors extends ProcessFile {
         listTmpY = new ArrayList<>();
         listTmpZ = new ArrayList<>();
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         lists.add(new ArrayList<>());
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -414,12 +414,12 @@ public class Lines5colors extends ProcessFile {
 
             }
         });
-        ImageIO.write(o.normalize(0.0, 1.0).getImage(), "jpg", new File(out.getAbsolutePath() + "-dotted.jpg"));
-        //ImageIO.write(bLines, "jpg",
+        new Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", new File(out.getAbsolutePath() + "-dotted.jpg"));
+        //new Image(1,1,1.saveToFile(bLines, "jpg",
         //        new File(out.getAbsolutePath() + "-blines.jpg"));
-//            ImageIO.write(linesImg2, "jpg",
+//            new Image(1,1,1.saveToFile(linesImg2, "jpg",
 //                    new File(out.getAbsolutePath() + "-lines-yAxB.jpg"));
-        ImageIO.write(img3.normalize(0.0, 1.0).getImage(), "jpg",
+        new Image(1,1,1.saveToFile(img3.normalize(0.0, 1.0).getImage(), "jpg",
                 new File(out.getAbsolutePath()));
         return true;
 

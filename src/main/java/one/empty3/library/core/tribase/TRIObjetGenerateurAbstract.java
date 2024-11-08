@@ -29,8 +29,8 @@ package one.empty3.library.core.tribase;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
-import java.awt.Point;
+import one.empty3.library.Point;
+import one.empty3.libs.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -184,7 +184,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
             Point3D ret = sommet.get(0).plus(
                     sommet.get(1).moins(sommet.get(0)).mult(ratioX)).plus(
                     sommet.get(2).moins(sommet.get(1)).mult(ratioY));
-            if (texture() == null) texture = new TextureCol(new Color(255, 128, 0));
+            if (texture() == null) texture = new TextureCol(new Color(Lumiere.getIntFromInts(255, 128, 0)));
             ret.texture(new TextureCol(texture.getColorAt(
                     (numX + (numX + ratioX) / maxX.data0d), (numY + (numY + ratioY) / maxY.data0d))));
 
@@ -194,7 +194,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
             return ret;
         } else {
             List<Point3D> sommet = tris[1].getSommet().getData1d();
-            if (texture() == null) texture = new TextureCol(new Color(255, 128, 0));
+            if (texture() == null) texture = new TextureCol(new Color(Lumiere.getIntFromInts(255, 128, 0)));
             Point3D ret = sommet.get(1).plus(
                     sommet.get(0).moins(sommet.get(1)).mult(ratioY)).plus(
                     sommet.get(2).moins(sommet.get(0)).mult(ratioX));
@@ -217,7 +217,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
      * @param z
      */
     public void draw(ZBuffer z) {
-        Point3D INFINI = new Point3D(0d, 0d, 10000d, new TextureCol(Color.BLUE));
+        Point3D INFINI = new Point3D(0d, 0d, 10000d, new TextureCol(Color.BLUE.getRGB()));
         TRI[] tris = new TRI[2];
         tris[0] = new TRI(INFINI, INFINI, INFINI);
         tris[1] = new TRI(INFINI, INFINI, INFINI);
@@ -242,7 +242,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
                 double incrMax = 1;
                 for (int t = 0; t < 2; t++) {
                     for (int c = 0; c < 3; c++) {
-                        Point p1 = z.camera().coordonneesPoint2D(tris[t]
+                        one.empty3.library.Point p1 = z.camera().coordonneesPoint2D(tris[t]
                                 .getSommet().getElem(c), (ZBufferImpl) z);
                         Point p2 = z.camera().coordonneesPoint2D(tris[t]
                                 .getSommet().getElem((c + 1) % 3), (ZBufferImpl) z);

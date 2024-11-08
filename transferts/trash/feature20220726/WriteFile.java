@@ -25,7 +25,7 @@ package one.empty3.feature20220726;
 import javaAnd.awt.image.imageio.ImageIO;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.util.logging.*;
@@ -52,7 +52,7 @@ public class WriteFile {
         try {
 
             no++;
-            ImageIO.write(imageJpeg, "jpg", n);
+            new Image(1,1,1.saveToFile(imageJpeg, "jpg", n);
             Logger.getLogger(WriteFile.class.toString()).log(Level.INFO, "file written: " + n.getAbsolutePath());
 
         } catch (Exception ex) {

@@ -27,7 +27,7 @@ import java.awt.Color;
 import one.empty3.io.ProcessFile;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 
@@ -46,7 +46,7 @@ public class IsleProcess extends ProcessFile {
         PixM pix = null;
         Image img = null;
         try {
-            img = ImageIO.read(file);
+            img = new Image(file);
             pix = PixM.getPixM(img, -10.0);
 
         } catch (Exception ex) {
@@ -66,7 +66,7 @@ public class IsleProcess extends ProcessFile {
         il.filter();
         try {
 
-            ImageIO.write(pix.getImage(), "JPEG", out);
+            new Image(1,1,1.saveToFile(pix.getImage(), "JPEG", out);
 
         } catch (Exception ex) {
 

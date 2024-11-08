@@ -27,7 +27,8 @@
  */
 package one.empty3.library.core.lighting;
 
-import java.awt.*;
+import one.empty3.library.Lumiere;
+import one.empty3.libs.*;
 import java.util.Random;
 
 /*__
@@ -49,15 +50,15 @@ public class Colors {
         }
     }
     */
-    public static Color TRANSPARENT = new Color(1f, 0f, 0f, .5f);
+    public static Color TRANSPARENT = new Color(Lumiere.getIntFromFloats(1f, 0f, 0f, .5f));
     private static final Random random = new Random();
 
     public static Color random() {
-        return new Color(
+        return new Color(Lumiere.getIntFromFloats(
                 (float) random.nextDouble(),
                 (float) random.nextDouble(),
                 (float) random.nextDouble()
-        );
+        ));
     }
 
 
@@ -158,7 +159,7 @@ public class Colors {
             if (Float.isNaN(r[i]) || Float.isInfinite(r[i]))
                 r[i] = 1f;
         }
-        return new Color(r[0], r[1], r[2]);
+        return new Color(Lumiere.getIntFromFloats(r[0], r[1], r[2]));
     }
 
 
@@ -199,7 +200,7 @@ public class Colors {
             if (Float.isNaN(r[i]) || Float.isInfinite(r[i]))
                 r[i] = 1f;
         }
-        return new Color(r[0], r[1], r[2]);
+        return new Color(Lumiere.getIntFromFloats(r[0], r[1], r[2]));
     }
 
 }

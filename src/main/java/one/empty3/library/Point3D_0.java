@@ -23,12 +23,12 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -626,7 +626,7 @@ public class Point3D_0 extends Representable {
     }*/
 
     public Color toColor() {
-        return new Color((float) (double) (get(0)), (float) (double) (get(1)), (float) (double) (get(2)));
+        return new Color(Lumiere.getIntFromFloats((float) (double) (get(0)), (float) (double) (get(1)), (float) (double) (get(2))));
     }
 
     public static Point3D_0 fromColor(Color color) {

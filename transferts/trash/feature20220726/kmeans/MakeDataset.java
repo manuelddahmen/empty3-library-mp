@@ -26,7 +26,7 @@ import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.feature20220726.PixM;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class MakeDataset {
     public MakeDataset(File image,
                        File outputCsv, int res) {
         try {
-            Image img = ImageIO.read(image);
+            Image img = new Image(image);
             PixM pix;
             if (res > 0)
 

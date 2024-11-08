@@ -23,7 +23,7 @@
 package one.empty3.feature20220726;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 public class VectorsImage extends M3 {
     public VectorsImage(int columns, int lines, int columnsIn, int linesIn) {

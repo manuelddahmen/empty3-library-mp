@@ -33,7 +33,7 @@ import one.empty3.library.core.nurbs.ParametricCurve;
 import javaAnd.awt.image.imageio.ImageIO;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,10 +153,10 @@ public class HighlightFeatures extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        Image read = new one.empty3.libs.Image(ImageIO.read(in));
+        Image read = new one.empty3.libs.Image(new Image(in));
         PixM pixM = PixM.getPixM(read);
         File stackItem = getStackItem(1);
-        PixM original = new PixM(ImageIO.read(stackItem));
+        PixM original = new PixM(new Image(stackItem));
         int cadre = (int) Math.min((pixM.getColumns() + pixM.getLines()) / 2., 10.);
         for (int i = 0; i < pixM.getColumns(); i++)
             for (int j = 0; j < pixM.getLines(); j++) {
@@ -169,7 +169,7 @@ public class HighlightFeatures extends ProcessFile {
                         }
                 }
             }
-        ImageIO.write(original.normalize(0., 1., 0., 1.).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(original.normalize(0., 1., 0., 1.).getImage(), "jpg", out);
 
         return true;
     }

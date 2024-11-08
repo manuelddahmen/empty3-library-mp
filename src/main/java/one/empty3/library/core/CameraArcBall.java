@@ -25,7 +25,7 @@ package one.empty3.library.core;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Created by manue on 23-11-19.

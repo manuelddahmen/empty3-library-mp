@@ -29,6 +29,8 @@ package one.empty3.neuralnetwork;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import one.empty3.libs.*;
+
 import java.awt.*;
 import java.io.File;
 
@@ -83,6 +85,7 @@ public class Main extends JFrame {
         label14 = new JLabel();
 
         //======== this ========
+
         Container contentPane = getContentPane();
         contentPane.setLayout(new MigLayout(
                 "hidemode 3",

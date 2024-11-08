@@ -23,10 +23,10 @@
 package one.empty3.growth.graphics;
 
 import one.empty3.*;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +37,7 @@ public class Turtle3D_2 {
     private Point3D positionTurtle = Point3D.O0;
 
     private double diametre;
-    private Color color = Color.BLACK;
+    private Color color = new Color(Color.BLACK);
 
     private Point3D matriceRepereULH(Point3D p3dUnite) {
         return /* RZ */new Matrix33(new double[]{
@@ -148,7 +148,7 @@ public class Turtle3D_2 {
 
     public Image returnImage() {
         zBuffer.draw();
-        ECImage image = zBuffer.image();
+        Image image = zBuffer.image();
         return image;
 
     }

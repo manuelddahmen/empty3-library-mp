@@ -27,7 +27,7 @@ import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class E3Model extends RepresentableConteneur {
     public Double farpoint;
     public Double nearpoint;
     private String mtl_path;
-    Color color = new Color(0, 0, 255);
+    Color color = new Color(Lumiere.getIntFromInts(0, 0, 255));
     private int csDim;
     private boolean rat;
     private String cstype;
@@ -589,7 +589,7 @@ public class E3Model extends RepresentableConteneur {
             for (int i = 0; i < faces.size(); i++) {
                 Point3D norm = new Point3D();
                 if (i == nextmat) {
-                    pointCol = new Color((materials.getKd(nextmatname))[0], (materials.getKd(nextmatname))[1], (materials.getKd(nextmatname))[2], (materials.getd(nextmatname)));
+                    pointCol = new Color(Lumiere.getIntFromFloats(materials.getKd(nextmatname)[0], (materials.getKd(nextmatname))[1], (materials.getKd(nextmatname))[2], (materials.getd(nextmatname))));
                     matcount++;
                     if (matcount < totalmats) {
                         nextmatnamearray = (String[]) (mattimings.get(matcount));

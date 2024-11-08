@@ -25,14 +25,15 @@ package one.empty3.io;
 import one.empty3.feature.PixM;
 import one.empty3.feature.ProcessBean;
 import one.empty3.feature.process.InProcessCode;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.core.script.Code;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ public class ProcessNFiles {
     private Properties property;
     private File outputDirectory = null;
     private List<File> imagesStack = new ArrayList<>();
+    public boolean shouldOverwrite = false;
 
 
     public ProcessNFiles() {
@@ -88,7 +90,7 @@ public class ProcessNFiles {
             String property = p.getProperty(s);
             File file = new File(property);
             Image read = null;
-            read = new ECImage(ImageIO.read(file));
+            read = new Image((BufferedImage) new Image(1,1,1).getFromFile(file));
             return (new PixM(read));
         } catch (Exception ex) {
         }

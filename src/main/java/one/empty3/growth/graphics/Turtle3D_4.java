@@ -59,7 +59,7 @@ package one.empty3.growth.graphics;
 import one.empty3.*;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

@@ -28,14 +28,13 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 //import org.monte.media.avi.AVIReader;
 
-import one.empty3.ECImage;
-import one.empty3.feature.app.replace.javax.imageio.ImageIO;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 import one.empty3.libs.Image;
 
@@ -47,17 +46,17 @@ import java.util.Objects;
  * @author manu
  */
 public class ImageTexture extends ITexture {
-    private StructureMatrix<ECImage> image = new StructureMatrix<>(0, ECImage.class);
+    private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
     private String nom = "texture";
     private int transparent = 0xFFFFFF00;
 
-    public ImageTexture(ECImage bi) {
+    public ImageTexture(Image bi) {
         image.setElem(bi);
     }
 
     public ImageTexture(File bif) {
         try {
-            image.setElem(new ECImage(Objects.requireNonNull(ImageIO.read(bif))));
+            image.setElem(new Image((Image)Objects.requireNonNull(new Image(1,1,1).getFromFile(bif))));
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
         }
@@ -122,16 +121,16 @@ public class ImageTexture extends ITexture {
         return image.getElem();
     }
 
-    public void setEcImageStructureMatrix(ECImage image) {
+    public void setEcImageStructureMatrix(Image image) {
         this.image.setElem(image);
         image = image;
     }
 
-    public ECImage getImage() {
+    public Image getImage() {
         return image.getElem();
     }
 
-    public void setImage(ECImage bi) {
+    public void setImage(Image bi) {
         image.setElem(bi);
         image.setElem(bi);
     }

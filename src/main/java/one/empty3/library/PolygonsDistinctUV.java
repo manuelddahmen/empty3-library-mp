@@ -23,9 +23,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class PolygonsDistinctUV extends Polygons {
     private StructureMatrix<Point3D> uvMap;

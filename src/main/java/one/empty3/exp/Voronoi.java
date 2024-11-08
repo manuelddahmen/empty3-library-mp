@@ -22,7 +22,6 @@
 
 package one.empty3.exp;
 
-import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
@@ -46,7 +45,7 @@ public class Voronoi extends ProcessFile {
 
             mOut = voronoi(mIn, mOut);
             Image image = mOut.getImage();
-            ImageIO.write(image, "jpg", new File("results/voronoi.jpg"));
+            image.saveToFile("results/voronoi.jpg");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,12 +66,12 @@ public class Voronoi extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            PixM mIn = new PixM(Objects.requireNonNull(ImageIO.read(in)));
+            PixM mIn = new PixM((Image) Objects.requireNonNull(new Image(1,1,1).getFromFile(in)));
 
             PixM mOut = new PixM(mIn.getColumns(), mIn.getLines());
             voronoi(mIn, mOut);
             Image image = mIn.getImage();
-            ImageIO.write(image, "jpg", out);
+            image.saveToFile(out.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
             return false;

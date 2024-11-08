@@ -22,9 +22,11 @@
 
 package javaAnd.awt.image;
 
+import java.awt.Graphics2D;
+
 import one.empty3.library.ITexture;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class Image {
 
@@ -75,10 +77,6 @@ public class Image {
     }
 
     public Image getGraphics() {
-        return null;
-    }
-
-    public Graphics2D createGraphics() {
         return null;
     }
 

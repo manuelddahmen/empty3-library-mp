@@ -22,10 +22,10 @@
 
 package one.empty3.feature;
 
-import one.empty3.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessNFiles;
 
-import java.awt.*;
+import one.empty3.library.Point;
+import one.empty3.libs.*;
 import java.io.File;
 import java.util.Objects;
 
@@ -36,17 +36,17 @@ public class ProcessPlusNormalize extends ProcessNFiles {
     public boolean processFiles(File out, File... ins) {
         int n = ins.length;
         PixM[] arr = new PixM[n];
-        java.awt.Dimension max = new Dimension();
+        Point max = new Point(0,0);
         for (int i = 0; i < ins.length; i++) {
-            arr = new PixM[]{new PixM(Objects.requireNonNull(ImageIO.read(ins[i])))};
-            if (arr[i].columns > max.width) {
-                max.setSize(arr[i].columns, max.height);
+            arr = new PixM[]{new PixM((Image) Objects.requireNonNull(new Image(1,1,1).getFromFile(ins[i])))};
+            if (arr[i].columns > max.x) {
+                max.setSize(arr[i].columns, max.y);
             }
-            if (arr[i].lines > max.height) {
-                max.setSize(max.width, arr[i].lines);
+            if (arr[i].lines > max.y) {
+                max.setSize(max.x, arr[i].lines);
             }
         }
-        PixM pixM = new PixM(max.width, max.height);
+        PixM pixM = new PixM((int) max.x, (int) max.y);
 
 
         for (int i = 0; i < pixM.columns; i++) {
@@ -59,6 +59,6 @@ public class ProcessPlusNormalize extends ProcessNFiles {
                 }
             }
         }
-        return ImageIO.write(pixM.getImage(), "jpg", out);
+        return pixM.getImage().saveToFile(out.getAbsolutePath());
     }
 }

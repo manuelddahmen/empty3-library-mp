@@ -28,10 +28,10 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class TourDeRevolution extends Representable {
 
     public TourDeRevolution(File image, Axe axe) {
         try {
-            this.courbe = new CourbeDeImage(new one.empty3.libs.Image(ImageIO.read(image)));
+            this.courbe = new CourbeDeImage((Image) new Image(1,1,1).getFromFile(image));
             courbe.anayliserImage();
 
         } catch (Exception ex) {}
@@ -70,8 +70,7 @@ public class TourDeRevolution extends Representable {
         z.scene(s);
         z.draw();
         try {
-            ImageIO.write(z.image(), "png",
-                    ImageIO.createImageOutputStream(new File("result2TR.png")));
+            new Image(1,1,1).saveToFile(new File("result2TR.png").getAbsolutePath());
         } catch (Exception ex) {}
 
     }
@@ -82,7 +81,7 @@ public class TourDeRevolution extends Representable {
         Color[] colors = new Color[256];
         for (int i = 0; i < 255; i++) {
             double a = 1.0 * i / 255 * 2 * Math.PI;
-            colors[i] = new Color(0.0f/*1*((float)Math.sin(a)+1)/2*/, 1 * (float) (Math.sin(a) + 1) / 2, 1 * (float) (Math.cos(a) + 1) / 2);
+            colors[i] = new Color(Lumiere.getInt(0.0f, 1 * (float) (Math.sin(a) + 1) / 2, 1 * (float) (Math.cos(a) + 1) / 2));
         }
         o = new TRIObject();
         op = new PObjet();
@@ -118,8 +117,8 @@ public class TourDeRevolution extends Representable {
          for (int i = 0; i < max; i++)
              for (int j = 0; j < points[0].size(); j++) {
          if (i > 0 && j > 0) {
-         o.add(new TRI(points[j].get(i), points[j-1].get(i), points[j-1].get(i-1), Color.red));
-         o.add(new TRI(points[j].get(i), points[j].get(i-1), points[j-1].get(i-1), Color.red));
+         o.add(new TRI(points[j].get(i), points[j-1].get(i), points[j-1].get(i-1), texture));
+         o.add(new TRI(points[j].get(i), points[j].get(i-1), points[j-1].get(i-1), texture));
          }
          }
 

@@ -26,16 +26,18 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import one.empty3.libs.Image;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.feature.PixM;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.SurfaceElem;
 
-import java.awt.*;
+import one.empty3.libs.*;
+
+import java.awt.Canvas;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;

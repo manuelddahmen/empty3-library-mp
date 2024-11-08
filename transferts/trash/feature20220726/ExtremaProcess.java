@@ -48,7 +48,7 @@ public class ExtremaProcess extends ProcessFile {
             return false;
 
         try {
-            pix = new PixM(ImageIO.read(in));
+            pix = new PixM(new Image(in));
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -64,7 +64,7 @@ public class ExtremaProcess extends ProcessFile {
         PixM m = le.filter(new M3(pix, 1, 1)).getImagesMatrix()[0][0];
 
         try {
-            ImageIO.write(m.normalize(0, 1).getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(m.normalize(0, 1).getImage(), "jpg", out);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -26,9 +26,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -113,8 +113,8 @@ public class Scene extends Representable implements Serializable {
 
 
     protected int colorAdd(int[] cs) {
-        float[] compArray = new float[4];
-        float[] compArray3 = new float[4];
+        float[] compArray = new float[] {0,0,0,0};
+        float[] compArray3 = new float[] {0,0,0,0};;
 
         int l = cs.length;
         for (int c = 0; c < l; c++) {
@@ -124,7 +124,7 @@ public class Scene extends Representable implements Serializable {
                 compArray3[i] += compArray[i] / l;
             }
         }
-        int res = new Color(compArray3[0], compArray3[1], compArray3[2], compArray3[3]).getRGB();
+        int res = Lumiere.getInt(new double[] {(double)compArray3[0],(double) compArray3[1],(double) compArray3[2], compArray3[3]});
 
         return res;
     }

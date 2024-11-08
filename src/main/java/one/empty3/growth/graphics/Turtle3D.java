@@ -23,10 +23,10 @@
 package one.empty3.growth.graphics;
 
 import one.empty3.*;
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 import one.empty3.library.*;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 public class Turtle3D {
     private Rotation2 rotation;
@@ -102,7 +102,7 @@ public class Turtle3D {
 
     public Image returnImage() {
         zBuffer.draw();
-        ECImage image = zBuffer.image();
+        Image image = zBuffer.image();
         return image;
 
     }

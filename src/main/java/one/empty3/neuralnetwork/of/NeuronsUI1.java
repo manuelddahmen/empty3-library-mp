@@ -22,7 +22,7 @@
 
 package one.empty3.neuralnetwork.of;
 /*
-import java.awt.*;
+import one.empty3.libs.*;
 import atlasgen.Action;
 import atlasgen.CsvLine;
 import atlasgen.CsvReader;

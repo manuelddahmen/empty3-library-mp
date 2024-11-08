@@ -23,7 +23,7 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import java.awt.Color;
 
@@ -48,6 +48,14 @@ public abstract class Lumiere extends Representable {
             res += c[i];
         }
         return new Color(c[0], c[1], c[2]);
+    }
+
+    public static int getIntFromInts(int r, int g, int b) {
+        return r<<16 | g<<8 | b;
+    }
+
+    public static int getIntFromFloats(float... kd) {
+        return getInt(new double[]{kd[0], kd[1], kd[2]});
     }
 
     public abstract int getCouleur(int base, Point3D p, Point3D n);

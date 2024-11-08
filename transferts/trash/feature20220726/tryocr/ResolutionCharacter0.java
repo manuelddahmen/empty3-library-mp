@@ -23,7 +23,7 @@
 package one.empty3.feature20220726.tryocr;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class ResolutionCharacter0 implements Runnable {
         if (dir.exists() && dir.isDirectory()) {
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-                    Image read = ImageIO.read(file);
+                    Image read = new Image(file);
 
                     String name = file.getName();
 

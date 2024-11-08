@@ -31,7 +31,7 @@ import javaAnd.awt.image.imageio.ImageIO;
 import javaAnd.awt.*;
 
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class PartMatch extends ProcessFile {
                         double sign = Math.signum(prod2(pb.moins(pa), pb.moins(p)));
                         pixM.setValues(i, j, sign, sign, sign);
                     }
-                ImageIO.write(pixM.normalize(0, 1).getImage(), "jpg", new File("features/featureDesc_"
+                new Image(1,1,1.saveToFile(pixM.normalize(0, 1).getImage(), "jpg", new File("features/featureDesc_"
                         + n + "_angle_" + a + ".jpg"));
 
                 featuresDescriptors.add(pixM);
@@ -117,7 +117,7 @@ public class PartMatch extends ProcessFile {
     public boolean process(File in, File out) {
         featuresDescriptors = new ArrayList<>();
 
-        PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
+        PixM pix = PixM.getPixM(new Image(in), maxRes);
 
         Image outImg = pix.getImage();
 
@@ -147,7 +147,7 @@ public class PartMatch extends ProcessFile {
             }
         }
 
-        ImageIO.write(outImg, "jpg", out);
+        new Image(1,1,1.saveToFile(outImg, "jpg", out);
 
         return true;
     }

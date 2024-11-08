@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 //import java.util.function.Consumer;
 //
 //import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 //import javaAnd.awt.image.imageio.ImageIO;
 ////import one.empty3.feature20220726.HoughTransformOutput;
 //import one.empty3.io.ProcessFile;
@@ -92,7 +92,7 @@ import one.empty3.library.ECImage;
 //
 //    //converts given file into a grayscale image
 //    private javaAnd.awt.image.Image toGrayScale(File f) throws Exception {
-//        Image img = ImageIO.read(f);
+//        Image img = new Image(f);
 //        Image grey = new javaAnd.awt.image.Image(img.getWidth(), img.getHeight(), javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        grey.drawImage(img,0,0,0,0);
 //

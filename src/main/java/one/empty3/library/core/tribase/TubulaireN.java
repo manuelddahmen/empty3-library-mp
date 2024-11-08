@@ -36,7 +36,7 @@ import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
-import java.awt.*;
+import one.empty3.libs.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;

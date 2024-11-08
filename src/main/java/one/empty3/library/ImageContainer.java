@@ -23,12 +23,13 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -59,11 +60,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
         this.isMovie = isMovie;
         this.url.setElem(url);
         if (url != null) {
-            try {
-                image.setElem(new ECImage(ImageIO.read(url)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
         }
         declareProperties();
     }
@@ -119,7 +116,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
         if (isMovie) {
             nanos = System.nanoTime();
             if (oldNanos >= nanos && isMovie) {
-                ECImage current = vd.getElem().current();
+                Image current = vd.getElem().current();
                 image.setElem(current);
             }
         }
@@ -128,22 +125,14 @@ public class ImageContainer extends Representable implements ResourceLoader {
 
     private void loadImage(File path) {
         if (path != null) {
-            try {
-                image.setElem(new ECImage(ImageIO.read(new FileInputStream(path))));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image.setElem((Image) new Image(1,1,1).getFromFile(path));
         }
 
     }
 
     private void loadImage(URL url) {
         if (url != null) {
-            try {
-                image.setElem(new ECImage(ImageIO.read(url)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
         }
     }
 
@@ -155,11 +144,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
             vd.setElem(vd2);
   */
             isMovie = true;
-            try {
-                image.setElem(new ECImage(ImageIO.read(new FileInputStream(path))));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image.setElem((Image) new Image(1,1,1).getFromFile(path));
         }
 
     }
@@ -176,11 +161,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
             vd.setElem(vd2);
            */
             isMovie = true;
-            try {
-                image.setElem(new ECImage(ImageIO.read(new FileInputStream(new File(url.getFile())))));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
         }
     }
 

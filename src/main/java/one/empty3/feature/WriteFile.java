@@ -23,9 +23,7 @@
 package one.empty3.feature;
 
 import javax.imageio.ImageIO;
-
-import one.empty3.libs.Image;
-
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,19 +36,19 @@ public class WriteFile {
 
     }
 
-    public static boolean writeNext(Image imageJpeg, String name) {
+    public static boolean writeNext(BufferedImage imageJpeg, String name) {
         writeNext(name, imageJpeg);
         return true;
     }
 
-    public static boolean writeNext(String name, Image imageJpeg) {
+    public static boolean writeNext(String name, BufferedImage imageJpeg) {
 
         File n = new File(directory);
 
         n = new File(directory + File.separator + no + "-" + name + ".jpg");
         n.mkdirs();
         int i = n.getAbsolutePath().lastIndexOf('/');
-        new File(n.getAbsolutePath().substring(0, i >= 0 ? i : 0)).mkdirs();
+        new File(n.getAbsolutePath().substring(0, i>=0?i:0)).mkdirs();
         try {
 
             no++;

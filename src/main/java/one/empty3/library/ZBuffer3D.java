@@ -23,15 +23,15 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 public interface ZBuffer3D extends ZBuffer {
 
     void genererEtRetourner(Scene sc);
 
-    ECImage imageDroite();
+    Image imageDroite();
 
-    ECImage imageGauche();
+    Image imageGauche();
 
     int LR();
 

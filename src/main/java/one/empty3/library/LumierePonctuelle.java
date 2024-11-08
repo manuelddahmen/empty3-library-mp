@@ -31,9 +31,9 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * Meta Description missing
@@ -51,7 +51,7 @@ public class LumierePonctuelle extends Lumiere {
 
     public LumierePonctuelle() {
         position.setElem(Point3D.O0);
-        this.couleurLumiere.setElem(new ColorTexture(Color.YELLOW));
+        this.couleurLumiere.setElem(new ColorTexture(new Color(Color.YELLOW.getRGB())));
         directional.setElem(Boolean.FALSE);
     }
 

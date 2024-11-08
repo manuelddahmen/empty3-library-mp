@@ -26,7 +26,7 @@ import one.empty3.library.Point3D;
 
 import javaAnd.awt.*;
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 public class QuadTransform2D {
     private javaAnd.awt.image.Image i1, i2;

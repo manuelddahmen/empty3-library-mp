@@ -28,13 +28,13 @@
 package one.empty3.library;
 
 
-import one.empty3.ECImage;
+import one.empty3.libs.Image;
 
 import one.empty3.library.core.lighting.Infini;
 import one.empty3.library.core.nurbs.CurveElem;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
-import java.awt.*;
+import one.empty3.libs.*;
 
 /*__
  * @author MANUEL DAHMEN
@@ -190,20 +190,20 @@ public class LineSegment extends ParametricCurve implements CurveElem {
 
         if (ps.x==pe.x && ps.y==pe.y) return distance(ps,p);
 
-        int sx=pe.x-ps.x;
-        int sy=pe.y-ps.y;
+        double sx=pe.x-ps.x;
+        double sy=pe.y-ps.y;
 
-        int ux=p.x-ps.x;
-        int uy=p.y-ps.y;
+        double ux=p.x-ps.x;
+        double uy=p.y-ps.y;
 
-        int dp=sx*ux+sy*uy;
+        double dp=sx*ux+sy*uy;
         if (dp<0) return distance(ps,p);
 
-        int sn2 = sx*sx+sy*sy;
+        double sn2 = sx*sx+sy*sy;
         if (dp>sn2) return distance(pe,p);
 
         double ah2 = dp*dp / sn2;
-        int un2=ux*ux+uy*uy;
+        double un2=ux*ux+uy*uy;
         return Math.sqrt(un2-ah2);
     }
 
@@ -214,7 +214,7 @@ public class LineSegment extends ParametricCurve implements CurveElem {
      * @return dist the distance
      */
     private static double distance(Point p1, Point p2) {
-        int d2 = (p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y);
+        double d2 = (p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y);
         return Math.sqrt(d2);
     }
 

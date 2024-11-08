@@ -198,14 +198,14 @@ public class SetSettings {
 
 
                 currentDirout = "" + directoryOut + "-" + i + "-" + classname + "/";
-                Logger.getLogger(FTPProcessFiles.class.getName()).info("Process class name read " + classname);
+                //Logger.getLogger(FTPProcessFiles.class.getName()).info("Process class name read " + classname);
                 Logger.getAnonymousLogger().log(Level.INFO, classname);
                 Class classs = Class.forName(
                         classname
                 );
 
 
-                Logger.getLogger(FTPProcessFiles.class.getName()).info("Process Dir" + classname2);
+                //Logger.getLogger(FTPProcessFiles.class.getName()).info("Process Dir" + classname2);
 
                 Object o = classs.newInstance();
 

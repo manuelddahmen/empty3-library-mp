@@ -83,7 +83,7 @@ public class HoughTransform extends ProcessFile {
     public boolean process(File in, File out) {
         // load the file using Java's imageIO library
         one.empty3.libs.Image image = null;
-        image = new Image(ImageIO.read(in));
+        image = new Image(new Image(in));
         // create a hough transform object with the right dimensions
         width = image.getWidth();
         height = image.getHeight();
@@ -103,7 +103,7 @@ public class HoughTransform extends ProcessFile {
             line.draw(image, Color.RED.getRGB());
         }
 
-        ImageIO.write(image, "jpg", out);
+        new Image(1,1,1.saveToFile(image, "jpg", out);
         return true;
 
     }

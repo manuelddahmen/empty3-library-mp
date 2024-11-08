@@ -33,7 +33,7 @@ public class TransformColor extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
 
-        PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
+        PixM pix = PixM.getPixM(new Image(in), maxRes);
 
         for (int i = 0; i < pix.getColumns(); i++) {
             for (int j = 0; j < pix.getLines(); j++) {
@@ -44,7 +44,7 @@ public class TransformColor extends ProcessFile {
             }
         }
 
-        ImageIO.write(pix.normalize(0.0, 1.0).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(pix.normalize(0.0, 1.0).getImage(), "jpg", out);
 
         return true;
     }

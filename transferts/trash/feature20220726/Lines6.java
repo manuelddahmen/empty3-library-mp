@@ -98,7 +98,7 @@ public class Lines6 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         pixM = null;
-        pixM = new PixM(ImageIO.read(in));
+        pixM = new PixM(new Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -285,7 +285,7 @@ public class Lines6 extends ProcessFile {
 
         PixM stack = new PixM(
                 pixM.getColumns(), pixM.getLines()
-                //ImageIO.read(getStackItem(1))
+                //new Image(getStackItem(1))
         );
 
         list3.forEach(point3DS -> {
@@ -293,7 +293,7 @@ public class Lines6 extends ProcessFile {
                     stack, new ColorTexture(Color.WHITE));
         });
 
-        ImageIO.write(stack.getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(stack.getImage(), "jpg", out);
 
         addSource(out);
 

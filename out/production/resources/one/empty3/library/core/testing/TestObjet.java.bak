@@ -56,7 +56,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.*;
+import one.empty3.libs.*;
 import one.empty3.libs.Image;
 import java.awt.image.RenderedImage;
 import java.io.*;
@@ -114,7 +114,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int resx = 1920;
     private int resy = 1080;
     private File dir = null;
-    private ECImage ri;
+    private Image ri;
     private String filename = "frame";
     private String fileExtension = "JPG";
     private boolean publish = true;
@@ -133,8 +133,8 @@ public abstract class TestObjet implements Test, Runnable {
     private String sousdossier;
     private boolean D3 = false;
     private ImageContainer biic;
-    private ECImage riG;
-    private ECImage riD;
+    private Image riG;
+    private Image riD;
     private File fileG;
     private File fileD;
     private boolean pause = false;
@@ -324,7 +324,7 @@ public abstract class TestObjet implements Test, Runnable {
 
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(ri, type, baos);
+            new Image(1,1,1.saveToFile(ri, type, baos);
 
             baos.flush(); // Is this necessary??
             byte[] resultImageAsRawBytes = baos.toByteArray();
@@ -691,10 +691,10 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-            RenderedImage i = ImageIO.read(is);
+            RenderedImage i = new Image(is);
             Image bi = (Image) i;
 
-            ECImage eci = new ECImage(bi);
+            Image eci = new Image(bi);
             biic.setImage(eci);
 
         str.setMessage("ERROR EXCEPTION");
@@ -716,10 +716,10 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-            RenderedImage i = ImageIO.read(is);
+            RenderedImage i = new Image(is);
             Image bi = (Image) i;
 
-            ECImage eci = new ECImage(bi);
+            Image eci = new Image(bi);
             biic.setImage(eci);
         } catch (IOException e) {
             // TODO Auto-generated catch block

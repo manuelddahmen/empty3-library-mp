@@ -26,7 +26,7 @@ import one.empty3.io.ProcessFile;
 
 import javaAnd.awt.image.imageio.ImageIO;
 import one.empty3.libs.Image;
-import one.empty3.library.ECImage;
+import one.empty3.libs.Image;
 
 import java.io.*;
 import java.util.Objects;
@@ -42,8 +42,8 @@ public class DiffEnergy extends ProcessFile {
     }
 
     public void setPixMS(int img1, int img2) {
-        i1 = PixM.getPixM(Objects.requireNonNull(ImageIO.read(getStackItem(img1))), maxRes);
-        i2 = PixM.getPixM(Objects.requireNonNull(ImageIO.read(getStackItem(img2))), maxRes);
+        i1 = PixM.getPixM(Objects.requireNonNull(new Image(getStackItem(img1))), maxRes);
+        i2 = PixM.getPixM(Objects.requireNonNull(new Image(getStackItem(img2))), maxRes);
 
 
     }

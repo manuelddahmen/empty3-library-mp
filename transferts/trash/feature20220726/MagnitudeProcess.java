@@ -41,7 +41,7 @@ public class MagnitudeProcess extends ProcessFile {
         File file = in;
         PixM pix;
         try {
-            pix = PixM.getPixM(ImageIO.read(file), maxRes);
+            pix = PixM.getPixM(new Image(file), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
             PixM[][] imagesMatrix = gf.filter(
@@ -57,7 +57,7 @@ public class MagnitudeProcess extends ProcessFile {
             Linear res = new Linear(linearProd1.getImages()[2], linearProd2.getImages()[2],
                     new PixM(pix.getColumns(), pix.getLines()));
             res.op2d2d(new char[]{'+'}, new int[][]{{1, 0}}, new int[]{2});
-            ImageIO.write(res.getImages()[2].normalize(0.0, 1.0).getImage(), "jpg", out);
+            new Image(1,1,1.saveToFile(res.getImages()[2].normalize(0.0, 1.0).getImage(), "jpg", out);
 
             return true;
         } catch (Exception ex) {

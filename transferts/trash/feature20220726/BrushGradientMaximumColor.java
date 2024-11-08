@@ -54,7 +54,7 @@ public class BrushGradientMaximumColor extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        PixM pixM = new PixM(ImageIO.read(in));
+        PixM pixM = new PixM(new Image(in));
         PixM pixM2 = new PixM(pixM.getColumns(), pixM.getLines());
         for (int i = 0; i < pixM.getLines(); i++) {
             for (int j = 0; j < pixM.getColumns(); j++) {
@@ -70,7 +70,7 @@ public class BrushGradientMaximumColor extends ProcessFile {
                     }
             }
         }
-        ImageIO.write(pixM2.normalize(0, 1).getImage(), "jpg", out);
+        new Image(1,1,1.saveToFile(pixM2.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
 }

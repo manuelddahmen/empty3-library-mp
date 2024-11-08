@@ -24,8 +24,10 @@ package one.empty3.neuralnetwork;
 
 import one.empty3.feature.PixM;
 import one.empty3.library.StructureMatrix;
+import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,7 +113,7 @@ public class Net<T extends Neuron> {
 
         while (t < maxIterations) {
             for (int n = 0; n < trainSet.size(); n++) {
-                PixM pixM = PixM.getPixM(new one.empty3.libs.Image(ImageIO.read(trainSet.get(n))), RESOLUTION);
+                PixM pixM = PixM.getPixM((Image) new Image(1,1,1).getFromFile(trainSet.get(n)), RESOLUTION);
                 inputLayer.getNeurons().data2d.forEach(new Consumer<List<T>>() {
                     @Override
                     public void accept(List<T> ts) {
