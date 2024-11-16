@@ -655,7 +655,7 @@ public class PixM extends M {
     }
 
     public Image getBitmap() {
-        Image b = new Image(columns, lines);
+        Image b = new Image(columns, lines, 1);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 b.setRgb(i, j, getInt(i, j));
@@ -665,7 +665,7 @@ public class PixM extends M {
     }
 
     public Image getImage() {
-        one.empty3.libs.Image image = new one.empty3.libs.Image(columns, lines);
+        one.empty3.libs.Image image = new one.empty3.libs.Image(columns, lines, 1);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 //double[] values = getValues(i, j);

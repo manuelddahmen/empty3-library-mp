@@ -22,7 +22,9 @@
 
 package one.empty3.feature;
 
+import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
+import one.empty3.libs.Image;
 
 import java.util.PrimitiveIterator;
 import java.util.Random;
@@ -30,7 +32,7 @@ import java.util.Random;
 public class M implements InterfaceMatrix {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
     public static final Double noValue = r.next();
-
+    public static final int typeDefault = 1;
     protected int columns;
     protected int lines;
     private int[] x;
@@ -152,6 +154,21 @@ public class M implements InterfaceMatrix {
         this.lines = l;
         this.columns = c;
         x = new int[l * c];
+    }
+
+    @Override
+    public Image getBitmap() {
+        Image image = new Image(columns, lines, typeDefault);
+        for (int i = 0; i < getColumns(); i++) {
+            for (int j = 0; j < getLines(); j++) {
+                for (int k = 0; k < 3; k++) {
+                    setCompNo(k);;
+                    image.setRgb(i, j, Lumiere.getInt(getValues(i, j)));
+                }
+            }
+
+        }
+        return image;
     }
 
     public M(int cl) {
