@@ -25,6 +25,7 @@ package one.empty3.library.objloader;
 import one.empty3.library.Polygon;
 import one.empty3.*;
 import one.empty3.library.*;
+import one.empty3.library.core.export.ObjExport;
 import one.empty3.library.core.nurbs.*;
 
 import one.empty3.libs.*;
@@ -73,6 +74,10 @@ public class E3Model extends RepresentableConteneur {
     private double[] knotV;
     private double[] knotU;
     private final RepresentableConteneur objects = new RepresentableConteneur();
+    public double uMin;
+    public double vMin;
+    public double uMax;
+    public double vMax;
 
     public RepresentableConteneur getObjects() {
         return objects;
@@ -215,8 +220,24 @@ public class E3Model extends RepresentableConteneur {
         numpolys = faces.size();
         //cleanup();
         opene3drawtolist();
-
+        normalizeTextureUv();
+        //applyNormalization();
     }
+
+    private void applyNormalization() {
+/*
+        for (int i = 0; i < getListRepresentable().size(); i++) {
+            Representable representable = getListRepresentable().get(i);
+            if (representable instanceof FaceWithUv faceWithUv) {
+                for (int j = 0; j < faceWithUv.getTextUv().length; j += 2) {
+                    faceWithUv.u1 = (faceWithUv.u1-uMin)/(uMax-uMin);
+                    faceWithUv.v1 = (faceWithUv.v1-vMin)/(uMax-uMin);
+                    faceWithUv.u2 = (faceWithUv.u2-uMin)/(vMax-vMin) ;
+                    faceWithUv.v2 = (faceWithUv.v2-vMin)/(vMax-vMin);
+                }
+            }
+        }
+  */  }
 
     private void cleanup() {
         vertexsets.clear();
@@ -513,6 +534,35 @@ public class E3Model extends RepresentableConteneur {
         }
 
 
+    }
+
+    private void  normalizeTextureUv() {
+        uMin = Double.MAX_VALUE;
+        vMin = Double.MAX_VALUE;
+        uMax = -Double.MAX_VALUE;
+        vMax = -Double.MAX_VALUE;
+
+        for (int i = 0; i < getListRepresentable().size(); i++) {
+            Representable representable = getListRepresentable().get(i);
+            if(representable instanceof FaceWithUv faceWithUv) {
+                for (int j = 0; j < faceWithUv.getTextUv().length;) {
+                    if(faceWithUv.u1<uMin) {
+                        uMin = faceWithUv.u1;
+                    }
+                    if(faceWithUv.v1<vMin) {
+                        vMin = faceWithUv.v1;
+                    }
+                    j+=1;
+                    if(faceWithUv.u2>uMax) {
+                        uMax = faceWithUv.u2;
+                    }
+                    if(faceWithUv.v2>vMax) {
+                        vMax = faceWithUv.v2;
+                    }
+                    j+=1;
+                }
+            }
+        }
     }
 
     private void loadmaterials() {

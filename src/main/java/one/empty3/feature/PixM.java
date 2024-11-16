@@ -21,6 +21,7 @@
  */
 
 package one.empty3.feature;
+import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
 import one.empty3.library.LineSegment;
@@ -47,7 +48,7 @@ public class PixM extends M {
         super(image.getWidth(), image.getHeight());
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-                int rgb = image.getRGB(i, j);
+                int rgb = image.getRgb(i, j);
                 set(i, j, rgb);
             }
         }
@@ -88,7 +89,7 @@ public class PixM extends M {
             for (int j = 0; j < (int) lines2; j++) {
 
 
-                int rgb = image.getRGB(
+                int rgb = image.getRgb(
                         (int) (1.0 * i / columns2 * image.getWidth())
                         , (int) (1.0 * j / lines2 * image.getHeight()));
                 pixM.set(pixM.index(i, j), rgb);
@@ -158,13 +159,13 @@ public class PixM extends M {
     public void plotCurve(ParametricCurve curve, ITexture texture) {
         double INCR_T = curve.getIncrU().getElem();
 
-        float[] rgba = new float[getCompCount()];
+        double[] rgba = new double[getCompCount()];
         for (double t = 0; t < 1.0; t += INCR_T) {
-            rgba = new Color((texture != null ? texture : curve.texture()).getColorAt(t, 0.5)).getColorComponents(rgba);
+            rgba = Lumiere.getDoubles(new Color((texture != null ? texture : curve.texture()).getColorAt(t, 0.5)).getColor());
             Point3D p = curve.calculerPoint3D(t);
             for (int c = 0; c < 3; c++) {
                 setCompNo(c);
-                set((int) (double) p.getX(), (int) (double) p.getY(), rgba[c]);
+                set((int) (double) p.getX(), (int) (double) p.getY(), rgba[c]*256);
             }
         }
 
@@ -174,10 +175,10 @@ public class PixM extends M {
 
     public void plotCurveRaw(ParametricCurve curve, ITexture texture) {
         INCR_T = curve.getIncrU().getElem();
-        float[] rgba = new float[getCompCount()];
+        double[] rgba = new double[getCompCount()];
         Point3D p0 = null;
         for (double t = 0; t < 1.0; t += INCR_T) {
-            rgba = new Color(curve.texture().getColorAt(t, 0.5)).getColorComponents(rgba);
+            rgba = Lumiere.getDoubles(new Color(curve.texture().getColorAt(t, 0.5)).getRGB());
             Point3D p = curve.calculerPoint3D(t);
             for (int c = 0; c < 3; c++) {
                 setCompNo(c);
@@ -654,22 +655,21 @@ public class PixM extends M {
     }
 
     public Image getBitmap() {
-        Image b = new Image(columns, lines, Image.TYPE_INT_RGB);
+        Image b = new Image(columns, lines);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
-                b.setRGB(i, j, getInt(i, j));
+                b.setRgb(i, j, getInt(i, j));
             }
         }
         return b;
     }
 
     public Image getImage() {
-        one.empty3.libs.Image image = new one.empty3.libs.Image(columns,
-                lines, Image.TYPE_INT_RGB);
+        one.empty3.libs.Image image = new one.empty3.libs.Image(columns, lines);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 //double[] values = getValues(i, j);
-                image.setRGB(i, j, getInt(i, j));//Lumiere.getInt(values));
+                image.setRgb(i, j, getInt(i, j));//Lumiere.getInt(values));
             }
         }
         return image;

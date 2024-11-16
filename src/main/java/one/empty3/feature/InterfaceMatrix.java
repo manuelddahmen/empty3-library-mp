@@ -23,6 +23,8 @@
 package one.empty3.feature;
 
 
+import one.empty3.libs.Image;
+
 public interface InterfaceMatrix {
 
     public void init(int columns, int lines);
@@ -30,6 +32,7 @@ public interface InterfaceMatrix {
 //    public void init(PixM BufferedImage);
 
 
+    public Image getBitmap();
     public void setCompNo(int no);
     public int getCompNo();
     public void set(int column, int line, double values);

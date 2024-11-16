@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.feature20220726;
+package one.empty3.feature;
 
 import java.awt.Color;
 
