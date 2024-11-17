@@ -35,7 +35,7 @@ public class ColorTexture extends ITexture {
     private StructureMatrix<Integer> color = new StructureMatrix<>(0, Integer.class);
 
     public ColorTexture() {
-        color.setElem(Color.BLACK.getRGB());
+        color.setElem(0);
     }
 
     public ColorTexture(Color c) {

@@ -42,7 +42,7 @@ import java.util.HashMap;
  * @author manu
  */
 public abstract class ITexture implements MatrixPropertiesObject{
-    private int transparent = Color.BLACK.getRGB();
+    private int transparent = 0;
     public static final int COLOR_IDENT = 0;
     public static final int COLOR_MIROR_X = 1;
     public static final int COLOR_MIROR_Y = 2;

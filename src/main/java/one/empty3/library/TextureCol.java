@@ -31,12 +31,12 @@ import one.empty3.libs.*;
  * @author Manuel Dahmen
  */
 //#TODO Repair
-public class TextureCol extends ITexture {
+public class TextureCol extends ColorTexture {
 
     private StructureMatrix<Integer> color = new StructureMatrix<>(0, Integer.class);
 
     public TextureCol() {
-        color.setElem(Color.BLACK.getRGB());
+        color.setElem(0);
     }
 
     public TextureCol(Color c) {
@@ -44,7 +44,7 @@ public class TextureCol extends ITexture {
             color.setElem(c.getRGB());
         }
         else
-            color.setElem(Color.TRANSLUCENT);
+            color.setElem(-1);
     }
 
     public TextureCol(int c) {

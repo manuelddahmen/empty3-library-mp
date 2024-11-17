@@ -35,7 +35,7 @@ public class M implements InterfaceMatrix {
     public static final int typeDefault = 1;
     protected int columns;
     protected int lines;
-    private int[] x;
+    protected int[] x;
     protected int compNo = 3;
     public final int compCount = 3;
 
@@ -158,7 +158,7 @@ public class M implements InterfaceMatrix {
 
     @Override
     public Image getBitmap() {
-        Image image = new Image(columns, lines, typeDefault);
+        Image image = new Image(columns, lines, 1);
         for (int i = 0; i < getColumns(); i++) {
             for (int j = 0; j < getLines(); j++) {
                 for (int k = 0; k < 3; k++) {
@@ -383,7 +383,7 @@ public class M implements InterfaceMatrix {
     /*
         Recursive definition of determinate using expansion by minors.
                 */
-    double determinant() {
+    public double determinant() {
         if (!isSquare())
             throw new MatrixFormatException("determinant: not square matrix");
         int i, j, j1, j2;
@@ -556,5 +556,9 @@ public class M implements InterfaceMatrix {
         for (int i = 0; i < d.lines; i++)
             matrix.set(i, i, d.get(i, i));
         return matrix;
+    }
+
+    public int[]  getX() {
+        return x;
     }
 }
