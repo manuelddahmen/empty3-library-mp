@@ -25,12 +25,8 @@ package one.empty3.io;
 import one.empty3.feature.PixM;
 import one.empty3.feature.ProcessBean;
 
-import javax.imageio.ImageIO;
-
-import one.empty3.libs.Image;
 import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +44,7 @@ public abstract class ProcessFile extends ProcessNFiles {
                 || in.getAbsolutePath().toLowerCase().endsWith(".png")))
             return true;
 
-        Image read = new Image((BufferedImage) new Image(1,1,1).getFromFile(in));
+        Image read =(Image) new Image(1,1).getFromFile(in);
         if (read != null) return true;
         return false;
     }

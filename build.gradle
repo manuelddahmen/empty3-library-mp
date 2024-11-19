@@ -367,11 +367,9 @@ compileTestKotlin {
     }
 }
 dependencies {
-    androidCompile "one.empty3.libs:partial-android:0.0.5"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.3"
-    implementation "one.empty3.libs:commons-mp:0.0.4"
-    testCompileOnly "one.empty3.libs:partial-desktop:0.0.3"
-    testRuntimeOnly "one.empty3.libs:partial-desktop:0.0.3"
+    androidCompile "one.empty3.libs:partial-android:0.0.6"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.5"
+    implementation "one.empty3.libs:commons-mp:0.0.6"
     implementation 'org.springframework.boot:spring-boot-starters:2.2.13.RELEASE'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     def googleJavaFormatVersion = '1.6'
