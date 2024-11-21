@@ -129,7 +129,9 @@ public class M implements InterfaceMatrix {
 
 
         for (int d = 0; d < v.length; d++) {
-            writeComp(i, j, v[d], compNo);
+            if(d<compCount) {
+                writeComp(i, j, v[d], compNo);
+            }
         }
         return;
     }
@@ -285,7 +287,7 @@ public class M implements InterfaceMatrix {
 
     public double[] readComps(int x, int y) {
         int[] c = new int[4];
-        int res = 0x00000000;
+        int res = 0xff000000;
         int value = this.x[index(x, y)];
         for (int i = 0; i < 4; i++) {
             c[i] = (((int) (float) (value)) >> ((3 - i) * 8)) & 0xFF;
@@ -304,7 +306,7 @@ public class M implements InterfaceMatrix {
 
     public int[] readCompsInts(int x, int y) {
         int[] c = new int[4];
-        int res = 0x00000000;
+        int res = 0xff000000;
         int value = this.x[index(x, y)];
         for (int i = 0; i < 4; i++) {
             c[i] = (((int) (float) (value)) >> ((3 - i) * 8)) & 0xFF;

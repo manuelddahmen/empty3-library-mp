@@ -30,14 +30,14 @@ import java.util.Random;
 public class M3 {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
     public static final Double noValue = r.next();
-    private double[] x;
+    protected double[] x;
     public final int columns;
     public final int lines;
     protected final int columnsIn;
     protected final int linesIn;
     protected int compNo;
     protected BufferedImage image;
-    private final int compCount = 4;
+    protected int compCount = 3;
     private int currentX;
     private int currentY;
     private int savedY;

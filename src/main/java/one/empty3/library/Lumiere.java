@@ -98,7 +98,7 @@ public abstract class Lumiere extends Representable {
             };
             res += ((int) (float) ((d * 0xff))) << ((2 - i) * 8);
         }
-        return res;//|0xFF000000;
+        return res&0xFF000000;
     }
 
     public static double[] getDoubles(int c) {

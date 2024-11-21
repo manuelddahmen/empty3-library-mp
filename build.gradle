@@ -363,14 +363,13 @@ repositories {
 }
 compileTestKotlin {
     dependencies {
-      //  implementation 'one.empty3.libs:commmons-mp:2024.11.24-3'
+      //  implementation 'one.empty3.libs:commmons-mp:2024.11.21'
     }
 }
 dependencies {
     androidCompile "one.empty3.libs:partial-android:0.0.6"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.5"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.7"
     implementation "one.empty3.libs:commons-mp:0.0.6"
-    implementation 'org.springframework.boot:spring-boot-starters:2.2.13.RELEASE'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     def googleJavaFormatVersion = '1.6'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
@@ -411,8 +410,6 @@ dependencies {
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
     implementation 'com.google.guava:guava:32.0.0-android'
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
-    implementation 'org.springframework.boot:spring-boot-starter:3.3.2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
 }
 
@@ -465,13 +462,13 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2024.11.24-3'
+def versionName = '2024.11.21'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2024.11.24-3'
+            version = '2024.11.21'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -487,7 +484,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2024.11.24-3'
+                version '2024.11.21'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -571,8 +568,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2024.11.24-3'
-        version = '2024.11.24-3'
+        java.version = '2024.11.21'
+        version = '2024.11.21'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
