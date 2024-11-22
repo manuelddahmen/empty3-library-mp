@@ -251,22 +251,10 @@ public class M implements InterfaceMatrix {
      * @param compNoP r,g,b,a
      */
     public void writeComp(int i, int j, double d, int compNoP) {
+        getCompNo();
         int index = index(i, j);
         setCompNo(compNoP);
-        double[] v = readComps(i, j);
-
-        int c = (int) (d * 255.99);
-
-        int t = 0;
-        for (int k = 0; k < v.length; k++) {
-            if (k != compNoP) {
-                t += ((int) (v[k] * 255.9999) & 0xFF) << (int) (8 * k);
-
-            } else {
-                t += ((c) & 0xFF) << (int) (3 * k);
-            }
-        }
-        writeComps(i, j, t);
+        x[index]= (int) (d * 256);
     }
 
     public void writeComps(int i, int j, int color) {

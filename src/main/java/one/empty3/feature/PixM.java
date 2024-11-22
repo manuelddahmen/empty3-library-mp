@@ -48,7 +48,8 @@ public class PixM extends M {
         super(image.getWidth(), image.getHeight());
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-                setValues(i, j, Lumiere.getDoubles(image.getRgb(i, j)));
+                double[] doubles = Lumiere.getDoubles(image.getRgb(i, j));
+                setValues(i, j,doubles );
             }
         }
     }

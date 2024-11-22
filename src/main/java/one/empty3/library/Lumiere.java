@@ -107,7 +107,7 @@ public abstract class Lumiere extends Representable {
             res[i] = (((c & (0xff << ((2 - i) * 8))) >> ((2 - i) * 8))) / 255.;
         }
         if (res.length > 3)
-            res[3] = 0.0;
+            res[3] = 1.0;
         return res;
     }
 
