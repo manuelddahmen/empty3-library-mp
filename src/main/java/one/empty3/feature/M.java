@@ -26,6 +26,7 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.libs.Image;
 
+import java.util.Arrays;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 
@@ -43,8 +44,7 @@ public class M implements InterfaceMatrix {
         this.lines = l;
         this.columns = c;
         x = new int[l * c];
-        for (int i = 0; i < x.length; i++)
-            x[i] = -1;
+        Arrays.fill(x, 0);
         //Logger.getAnonymousLogger().log(Level.INFO, "Columns=" + columns + "\n Lines = " + lines+ " \n Total size ="+x.length);
     }
 
@@ -251,10 +251,12 @@ public class M implements InterfaceMatrix {
      * @param compNoP r,g,b,a
      */
     public void writeComp(int i, int j, double d, int compNoP) {
-        getCompNo();
         int index = index(i, j);
         setCompNo(compNoP);
-        x[index]= (int) (d * 256);
+        if(compNoP<3) {
+            x[index] =x[index] & (0xFFFFFFFF & (0 << (2 - compNoP)*8));
+            x[index] |= (((int)(d * 255))<<(2-compNoP)*8);
+        }
     }
 
     public void writeComps(int i, int j, int color) {

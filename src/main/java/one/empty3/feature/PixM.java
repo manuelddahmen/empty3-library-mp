@@ -49,7 +49,11 @@ public class PixM extends M {
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 double[] doubles = Lumiere.getDoubles(image.getRgb(i, j));
-                setValues(i, j,doubles );
+                int c = 3;
+                for (int i1 = 0; i1 < c; i1++) {
+                    setCompNo(i1);
+                    setValues(i, j,doubles[i1] );
+                }
             }
         }
     }
@@ -655,7 +659,7 @@ public class PixM extends M {
     }
 
     public Image getBitmap() {
-        Image b = new Image(columns, lines, 1);
+        Image b = new Image(columns, lines, 2);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 b.setRgb(i, j, getInt(i, j));
@@ -665,7 +669,7 @@ public class PixM extends M {
     }
 
     public Image getImage() {
-        one.empty3.libs.Image image = new one.empty3.libs.Image(columns, lines, 1);
+        Image image = new Image(columns, lines, 2);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 //double[] values = getValues(i, j);
