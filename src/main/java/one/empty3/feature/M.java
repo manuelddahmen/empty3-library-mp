@@ -217,33 +217,6 @@ public class M implements InterfaceMatrix {
     }
 
     /***
-     * Artistic drawing
-     * @param i column
-     * @param j line
-     * @param d value 0..1
-     * @param compNoP r,g,b,a
-     */
-    public void writeCompA(int i, int j, double d, int compNoP) {
-        int index = index(i, j);
-        setCompNo(compNoP);
-        double[] v = readComps(i, j);
-        int t = (int) (d * 256);
-        int dI = t;
-        if (t > 255)
-            t = 255;
-        else if (t < 0)
-            t = 0;
-
-        int a = t;
-        t = ((compNoP == 2) ? t + (t & 0xFF00FFFF) | ((0x00FF0000) & (dI << 16)) : t);
-        t = ((compNoP == 1) ? t + (t & 0xFFFF00FF) | ((0x0000FF00) & (dI << 8)) : t);
-        t = ((compNoP == 0) ? t + (t & 0xFFFFFF00) | ((0x000000FF) & (dI << 0)) : t);
-        t = ((compNoP == 3) ? t + (t & 0x00FFFFFF) | ((0xFF000000) & (dI << 24)) : t);
-        t = t & 0xFFFFFFFF;
-        x[index] = t;
-    }
-
-    /***
      * Must be correct drawing
      * @param i column
      * @param j line
@@ -254,14 +227,15 @@ public class M implements InterfaceMatrix {
         int index = index(i, j);
         setCompNo(compNoP);
         if(compNoP<3) {
-            x[index] =x[index] & (0xFFFFFFFF & (0 << (2 - compNoP)*8));
-            x[index] |= (((int)(d * 255))<<(2-compNoP)*8);
+            int pixelValue = x[index];
+            int mask1 = 0xffffffff - (0xff <<((2 - compNoP) * 8));
+            pixelValue = (pixelValue & mask1) | ((int) (d * 255) << ((2 - compNoP) * 8));
+            x[index] = pixelValue;
         }
     }
 
     public void writeComps(int i, int j, int color) {
         int index = index(i, j);
-        double[] v = readComps(i, j);
         x[index] = color;
 
     }
@@ -279,15 +253,15 @@ public class M implements InterfaceMatrix {
         int[] c = new int[4];
         int res = 0xff000000;
         int value = this.x[index(x, y)];
-        for (int i = 0; i < 4; i++) {
-            c[i] = (((int) (float) (value)) >> ((3 - i) * 8)) & 0xFF;
+        for (int i = 0; i < 3; i++) {
+            c[i] = (((int) (float) (value)) >> ((2 - i) * 8)) & 0xFF;
             if (c[i] < 0)
                 c[i] = 0;
             if (c[i] > 255)
                 c[i] = 255;
-            res += c[i];
+            res |= c[i];
         }
-        return new double[]{c[0] / 255.9999, c[1] / 255.9999, c[2] / 255.9999/*, c[3] / 255.9999*/};
+        return new double[]{(double) c[0] / 255f, (double) c[1] / 255f, (double) c[2] / 255f};
     }
 
     public int getInt(int i, int j) {
