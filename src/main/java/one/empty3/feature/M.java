@@ -37,7 +37,7 @@ public class M implements InterfaceMatrix {
     protected int columns;
     protected int lines;
     protected int[] x;
-    protected int compNo = 3;
+    protected int compNo = 0;
     public final int compCount = 3;
 
     public M(int c, int l) {
