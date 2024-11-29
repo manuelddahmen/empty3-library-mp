@@ -1,3 +1,38 @@
-plugins {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        repositories {
+            google()
+            mavenCentral()
+            maven {
+                url "https://www.jetbrains.com/intellij-repository/releases"
+            }
+            maven {
+                url "https://repo1.maven.org/maven2/"
+            }
+            mavenLocal()
+            flatDir {
+                dirs "libs"
+            }
+            google()
+            maven {
+                url "https://mvnrepository.com/"
+            }
+        }
+        mavenCentral()
+        maven {
+            url "https://www.jetbrains.com/intellij-repository/releases"
+        }
+        maven {
+            url "https://repo1.maven.org/maven2/"
+        }
+        mavenLocal()
+        flatDir {
+            dirs "libs"
+        }
+        maven {
+            url "https://mvnrepository.com/"
+        }
+    }
 }
 rootProject.name = 'empty3-library-mp'

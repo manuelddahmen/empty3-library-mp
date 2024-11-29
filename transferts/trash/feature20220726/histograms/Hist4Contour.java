@@ -139,7 +139,7 @@ public class Hist4Contour extends ProcessFile {
         PixM outP0 = new PixM(inP.getColumns(), inP.getLines());
         double maxR = Math.min(inP.getLines(), inP.getColumns()) * fractMax;
         Circle c = null;
-        Point3D maxP = Point3D.O0.mult(1);
+        Point3D maxP = Point3D.X.mult(1);
         for (int i = 0; i < inP.getColumns(); i++) {
             for (int j = 0; j < inP.getLines(); j++) {
                 for (int k = 1; k < maxR; k += 1) {

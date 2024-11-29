@@ -343,26 +343,10 @@ signing {
 
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://www.jetbrains.com/intellij-repository/releases"
-    }
-    maven {
-        url "https://repo1.maven.org/maven2/"
-    }
-    mavenLocal()
-    flatDir {
-        dirs "libs"
-    }
-    google()
-    maven {
-        url "https://mvnrepository.com/"
-    }
-}
+
 compileTestKotlin {
     dependencies {
-      //  implementation 'one.empty3.libs:commmons-mp:2024.11.22-2'
+      //  implementation 'one.empty3.libs:commmons-mp:2024.11.29-2'
     }
 }
 dependencies {
@@ -409,7 +393,9 @@ dependencies {
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
     implementation 'com.google.guava:guava:32.0.0-android'
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
+    implementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+//    implementation "androidx.tracing:tracing:1.2.0"
+
 }
 
 tasks.register('javadocJar', Jar) {
@@ -461,13 +447,13 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2024.11.22-2'
+def versionName = '2024.11.29-2'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2024.11.22-2'
+            version = '2024.11.29-2'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -483,7 +469,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2024.11.22-2'
+                version '2024.11.29-2'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -567,8 +553,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2024.11.22-2'
-        version = '2024.11.22-2'
+        java.version = '2024.11.29-2'
+        version = '2024.11.29-2'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
