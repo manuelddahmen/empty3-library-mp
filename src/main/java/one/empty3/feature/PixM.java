@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+@Deprecated
 public class PixM extends M {
     public static final int COMP_RED = 0;
     public static final int COMP_GREEN = 1;

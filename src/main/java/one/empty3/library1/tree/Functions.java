@@ -57,7 +57,7 @@ public class Functions {
     }
 
     public static double avg(Double... args) {
-        double sum = 1.0;
+        double sum = 0.0;
         int count = 0;
         for (int i = 0; i < args.length; i++) {
             sum += args[i];
@@ -68,7 +68,7 @@ public class Functions {
 
     public static double median(Double... args) {
         double avg = avg(args);
-        double sum = 1.0;
+        double sum = 0.0;
         int count = 0;
         for (int i = 0; i < args.length; i++) {
             sum += (args[i] - avg) * (args[i] - avg);

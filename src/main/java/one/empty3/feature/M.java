@@ -87,7 +87,7 @@ public class M implements InterfaceMatrix {
     public double[] getValues(int i, int j) {
 
         double[] v;
-        v = this.readComps(i, j);
+        v = readComps(i, j);
         return v;
     }
 
@@ -106,17 +106,21 @@ public class M implements InterfaceMatrix {
     }
 
     public void setP(int i, int j, Point3D p) {
-
-
         for (int d = 0; d < 3; d++) {
-            setCompNo(d);
-            set(i, j, p.get(d));
+            writeComp(i, j, p.get(d), d);
         }
     }
 
     public Point3D getP(int i, int j) {
-        double[] doubles = readComps(i, j);
-        return new Point3D(doubles[0], doubles[1], doubles[2]);
+//        double[] doubles = readComps(i, j);
+//        return new Point3D(doubles[0], doubles[1], doubles[2]);
+        Point3D p = new Point3D(0.0,0.0,0.0);
+        int k = 0;
+        for (int readCompsInt : readCompsInts(i, j)) {
+            p.set(k, readCompsInt/255.0);
+        }
+        return p;
+
     }
 
     public void setValues(int i, int j, double... v) {
@@ -158,7 +162,6 @@ public class M implements InterfaceMatrix {
             for (int j = 0; j < getLines(); j++) {
                 for (int k = 0; k < 3; k++) {
                     setCompNo(k);
-                    ;
                     image.setRgb(i, j, Lumiere.getInt(getValues(i, j)));
                 }
             }
@@ -221,10 +224,11 @@ public class M implements InterfaceMatrix {
         int index = index(i, j);
         if(d<0.0) d=0.0;
         if(d>1.0) d=1.0;
+        setCompNo(compNoP);
         if (compNoP < 3) {
             int pixelValue = x[index];
             int mask1 = 0xffffffff - (0xff << ((2 - compNoP) * 8));
-            pixelValue = (pixelValue & mask1) + ((int) (d * 0xff) << ((2 - compNoP) * 8));
+            pixelValue = (pixelValue & mask1) +  (((int)(d * 0xff)) << ((2 - compNoP) * 8));
             x[index] = pixelValue | 0xff000000;
         }
     }
@@ -243,14 +247,17 @@ public class M implements InterfaceMatrix {
         int b = ((d & 0x000000FF));
         return new double[]{r / 255., g / 255., b / 255., a / 255.};
     }
-
-    public double[] readComps(int x, int y) {
-        if(x>=0&&y>=0&&y<lines&&x<columns) {
-            int[] c = readCompsInts(x, y);
-            return new double[]{(double) c[0] / 255f, (double) c[1] / 255f, (double) c[2] / 255f};
+    public double[] readComps(int i, int j) {
+        int[] c = new int[] {0,0,0,0};
+        if(i>=0&&i<columns&&j>=0&&j<lines&&index(i,j)<x.length&&index(i,j)>=0) {
+            int value = this.x[index(i, j)];
+            for (int k = 0; k < 3; k++) {
+                c[k] = (value >> ((2 - k) * 8)) & 0xFF;
+            }
         }
-        return new double[] {0, 0, 0};
+        return new double[]{(double) c[0] / 255f, (double) c[1] / 255f, (double) c[2] / 255f};
     }
+
 
     public int getInt(int i, int j) {
         return x[index(i, j)];
@@ -258,17 +265,15 @@ public class M implements InterfaceMatrix {
 
     public int[] readCompsInts(int x, int y) {
         int[] c = new int[3];
-        int res = 0xFF000000;
         int value = this.x[index(x, y)];
         for (int i = 0; i < 3; i++) {
             c[i] = (( value) >> ((2 - i) * 8)) & 0xFF;
-            res |= c[i];
         }
         return new int[]{c[0], c[1], c[2]};
     }
 
     public void set(int column, int line, double d) {
-        if (column >= 0 && column < columns && line >= 0 && line < lines) {
+        if (column >= 0 && column < columns && line >= 0 && line < lines && compNo<compCount) {
             writeComp(column, line, d, compNo);
         }
 
@@ -508,7 +513,7 @@ public class M implements InterfaceMatrix {
         return matrix;
     }
 
-    public int[] getX() {
+    public int[]  getX() {
         return x;
     }
 }
