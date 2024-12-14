@@ -53,7 +53,7 @@ public class PixM extends M {
                 int c = 3;
                 for (int i1 = 0; i1 < c; i1++) {
                     setCompNo(i1);
-                    setValues(i, j,doubles[i1] );
+                    set(i, j,doubles[i1] );
                 }
             }
         }

@@ -112,12 +112,10 @@ public class M implements InterfaceMatrix {
     }
 
     public Point3D getP(int i, int j) {
-//        double[] doubles = readComps(i, j);
-//        return new Point3D(doubles[0], doubles[1], doubles[2]);
         Point3D p = new Point3D(0.0,0.0,0.0);
-        int k = 0;
-        for (int readCompsInt : readCompsInts(i, j)) {
-            p.set(k, readCompsInt/255.0);
+        int[] ints = readCompsInts(i, j);
+        for (int k=0; k<3; k++) {
+            p.set(k, ints[k]/255.0);
         }
         return p;
 
@@ -224,13 +222,16 @@ public class M implements InterfaceMatrix {
         int index = index(i, j);
         if(d<0.0) d=0.0;
         if(d>1.0) d=1.0;
+        int tmpCompNo  = getCompNo();
         setCompNo(compNoP);
         if (compNoP < 3) {
             int pixelValue = x[index];
             int mask1 = 0xffffffff - (0xff << ((2 - compNoP) * 8));
+
             pixelValue = (pixelValue & mask1) +  (((int)(d * 0xff)) << ((2 - compNoP) * 8));
-            x[index] = pixelValue | 0xff000000;
+            x[index] = pixelValue;
         }
+        setCompNo(tmpCompNo);
     }
 
     public void writeComps(int i, int j, int color) {
@@ -240,12 +241,15 @@ public class M implements InterfaceMatrix {
     }
 
     public double[] readCompsA(int i, int j) {
+        if(i>=0&&i<columns&&j>=0&&j<lines&&index(i,j)<x.length&&index(i,j)>=0) {
         int d = x[index(i, j)];
         int a = ((d & 0xFF000000) >> 24);
         int r = ((d & 0x00FF0000) >> 16);
         int g = ((d & 0x0000FF00) >> 8);
         int b = ((d & 0x000000FF));
         return new double[]{r / 255., g / 255., b / 255., a / 255.};
+        }
+        return new double[]{(double) 0 / 255f, (double) 0 / 255f, (double) 0/ 255f};
     }
     public double[] readComps(int i, int j) {
         int[] c = new int[] {0,0,0,0};
@@ -284,10 +288,6 @@ public class M implements InterfaceMatrix {
     }
 
 
-    @Override
-    public void set(int column, int line, double... values) {
-        setValues(column, line, values);
-    }
 
     public M tild() {
         M m = new M(lines, columns);
