@@ -346,7 +346,7 @@ signing {
 
 compileTestKotlin {
     dependencies {
-      //  implementation 'one.empty3.libs:commmons-mp:2024.12.14'
+      //  implementation 'one.empty3.libs:commmons-mp:2024.12.14-1'
     }
 }
 dependencies {
@@ -453,7 +453,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2024.12.14'
+            version = '2024.12.14-1'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -469,7 +469,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2024.12.14'
+                version '2024.12.14-1'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -553,8 +553,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2024.12.14'
-        version = '2024.12.14'
+        java.version = '2024.12.14-1'
+        version = '2024.12.14-1'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
