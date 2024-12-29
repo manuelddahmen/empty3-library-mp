@@ -108,6 +108,101 @@ public class K_Clusterer /*extends ReadDataset*/ {
 
     //main method
     public void process(File in, File inCsv, File out, int res) throws IOException {
+        ReadDataset r1 = new ReadDataset();
+        r1.features.clear();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the filename with path");
+        String file=sc.next();
+        r1.read(file); //load data
+        int ex=1;
+        do{
+            System.out.println("Enter the no. of clusters");
+            int k = sc.nextInt();
+            System.out.println("Enter maximum iterations");
+            int max_iterations = sc.nextInt();
+            System.out.println("Enter distance metric 1 or 2: \n1. Euclidean\n2. Manhattan");
+            int distance = sc.nextInt();
+            //Hashmap to store centroids with index
+            Map<Integer, double[]> centroids = new HashMap<>();
+            // calculating initial centroids
+            double[] x1 = new double[numberOfFeatures];
+            int r =0;
+            for (int i = 0; i < k; i++) {
+
+                x1=r1.features.get(r++);
+                centroids.put(i, x1);
+
+            }
+            //Hashmap for finding cluster indexes
+            Map<double[], Integer> clusters = new HashMap<>();
+            clusters = kmeans(r1.features, distance, centroids, k);
+            // initial cluster print
+	/*	for (double[] key : clusters.keySet()) {
+			for (int i = 0; i < key.length; i++) {
+				System.out.print(key[i] + ", ");
+			}
+			System.out.print(clusters.get(key) + "\n");
+		}
+		*/
+            double db[] = new double[numberOfFeatures];
+            //reassigning to new clusters
+            for (int i = 0; i < max_iterations; i++) {
+                for (int j = 0; j < k; j++) {
+                    List<double[]> list = new ArrayList<>();
+                    for (double[] key : clusters.keySet()) {
+                        if (clusters.get(key)==j) {
+                            list.add(key);
+//					for(int x=0;x<key.length;x++){
+//						System.out.print(key[x]+", ");
+//						}
+//					System.out.println();
+                        }
+                    }
+                    db = centroidCalculator(list);
+                    centroids.put(j, db);
+
+                }
+                clusters.clear();
+                clusters = kmeans(r1.features,distance, centroids, k);
+
+            }
+
+            //final cluster print
+            System.out.println("\nFinal Clustering of Data");
+            System.out.println("Feature1\tFeature2\tFeature3\tFeature4\tCluster");
+            for (double[] key : clusters.keySet()) {
+                for (int i = 0; i < key.length; i++) {
+                    System.out.print(key[i] + "\t \t");
+                }
+                System.out.print(clusters.get(key) + "\n");
+            }
+
+            //Calculate WCSS
+            double wcss=0;
+
+            for(int i=0;i<k;i++){
+                double sse=0;
+                for (double[] key : clusters.keySet()) {
+                    if (clusters.get(key)==i) {
+                        sse+=Math.pow(Distance.eucledianDistance(key, centroids.get(i)),2);
+                    }
+                }
+                wcss+=sse;
+            }
+            String dis="";
+            if(distance ==1)
+                dis="Euclidean";
+            else
+                dis="Manhattan";
+            System.out.println("\n*********Programmed by Shephalika Shekhar************\n*********Results************\nDistance Metric: "+dis);
+            System.out.println("Iterations: "+max_iterations);
+            System.out.println("Number of Clusters: "+k);
+            System.out.println("WCSS: "+wcss);
+            System.out.println("Press 1 if you want to continue else press 0 to exit..");
+            ex=sc.nextInt();
+        }while(ex==1);
+    }
+/*
         features = new ArrayList<>();
 
         PixM pix;
@@ -215,7 +310,7 @@ public class K_Clusterer /*extends ReadDataset*/ {
             ex1.printStackTrace();
         }
     }
-
+*/
     //method to calculate centroids
     public double[] centroidCalculator(int id, List<double[]> a) {
 

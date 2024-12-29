@@ -954,14 +954,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public void tracerQuad(E3Model.FaceWithUv face) {
-        Polygon polygon = face.getPolygon();
+        Polygon polygon = face.getPolygonWithPosition();
         tracerQuad(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1),
                 polygon.getPoints().getElem(2), polygon.getPoints().getElem(3), face.texture(),
                 face.getU1(), face.getU2(), face.getV1(), face.getV2(), null);
     }
 
     public void tracerQuadInverse(E3Model.FaceWithUv face, Polygon polygonOnImage, Image original, double u, double v) {
-        Polygon polygon = face.getPolygon();
+        Polygon polygon = face.getPolygonWithPosition();
         tracerQuad(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1),
                 polygon.getPoints().getElem(2), polygon.getPoints().getElem(3), face.texture(),
                 face.getU1(), face.getU2(), face.getV1(), face.getV2(), null);

@@ -19,9 +19,7 @@
  *
  *
  */
-
 package one.empty3.library.objloader;
-
 import one.empty3.library.Polygon;
 import one.empty3.*;
 import one.empty3.library.*;
@@ -126,19 +124,6 @@ public class E3Model extends RepresentableConteneur {
      *
      */
     public class FaceWithUv extends ParametricSurface {
-        public class Polygon extends one.empty3.library.Polygon {
-            @Override
-            public StructureMatrix<Point3D> getPoints() {
-                StructureMatrix<Point3D> points2 = new StructureMatrix<>(1, Point3D.class);
-                for (int i = 0; i < super.getPoints().getData1d().size(); i++) {
-                    Point3D  p = super.getPoints().getElem(i);
-                    Point3D multi = thisModel.getOrig().plus(thisModel.getVectX().mult(p.getX()).plus(thisModel.getVectY().mult(p.getY())).plus(thisModel.getVectZ().mult(p.getZ())));
-                    points2.setElem(multi, i);
-
-                }
-                return points2;
-            }
-        }
         public E3Model model;
         Polygon polygon;
         double[] textUv;
