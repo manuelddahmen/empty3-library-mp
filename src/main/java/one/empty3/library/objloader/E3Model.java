@@ -127,6 +127,12 @@ public class E3Model extends RepresentableConteneur {
      */
     public class FaceWithUv extends ParametricSurface {
         public class Polygon extends one.empty3.library.Polygon {
+            public Polygon(one.empty3.library.Polygon orig) {
+                super();
+                this.setPoints(orig.getPoints().getData1d().toArray(new Point3D[orig.getPoints().getData1d().size()]));
+                this.texture(E3Model.this.texture);
+            }
+
             @Override
             public StructureMatrix<Point3D> getPoints() {
                 StructureMatrix<Point3D> points2 = new StructureMatrix<>(1, Point3D.class);
@@ -144,8 +150,9 @@ public class E3Model extends RepresentableConteneur {
         double[] textUv;
         double u1, u2, v1, v2;
 
-        public FaceWithUv(Polygon orig, double[] textureIndices) {
-            this.polygon = orig;
+        public FaceWithUv(one.empty3.library.Polygon orig, double[] textureIndices) {
+
+            this.polygon = new Polygon(orig);
             model = E3Model.this;
             u1 = textureIndices[0];
             u2 = textureIndices[6];

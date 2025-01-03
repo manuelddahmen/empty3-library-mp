@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * Created by manue on 02-06-19.
  * Updated 7/24
  */
-public class E3Model extends RepresentableConteneur {
+public class E3Model0 extends RepresentableConteneur {
     private ArrayList<Double[]> vertexsets;
     private ArrayList<Double[]> vertexsetsnorms;
     private ArrayList<Double[]> vertexsetstexs;
@@ -76,7 +76,7 @@ public class E3Model extends RepresentableConteneur {
     public double vMin;
     public double uMax;
     public double vMax;
-    private E3Model thisModel = this;
+    private E3Model0 thisModel = this;
     public RepresentableConteneur getObjects() {
         return objects;
     }
@@ -124,20 +124,20 @@ public class E3Model extends RepresentableConteneur {
      *
      */
     public class FaceWithUv extends ParametricSurface {
-        public E3Model model;
+        public E3Model0 model;
         Polygon polygon;
         double[] textUv;
         double u1, u2, v1, v2;
 
         public FaceWithUv(Polygon orig, double[] textureIndices) {
             this.polygon = orig;
-            model = E3Model.this;
+            model = E3Model0.this;
             u1 = textureIndices[0];
             u2 = textureIndices[6];
             v1 = textureIndices[1];
             v2 = textureIndices[3];
             textUv = textureIndices;
-            this.polygon.texture(E3Model.this.texture);
+            this.polygon.texture(E3Model0.this.texture);
             //this.texture(texture);
 /*            for (int i = 0; i < faces.get(faceNo).length; i++) {
                 int[] ints = faces.get(faceNo);
@@ -195,7 +195,7 @@ public class E3Model extends RepresentableConteneur {
     }
 
     //THIS CLASS LOADS THE MODELS
-    public E3Model(BufferedReader ref, boolean centerit, String path) {
+    public E3Model0(BufferedReader ref, boolean centerit, String path) {
 
         mtl_path = path;
         vertexsets = new ArrayList<Double[]>();
