@@ -126,6 +126,7 @@ public class E3Model extends RepresentableConteneur {
      *
      */
     public class FaceWithUv extends ParametricSurface {
+        private Polygon polygon0;
         public class Polygon extends one.empty3.library.Polygon {
             public Polygon(one.empty3.library.Polygon orig) {
                 super();
@@ -151,7 +152,7 @@ public class E3Model extends RepresentableConteneur {
         double u1, u2, v1, v2;
 
         public FaceWithUv(one.empty3.library.Polygon orig, double[] textureIndices) {
-
+            this.polygon0 = new Polygon(orig);
             this.polygon = new Polygon(orig);
             model = E3Model.this;
             u1 = textureIndices[0];
@@ -160,21 +161,6 @@ public class E3Model extends RepresentableConteneur {
             v2 = textureIndices[3];
             textUv = textureIndices;
             this.polygon.texture(E3Model.this.texture);
-            //this.texture(texture);
-/*            for (int i = 0; i < faces.get(faceNo).length; i++) {
-                int[] ints = faces.get(faceNo);
-                for (int j = 0; j < ints.length; j++) {
-                    Double[] vertex = vertexsets.get(ints[j]);
-                    Double[] uv = vertexsetstexs.get(ints[j]);
-                    Point3D point1 = new Point3D(vertex);
-                    for (int k = 0; k < this.polygon.getPoints().data1d.size(); k++) {
-                        if (this.polygon.getPoints().getElem(k).equals(point1)) {
-                            textUv[k] = new Point3D(uv);
-                        }
-                    }
-                }
-            }
-  */
         }
 
 
@@ -188,7 +174,7 @@ public class E3Model extends RepresentableConteneur {
         }
 
         public Polygon getPolygon() {
-            return polygon;
+            return new Polygon(polygon0);
         }
 
         public double getU1() {
