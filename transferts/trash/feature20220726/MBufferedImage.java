@@ -40,7 +40,7 @@ public class MImage /*implements InterfaceMatrix*/ {
     public int compCount = 3;
 
     public MImage(int c, int l) {
-        this.Image = new one.empty3.libs.Image(c, l, javaAnd.awt.image.Image.TYPE_INT_ARGB);
+        this.Image = new one.empty3.libs.Image(c, l, javaAnd.awt.image.Image.TYPE_INT_RGB);
         this.lines = l;
         this.columns = c;
     }

@@ -1,21 +1,28 @@
 /*
  *
- *  * Copyright (c) 2024. Manuel Daniel Dahmen
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
  *  *
  *  *
- *  *    Copyright 2024 Manuel Daniel Dahmen
- *  *
- *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *    you may not use this file except in compliance with the License.
- *  *    You may obtain a copy of the License at
- *  *
- *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *    Unless required by applicable law or agreed to in writing, software
- *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *    See the License for the specific language governing permissions and
- *  *    limitations under the License.
+ *
+ *
+ *
+ *  * Created by $user $date
  *
  *
  */
@@ -32,7 +39,7 @@ public class Image {
 
 
     public static final int TYPE_INT_RGB = 0;
-    public static final int TYPE_INT_ARGB = 1;
+    public static final int TYPE_INT_RGB = 1;
     public static final int TYPE_BYTE_GRAY = 2;
     public one.empty3.libs.Image bufferedImage;
 
@@ -41,7 +48,7 @@ public class Image {
 
     public Image(int columns, int lines, int typeIntRgb) {
         this();
-        this.bufferedImage = new one.empty3.libs.Image(columns, lines, bufferedImage.TYPE_INT_ARGB);
+        this.bufferedImage = new one.empty3.libs.Image(columns, lines, bufferedImage.TYPE_INT_RGB);
     }
 
 

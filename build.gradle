@@ -1,21 +1,28 @@
 /*
  *
- *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
  *  *
  *  *
- *  *    Copyright 2024 Manuel Daniel Dahmen
- *  *
- *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *    you may not use this file except in compliance with the License.
- *  *    You may obtain a copy of the License at
- *  *
- *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *    Unless required by applicable law or agreed to in writing, software
- *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *    See the License for the specific language governing permissions and
- *  *    limitations under the License.
+ *
+ *
+ *
+ *  * Created by $user $date
  *
  *
  */
@@ -351,7 +358,7 @@ compileTestKotlin {
 }
 dependencies {
     androidCompile "one.empty3.libs:partial-android:0.0.6"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.7"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.9"
     implementation "one.empty3.libs:commons-mp:0.0.6"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     def googleJavaFormatVersion = '1.6'
@@ -453,7 +460,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2025.1.4'
+            version = '2025.1.11'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -469,7 +476,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2025.1.4'
+                version '2025.1.11'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -553,8 +560,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2025.1.4'
-        version = '2025.1.4'
+        java.version = '2025.1.11'
+        version = '2025.1.11'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
