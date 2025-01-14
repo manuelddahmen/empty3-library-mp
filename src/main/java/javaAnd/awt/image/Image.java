@@ -36,11 +36,6 @@ import one.empty3.library.ITexture;
 import one.empty3.libs.*;
 
 public class Image {
-
-
-    public static final int TYPE_INT_RGB = 0;
-    public static final int TYPE_INT_RGB = 1;
-    public static final int TYPE_BYTE_GRAY = 2;
     public one.empty3.libs.Image bufferedImage;
 
     public Image() {

@@ -357,8 +357,8 @@ compileTestKotlin {
     }
 }
 dependencies {
-    androidCompile "one.empty3.libs:partial-android:0.0.6"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.9"
+    androidCompile "one.empty3.libs:partial-android:0.0.11"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.11"
     implementation "one.empty3.libs:commons-mp:0.0.6"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     def googleJavaFormatVersion = '1.6'
