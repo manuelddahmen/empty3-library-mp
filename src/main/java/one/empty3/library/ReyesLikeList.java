@@ -32,8 +32,6 @@ package one.empty3.library;
 
 import one.empty3.libs.Image;
 
-import javaAnd.awt.Point;
-
 public class ReyesLikeList {
     int size = 12;
     int idx = 0;

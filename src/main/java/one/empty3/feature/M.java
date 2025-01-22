@@ -181,10 +181,12 @@ public class M implements InterfaceMatrix {
 
     public double get(int column, int line) {
         if (column >= 0 && column < columns && line >= 0 && line < lines && compNo >= 0 && compNo < compCount) {
-            return readComps(column, line)[compNo];
+            return x[index(column, line)];
         } else
             return noValue; // OutOfBound?
     }
+
+
 
     public double getIntensity(int column, int line) {
         double i = 0;
@@ -288,6 +290,10 @@ public class M implements InterfaceMatrix {
             writeComp(column, line, d, compNo);
         }
 
+    }
+
+    public void set(int column, int line, double... values) {
+        setValues(column, line, values);
     }
 
     public void set(int index, int value) {

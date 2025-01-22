@@ -358,10 +358,9 @@ compileTestKotlin {
 }
 dependencies {
     androidCompile "one.empty3.libs:partial-android:0.0.11"
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.11"
-    implementation "one.empty3.libs:commons-mp:0.0.6"
+    desktopCompile "one.empty3.libs:partial-desktop:0.0.16"
+    implementation "one.empty3.libs:commons-mp:0.0.7"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
-    def googleJavaFormatVersion = '1.6'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     implementation 'junit:junit:4.13.2'
     testImplementation project(path: ':')
@@ -398,7 +397,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-storage'
     implementation "com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0"
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-    implementation 'com.google.guava:guava:32.0.0-android'
+    implementation 'com.google.guava:guava:32.0.1-android'
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
     implementation 'org.junit.platform:junit-platform-launcher:1.9.2'
 //    implementation "androidx.tracing:tracing:1.2.0"
@@ -460,7 +459,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2025.1.11'
+            version = '2025.1.22'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -476,7 +475,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2025.1.11'
+                version '2025.1.22'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -560,8 +559,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2025.1.11'
-        version = '2025.1.11'
+        java.version = '2025.1.22'
+        version = '2025.1.22'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
