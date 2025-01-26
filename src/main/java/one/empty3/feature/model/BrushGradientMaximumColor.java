@@ -55,7 +55,7 @@ public class BrushGradientMaximumColor extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        Image img = new one.empty3.libs.Image(null);
+        Image img = new one.empty3.libs.Image(in);
         img.loadFile(in);
         PixM pixM = new PixM(Objects.requireNonNull(img));
         PixM pixM2 = new PixM(pixM.getColumns(), pixM.getLines());

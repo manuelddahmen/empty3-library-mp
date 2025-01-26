@@ -189,7 +189,7 @@ public class EditPolygonsMappings  implements Runnable {
             if (model.testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        model.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, model.image, model.imageFileRight, model, null);
+        model.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, model.image, model.imageFileRight, model.model);
         model.hasChangedAorB = true;
     }
 /*
@@ -212,11 +212,7 @@ public class EditPolygonsMappings  implements Runnable {
     }
 */
     public void loadImage(File selectedFile) {
-        try {
-            model.image = new one.empty3.libs.Image(selectedFile);
-        } catch (IOException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
-        }
+        model.image = new one.empty3.libs.Image(selectedFile);
         if (model.image != null && model.testHumanHeadTexturing != null) {
             model.testHumanHeadTexturing.setJpg(model.image);
             model.imageFile = selectedFile;
@@ -225,11 +221,7 @@ public class EditPolygonsMappings  implements Runnable {
     }
 
     public void loadImageRight(File selectedFile) {
-        try {
-            model.imageFileRight = new one.empty3.libs.Image(selectedFile);
-        } catch (IOException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
-        }
+        model.imageFileRight = new one.empty3.libs.Image(selectedFile);
         if (model.imageFileRight != null && model.testHumanHeadTexturing != null) {
             model.testHumanHeadTexturing.setJpgRight(model.imageFileRight);
         }
@@ -239,7 +231,7 @@ public class EditPolygonsMappings  implements Runnable {
 
 
     public void run() {
-        model.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, model.image, model.imageFileRight, model.model, TestObjet.HD1080);
+        model.testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, model.image, model.imageFileRight, model.model);
         model.hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);

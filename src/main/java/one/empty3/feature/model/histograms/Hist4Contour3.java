@@ -158,7 +158,7 @@ public class Hist4Contour3 extends ProcessFile {
         //        Circle c2 = getLevel(cc, inP, cc.r/2);
         try {
             //one.empty3.libs.Image.saveFile(outP.normalize(0, 1).getImage().getBitmap(), "jpg", out);
-            outP./*normalize(0, 1).*/getImage2().saveFile(out);
+            outP./*normalize(0, 1).*/getImage().saveFile(out);
             return true;
 
         } catch (Exception ignored) {
