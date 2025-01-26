@@ -34,7 +34,7 @@ public class ReadLines extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        PixM pixM = new PixM(new Image(in));
+        PixM pixM = new PixM(new one.empty3.libs.Image(in));
 
         PixM pixM2 = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -88,8 +88,8 @@ public class ReadLines extends ProcessFile {
                         sum = (countNotEmpty[s][i][j] / maxSize);
                 pixOut1.setValues(i, j, sum, sum, sum);
             }
-        new Image(1,1,1.saveToFile(pixOut1.getImage(), "jpg", out2);
-        new Image(1,1,1.saveToFile(pixM2.getImage(), "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(pixOut1.getImage(), "jpg", out2);
+        new one.empty3.libs.Image(1,1,1.saveToFile(pixM2.getImage(), "jpg", out);
         return true;
     }
 

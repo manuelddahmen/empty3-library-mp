@@ -55,7 +55,7 @@ public class TourDeRevolution extends Representable {
 
     public TourDeRevolution(File image, Axe axe) {
         try {
-            this.courbe = new CourbeDeImage((Image) new Image(1,1,1).getFromFile(image));
+            this.courbe = new CourbeDeImage((Image) new one.empty3.libs.Image(1,1,1).getFromFile(image));
             courbe.anayliserImage();
 
         } catch (Exception ex) {}
@@ -77,7 +77,7 @@ public class TourDeRevolution extends Representable {
         z.scene(s);
         z.draw();
         try {
-            new Image(1,1,1).saveToFile(new File("result2TR.png").getAbsolutePath());
+            new one.empty3.libs.Image(1,1,1).saveToFile(new File("result2TR.png").getAbsolutePath());
         } catch (Exception ex) {}
 
     }

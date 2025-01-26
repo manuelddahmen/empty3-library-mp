@@ -130,7 +130,7 @@ public class Snake extends ProcessFile {
 
     public boolean process(File in, File out) {
         try {
-            pix = PixM.getPixM(new Image(in), 500);
+            pix = PixM.getPixM(new one.empty3.libs.Image(in), 500);
             pix3 = new PixM(pix.getColumns(), pix.getLines());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -140,7 +140,7 @@ public class Snake extends ProcessFile {
         classification();
 
         try {
-            new Image(1,1,1.saveToFile(pix3.normalize(0., 1.).getImage(),
+            new one.empty3.libs.Image(1,1,1.saveToFile(pix3.normalize(0., 1.).getImage(),
                     "jpg", out);
         } catch (Exception ex) {
             ex.printStackTrace();

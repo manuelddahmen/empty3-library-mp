@@ -102,7 +102,7 @@ public class Lines5colors extends ProcessFile {
         listTmpY = new ArrayList<>();
         listTmpZ = new ArrayList<>();
         pixM = null;
-        pixM = new PixM(new Image(in));
+        pixM = new PixM(new one.empty3.libs.Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         lists.add(new ArrayList<>());
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
@@ -369,7 +369,7 @@ public class Lines5colors extends ProcessFile {
 
         });
 
-        Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
+        Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
         for (LineSegment line : lines) {
             if (line.getLength() >= 2) {
                 /*for (double c = 0.0; c <= 1.0; c += 1 / line.getLength()) {
@@ -414,12 +414,12 @@ public class Lines5colors extends ProcessFile {
 
             }
         });
-        new Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", new File(out.getAbsolutePath() + "-dotted.jpg"));
-        //new Image(1,1,1.saveToFile(bLines, "jpg",
+        new one.empty3.libs.Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", new File(out.getAbsolutePath() + "-dotted.jpg"));
+        //new one.empty3.libs.Image(1,1,1.saveToFile(bLines, "jpg",
         //        new File(out.getAbsolutePath() + "-blines.jpg"));
-//            new Image(1,1,1.saveToFile(linesImg2, "jpg",
+//            new one.empty3.libs.Image(1,1,1.saveToFile(linesImg2, "jpg",
 //                    new File(out.getAbsolutePath() + "-lines-yAxB.jpg"));
-        new Image(1,1,1.saveToFile(img3.normalize(0.0, 1.0).getImage(), "jpg",
+        new one.empty3.libs.Image(1,1,1.saveToFile(img3.normalize(0.0, 1.0).getImage(), "jpg",
                 new File(out.getAbsolutePath()));
         return true;
 

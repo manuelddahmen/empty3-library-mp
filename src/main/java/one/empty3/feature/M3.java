@@ -391,5 +391,19 @@ public class M3 {
         return get(column, line, ii, ij, 4);
     }
 
+    public int getColumns() {
+        return columns;
+    }
 
+    public int getLines() {
+        return lines;
+    }
+
+    public int getColumnsIn() {
+        return columnsIn;
+    }
+
+    public int getLinesIn() {
+        return linesIn;
+    }
 }

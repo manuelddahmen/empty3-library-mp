@@ -177,7 +177,7 @@ public class BallePanel extends DataPanel implements Runnable {
         f.configurer(positions);
 
 
-        bi = new Image(getWidth(), getHeight(), Image.TYPE_INT_RGB);
+        bi = new one.empty3.libs.Image(getWidth(), getHeight(), Image.TYPE_INT_RGB);
         Graphics g = bi.getGraphics();
 
 

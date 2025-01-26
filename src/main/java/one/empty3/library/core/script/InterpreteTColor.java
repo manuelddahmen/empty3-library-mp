@@ -98,7 +98,7 @@ public class InterpreteTColor implements Interprete {
                 inf.setRepertoire(repertoire);
                 File f = (File) inf.interprete(text, pos);
 
-                Image bi = new Image((Image) new Image(1,1,1).getFromFile(f));
+                Image bi = new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(f));
 
                 tc = new TextureImg(bi);
 

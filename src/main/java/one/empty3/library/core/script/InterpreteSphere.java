@@ -106,7 +106,7 @@ public class InterpreteSphere implements Interprete {
 
         TRISphere sphere = new TRISphere(centre, pos);
         sphere.texture(
-                new TextureImg(new Image((Image) new Image(1,1,1).getFromFile(file))));
+                new TextureImg(new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(file))));
 
         return sphere;
     }

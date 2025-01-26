@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 //                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
 //            }
 //        }
-//        new Image(1,1,1.saveToFile(img, "png", outFile);
+//        new one.empty3.libs.Image(1,1,1.saveToFile(img, "png", outFile);
 //    }
 //
 //    public static void writeImage(double[][] imgArray, File outFile) throws Exception {
@@ -38,11 +38,11 @@ import java.util.logging.Logger;
 //                img.setRGB(i, j, (int) imgArray[i][j]);
 //            }
 //        }
-//        new Image(1,1,1.saveToFile(img, "png", outFile);
+//        new one.empty3.libs.Image(1,1,1.saveToFile(img, "png", outFile);
 //    }
 //
 //    public static void writeImage(Image image, File outFile) throws Exception {
-//        new Image(1,1,1.saveToFile(image, "png", outFile);
+//        new one.empty3.libs.Image(1,1,1.saveToFile(image, "png", outFile);
 //    }
 //
 //    public static void writeImage(double[][] sobelArray, File outFile, int threshold) throws Exception {
@@ -54,7 +54,7 @@ import java.util.logging.Logger;
 //                }
 //            }
 //        }
-//        new Image(1,1,1.saveToFile(img, "png", outFile);
+//        new one.empty3.libs.Image(1,1,1.saveToFile(img, "png", outFile);
 //    }
 //
 //    public static void superimposeCircles(List<CircleHit> hits, javaAnd.awt.image.Image in, File out) {
@@ -73,7 +73,7 @@ import java.util.logging.Logger;
 //            }
 //        }
 //        try {
-//            new Image(1,1,1.saveToFile(in, "jpg", out);
+//            new one.empty3.libs.Image(1,1,1.saveToFile(in, "jpg", out);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
@@ -100,7 +100,7 @@ import java.util.logging.Logger;
 //            }
 //        }
 //
-//        new Image(1,1,1.saveToFile(totalCircles, "png", out);
+//        new one.empty3.libs.Image(1,1,1.saveToFile(totalCircles, "png", out);
 //    }
 ///*/
 //    public static javaAnd.awt.image.Image scaledSobelResult(double[][] sobelTotal) {

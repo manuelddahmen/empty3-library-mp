@@ -111,7 +111,7 @@ public class ProcessBean extends Thread {
 
     public void setImage(File fo) {
         try {
-            listImage.add(new PixM((Image) new Image(1,1,1).getFromFile(fo)));
+            listImage.add(new PixM((Image) new one.empty3.libs.Image(1,1,1).getFromFile(fo)));
         } catch (Exception ex) {
         }
 

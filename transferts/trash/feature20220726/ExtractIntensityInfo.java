@@ -56,7 +56,7 @@ public class ExtractIntensityInfo extends
     public boolean process(File in, File out) {
         Image img = null;
         try {
-            img = new Image(in);
+            img = new one.empty3.libs.Image(in);
         } catch (Exception rx) {
         }
         PixM pix = PixM.getPixM(img, -1);
@@ -142,7 +142,7 @@ public class ExtractIntensityInfo extends
 
 
         try {
-            new Image(1,1,1.saveToFile(pix.getImage(),
+            new one.empty3.libs.Image(1,1,1.saveToFile(pix.getImage(),
                     "JPEG", out);
         } catch (Exception ex) {
         }

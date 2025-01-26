@@ -42,7 +42,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public int compCount = 3;
 
     public MBitmap(int c, int l) {
-        this.bitmap = new Image(c, l, Image.TYPE_INT_RGB);
+        this.bitmap = new one.empty3.libs.Image(c, l, Image.TYPE_INT_RGB);
         this.lines = l;
         this.columns = c;
     }

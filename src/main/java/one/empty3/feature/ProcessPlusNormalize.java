@@ -45,7 +45,7 @@ public class ProcessPlusNormalize extends ProcessNFiles {
         PixM[] arr = new PixM[n];
         Point max = new Point(0,0);
         for (int i = 0; i < ins.length; i++) {
-            arr = new PixM[]{new PixM((Image) Objects.requireNonNull(new Image(1,1,1).getFromFile(ins[i])))};
+            arr = new PixM[]{new PixM((Image) Objects.requireNonNull(new one.empty3.libs.Image(1,1,1).getFromFile(ins[i])))};
             if (arr[i].columns > max.x) {
                 max.setSize(arr[i].columns, max.y);
             }

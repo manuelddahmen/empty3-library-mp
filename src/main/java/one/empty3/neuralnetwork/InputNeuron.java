@@ -66,7 +66,7 @@ public class InputNeuron extends Neuron {
         if (!Arrays.asList("jpg", "png").contains(file.getAbsolutePath().substring(
                 file.getAbsolutePath().length() - 3, file.getAbsolutePath().length())))
             return false;
-        p = PixM.getPixM(new Image((Image) new Image(1,1,1).getFromFile(file)), Config.RES);
+        p = PixM.getPixM(new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(file)), Config.RES);
         this.setW(new double[Config.RES * Config.RES * 3]);
         for (int j = 0; j < Config.RES; j++)
             for (int i = 0; i < Config.RES; i++) {

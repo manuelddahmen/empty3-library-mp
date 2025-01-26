@@ -125,7 +125,7 @@ public class Hist4Contour2 extends ProcessFile {
             return false;
         }
         PixM inP;
-        inP = PixM.getPixM(new Image(in), maxRes);
+        inP = PixM.getPixM(new one.empty3.libs.Image(in), maxRes);
 
 
         double max = 0.0;
@@ -166,9 +166,9 @@ public class Hist4Contour2 extends ProcessFile {
         // Colorier en fonction des pixels voisins
         //        Circle c2 = getLevel(cc, inP, cc.r/2);
         try {
-            //new Image(1,1,1.saveToFile(outP.normalize(0, 1).getImage(), "jpg", out);
-            new Image(1,1,1.saveToFile(outP.getImage(), "jpg", out);
-            //new Image(1,1,1.saveToFile(outP0.normalize(0, 1).getImage(), "jpg", out);
+            //new one.empty3.libs.Image(1,1,1.saveToFile(outP.normalize(0, 1).getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(outP.getImage(), "jpg", out);
+            //new one.empty3.libs.Image(1,1,1.saveToFile(outP0.normalize(0, 1).getImage(), "jpg", out);
             return true;
         } catch (Exception ex) {}
 

@@ -98,7 +98,7 @@ public class Lines6 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         pixM = null;
-        pixM = new PixM(new Image(in));
+        pixM = new PixM(new one.empty3.libs.Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -192,7 +192,7 @@ public class Lines6 extends ProcessFile {
 
         }
         // d'après pcount x, y et curve xy supprimer les courbes en trop.
-        Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
+        Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
         list3.forEach(point3DS -> {
             Point3D p1 = point3DS.get(0);
             Point3D p2 = point3DS.get(point3DS.size() - 1);
@@ -285,7 +285,7 @@ public class Lines6 extends ProcessFile {
 
         PixM stack = new PixM(
                 pixM.getColumns(), pixM.getLines()
-                //new Image(getStackItem(1))
+                //new one.empty3.libs.Image(getStackItem(1))
         );
 
         list3.forEach(point3DS -> {
@@ -293,7 +293,7 @@ public class Lines6 extends ProcessFile {
                     stack, new ColorTexture(Color.WHITE));
         });
 
-        new Image(1,1,1.saveToFile(stack.getImage(), "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(stack.getImage(), "jpg", out);
 
         addSource(out);
 

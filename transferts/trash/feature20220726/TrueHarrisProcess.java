@@ -45,7 +45,7 @@ public class TrueHarrisProcess extends ProcessFile {
         Image img = null;
 
         try {
-            img = new Image(file);
+            img = new one.empty3.libs.Image(file);
             pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {
@@ -79,7 +79,7 @@ public class TrueHarrisProcess extends ProcessFile {
 
         try {
 
-            new Image(1,1,1.saveToFile(normalize.getImage(), "JPEG", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(normalize.getImage(), "JPEG", out);
             return true;
         } catch (Exception ex) {
 

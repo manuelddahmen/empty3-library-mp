@@ -67,7 +67,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
         this.isMovie = isMovie;
         this.url.setElem(url);
         if (url != null) {
-            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
+            image.setElem((Image) new one.empty3.libs.Image(1,1,1).getFromFile(new File(url.getFile())));
         }
         declareProperties();
     }
@@ -132,14 +132,14 @@ public class ImageContainer extends Representable implements ResourceLoader {
 
     private void loadImage(File path) {
         if (path != null) {
-            image.setElem((Image) new Image(1,1,1).getFromFile(path));
+            image.setElem((Image) new one.empty3.libs.Image(1,1,1).getFromFile(path));
         }
 
     }
 
     private void loadImage(URL url) {
         if (url != null) {
-            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
+            image.setElem((Image) new one.empty3.libs.Image(1,1,1).getFromFile(new File(url.getFile())));
         }
     }
 
@@ -151,7 +151,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
             vd.setElem(vd2);
   */
             isMovie = true;
-            image.setElem((Image) new Image(1,1,1).getFromFile(path));
+            image.setElem((Image) new one.empty3.libs.Image(1,1,1).getFromFile(path));
         }
 
     }
@@ -168,7 +168,7 @@ public class ImageContainer extends Representable implements ResourceLoader {
             vd.setElem(vd2);
            */
             isMovie = true;
-            image.setElem((Image) new Image(1,1,1).getFromFile(new File(url.getFile())));
+            image.setElem((Image) new one.empty3.libs.Image(1,1,1).getFromFile(new File(url.getFile())));
         }
     }
 

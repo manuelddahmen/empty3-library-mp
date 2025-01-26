@@ -63,7 +63,7 @@ public class Voronoi extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             List<Point3D> points = new ArrayList<>();
-            Image read = new one.empty3.libs.Image(new Image(in));
+            Image read = new one.empty3.libs.Image(new one.empty3.libs.Image(in));
             PixM pixM = PixM.getPixM(read, maxRes);
             PixM pixMOut = pixM.copy();
             for (int i = 0; i < pixM.getColumns(); i++) {
@@ -88,7 +88,7 @@ public class Voronoi extends ProcessFile {
             }
 
 
-            new Image(1,1,1.saveToFile(pixMOut.getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(pixMOut.getImage(), "jpg", out);
 
             return true;
 

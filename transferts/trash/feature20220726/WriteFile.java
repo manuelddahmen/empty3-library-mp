@@ -52,7 +52,7 @@ public class WriteFile {
         try {
 
             no++;
-            new Image(1,1,1.saveToFile(imageJpeg, "jpg", n);
+            new one.empty3.libs.Image(1,1,1.saveToFile(imageJpeg, "jpg", n);
             Logger.getLogger(WriteFile.class.toString()).log(Level.INFO, "file written: " + n.getAbsolutePath());
 
         } catch (Exception ex) {

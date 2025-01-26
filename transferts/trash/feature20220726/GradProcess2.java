@@ -32,7 +32,7 @@ import java.io.IOException;
 public class GradProcess2 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
-        PixM pixM = PixM.getPixM(new Image(in), maxRes);
+        PixM pixM = PixM.getPixM(new one.empty3.libs.Image(in), maxRes);
         PixM pixMout = new PixM(pixM.getColumns(), pixM.getLines());
 
         for (int x = 0; x < pixM.getColumns(); x++)
@@ -48,7 +48,7 @@ public class GradProcess2 extends ProcessFile {
                             + 4 * pixMout.get(x, y + 1));
                 }
 
-        new Image(1,1,1.saveToFile(pixMout.normalize(0, 1).getImage(), "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(pixMout.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
 }

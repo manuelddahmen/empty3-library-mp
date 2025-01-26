@@ -57,7 +57,7 @@ import one.empty3.libs.Image;
 //        }
 //
 //        Matrix matrixRandomInput = new Matrix(x, sqrt, sqrt);
-//        run.loadImageInput(new Image(new File(file)), sqrt, run.inputNeuron);
+//        run.loadImageInput(new one.empty3.libs.Image(new File(file)), sqrt, run.inputNeuron);
 //        Matrix matrixNeuron = new Matrix(run.inputNeuron.getW(), sqrt, sqrt);
 //        Matrix actual =
 //                matrixNeuron.multiply(matrixRandomInput).softmax();
@@ -89,7 +89,7 @@ import one.empty3.libs.Image;
 //    }
 //
 //    public void train(File inputFile, File outputFile) {
-//        loadImageInput(new Image(dir), MAX_RES, inputNeuron
+//        loadImageInput(new one.empty3.libs.Image(dir), MAX_RES, inputNeuron
 //        );
 //    }
 //

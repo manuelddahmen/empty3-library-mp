@@ -35,7 +35,7 @@ public class SelectColor extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        PixM pixM = new PixM(new Image(in));
+        PixM pixM = new PixM(new one.empty3.libs.Image(in));
 
         PixM pixM2 = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -56,7 +56,7 @@ public class SelectColor extends ProcessFile {
                 }
             }
         try {
-            new Image(1,1,1.saveToFile(pixM2.getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(pixM2.getImage(), "jpg", out);
             return true;
         } catch (Exception ex) {}
 

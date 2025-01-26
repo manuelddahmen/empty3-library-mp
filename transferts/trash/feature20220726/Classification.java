@@ -67,9 +67,9 @@ public class Classification extends ProcessFile {
             return false;
         PixM selectPointColorMassAglo = null;
         one.empty3.libs.Image read = null;
-        read = Objects.requireNonNull(new Image(in));
+        read = Objects.requireNonNull(new one.empty3.libs.Image(in));
         selectPointColorMassAglo = PixM.getPixM(read, maxRes);
-        imageOut = new Image(in);
+        imageOut = new one.empty3.libs.Image(in);
         SelectPointColorMassAglo selectPointColorMassAglo1 = new SelectPointColorMassAglo(read);
         int color = Color.WHITE.getRGB();
         for (int i = 0; i < imageOut.getWidth(); i += 1)
@@ -87,7 +87,7 @@ public class Classification extends ProcessFile {
                 }
             }
 
-        new Image(1,1,1.saveToFile(imageOut, "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(imageOut, "jpg", out);
         return true;
     }
 

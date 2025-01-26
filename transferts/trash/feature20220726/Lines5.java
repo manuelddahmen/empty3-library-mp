@@ -100,7 +100,7 @@ public class Lines5 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         pixM = null;
-        pixM = new PixM(new Image(in));
+        pixM = new PixM(new one.empty3.libs.Image(in));
         ArrayList<List<Point3D>> lists = new ArrayList<>();
         PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
@@ -194,7 +194,7 @@ public class Lines5 extends ProcessFile {
 
         }
         // d'après pcount x, y et curve xy supprimer les courbes en trop.
-        Image bLines = new Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
+        Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
 
         //bLines.setRGB(Color.RED);
         list3.forEach(point3DS -> {
@@ -286,7 +286,7 @@ public class Lines5 extends ProcessFile {
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));
 
-        new Image(1,1,1.saveToFile(bLines, "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(bLines, "jpg", out);
         return true;
 
     }

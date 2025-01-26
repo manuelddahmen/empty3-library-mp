@@ -56,7 +56,7 @@ public class TestWebCam {
         }
         Image image = webcam.getImage();
         try {
-            new Image(1,1,1.saveToFile(image, "PNG", new File("test.png"));
+            new one.empty3.libs.Image(1,1,1.saveToFile(image, "PNG", new File("test.png"));
         } catch (IOException ex) {
             Logger.getLogger(TestWebCam.class.getName()).log(Level.SEVERE, null, ex);
         }

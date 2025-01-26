@@ -205,7 +205,7 @@ public class PixMAndroidVersion extends MBitmap {
 
         float[] f = new float[getCompCount()];
 
-        Image image = new Image(columns,
+        Image image = new one.empty3.libs.Image(columns,
                 lines, Image.TYPE_INT_RGB);
 
 

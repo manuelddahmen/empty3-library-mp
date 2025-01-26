@@ -216,7 +216,7 @@ private int sizeElement = 20, elementSize=20;
 
             if (!in.getName().endsWith(".jpg"))
                 return false;
-            PixM pi = new PixM(new Image(in));
+            PixM pi = new PixM(new one.empty3.libs.Image(in));
             moutA = pi;
             moutB = pi;
             // work on featutes
@@ -232,11 +232,11 @@ private int sizeElement = 20, elementSize=20;
 
 
                             }
-            //new Image(1,1,1.saveToFile(pi.getImage(), "JPEG", out);
-            new Image(1,1,1.saveToFile(moutA.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "a" + "jpg"));
-            new Image(1,1,1.saveToFile(moutB.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "b" + "jpg"));
+            //new one.empty3.libs.Image(1,1,1.saveToFile(pi.getImage(), "JPEG", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(moutA.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "a" + "jpg"));
+            new one.empty3.libs.Image(1,1,1.saveToFile(moutB.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "b" + "jpg"));
 
-            //new Image(1,1,1.saveToFile(m2g, "JPEG", new File(out.getParent()+5+"jpg"));
+            //new one.empty3.libs.Image(1,1,1.saveToFile(m2g, "JPEG", new File(out.getParent()+5+"jpg"));
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

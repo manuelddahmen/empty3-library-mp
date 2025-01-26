@@ -85,7 +85,7 @@ public class InterpreteTexture implements Interprete {
                 pos = inf.getPosition();
                 pass = true;
 
-                tc = new TextureImg(new Image((Image) new Image(1,1,1).getFromFile(f)));
+                tc = new TextureImg(new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(f)));
             } catch (InterpreteException ex) {
             }
         }

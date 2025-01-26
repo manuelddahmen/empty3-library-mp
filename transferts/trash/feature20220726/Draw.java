@@ -35,7 +35,7 @@ public class Draw extends ProcessFile {
 
     public boolean process(File in, File out) {
         try {
-            new Image(1,1,1.saveToFile(new Image(in), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(new one.empty3.libs.Image(in), "jpg", out);
 
         } catch (Exception ex) {
             ex.printStackTrace();

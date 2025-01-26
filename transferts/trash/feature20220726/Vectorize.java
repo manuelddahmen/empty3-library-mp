@@ -55,7 +55,7 @@ public class Vectorize extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         lists = new ArrayList<ArrayList<Point3D>>();
-        Image read = new one.empty3.libs.Image(new Image(in));
+        Image read = new one.empty3.libs.Image(new one.empty3.libs.Image(in));
         if (read == null)
             return false;
         pixM = new PixM(read);
@@ -135,7 +135,7 @@ public class Vectorize extends ProcessFile {
                     p3s.forEach(point3D -> o.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.));
             }
         }
-        new Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(o.normalize(0.0, 1.0).getImage(), "jpg", out);
         return true;
 
     }

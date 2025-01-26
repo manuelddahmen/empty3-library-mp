@@ -249,7 +249,7 @@ public class CurveFitting extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        pix = PixM.getPixM(new Image(in), maxRes);
+        pix = PixM.getPixM(new one.empty3.libs.Image(in), maxRes);
 
 
         init();
@@ -358,10 +358,10 @@ public class CurveFitting extends ProcessFile {
 
         String absolutePath = out.getAbsolutePath();
         absolutePath = absolutePath.substring(0, absolutePath.length() - 4);
-        new Image(1,1,1.saveToFile(image, "jpg", new File(absolutePath + ".jpg"));
-        new Image(1,1,1.saveToFile(outPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
+        new one.empty3.libs.Image(1,1,1.saveToFile(image, "jpg", new File(absolutePath + ".jpg"));
+        new one.empty3.libs.Image(1,1,1.saveToFile(outPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
                 absolutePath + "-outPixels.jpg"));
-        new Image(1,1,1.saveToFile(inPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
+        new one.empty3.libs.Image(1,1,1.saveToFile(inPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
                 absolutePath + "-inPixels.jpg"));
 
         return true;

@@ -153,10 +153,10 @@ public class HighlightFeatures extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        Image read = new one.empty3.libs.Image(new Image(in));
+        Image read = new one.empty3.libs.Image(new one.empty3.libs.Image(in));
         PixM pixM = PixM.getPixM(read);
         File stackItem = getStackItem(1);
-        PixM original = new PixM(new Image(stackItem));
+        PixM original = new PixM(new one.empty3.libs.Image(stackItem));
         int cadre = (int) Math.min((pixM.getColumns() + pixM.getLines()) / 2., 10.);
         for (int i = 0; i < pixM.getColumns(); i++)
             for (int j = 0; j < pixM.getLines(); j++) {
@@ -169,7 +169,7 @@ public class HighlightFeatures extends ProcessFile {
                         }
                 }
             }
-        new Image(1,1,1.saveToFile(original.normalize(0., 1., 0., 1.).getImage(), "jpg", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(original.normalize(0., 1., 0., 1.).getImage(), "jpg", out);
 
         return true;
     }

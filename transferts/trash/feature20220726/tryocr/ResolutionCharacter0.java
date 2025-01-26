@@ -100,7 +100,7 @@ public class ResolutionCharacter0 implements Runnable {
         if (dir.exists() && dir.isDirectory()) {
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-                    Image read = new Image(file);
+                    Image read = new one.empty3.libs.Image(file);
 
                     String name = file.getName();
 

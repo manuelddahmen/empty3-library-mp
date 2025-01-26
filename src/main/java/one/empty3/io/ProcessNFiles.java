@@ -97,7 +97,7 @@ public class ProcessNFiles {
             String property = p.getProperty(s);
             File file = new File(property);
             Image read = null;
-            read = new Image((BufferedImage) new Image(1,1,1).getFromFile(file));
+            read = new one.empty3.libs.Image((BufferedImage) new one.empty3.libs.Image(1,1,1).getFromFile(file));
             return (new PixM(read));
         } catch (Exception ex) {
         }

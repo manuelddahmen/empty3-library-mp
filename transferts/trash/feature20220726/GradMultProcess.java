@@ -41,7 +41,7 @@ public class GradMultProcess extends ProcessFile {
         File file = in;
         PixM pix;
         try {
-            pix = PixM.getPixM(new Image(file), maxRes);
+            pix = PixM.getPixM(new one.empty3.libs.Image(file), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
             PixM[][] imagesMatrix = gf.filter(
@@ -50,7 +50,7 @@ public class GradMultProcess extends ProcessFile {
             ).getImagesMatrix();
             Linear linear = new Linear(imagesMatrix[0][0], imagesMatrix[0][1], new PixM(pix.getColumns(), pix.getLines()));
             linear.op2d2d(new char[]{'*'}, new int[][]{{1}, {0}}, new int[]{2});
-            new Image(1,1,1.saveToFile(linear.getImages()[2].normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(linear.getImages()[2].normalize(0.0, 1.0).getImage(), "jpg", out);
 
             addSource(out);
             return true;

@@ -63,7 +63,7 @@ public class ImageTexture extends ITexture {
 
     public ImageTexture(File bif) {
         try {
-            image.setElem(new Image((Image)Objects.requireNonNull(new Image(1,1,1).getFromFile(bif))));
+            image.setElem(new one.empty3.libs.Image((Image)Objects.requireNonNull(new one.empty3.libs.Image(1,1,1).getFromFile(bif))));
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
         }

@@ -46,7 +46,7 @@ public class IsleProcess extends ProcessFile {
         PixM pix = null;
         Image img = null;
         try {
-            img = new Image(file);
+            img = new one.empty3.libs.Image(file);
             pix = PixM.getPixM(img, -10.0);
 
         } catch (Exception ex) {
@@ -66,7 +66,7 @@ public class IsleProcess extends ProcessFile {
         il.filter();
         try {
 
-            new Image(1,1,1.saveToFile(pix.getImage(), "JPEG", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(pix.getImage(), "JPEG", out);
 
         } catch (Exception ex) {
 

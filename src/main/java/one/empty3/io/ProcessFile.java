@@ -51,7 +51,7 @@ public abstract class ProcessFile extends ProcessNFiles {
                 || in.getAbsolutePath().toLowerCase().endsWith(".png")))
             return true;
 
-        Image read =(Image) new Image(1,1).getFromFile(in);
+        Image read =(Image) new one.empty3.libs.Image(1,1).getFromFile(in);
         if (read != null) return true;
         return false;
     }

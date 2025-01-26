@@ -73,7 +73,7 @@ public class Voronoi extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            PixM mIn = new PixM((Image) Objects.requireNonNull(new Image(1,1,1).getFromFile(in)));
+            PixM mIn = new PixM((Image) Objects.requireNonNull(new one.empty3.libs.Image(1,1,1).getFromFile(in)));
 
             PixM mOut = new PixM(mIn.getColumns(), mIn.getLines());
             voronoi(mIn, mOut);

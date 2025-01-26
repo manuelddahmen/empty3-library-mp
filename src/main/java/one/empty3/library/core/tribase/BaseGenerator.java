@@ -85,7 +85,7 @@ public abstract class BaseGenerator {
     }
 
     public void renew() {
-        image = new Image(x, y, Image.TYPE_INT_RGB);
+        image = new one.empty3.libs.Image(x, y, Image.TYPE_INT_RGB);
     }
 
     public void save() {

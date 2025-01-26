@@ -161,14 +161,14 @@ public class Histogram3 extends ProcessFile {
 
         init();
 
-        PixM m = new PixM(new Image(in));
+        PixM m = new PixM(new one.empty3.libs.Image(in));
         one.empty3.libs.Image image = m.getImage();
 
 
         final double radiusIncr = 1;
 
 
-        Image img2 = new Image(image.getWidth(), image.getHeight(), Image.TYPE_INT_RGB);
+        Image img2 = new one.empty3.libs.Image(image.getWidth(), image.getHeight(), Image.TYPE_INT_RGB);
         List<Circle> pointsOfInterest;
         pointsOfInterest = getPointsOfInterest(m, radiusIncr, 0.5);
         // grands;cercles = grandes iles les separer
@@ -217,11 +217,11 @@ public class Histogram3 extends ProcessFile {
                 File fileToWrite3 = new File(directory.getAbsolutePath()
                         + "level"+ "_NEW_RGB.jpg");
                 //fileToWrite.mkdirs();*/
-        new Image(1,1,1.saveToFile(new PixM(img2.bufferedImage).normalize(0., 1.).getImage(), "JPEG", out);
+        new one.empty3.libs.Image(1,1,1.saveToFile(new PixM(img2.bufferedImage).normalize(0., 1.).getImage(), "JPEG", out);
                 /*
-                new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
-                new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
-                new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
+                new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
+                new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
+                new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
 */
 
 

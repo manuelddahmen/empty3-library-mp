@@ -91,7 +91,7 @@ import java.util.logging.Logger;
 //
 //            for (File file : Objects.requireNonNull(dir.listFiles())) {
 //                if (!file.isDirectory() && file.isFile() && file.getName().toLowerCase(Locale.ROOT).endsWith(".jpg")) {
-//                    Image read = new Image(file);
+//                    Image read = new one.empty3.libs.Image(file);
 //
 //                    String name = file.getName();
 //
@@ -133,12 +133,12 @@ import java.util.logging.Logger;
 //        output.plotCurve(new Rectangle(10, 10, output.getColumns() - 20, output.getLines() - 20), texture);
 //
 //        try {
-//            new Image(1,1,1.saveToFile(input.getImage(), "jpg",
+//            new one.empty3.libs.Image(1,1,1.saveToFile(input.getImage(), "jpg",
 //                    new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "INPUT.jpg")));
-//            new Image(1,1,1.saveToFile(output.getImage(), "jpg",
+//            new one.empty3.libs.Image(1,1,1.saveToFile(output.getImage(), "jpg",
 //                    new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "OUTPUT.jpg")));
 //
-//            new Image(1,1,1.saveToFile(outRecompose.getImage(), "jpg", new File(
+//            new one.empty3.libs.Image(1,1,1.saveToFile(outRecompose.getImage(), "jpg", new File(
 //                    dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "RECOMPOSE.jpg")));
 //        } catch (IOException ex) {
 //            throw new RuntimeException(ex);
@@ -452,7 +452,7 @@ import java.util.logging.Logger;
 //                            if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
 //                                file.getParentFile().mkdirs();
 //                                try {
-//                                    new Image(1,1,1.saveToFile(outChar.getImage(), "jpg", file);
+//                                    new one.empty3.libs.Image(1,1,1.saveToFile(outChar.getImage(), "jpg", file);
 //                                } catch (IOException e) {
 //                                    throw new RuntimeException(e);
 //                                }

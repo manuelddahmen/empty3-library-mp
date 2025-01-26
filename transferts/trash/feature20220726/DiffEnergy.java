@@ -42,8 +42,8 @@ public class DiffEnergy extends ProcessFile {
     }
 
     public void setPixMS(int img1, int img2) {
-        i1 = PixM.getPixM(Objects.requireNonNull(new Image(getStackItem(img1))), maxRes);
-        i2 = PixM.getPixM(Objects.requireNonNull(new Image(getStackItem(img2))), maxRes);
+        i1 = PixM.getPixM(Objects.requireNonNull(new one.empty3.libs.Image(getStackItem(img1))), maxRes);
+        i2 = PixM.getPixM(Objects.requireNonNull(new one.empty3.libs.Image(getStackItem(img2))), maxRes);
 
 
     }

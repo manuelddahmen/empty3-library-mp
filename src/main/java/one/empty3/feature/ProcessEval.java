@@ -65,7 +65,7 @@ public abstract class ProcessEval {
     }
 
     public double value(File file) {
-        PixM pixM = new PixM(Objects.requireNonNull(new Image(file)));
+        PixM pixM = new PixM(Objects.requireNonNull(new one.empty3.libs.Image(file)));
         x = pixM.x;
         y = add(dotOuter(x, w), b);
         return Double.NaN;

@@ -96,7 +96,7 @@ public class DecodeJcodec extends VideoDecoder {
                         e.printStackTrace();
                     }
                     if (frame != null) {
-                        imgBuf.add(new Image(frame));
+                        imgBuf.add(new one.empty3.libs.Image(frame));
                     }
                     i++;
                 } else {

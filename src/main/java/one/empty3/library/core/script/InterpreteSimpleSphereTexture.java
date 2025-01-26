@@ -144,7 +144,7 @@ public class InterpreteSimpleSphereTexture implements Interprete {
 
             this.pos = pos;
             SimpleSphereAvecTexture s = null;
-            s = new SimpleSphereAvecTexture(c, r, new Color(Color.white.getRGB()), new Image((Image) new Image(1,1,1).getFromFile(f)));
+            s = new SimpleSphereAvecTexture(c, r, new Color(Color.white.getRGB()), new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(f)));
             s.fichier(f.getName());
             return s;
         } catch (InterpreteException ex) {

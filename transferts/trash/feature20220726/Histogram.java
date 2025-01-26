@@ -151,8 +151,8 @@ public class Histogram {
     public static void testCircleSelect(one.empty3.libs.Image file, File directory, int levels, double min, double radiusIncr) {
         for (int i = 0; i < levels; i++) {
             one.empty3.libs.Image img = file;
-            Image img2 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
-            Image img3 = new Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+            Image img2 = new one.empty3.libs.Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
+            Image img3 = new one.empty3.libs.Image(img.getWidth(), img.getHeight(), Image.TYPE_INT_RGB);
             Histogram histogram = new Histogram(new PixM(img), levels, min, radiusIncr, 0.1);
             int finalI = i;
             List<Circle> pointsOfInterest = histogram.getPointsOfInterest(0.1);
@@ -192,9 +192,9 @@ public class Histogram {
             File fileToWrite3 = new File(directory.getAbsolutePath()
                     + "level" + finalI + "_NEW_RGB.jpg");
             fileToWrite.mkdirs();
-            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
-            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
-            new Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
+            new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
+            new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);
+            new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite3);
 
         }
     }

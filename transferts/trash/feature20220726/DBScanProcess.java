@@ -128,7 +128,7 @@ public class DBScanProcess extends ProcessFile {
 
         try {
             pix = PixM
-                    .getPixM(new Image(in), maxRes);
+                    .getPixM(new one.empty3.libs.Image(in), maxRes);
         } catch (Exception ex1) {
             ex1.printStackTrace();
             return false;
@@ -172,7 +172,7 @@ public class DBScanProcess extends ProcessFile {
                 }
         });
         try {
-            new Image(1,1,1.saveToFile(pix2.normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(pix2.normalize(0.0, 1.0).getImage(), "jpg", out);
         } catch (Exception ex1) {
             ex1.printStackTrace();
 

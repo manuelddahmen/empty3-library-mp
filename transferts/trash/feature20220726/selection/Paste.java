@@ -101,7 +101,7 @@ public class Paste extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        Image read = new one.empty3.libs.Image(new Image(in));
+        Image read = new one.empty3.libs.Image(new one.empty3.libs.Image(in));
         PixM pixM = PixM.getPixM(read, maxRes);
         return true;
     }

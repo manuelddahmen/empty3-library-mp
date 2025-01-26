@@ -162,7 +162,7 @@ public class M implements InterfaceMatrix {
 
     @Override
     public Image getBitmap() {
-        Image image = new Image(columns, lines, 1);
+        Image image = new one.empty3.libs.Image(columns, lines, 1);
         for (int i = 0; i < getColumns(); i++) {
             for (int j = 0; j < getLines(); j++) {
                 for (int k = 0; k < 3; k++) {
@@ -529,4 +529,6 @@ public class M implements InterfaceMatrix {
     public int[]  getX() {
         return x;
     }
+
+
 }

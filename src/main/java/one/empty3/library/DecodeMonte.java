@@ -63,7 +63,7 @@ if(in==null)
  in.read(track, inbuf);
  codec.process(inbuf, codecbuf);
  if (!codecbuf.isFlag(BufferFlag.DISCARD)) {
- imgBuf.add(new Image(Images.cloneImage((Image)codecbuf.data))) ;
+ imgBuf.add(new one.empty3.libs.Image(Images.cloneImage((Image)codecbuf.data))) ;
  
  }
  
@@ -201,7 +201,7 @@ if(in==null)
             
             do {
              in.read(track, img);
-                imgBuf.add(new Image(img));
+                imgBuf.add(new one.empty3.libs.Image(img));
 if(imgBuf.size()>MAXSIZE)
    try {Thread.sleep(50);}catch(Exception ex){ex.printStackTrace();}
 in.read(track, img);
@@ -237,12 +237,12 @@ in.read(track, img);
         switch (depth) {
             case 24:
             default: {
-                img = new Image(width, height, Image.TYPE_INT_RGB);
+                img = new one.empty3.libs.Image(width, height, Image.TYPE_INT_RGB);
                 break;
             }
             case 8:
                 if (pixelFormat == PixelFormat.GRAY) {
-                    img = new Image(width, height, Image.TYPE_BYTE_GRAY);
+                    img = new one.empty3.libs.Image(width, height, Image.TYPE_BYTE_GRAY);
                     break;
                 } else {
                     byte[] red = new byte[256];
@@ -255,12 +255,12 @@ in.read(track, img);
                     }
                     rnd.setSeed(0); // set back to 0 for reproducable output
                     IndexColorModel palette = new IndexColorModel(8, 256, red, green, blue);
-                    img = new Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
+                    img = new one.empty3.libs.Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
                     break;
                 }
             case 4:
                 if (pixelFormat == PixelFormat.GRAY) {
-                    img = new Image(width, height, Image.TYPE_BYTE_GRAY);
+                    img = new one.empty3.libs.Image(width, height, Image.TYPE_BYTE_GRAY);
                     break;
                 } else {
                     byte[] red = new byte[16];
@@ -273,7 +273,7 @@ in.read(track, img);
                     }
                     rnd.setSeed(0); // set back to 0 for reproducable output
                     IndexColorModel palette = new IndexColorModel(4, 16, red, green, blue);
-                    img = new Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
+                    img = new one.empty3.libs.Image(width, height, Image.TYPE_BYTE_INDEXED, palette);
                     break;
                 }
         }

@@ -91,7 +91,7 @@ public class InterpretePGM implements Interprete {
 
         pos = text.indexOf("\n", pos) + 1;
 
-        return new Image(x, y, Image.TYPE_INT_RGB);
+        return new one.empty3.libs.Image(x, y, Image.TYPE_INT_RGB);
 
     }
 

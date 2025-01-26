@@ -46,7 +46,7 @@ public class ClassificationAvgColors extends ProcessFile {
         classification.process(in, out);
         // Processed by "classification
         // Non filtered image
-        Image original = new Image(in);
+        Image original = new one.empty3.libs.Image(in);
         PixM pixMOriginal = new PixM(Objects.requireNonNull(original));
         PixM toProcess = new PixM(original);
         Map<Integer, double[]> c = classification.kClusterer.centroids;
@@ -87,6 +87,6 @@ public class ClassificationAvgColors extends ProcessFile {
         });
 
 
-        return new Image(1,1,1.saveToFile(toProcess.getImage(), "jpg", out);
+        return new one.empty3.libs.Image(1,1,1.saveToFile(toProcess.getImage(), "jpg", out);
     }
 }

@@ -45,7 +45,7 @@ public class ProxyValue extends ProcessFile {
         PixM original = null;
 
         try {
-            original = PixM.getPixM(new Image(in), maxRes);
+            original = PixM.getPixM(new one.empty3.libs.Image(in), maxRes);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -72,7 +72,7 @@ public class ProxyValue extends ProcessFile {
 
 
         try {
-            new Image(1,1,1.saveToFile(copy.getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(copy.getImage(), "jpg", out);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

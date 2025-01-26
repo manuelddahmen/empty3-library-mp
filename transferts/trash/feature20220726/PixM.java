@@ -207,7 +207,7 @@ public class PixM extends MImage {
 
         double[] f = new double[getCompCount()];
 
-        one.empty3.libs.Image image = new Image(columns,
+        one.empty3.libs.Image image = new one.empty3.libs.Image(columns,
                 lines, one.empty3.libs.Image.TYPE_INT_RGB);
 
 

@@ -40,7 +40,7 @@ public class MakeDataset {
     public MakeDataset(File image,
                        File outputCsv, int res) {
         try {
-            Image img = new Image(image);
+            Image img = new one.empty3.libs.Image(image);
             PixM pix;
             if (res > 0)
 

@@ -557,7 +557,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public Image image() {
 
-        Image bi2 = new Image(la, ha, Image.TYPE_INT_RGB);
+        Image bi2 = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -572,7 +572,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     @Override
     public Image imageInvX() {
-        Image bi2 = new Image(la, ha, Image.TYPE_INT_RGB);
+        Image bi2 = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -592,9 +592,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public Image image2() {
         //return image2();
 
-//        Image bi = new Image(la, ha, Image.TYPE_INT_RGB);
+//        Image bi = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
 //        bi.setRGB(0, 0, la, ha, getData(), 0, la);
-//        return new Image(bi);
+//        return new one.empty3.libs.Image(bi);
         return image();
 
     }

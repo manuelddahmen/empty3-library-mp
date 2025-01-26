@@ -62,7 +62,7 @@ import javax.sound.sampled.AudioFormat;
 	    IVideoFrame videoFrame;
 	    while ((videoFrame = videoStream.nextFrame()) != null) {
 	   	    Image image = videoFrame.image();
-	   	    imgBuf. add(new Image(image) );
+	   	    imgBuf. add(new one.empty3.libs.Image(image) );
                     while(imgBuf.size()>4*/
 /*MAX_SIZE*//*
 )

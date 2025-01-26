@@ -92,7 +92,7 @@ import one.empty3.libs.Image;
 //
 //    //converts given file into a grayscale image
 //    private javaAnd.awt.image.Image toGrayScale(File f) throws Exception {
-//        Image img = new Image(f);
+//        Image img = new one.empty3.libs.Image(f);
 //        Image grey = new javaAnd.awt.image.Image(img.getWidth(), img.getHeight(), javaAnd.awt.image.Image.TYPE_BYTE_GRAY);
 //        grey.drawImage(img,0,0,0,0);
 //

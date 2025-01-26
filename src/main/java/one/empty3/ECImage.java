@@ -22,7 +22,7 @@
 //
 //    public static Image getFromFile(File file) {
 //        try {
-//            return new Image(new Image(file));
+//            return new one.empty3.libs.Image(new one.empty3.libs.Image(file));
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //            return null;

@@ -208,9 +208,9 @@ public class K_Clusterer /*extends ReadDataset*/ {
         PixM pix;
         try {
             if (res > 0)
-                pix = PixM.getPixM(Objects.requireNonNull(new Image(in)), res);
+                pix = PixM.getPixM(Objects.requireNonNull(new one.empty3.libs.Image(in)), res);
             else
-                pix = new PixM(Objects.requireNonNull(new Image(in)));
+                pix = new PixM(Objects.requireNonNull(new one.empty3.libs.Image(in)));
             PixM pix2 = new PixM(
                     pix.getColumns(),
                     pix.getLines()
@@ -304,7 +304,7 @@ public class K_Clusterer /*extends ReadDataset*/ {
 
             }));
 
-            new Image(1,1,1.saveToFile(pix2.normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(1,1,1.saveToFile(pix2.normalize(0.0, 1.0).getImage(), "jpg", out);
 
         } catch (Exception ex1) {
             ex1.printStackTrace();
