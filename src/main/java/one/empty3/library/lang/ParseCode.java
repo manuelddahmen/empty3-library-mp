@@ -40,20 +40,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ParseCode {
-    int i = 0;
-    String brut;
-    String uncommented = "";
-    int start, end;
-    List<Token> tokens = new ArrayList();
-    List<Node> nodes = new ArrayList();
-    String special = "!%*&()+\\|/[]{}<>=.:,;?'\"";
-    String[] keywords = new String[]{
+    public int i = 0;
+    public String brut;
+    public String uncommented = "";
+    public int start, end;
+    public List<Token> tokens = new ArrayList();
+    public List<Node> nodes = new ArrayList();
+    public String special = "!%*&()+\\|/[]{}<>=.:,;?'\"";
+    public String[] keywords = new String[]{
             ""
     };
-    String braces = "[](){}";
-    String bracesCurrentQueue = "";
-    String code;
-    Tree tree;
+    public String braces = "[](){}";
+    public String bracesCurrentQueue = "";
+    public String code;
+    public Tree tree;
 
     public ParseCode() {
         tree = new Tree();

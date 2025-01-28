@@ -38,8 +38,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.ParametricVolume;
 

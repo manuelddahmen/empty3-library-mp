@@ -267,7 +267,6 @@ public class StringAnalyzerJava2 extends StringAnalyzer3 {
         return i >= input.length() || ((input.charAt(i) == '}'
                 /*|| input.charAt(i) == ';'*/ || input.charAt(i) == ','));
     }
-
     public class TokenExpression2 extends TokenName {
         protected List<DataExpression> expressions = new ArrayList<DataExpression>();
         protected List<DataExpression> bracketsExpressions = new ArrayList<DataExpression>();
@@ -652,5 +651,50 @@ public class StringAnalyzerJava2 extends StringAnalyzer3 {
             return new TokenQualifiedName();
         }
 
+    }
+    public class FirstTokenOrOneNext extends MultiTokenMandatory{
+        public FirstTokenOrOneNext(Token... values) {
+            super(values);
+        }
+
+        @Override
+        public int parse(String input, int position) {
+            if (position >= input.length() || input.substring(position).trim().isEmpty()) {
+                mPosition = position;
+                setSuccessful(true);
+                return position;
+            }
+            assert choices.size() > 0;
+            position = skipBlanks(input, position);
+            boolean oneOk = false;
+            int position1 = position;
+            int i = 0;
+            int position0 = position;
+            int j = 0;
+            while (!oneOk) {
+                position0 = position1;
+                for (j = 0; j < choices.size(); j++) {
+                    Token token = choices.get(j);
+                    position1 = token.parse(input, position1);
+                    if (!token.isSuccessful()) {
+                        oneOk = false;
+                        position1 = position0;
+                    }
+                }
+                if (oneOk) {
+                    action();
+                    break;
+                }
+
+                i++;
+            }
+            if (oneOk) {
+                setSuccessful(true);
+                return processNext(input, position1);
+            }
+            return position0;
+
+
+        }
     }
 }

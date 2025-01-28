@@ -38,11 +38,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
-//import com.xuggle.mediatool.MediaListenerAdapter;
-
-import one.empty3.libs.*;
 import java.util.HashMap;
 
 /*__

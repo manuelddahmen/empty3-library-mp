@@ -33,8 +33,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
 import one.empty3.library.core.TemporalComputedObject3D;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.tests.Path;

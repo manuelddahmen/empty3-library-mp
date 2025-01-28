@@ -30,8 +30,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import org.jetbrains.annotations.NotNull;
@@ -948,7 +946,9 @@ public class Point3D extends Representable {
      * @return The Color object representing the RGB values of the current object.
      */
     public Color toColor() {
-        return new Color(Lumiere.getInt((double) (get(0)), (double) (get(1)),  (double) (get(2))));
+        return Color.newCol((float)(double)
+                (get(0)), (float)(double) (get(1)),
+                (float)(double) (get(2)));
     }
 
     /**

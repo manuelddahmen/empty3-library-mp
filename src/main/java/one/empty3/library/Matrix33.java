@@ -35,8 +35,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

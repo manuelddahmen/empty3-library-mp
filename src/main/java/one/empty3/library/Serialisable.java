@@ -35,7 +35,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
