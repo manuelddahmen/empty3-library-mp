@@ -957,6 +957,7 @@ public class Point3D extends Representable {
      * @param color the Color object to convert
      * @return a Point3D object representing the color components
      */
+    @Deprecated
     public static one.empty3.library.Point3D fromColor(Color color) {
         float[] colorComponents = new float[4];
         color.getColorComponents(colorComponents);

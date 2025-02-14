@@ -556,7 +556,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         Image bi2 = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
-                int elementCouleur = ime.getElementCouleur(i, j);
+                int elementCouleur = 0;
+                if(ime.imeProf[i][j] == INFINITY.getZ()) {
+                    if(texture()!=null) {
+                        elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha);
+                    }
+                } else {
+                    elementCouleur = ime.getElementCouleur(i, j);
+                }
                 bi2.setRGB(i, j, elementCouleur);
 
             }
