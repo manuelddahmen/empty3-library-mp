@@ -58,7 +58,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
         public MinMaxOptimium(MinMax minMax, double v) {
             this.minMax = minMax;
-            this.divMax = v;
+            this.divMax = 1./v;
         }
 
         public enum MinMax {
@@ -159,7 +159,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = h;
         dimx = la;
         dimy = ha;
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 3.0);
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Min, 3.0);
         //Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
     }

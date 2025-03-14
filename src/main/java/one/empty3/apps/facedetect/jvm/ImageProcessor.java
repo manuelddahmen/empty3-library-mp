@@ -1,0 +1,91 @@
+package one.empty3.apps.facedetect.jvm;
+
+
+import com.google.cloud.storage.HttpMethod;
+import com.google.gson.*;
+import com.google.protobuf.ByteString;
+import one.empty3.library.objloader.E3Model;
+import one.empty3.libs.Image;
+
+import javax.imageio.ImageIO;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+public class ImageProcessor  {
+
+    private final Gson gson = new Gson();
+
+    public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, String hd_texture, String selected_algorithm, String selected_texture_type) {
+        HashMap<String, byte[]> data = new HashMap<>();
+
+        byte [] image1Bytes = null;
+        byte [] image2Bytes = null;
+        byte [] txt1Bytes = null;
+        byte [] txt2Bytes = null;
+        byte [] txt3Bytes = null;
+        byte [] hd_textureBytes = null;
+        byte [] selected_algorithmBytes = null;
+        byte [] selected_texture_typeBytes = null;
+
+        if (image1 != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(image1, "jpg", byteArrayOutputStream);
+                image1Bytes = byteArrayOutputStream.toByteArray();
+                data.put("image1", image1Bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (model != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            data.put("model", byteArrayOutputStream.toByteArray());
+        }
+        if (image3 != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(image3, "jpg", byteArrayOutputStream);
+                byte [] image = byteArrayOutputStream.toByteArray();
+                image1Bytes = byteArrayOutputStream.toByteArray();
+                data.put("image3", image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (txt1 != null) {
+            txt1Bytes = txt1!=null?txt1.getBytes(StandardCharsets.UTF_8):null;
+            txt2Bytes = txt2!=null?txt2.getBytes(StandardCharsets.UTF_8):null;
+            txt3Bytes = txt3!=null?txt3.getBytes(StandardCharsets.UTF_8):null;
+            data.put("textFile1", txt1Bytes);
+            data.put("textFile2", txt2Bytes);
+            data.put("textFile3", txt3Bytes);
+
+        }
+        if (hd_texture != null) {
+            hd_textureBytes = hd_texture!=null?hd_texture.getBytes(StandardCharsets.UTF_8):null;
+            data.put("hd_texture", hd_textureBytes);
+        }
+        if (selected_algorithm != null) {
+            selected_algorithmBytes = selected_algorithm!=null?selected_algorithm.getBytes(StandardCharsets.UTF_8):null;
+            data.put("selected_algorithm", selected_algorithmBytes);
+        }
+        one.empty3.apps.facedetect.jvm.ProcessData processData = new one.empty3.apps.facedetect.jvm.ProcessData(data);
+        Thread thread = new Thread(processData);
+        thread.start();
+        Image result = null;
+        while (processData.isRunning() && result == null) {
+            result = processData.getImage();
+        }
+    }
+}

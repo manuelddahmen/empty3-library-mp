@@ -36,7 +36,7 @@
     <shortenClasspath name="MANIFEST" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="one.empty3.apps.facedetect.gcp.*" />
+        <option name="PATTERN" value="one.empty3.apps.facedetect.jvm.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
