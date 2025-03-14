@@ -22,33 +22,27 @@
 
 package one.empty3.apps.testobject;
 
-public class TestObjetStub extends TestObjet {
 
-    public static void main(String[] args) {
+import one.empty3.libs.Image;
 
+public class ImageContainer {
+
+    private Image biic;
+    private String str = "";
+
+    public Image getImage() {
+        return biic;
     }
 
-    public void finit() {
-
+    public void setImage(Image biic1) {
+        biic = biic1;
     }
 
-    public void ginit() {
-
+    public String getStr() {
+        return str;
     }
 
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
-
-    @Override
-    public void publishResult() {
-
+    public void setStr(String str) {
+        this.str = str;
     }
 }

@@ -20,35 +20,15 @@
  *
  */
 
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package one.empty3.apps.testobject;
 
-public class TestObjetStub extends TestObjet {
+/*__
+ * @author Manuel DAHMEN
+ */
+public interface Report {
 
-    public static void main(String[] args) {
-
-    }
-
-    public void finit() {
-
-    }
-
-    public void ginit() {
-
-    }
-
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
-
-    @Override
-    public void publishResult() {
-
-    }
 }

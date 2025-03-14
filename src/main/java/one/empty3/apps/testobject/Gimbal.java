@@ -20,43 +20,44 @@
  *
  */
 
+/*__
+ * Global license :
+ * <p>
+ * Microsoft Public Licence
+ * <p>
+ * author Manuel Dahmen _manuel.dahmen@gmx.com_
+ ***/
+
+
 package one.empty3.apps.testobject;
 
 /*__
- * @author Se7en
+ * Meta Description missing
+ * @author Manuel Dahmen dathewolf@gmail.com
  */
-public class Resolution {
-    public static final Resolution HD1080RESOLUTION = new Resolution(1920, 1080);
-    public static final Resolution K4RESOLUTION = new Resolution(4096, 2160);
-    protected int x;
-    protected int y;
+public class Gimbal {
+    public static final double CIRCLE = 2 * Math.PI;
+    public static final int X = 0;
+    public static final int Y = 1;
+    public static final int Z = 2;
+    public static final int XYZ = 3;
+    private final int dim;
+    private double value;
 
-    public Resolution(int xv, int yv) {
-        this.x = xv;
-        this.y = yv;
-
+    public Gimbal(int i) {
+        this.dim = i;
     }
 
-    public void x(int v) {
-        this.x = v;
-    }
+    public void changeValue(double value) {
 
-    public void y(int v) {
-        this.y = v;
-    }
+        this.value = Math.IEEEremainder(2 * Math.PI, value);
 
-    public int x() {
-        return x;
-    }
-
-    public int y() {
-        return y;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Resolution))
-            return false;
-        return x==((Resolution)obj).x&&y==((Resolution)obj).y;
+    public String toString() {
+        return "Gimball (\ndim:" + dim + " val:" + value + "\n)rad\n";
     }
+
+
 }

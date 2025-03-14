@@ -171,9 +171,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         }
     }
 
-    private Image getPicture() {
-        return null;
-    }
 
 
     public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, Image jpg, Image jpgRight, E3Model obj, Resolution resolution) {
@@ -220,7 +217,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
 
             } else {
-                testHumanHeadTexturing.setDimension(Resolution.HD1080);
+                testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
                 testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);

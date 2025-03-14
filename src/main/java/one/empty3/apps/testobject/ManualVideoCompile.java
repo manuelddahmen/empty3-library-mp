@@ -21,34 +21,37 @@
  */
 
 package one.empty3.apps.testobject;
+/*
 
-public class TestObjetStub extends TestObjet {
+import java.awt.Color;
+import java.awt.Graphics;
+import one.empty3.libs.Image;
+import java.io.File;
 
-    public static void main(String[] args) {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    }
+public class ManualVideoCompile {
+	public ManualVideoCompile(){}
+	private static final Logger logger = LoggerFactory.getLogger(ManualVideoCompile.class);
+	
+	private static final String OUTPUT_FILE = "/home/rfkrocktk/Desktop/out.flv";
 
-    public void finit() {
+        double positionInMicroseconds;
+        int frameRate;
 
-    }
 
-    public void ginit() {
 
-    }
-
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
-
-    @Override
-    public void publishResult() {
-
-    }
+	private static Image convert(Image value, int type) {
+		if (value.getType() == type)
+			return value;
+		
+		Image result = new Image(value.getWidth(), value.getHeight(),
+				type);
+		
+		result.getGraphics().drawImage(value, 0, 0, null);
+		
+		return result;
+	}
 }
+*/

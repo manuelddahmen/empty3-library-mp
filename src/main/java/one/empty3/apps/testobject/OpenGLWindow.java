@@ -22,33 +22,16 @@
 
 package one.empty3.apps.testobject;
 
-public class TestObjetStub extends TestObjet {
+/*__
+ * @author Se7en
+ */
+/*
+public class OpenGLWindow extends JFrame {
+    private GLCanvas canvas;
 
-    public static void main(String[] args) {
-
-    }
-
-    public void finit() {
-
-    }
-
-    public void ginit() {
-
-    }
-
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
-
-    @Override
-    public void publishResult() {
-
+    public OpenGLWindow(String title, GLCanvas canvas) {
+        super(title);
+        this.canvas = canvas;
     }
 }
+*/

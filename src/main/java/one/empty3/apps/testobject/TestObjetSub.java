@@ -22,13 +22,10 @@
 
 package one.empty3.apps.testobject;
 
-public class TestObjetStub extends TestObjet {
+public class TestObjetSub extends TestObjet {
 
-    public static void main(String[] args) {
 
-    }
-
-    public void finit() {
+    public void finit() throws Exception {
 
     }
 

@@ -22,33 +22,10 @@
 
 package one.empty3.apps.testobject;
 
-public class TestObjetStub extends TestObjet {
+import javax.swing.*;
 
-    public static void main(String[] args) {
-
-    }
-
-    public void finit() {
-
-    }
-
-    public void ginit() {
-
-    }
-
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
-
-    @Override
-    public void publishResult() {
-
+public class ViewerFrame extends JFrame {
+    public ViewerFrame(String title) {
+        super(title);
     }
 }
