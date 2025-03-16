@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 
 import one.empty3.library.Point3D;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

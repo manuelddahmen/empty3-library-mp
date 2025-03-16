@@ -26,8 +26,8 @@ import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 import one.empty3.library.objloader.E3Model;
 
-import java.awt.Dimension;
-import java.awt.geom.Dimension2D;
+
+
 import one.empty3.libs.Image;
 import java.util.ArrayList;
 import java.util.List;

@@ -26,7 +26,7 @@ package one.empty3.apps.facedetect.jvm;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.List;
 
 

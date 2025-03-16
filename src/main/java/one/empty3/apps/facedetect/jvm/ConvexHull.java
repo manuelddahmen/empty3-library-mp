@@ -7,7 +7,7 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
 import java.awt.*;
-import java.awt.geom.Dimension2D;
+
 import one.empty3.libs.Image;
 import java.util.ArrayList;
 import java.util.List;

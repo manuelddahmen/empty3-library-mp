@@ -29,7 +29,7 @@ import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomialeBezier;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,30 +49,7 @@ public abstract class DistanceBezier2 extends DistanceAB {
         super();
         this.opt1 = opt1;
         this.optimizeGrid = optimizeGrid;
-        class Dimension2D extends java.awt.geom.Dimension2D {
-            private double x;
-            private double y;
 
-            public Dimension2D(double xMax, double yMax) {
-                this.x = xMax;
-                this.y = yMax;
-            }
-
-            @Override
-            public double getWidth() {
-                return x;
-            }
-
-            @Override
-            public double getHeight() {
-                return y;
-            }
-
-            @Override
-            public void setSize(double width, double height) {
-
-            }
-        }
 
         aDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);
         bDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);

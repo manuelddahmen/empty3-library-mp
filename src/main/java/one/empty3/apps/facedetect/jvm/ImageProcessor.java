@@ -13,10 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +22,7 @@ import java.util.stream.Collectors;
 public class ImageProcessor  {
 
     private final Gson gson = new Gson();
+    private final Image result;
 
     public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, String hd_texture, String selected_algorithm, String selected_texture_type) {
         HashMap<String, byte[]> data = new HashMap<>();
@@ -87,5 +85,25 @@ public class ImageProcessor  {
         while (processData.isRunning() && result == null) {
             result = processData.getImage();
         }
+        this.result = result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImageProcessor that = (ImageProcessor) o;
+        return gson.equals(that.gson) && Objects.equals(result, that.result);
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = gson.hashCode();
+        result1 = 31 * result1 + Objects.hashCode(result);
+        return result1;
+    }
+
+    public Image getResult() {
+        return result;
     }
 }

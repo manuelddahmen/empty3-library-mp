@@ -3,7 +3,7 @@ package one.empty3.apps.facedetect.jvm;
 
 import one.empty3.library.Point3D;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;

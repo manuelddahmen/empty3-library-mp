@@ -39,7 +39,7 @@ import one.empty3.library.objloader.E3Model;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Dimension2D;
+
 import one.empty3.libs.Image;
 
 import java.io.*;
@@ -941,25 +941,17 @@ public class EditPolygonsMappings implements Runnable {
     }
 
     public void loadImageData1(byte[] image1s) {
-        try {
-            Image image0 = (Image)(Image.getFromInputStream(new ByteArrayInputStream(image1s)));
-            if(image0!=null) {
-                image = image0;
-                dimPictureBox = new Dimension(image.getWidth(), image.getHeight());
-            }
-        } catch (IOException ignored) {
-
+        Image image0 = (Image)(Image.getFromInputStream(new ByteArrayInputStream(image1s)));
+        if(image0!=null) {
+            image = image0;
+            dimPictureBox = new Dimension(image.getWidth(), image.getHeight());
         }
     }
     public void loadImageData3(byte[] image1s) {
-        try {
 
-            Image image0 = (Image)(Image.getFromInputSteam(new ByteArrayInputStream(image1s)));
-            if(image0!=null) {
-                imageFileRight = image0;
-            }
-        } catch (IOException ignored) {
-
+        Image image0 = (Image)(Image.getFromInputStream(new ByteArrayInputStream(image1s)));
+        if(image0!=null) {
+            imageFileRight = image0;
         }
     }
 

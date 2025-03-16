@@ -27,7 +27,7 @@ import java.awt.*;
 import one.empty3.apps.testobject.Resolution;
 import one.empty3.library.*;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;

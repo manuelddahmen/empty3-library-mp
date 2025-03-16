@@ -27,7 +27,7 @@ import one.empty3.library.Point3D;
 import one.empty3.library.TRI;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 
-import java.awt.geom.Dimension2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
