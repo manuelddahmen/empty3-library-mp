@@ -57,15 +57,15 @@ import java.util.logging.Logger;
 public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
         public MinMaxOptimium(MinMax minMax, double v) {
-            this.minMax = minMax;
-            this.divMax = 1./v;
+            //this.minMax = minMax;
+            this.divMax = v;
         }
 
         public enum MinMax {
             Min, Max
         }
-        public MinMax minMax = MinMax.Min;
-        public double divMax = MIN_INCR;
+        private MinMax minMax = MinMax.Max;
+        private double divMax = MIN_INCR;
 
         double computeIncr(double localIncrement) {
             if(minMax == MinMax.Min) {
@@ -84,6 +84,22 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 return Math.max(divMax, localIncrement);
             }
             return localIncrement;
+        }
+
+        public MinMax getMinMax() {
+            return minMax;
+        }
+
+        public void setMinMax(MinMax minMax) {
+            this.minMax = minMax;
+        }
+
+        public double getDivMax() {
+            return divMax;
+        }
+
+        public void setDivMax(double divMax) {
+            this.divMax = divMax;
         }
     }
     public static final int CHECKED_POINT_SIZE_TRI = 3;
@@ -144,7 +160,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public ZBufferImpl(int l, int h) {
         this();
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 3.0*Math.max(la,ha));
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 1./(3.0*Math.max(la,ha)));
         la = l;
         ha = h;
         dimx = la;
@@ -672,7 +688,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return;
         }
         Point3D n = p1.moins(p2).norme1();
-        double iterate = minMaxOptimium.computeIncr(maxDistance(x1, x2) * 4 + 1);
+        double iterate = minMaxOptimium.computeIncr(1./maxDistance(x1, x2) * 4 + 1);
         for (int i = 0; i < iterate; i++) {
             Point3D p = p1.plus(p2.moins(p1).mult(i / iterate));
             testDeep(p, t.getColorAt(0.5, 0.5));
@@ -970,7 +986,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         Point3D n = pp1.moins(pp2).prodVect(pp3.moins(pp2)).norme1();
         int col = t.getColorAt(u0, v0);
 
-        double iteres1 = minMaxOptimium.computeIncr(1.0 / (1 + mathUtilPow2(p1, p2)), MinMaxOptimium.MinMax.Max);
+        double iteres1 = minMaxOptimium.computeIncr(1.0 / (1 + mathUtilPow2(p1, p2)));
             for (double a = 0; a < 1.0; a += iteres1) {
                 Point3D p3a = pp1.plus(pp2.moins(pp1).mult(a));
                 Point3D uv3a = uvs[0].plus(uvs[1].moins(uvs[0]).mult(a));
