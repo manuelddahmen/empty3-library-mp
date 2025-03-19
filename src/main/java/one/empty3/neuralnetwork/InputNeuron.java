@@ -32,8 +32,7 @@ package one.empty3.neuralnetwork;
 import one.empty3.feature.PixM;
 import one.empty3.libs.Image;
 
-import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -61,11 +60,7 @@ public class InputNeuron extends Neuron {
 
     public boolean loadData(File file) throws Exception {
         PixM p = null;
-        if (ImageIO.getImageReaders(file) == null)
-            return false;
-        if (!Arrays.asList("jpg", "png").contains(file.getAbsolutePath().substring(
-                file.getAbsolutePath().length() - 3, file.getAbsolutePath().length())))
-            return false;
+
         p = PixM.getPixM(new one.empty3.libs.Image((Image) new one.empty3.libs.Image(1,1,1).getFromFile(file)), Config.RES);
         this.setW(new double[Config.RES * Config.RES * 3]);
         for (int j = 0; j < Config.RES; j++)

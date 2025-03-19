@@ -35,8 +35,6 @@ import one.empty3.feature.process.InProcessCode;
 import one.empty3.libs.Image;
 import one.empty3.library.core.script.Code;
 
-import javax.imageio.ImageIO;
-
 import one.empty3.libs.Image;
 import one.empty3.libs.Image;
 

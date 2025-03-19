@@ -37,7 +37,6 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import one.empty3.ImageIO;
 import one.empty3.featureAndroid.PixM;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.libs.Color;
@@ -107,7 +106,7 @@ public class K_Clusterer /*extends ReadDataset*/ {
 
         PixM pix;
         try {
-            pix = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), res);
+            pix = PixM.getPixM(Objects.requireNonNull(Image.getFromFile(in)), res);
             PixM pix2 = new PixM(pix.getColumns(), pix.getLines());
 
             System.out.println("size out : " + pix2.getColumns() + ", " + pix2.getLines());

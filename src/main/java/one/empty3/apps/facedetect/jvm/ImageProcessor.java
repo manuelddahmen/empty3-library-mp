@@ -7,7 +7,6 @@ import com.google.protobuf.ByteString;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,13 +37,9 @@ public class ImageProcessor  {
 
         if (image1 != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            try {
-                ImageIO.write(image1, "jpg", byteArrayOutputStream);
-                image1Bytes = byteArrayOutputStream.toByteArray();
-                data.put("image1", image1Bytes);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            new Image(image1).toOutputStream(byteArrayOutputStream);
+            image1Bytes = byteArrayOutputStream.toByteArray();
+            data.put("image1", image1Bytes);
         }
         if (model != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -52,14 +47,10 @@ public class ImageProcessor  {
         }
         if (image3 != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            try {
-                ImageIO.write(image3, "jpg", byteArrayOutputStream);
-                byte [] image = byteArrayOutputStream.toByteArray();
-                image1Bytes = byteArrayOutputStream.toByteArray();
-                data.put("image3", image);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            new Image(image3).toOutputStream( byteArrayOutputStream);
+            byte [] image = byteArrayOutputStream.toByteArray();
+            image1Bytes = byteArrayOutputStream.toByteArray();
+            data.put("image3", image);
         }
         if (txt1 != null) {
             txt1Bytes = txt1!=null?txt1.getBytes(StandardCharsets.UTF_8):null;

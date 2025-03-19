@@ -39,7 +39,6 @@ import one.empty3.library.Point3D;
 import one.empty3.library.TextureImg;
 import one.empty3.library.core.tribase.TRISphere;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

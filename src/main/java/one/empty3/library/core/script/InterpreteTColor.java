@@ -39,7 +39,6 @@ import one.empty3.library.ITexture;
 import one.empty3.library.TextureCol;
 import one.empty3.library.TextureImg;
 
-import javax.imageio.ImageIO;
 import one.empty3.libs.*;
 
 import java.awt.image.BufferedImage;

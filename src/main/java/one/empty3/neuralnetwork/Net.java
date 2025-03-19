@@ -33,8 +33,6 @@ import one.empty3.feature.PixM;
 import one.empty3.library.StructureMatrix;
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

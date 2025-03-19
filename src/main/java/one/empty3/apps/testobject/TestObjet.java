@@ -40,15 +40,14 @@ import one.empty3.library.core.script.Loader;
 import one.empty3.library.core.script.VersionNonSupporteeException;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
+import one.empty3.libs.commons.IImageMp;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Rational;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -127,7 +126,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int resx = 640;
     private int resy = 480;
     private File dir = null;
-    private Image ri;
+    private IImageMp ri;
     private String filename = "frame";
     private String fileExtension = "JPG";
     private boolean publish = true;
@@ -237,7 +236,7 @@ public abstract class TestObjet implements Test, Runnable {
         dimension = new Resolution(x, y);
     }
 
-    public BufferedImage img() {
+    public IImageMp img() {
         return ri;
     }
 
@@ -332,7 +331,7 @@ public abstract class TestObjet implements Test, Runnable {
         return directory;
     }
 
-    protected void ecrireImage(RenderedImage ri, String type, File fichier) {
+    protected void ecrireImage(IImageMp ri, String type, File fichier) {
         if (fichier == null) {
             Logger.getAnonymousLogger().log(Level.INFO, "Erreur OBJET FICHIER (java.io.File) est NULL");
             System.exit(1);
@@ -345,7 +344,7 @@ public abstract class TestObjet implements Test, Runnable {
         if ((getGenerate() | GENERATE_SAVE_IMAGE) > 0) {
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(ri, type, baos);
+                new Image((BufferedImage) ri).toOutputStream(baos);
 
                 baos.flush(); // Is this necessary??
                 byte[] resultImageAsRawBytes = baos.toByteArray();
@@ -735,10 +734,8 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-            RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+             ri = Image.getFromInputStream(is);
 
-            //biic.setImage(eci);
         } catch (Exception ex1) {
             ex1.printStackTrace();
         }
@@ -752,23 +749,17 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void reportSuccess(File film) {
-        try {
-            InputStream is = getClass().getResourceAsStream(
-                    "/RENDEREDOK.png");
+        InputStream is = getClass().getResourceAsStream(
+                "/RENDEREDOK.png");
 
-            if (is == null) {
-                Logger.getAnonymousLogger().log(Level.INFO, "Erreur d'initialisation: pas correct!");
-                System.exit(-1);
-            }
-
-            RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
-
-            //biic.setImage(eci);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (is == null) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Erreur d'initialisation: pas correct!");
+            System.exit(-1);
         }
+
+        Image i = (Image) Image.getFromInputStream(is);
+
+        //biic.setImage(eci);
         try {
             if (file.exists()) {
                 Desktop dt = Desktop.getDesktop();
@@ -1360,7 +1351,7 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
-    public Image getPicture() {
+    public IImageMp getPicture() {
         return ri;
     }
 

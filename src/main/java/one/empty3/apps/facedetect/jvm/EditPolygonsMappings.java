@@ -36,7 +36,6 @@ import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.ZBufferImpl;
 import one.empty3.library.objloader.E3Model;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
 

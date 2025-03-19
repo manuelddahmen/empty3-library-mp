@@ -37,11 +37,11 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.ImmutableList;
 import one.empty3.library.Point3D;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 
 import java.awt.Color;
 import one.empty3.libs.Image;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -334,7 +334,7 @@ public class FaceDetectApp {
             app.writeFaceData(img, faceAnnotation);
         });
 
-        ImageIO.write(img, "jpg", imageOut);
+        img.saveFile(imageOut);
 
         app.dataWriter.close();
 

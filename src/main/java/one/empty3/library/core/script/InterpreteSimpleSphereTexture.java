@@ -40,7 +40,6 @@ package one.empty3.library.core.script;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.extra.SimpleSphereAvecTexture;
 
-import javax.imageio.ImageIO;
 import one.empty3.libs.*;
 
 import java.awt.image.BufferedImage;

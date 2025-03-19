@@ -51,7 +51,6 @@ import org.jcodec.scale.AWTUtil;
 import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
-import javax.imageio.ImageIO;
 
 import one.empty3.libs.Image;
 import one.empty3.libs.Image;

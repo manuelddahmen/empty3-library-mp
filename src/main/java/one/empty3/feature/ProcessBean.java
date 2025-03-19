@@ -33,7 +33,6 @@ import one.empty3.io.ProcessFile;
 import one.empty3.libs.Image;
 import org.apache.commons.net.ftp.FTPFile;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

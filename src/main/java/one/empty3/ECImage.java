@@ -1,6 +1,5 @@
 //package one.empty3;
 //
-//import javax.imageio.ImageIO;
 //import java.awt.image.BufferedImage;
 //import java.io.File;
 //

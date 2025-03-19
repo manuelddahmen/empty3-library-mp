@@ -32,8 +32,6 @@ package one.empty3.library;
 
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
-
 import one.empty3.libs.Image;
 
 import java.awt.image.BufferedImage;

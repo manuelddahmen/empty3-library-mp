@@ -32,8 +32,6 @@ package one.empty3.feature;
 import one.empty3.io.ProcessFile;
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class DiffEnergy extends ProcessFile {

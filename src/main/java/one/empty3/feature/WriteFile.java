@@ -29,7 +29,9 @@
 
 package one.empty3.feature;
 
-import javax.imageio.ImageIO;
+import one.empty3.libs.Image;
+
+import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
@@ -59,7 +61,7 @@ public class WriteFile {
         try {
 
             no++;
-            ImageIO.write(imageJpeg, "jpg", n);
+            new Image(imageJpeg).saveFile(n);
             Logger.getLogger(WriteFile.class.toString()).log(Level.INFO, "file written: " + n.getAbsolutePath());
             return true;
 
