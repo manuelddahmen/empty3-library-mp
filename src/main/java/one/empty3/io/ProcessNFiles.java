@@ -38,7 +38,6 @@ import one.empty3.library.core.script.Code;
 import one.empty3.libs.Image;
 import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +94,7 @@ public class ProcessNFiles {
             String property = p.getProperty(s);
             File file = new File(property);
             Image read = null;
-            read = new one.empty3.libs.Image((BufferedImage) new one.empty3.libs.Image(1,1,1).getFromFile(file));
+            read = (Image) Image.getFromFile(file);
             return (new PixM(read));
         } catch (Exception ex) {
         }

@@ -37,9 +37,6 @@ import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class PixM extends M {
     public static final int COMP_RED = 0;
     public static final int COMP_GREEN = 1;
@@ -669,7 +666,7 @@ public class PixM extends M {
     }
 
     public Image getBitmap() {
-        Image b = new one.empty3.libs.Image(columns, lines, BufferedImage.TYPE_INT_RGB);
+        Image b = new one.empty3.libs.Image(columns, lines);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 b.setRgb(i, j, getInt(i, j));
@@ -679,7 +676,7 @@ public class PixM extends M {
     }
 
     public Image getImage() {
-        Image image = new one.empty3.libs.Image(columns, lines, BufferedImage.TYPE_INT_RGB);
+        Image image = new one.empty3.libs.Image(columns, lines);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
                 //double[] values = getValues(i, j);

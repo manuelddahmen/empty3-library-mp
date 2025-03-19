@@ -35,8 +35,6 @@ import one.empty3.libs.Image;
 public interface InterfaceMatrix {
 
     public void init(int columns, int lines);
-//    public void init(BufferedImage BufferedImage);
-//    public void init(PixM BufferedImage);
 
 
     public Image getBitmap();

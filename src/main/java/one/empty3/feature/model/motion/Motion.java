@@ -35,9 +35,9 @@ public abstract class Motion /*extends ProcessFile */ {
     public ArrayList<Image> frames = new ArrayList<>();
 
 
-    public boolean addFrame(Image bufferedImage) {
-        if (bufferedImage != null) {
-            this.frames.add(bufferedImage);
+    public boolean addFrame(Image images) {
+        if (images != null) {
+            this.frames.add(images);
         }
         return frames.size() > BUFFER_MAX_FRAMES;
     }

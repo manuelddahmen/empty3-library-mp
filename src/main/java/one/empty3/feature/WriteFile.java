@@ -31,8 +31,6 @@ package one.empty3.feature;
 
 import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,12 +43,12 @@ public class WriteFile {
 
     }
 
-    public static boolean writeNext(BufferedImage imageJpeg, String name) {
+    public static boolean writeNext(Image imageJpeg, String name) {
         writeNext(name, imageJpeg);
         return true;
     }
 
-    public static boolean writeNext(String name, BufferedImage imageJpeg) {
+    public static boolean writeNext(String name, Image imageJpeg) {
 
         File n = new File(directory);
 

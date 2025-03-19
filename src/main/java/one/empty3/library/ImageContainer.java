@@ -34,7 +34,6 @@ import one.empty3.libs.Image;
 
 import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

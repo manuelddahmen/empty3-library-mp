@@ -37,18 +37,18 @@ public class FeatureMotion extends Motion {
 
         List<double[]> match = featureMatch.match(frame1, frame2);
 
-        Image bufferedImage = new one.empty3.libs.Image(frame1.getColumns(), frame1.getLines());
+        Image images = new one.empty3.libs.Image(frame1.getColumns(), frame1.getLines());
 
         for (int i = 0; i < frame1.getColumns(); i++) {
             for (int j = 0; j < frame1.getLines(); j++) {
                 for (int c = 0; c < frame1.getCompCount(); c++) {
-                    bufferedImage.setRgb(i, j, Lumiere.getInt(frame1.getValues(i, j)));
+                    images.setRgb(i, j, Lumiere.getInt(frame1.getValues(i, j)));
                 }
             }
         }
         for (int i = 0; i < match.size(); i++) {
-            bufferedImage.setRgb((int) match.get(i)[0], (int) match.get(i)[1], Color.WHITE.getRGB());
+            images.setRgb((int) match.get(i)[0], (int) match.get(i)[1], Color.WHITE.getRGB());
         }
-        return bufferedImage;
+        return images;
     }
 }

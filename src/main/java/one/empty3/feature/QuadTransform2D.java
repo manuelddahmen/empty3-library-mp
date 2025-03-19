@@ -30,12 +30,13 @@
 package one.empty3.feature;
 
 import one.empty3.library.Point3D;
+import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+
 
 public class QuadTransform2D {
-    private BufferedImage i1, i2;
+    private one.empty3.libs.Image i1, i2;
     private Point3D[] p1;
     private Point3D[] p2;
 
@@ -65,7 +66,7 @@ public class QuadTransform2D {
         }
     }
 
-    public QuadTransform2D(BufferedImage i1, BufferedImage i2, Point3D[] p1, Point3D[] p2) {
+    public QuadTransform2D(Image i1, Image i2, Point3D[] p1, Point3D[] p2) {
         this.i1 = i1;
         this.i2 = i2;
         this.p1 = p1;
@@ -97,7 +98,7 @@ public class QuadTransform2D {
         Point3D ca1 = new Point3D(i1.getRGB((int) (double) (pa0.getX()), (int) (double) pa0.getY()));
         Point3D pT = pT(pTemp, p1243, p1423);
         Point3D cAt = ca0.plus(ca1.moins(ca0).mult(t));
-        Color color = new Color((float) (double) (cAt.get(0)),
+        Color color = Color.newCol((float) (double) (cAt.get(0)),
                 (float) (double) (cAt.get(1)),
                 (float) (double) (cAt.get(2)));// p.toColor()
         return new Inter(pT, color);

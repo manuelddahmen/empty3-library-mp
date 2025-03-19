@@ -36,7 +36,6 @@ import one.empty3.library.TextureImg;
 
 import one.empty3.libs.*;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 

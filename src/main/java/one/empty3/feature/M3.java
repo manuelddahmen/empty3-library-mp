@@ -29,8 +29,9 @@
 
 package one.empty3.feature;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import one.empty3.library.Lumiere;
+import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 
@@ -43,7 +44,7 @@ public class M3 {
     protected final int columnsIn;
     protected final int linesIn;
     protected int compNo;
-    protected BufferedImage image;
+    protected one.empty3.libs.Image image;
     protected int compCount = 3;
     private int currentX;
     private int currentY;
@@ -123,13 +124,13 @@ public class M3 {
     }
 
 
-    public M3(BufferedImage image, int columns, int lines, int columnsIn, int linesIn) {
+    public M3(Image image, int columns, int lines, int columnsIn, int linesIn) {
         this(columns, lines, columnsIn, linesIn);
-        float[] colorComponents = new float[getCompCount()];
+        double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 int rgb = image.getRGB((int) (1.0 * i / columns * image.getWidth()), (int) (1.0 * j / lines * image.getHeight()));
-                colorComponents = new Color(rgb).getColorComponents(colorComponents);
+                colorComponents = Lumiere.getDoubles(rgb);
                 for (int ii = 0; ii < columnsIn; ii++)
                     for (int ij = 0; ij < linesIn; ij++) {
                         for (int com = 0; com < getCompCount(); com++) {
@@ -142,7 +143,7 @@ public class M3 {
     }
 
     @Deprecated
-    public M3(BufferedImage image, int columnsIn, int linesIn) {
+    public M3(one.empty3.libs.Image image, int columnsIn, int linesIn) {
         this(image.getWidth(), image.getHeight(), columnsIn, linesIn);
         this.image = image;
 

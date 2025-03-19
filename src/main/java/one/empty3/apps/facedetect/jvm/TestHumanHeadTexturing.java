@@ -258,7 +258,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             }
         }
         i = zBufferImages.size() - 1;
-        if (i < 0) return getPicture();
+        if (i < 0) return (Image) getPicture();
         Image current = zBufferImages.get(i);
         zBufferImages.clear();
         return current;

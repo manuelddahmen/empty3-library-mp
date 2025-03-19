@@ -49,8 +49,6 @@ import org.jcodec.common.model.Rational;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -337,29 +335,6 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
-        Graphics g = ((BufferedImage) ri).getGraphics();
-        g.setColor(Color.black);
-        g.drawString(description, 0, 1100);
-
-        if ((getGenerate() | GENERATE_SAVE_IMAGE) > 0) {
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                new Image((BufferedImage) ri).toOutputStream(baos);
-
-                baos.flush(); // Is this necessary??
-                byte[] resultImageAsRawBytes = baos.toByteArray();
-                baos.close(); // Not sure how important this is...
-
-                OutputStream out = new FileOutputStream(fichier);
-                out.write(resultImageAsRawBytes);
-                out.close();
-
-                zip.addFile(fichier.getName(), resultImageAsRawBytes);
-
-                Logger.getAnonymousLogger().log(Level.INFO, fichier.getAbsolutePath());
-            } catch (Exception ex) {
-            }
-        }
     }
 
     public void exportFrame(String format, String filename) throws IOException {
@@ -955,30 +930,6 @@ public abstract class TestObjet implements Test, Runnable {
                         ex.printStackTrace();
                         continue;
                     }
-                    // ri.getGraphics().drawString(description, 0, 0);
-
-                    if ((generate & GENERATE_MOVIE) > 0 && encoder != null && !(((generate & GENERATE_OPENGL) > 0))) {
-
-                        try {
-                            encoder.encodeImage((BufferedImage) ri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            reportException(e);
-                        } catch (RuntimeException e1) {
-                            e1.printStackTrace();
-                            reportException(e1);
-
-                        }
-                    } else {
-                        if (LOG) {
-                            Logger.getAnonymousLogger().log(Level.INFO,
-                                    "No file open for avi writing");
-                        }
-                    }
-                    if (ri != null && (getGenerate() & GENERATE_SAVE_IMAGE) > 0) {
-                        ecrireImage(ri, type, file);
-
-                    }
                 }
             }
             lastInfoEllapsedMillis = System.currentTimeMillis() - timeStart;
@@ -1044,7 +995,7 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
-            ri = new Image(getResx(), getResy(), BufferedImage.TYPE_INT_RGB);
+            ri = new Image(getResx(), getResy());
         } else {
             afterRender();
 
@@ -1241,11 +1192,6 @@ public abstract class TestObjet implements Test, Runnable {
         }
     }
 
-    public void writeOnPictureAfterZ(BufferedImage bi) {
-    }
-
-    public void writeOnPictureBeforeZ(BufferedImage bi) {
-    }
 
     public String getFolder() {
         return dir.getAbsolutePath();
@@ -1351,8 +1297,8 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
-    public IImageMp getPicture() {
-        return ri;
+    public Image getPicture() {
+        return (Image) ri;
     }
 
     public boolean isRunning() {

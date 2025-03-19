@@ -42,7 +42,6 @@ import one.empty3.library.core.extra.SimpleSphereAvecTexture;
 
 import one.empty3.libs.*;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
