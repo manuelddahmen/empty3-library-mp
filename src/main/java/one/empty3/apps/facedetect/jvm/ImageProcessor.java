@@ -19,9 +19,19 @@ public class ImageProcessor  {
     boolean isBezier;
     private boolean isRunning;
     private int count;
-EditPolygonsMappings editPolygonsMappings;
+    EditPolygonsMappings editPolygonsMappings;
     public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, boolean hd_texture, int selected_algorithm,
                           boolean isBezier) {
+        this.image1 = image1;
+        this.model = model;
+        this.image3 = image3;
+        this.txt1 = txt1;
+        this.txt2 = txt2;
+        this.txt3 = txt3;
+        this.hd_texture = hd_texture;
+        this.selected_algorithm = selected_algorithm;
+        this.isBezier = isBezier;
+        this.count = 0;
 
     }
 
