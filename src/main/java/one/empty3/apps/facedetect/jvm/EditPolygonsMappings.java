@@ -969,4 +969,14 @@ public class EditPolygonsMappings implements Runnable {
         }
 
     }
+
+    public void loadImage3(Image image3) {
+        imageFileRight = image3;
+
+    }
+
+    public void loadImage1(Image image1) {
+        image = image1;
+
+    }
 }

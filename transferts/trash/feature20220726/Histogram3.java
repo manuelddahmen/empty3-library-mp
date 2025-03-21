@@ -217,7 +217,7 @@ public class Histogram3 extends ProcessFile {
                 File fileToWrite3 = new File(directory.getAbsolutePath()
                         + "level"+ "_NEW_RGB.jpg");
                 //fileToWrite.mkdirs();*/
-        new one.empty3.libs.Image(1,1,1.saveToFile(new PixM(img2.bufferedImage).normalize(0., 1.).getImage(), "JPEG", out);
+                img2.saveToFile(out);
                 /*
                 new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite);
                 new one.empty3.libs.Image(1,1,1.saveToFile(img, "JPEG", fileToWrite2);

@@ -37,9 +37,9 @@ public abstract class Motion /*extends ProcessFile */ {
     public ArrayList<Image> frames = new ArrayList<>();
 
 
-    public boolean addFrame(Image bufferedImage) {
-        if (bufferedImage != null) {
-            this.frames.add(bufferedImage);
+    public boolean addFrame(Image image) {
+        if (image != null) {
+            this.frames.add(image);
         }
         return frames.size() > BUFFER_MAX_FRAMES;
     }
@@ -51,12 +51,12 @@ public abstract class Motion /*extends ProcessFile */ {
             return null;
         if (frames.size() >= 2 && frames.size() < BUFFER_MAX_FRAMES) {
 
-            frame1 = new PixM(frames.get(0).bufferedImage);
-            frame2 = new PixM(frames.get(1).bufferedImage);
+            frame1 = new PixM(frames.get(0).image);
+            frame2 = new PixM(frames.get(1).image);
             frames.remove(0);
         } else if (frames.size() >= BUFFER_MAX_FRAMES) {
-            frame1 = new PixM(frames.get(0).bufferedImage);
-            frame2 = new PixM(frames.get(1).bufferedImage);
+            frame1 = new PixM(frames.get(0).image);
+            frame2 = new PixM(frames.get(1).image);
             frames.remove(0);
         } else {
             return null;

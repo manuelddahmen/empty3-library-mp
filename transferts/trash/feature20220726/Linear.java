@@ -48,15 +48,15 @@ public class Linear {
         this.imagesM = imagesM;
     }
 
-    public Linear(Image... bufferedImages) {
+    public Linear(Image... images) {
         type = TYPE_2D_2D;
         this.imagesM = null;
-        images = new PixM[bufferedImages.length];
+        images = new PixM[images.length];
         final int[] i = {0};
-        Arrays.stream(bufferedImages).forEach(new Consumer<Image>() {
+        Arrays.stream(images).forEach(new Consumer<Image>() {
             @Override
-            public void accept(Image bufferedImage) {
-                images[i[0]] = new PixM(bufferedImage.bufferedImage);
+            public void accept(Image image) {
+                images[i[0]] = new PixM(image.image);
                 i[0]++;
             }
         });
