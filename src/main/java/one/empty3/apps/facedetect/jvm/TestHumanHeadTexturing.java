@@ -91,7 +91,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             //addEyePolygons(scene, editPolygonsMappings.model);
         }
         if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
-            editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
+            editPolygonsMappings.model.texture(new ImageTexture(editPolygonsMappings.image));
         } else if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
         } else {

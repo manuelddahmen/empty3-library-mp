@@ -2,8 +2,6 @@ package one.empty3.apps.facedetect.jvm;
 
 import one.empty3.library.Point3D;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 public class PolygonDistance {

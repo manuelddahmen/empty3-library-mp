@@ -1,27 +1,20 @@
 package one.empty3.apps.facedetect.jvm;
 
 
-import com.google.gson.*;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ImageProcessor  implements Runnable {
 
-    private final Gson gson = new Gson();
-    private Image result;
     Image image1; E3Model model;Image image3; String txt1; String txt2; String txt3; boolean hd_texture; int selected_algorithm;
     boolean isBezier;
     private boolean isRunning;
-    private int count;
     EditPolygonsMappings editPolygonsMappings;
+    private Image image;
+
     public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, boolean hd_texture, int selected_algorithm,
                           boolean isBezier) {
         try {
@@ -34,30 +27,12 @@ public class ImageProcessor  implements Runnable {
             this.hd_texture = hd_texture;
             this.selected_algorithm = selected_algorithm;
             this.isBezier = isBezier;
-            this.count = 0;
         } catch (RuntimeException e) {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 1 error", e);
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
 
-        ImageProcessor that = (ImageProcessor) o;
-        return gson.equals(that.gson) && Objects.equals(result, that.result);
-    }
-
-    @Override
-    public int hashCode() {
-        int result1 = gson.hashCode();
-        result1 = 31 * result1 + Objects.hashCode(result);
-        return result1;
-    }
-
-    public Image getResult() {
-        return result;
-    }
 
     public void run() {
         try {
@@ -101,13 +76,9 @@ public class ImageProcessor  implements Runnable {
             runApp.start();
 
             while (editPolygonsMappings.zBufferImage == null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    editPolygonsMappings.isRunning = false;
-                    this.isRunning = false;
-                }
             }
+            if(editPolygonsMappings.zBufferImage!=null)
+                this.setImage(editPolygonsMappings.zBufferImage);
         } catch (RuntimeException e) {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 2 (run) error", e);
             editPolygonsMappings.isRunning = false;
@@ -115,13 +86,15 @@ public class ImageProcessor  implements Runnable {
         }
     }
 
+    private void setImage(Image zBufferImage) {
+        this.image = zBufferImage;
+    }
+
     public boolean isRunning() {
         return isRunning;
     }
 
     public Image getImage() {
-        if(editPolygonsMappings!=null && editPolygonsMappings.zBufferImage!=null)
-            return editPolygonsMappings.zBufferImage;
-        return null;
+        return image;
     }
 }

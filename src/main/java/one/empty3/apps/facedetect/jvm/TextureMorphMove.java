@@ -22,10 +22,9 @@
 
 package one.empty3.apps.facedetect.jvm;
 
-import java.awt.*;
-
 import one.empty3.apps.testobject.Resolution;
 import one.empty3.library.*;
+import one.empty3.libs.Color;
 
 
 import java.util.*;
@@ -35,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TextureMorphMove extends ITexture {
-    private static final int WHITE = Color.WHITE.getRGB();
+    private static final Color WHITE = Color.newCol(1f,1f,1f);
     private final EditPolygonsMappings editPanel;
     public int selectedPointNo = -1;
     protected DistanceAB distanceAB;
@@ -164,7 +163,7 @@ public class TextureMorphMove extends ITexture {
                                 }
 
                                 //return one.empty3.libs.Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
-                                return new Color((float) color[0], (float) color[1], (float) color[2]).getRGB();
+                                return Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
                             }
                         }
                     } else if (!(distanceAB instanceof DistanceProxLinear44)) {

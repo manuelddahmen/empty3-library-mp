@@ -6,8 +6,8 @@ package one.empty3.apps.facedetect.jvm;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
-import java.awt.*;
 
+import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,9 +127,7 @@ public class ConvexHull {
             yPoints[i] = (int) p.get(i).getY();
         }
 
-        Graphics graphics = mask.getGraphics();
-        graphics.setColor(Color.WHITE);
-        graphics.fillPolygon(xPoints, yPoints, p.size());
+
 
 /*
         try {
@@ -155,7 +153,7 @@ public class ConvexHull {
 
     public boolean testIfIn(int x, int y) {
         double[] rgb1 = Lumiere.getDoubles(mask.getRGB(x,y));
-        double[] rgb2 = Lumiere.getDoubles(Color.WHITE.getRGB());
+        double[] rgb2 = Lumiere.getDoubles(Color.newCol(1f,1f,1f).getRGB());
         if(x>=0&&x<mask.getWidth()&&y>=0&&y<mask.getHeight()) {
             return rgb1[0] == rgb2[0] && rgb1[1] == rgb2[1] && rgb1[2] == rgb2[2] && rgb1[0] >= 0.9
                     && rgb1[1] >= 0.9 && rgb1[2] >= 0.9 && rgb2[0] >= 0.9 && rgb2[1] >= 0.9 && rgb2[2] >= 0.9;

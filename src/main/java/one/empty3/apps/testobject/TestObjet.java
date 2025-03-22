@@ -143,7 +143,6 @@ public abstract class TestObjet implements Test, Runnable {
     private File directory;
     private ZipWriter zip;
     private boolean stop = false;
-    private RegisterOutput o = new RegisterOutput();
     private int onTextureEnds = ON_TEXTURE_ENDS_STOP;
     private int onMaxFrameEvent = ON_MAX_FRAMES_STOP;
     private ExportAnimationData dataWriter;
@@ -250,9 +249,6 @@ public abstract class TestObjet implements Test, Runnable {
         return "Dernier intervalle de temps : " + (displayLastIntervalTimeInterval * 1E-9) + "\nTemps total partiel : " + (displayPartialTimeInterval * 1E-9);
     }
 
-    public RegisterOutput getO() {
-        return o;
-    }
 
     public abstract void afterRenderFrame();
 
@@ -431,9 +427,6 @@ public abstract class TestObjet implements Test, Runnable {
 
     private void init() {
         try {
-            o.addOutput(System.out);
-
-            o.addOutput(Logger.getLogger(getClass().getCanonicalName()));
 
 
             if (initialise) {

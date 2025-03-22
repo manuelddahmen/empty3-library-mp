@@ -168,11 +168,11 @@ public class EditPolygonsMappings implements Runnable {
                         // Display 3D scene
                         if (zBufferImage != null) {
                             if(zBufferImage==null) {
-                                zBufferImage = (Image) new Image((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()).getBi();
+                                zBufferImage =  new Image((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight());
                             }
                         }
                         if (image == null) {
-                            image = (Image) new Image((int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight()).getBi();
+                            image = new Image((int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight());
                         }
 
                         try {
