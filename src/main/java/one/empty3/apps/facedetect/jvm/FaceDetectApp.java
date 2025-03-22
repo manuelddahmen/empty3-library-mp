@@ -37,9 +37,8 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.ImmutableList;
 import one.empty3.library.Point3D;
 
-import java.awt.*;
 
-import java.awt.Color;
+import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import java.io.*;
@@ -62,7 +61,7 @@ public class FaceDetectApp {
     private static String projectId;
     private final Vision vision;
     private HashMap<String, one.empty3.library.Polygon> polys = new HashMap<>();
-    private HashMap<String, java.awt.Polygon> polysDraw = new HashMap<>();
+    private HashMap<String, one.empty3.library.Polygon> polysDraw = new HashMap<>();
     private String[][][] landmarks0 = {{{"LEFT_EYE", "RIGHT_EYE", "FOREHEAD_GLABELLA"}}};
     private String[][][] landmarks = {{{"LEFT_EYE", "RIGHT_EYE", "FOREHEAD_GLABELLA"}}};
     private PrintWriter dataWriter;
@@ -129,10 +128,6 @@ public class FaceDetectApp {
             );
             //Point3D quatroFrontol1 = me.plus(le.plus(vecLr.mult(0.5)).moins(me).mult(2));
 
-            Graphics graphics = img.getGraphics();
-            graphics.setColor(Color.RED);
-            graphics.fillOval((int) (double) le.getX(), (int) (double) frontal.getY(),
-                    (int) (double) vecLr.norme(), (int) (double) frontal.moins(me).norme());
         }
     }
 
@@ -187,30 +182,23 @@ public class FaceDetectApp {
      * Annotates an image {@code img} with a polygon around each face in {@code faces}.
      */
     private void annotateWithFaces2(Image img, FaceAnnotation face) {
-        Graphics2D gfx = img.createGraphics();
         one.empty3.library.Polygon poly1 = new one.empty3.library.Polygon();
-        java.awt.Polygon polygonDraw = new java.awt.Polygon();
+        one.empty3.library.Polygon polygonDraw = new one.empty3.library.Polygon();
         BoundingPoly boundingPoly = face.getBoundingPoly();
         for (int i = 0; i < boundingPoly.getVertices().size(); i++) {
             Vertex current = boundingPoly.getVertices().get(i);
             if (current.getX() != null && current.getY() != null) {
                 poly1.getPoints().setElem(new Point3D((double) current.getX(), (double) current.getY(), 0.0), i);
-                polygonDraw.addPoint(current.getX(), current.getY());
+                polygonDraw.getPoints().getData1d().add(new Point3D((double)current.getX(), (double)current.getY(), 0.0));
             }
         }
         //poly.addPoint(boundingPoly.getVertices().get(0).getX(),
         //        boundingPoly.getVertices().get(0).getY());
-        polys.put("FACE", poly1);
-        polysDraw.put("FACE", polygonDraw);
-        gfx.setStroke(new BasicStroke(2));
-        gfx.setColor(new Color(0x00ff00));
-        gfx.draw(polygonDraw);
     }
 
     int landmarkIndex = 0;
 
     private void writePolygonsData(Image img, FaceAnnotation face) {
-        Graphics2D gfx = img.createGraphics();
         face.getLandmarks().forEach(new Consumer<Landmark>() {
             @Override
             public void accept(Landmark landmark) {
@@ -223,14 +211,6 @@ public class FaceDetectApp {
                     public void accept(Map.Entry<String, Object> next) {
                         //Map.Entry<String, Object> next = iterator.next();
                         System.out.printf("Landmark # %d KEY{%s} TYPE {%s}: %s\n", landmarkIndex, String.valueOf(next.getKey()), String.valueOf(next.getValue().getClass().getCanonicalName()), String.valueOf(next.getValue()));
-                        if ((next.getValue() instanceof Position p) && Arrays.asList(landmarks).contains(landmark.getType())) {
-                            if (p.getX() != null && p.getY() != null) {
-                                gfx.setStroke(new BasicStroke(2));
-                                gfx.setColor(new Color(0x00ff00));
-                                gfx.drawOval((int) (double) p.getX(), (int) (double) p.getY(), 1, 1);
-                                gfx.drawString(landmark.getType(), (int) (double) p.getX(), (int) (double) p.getY());
-                            }
-                        }
                         landmarkIndex++;
 
                     }
@@ -242,10 +222,9 @@ public class FaceDetectApp {
     }
 
     private void writePolygonsDataPoly(Image img, FaceAnnotation face) {
-        Graphics2D gfx = img.createGraphics();
         for (int i = 0; i < landmarks.length; i++) {
             for (int j = 0; j < landmarks[i].length; j++) {
-                java.awt.Polygon polyDraw1 = new java.awt.Polygon();
+                one.empty3.library.Polygon polyDraw1 = new one.empty3.library.Polygon();
                 one.empty3.library.Polygon poly = new one.empty3.library.Polygon();
                 for (int i1 = 0; i1 < landmarks[i][j].length; i1++) {
                     String landMarkType = landmarks[i][j][i1];
@@ -253,17 +232,12 @@ public class FaceDetectApp {
                     face.getLandmarks().forEach(landmark -> {
                         if (landmark.getType().equals(landMarkType) &&
                                 landmark.getPosition().getX() != null && landmark.getPosition().getY() != null) {
-                            polyDraw1.addPoint((int) (double) landmark.getPosition().getX(),
-                                    (int) (double) landmark.getPosition().getY());
+                            polyDraw1.getPoints().getData1d().add(new Point3D ((double) landmark.getPosition().getX(),
+                                     (double) landmark.getPosition().getY(), 0.0));
                             poly.getPoints().setElem(new Point3D((double) landmark.getPosition().getX(), (double) landmark.getPosition().getY(), 0.0), finalI);
                         }
                     });
                 }
-                gfx.setStroke(new BasicStroke(2));
-                gfx.setColor(new Color(0x0000ff));
-                gfx.fillPolygon(polyDraw1);
-                polysDraw.put(landmarks[i][j][0], polyDraw1);
-                polys.put(landmarks[i][j][0], poly);
 
             }
         }
@@ -273,17 +247,13 @@ public class FaceDetectApp {
      * Annotates an image {@code img} with a polygon defined by {@code face}.
      */
     private void annotateWithFace(Image img, FaceAnnotation face) {
-        Graphics2D gfx = img.createGraphics();
-        java.awt.Polygon poly = new java.awt.Polygon();
+        one.empty3.library.Polygon poly = new one.empty3.library.Polygon();
         for (Vertex vertex : face.getFdBoundingPoly().getVertices()) {
             if (vertex.getX() != null && vertex.getY() != null) {
-                poly.addPoint(vertex.getX(), vertex.getY());
+                poly.getPoints().getData1d().add(new Point3D((double)vertex.getX(), (double)vertex.getY(), 0.0));
             }
         }
         polysDraw.put("FACE_RECT", poly);
-        gfx.setStroke(new BasicStroke(5));
-        gfx.setColor(new Color(0x00ff00));
-        //gfx.fill(poly);
     }
 
     /**

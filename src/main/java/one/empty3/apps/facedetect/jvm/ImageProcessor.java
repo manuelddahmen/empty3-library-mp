@@ -10,8 +10,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class ImageProcessor  {
+public class ImageProcessor  implements Runnable {
 
     private final Gson gson = new Gson();
     private Image result;
@@ -22,17 +24,20 @@ public class ImageProcessor  {
     EditPolygonsMappings editPolygonsMappings;
     public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, boolean hd_texture, int selected_algorithm,
                           boolean isBezier) {
-        this.image1 = image1;
-        this.model = model;
-        this.image3 = image3;
-        this.txt1 = txt1;
-        this.txt2 = txt2;
-        this.txt3 = txt3;
-        this.hd_texture = hd_texture;
-        this.selected_algorithm = selected_algorithm;
-        this.isBezier = isBezier;
-        this.count = 0;
-
+        try {
+            this.image1 = image1;
+            this.model = model;
+            this.image3 = image3;
+            this.txt1 = txt1;
+            this.txt2 = txt2;
+            this.txt3 = txt3;
+            this.hd_texture = hd_texture;
+            this.selected_algorithm = selected_algorithm;
+            this.isBezier = isBezier;
+            this.count = 0;
+        } catch (RuntimeException e) {
+            Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 1 error", e);
+        }
     }
 
     @Override
@@ -104,9 +109,9 @@ public class ImageProcessor  {
                 }
             }
         } catch (RuntimeException e) {
+            Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 2 (run) error", e);
             editPolygonsMappings.isRunning = false;
             this.isRunning = false;
-            throw e;
         }
     }
 
@@ -116,9 +121,7 @@ public class ImageProcessor  {
 
     public Image getImage() {
         if(editPolygonsMappings!=null && editPolygonsMappings.zBufferImage!=null)
-            count++;
-        if(count ==2)
-            return new Image(editPolygonsMappings.zBufferImage);
+            return editPolygonsMappings.zBufferImage;
         return null;
     }
 }

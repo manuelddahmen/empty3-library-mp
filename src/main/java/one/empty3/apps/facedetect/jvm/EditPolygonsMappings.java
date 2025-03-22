@@ -36,9 +36,6 @@ import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.ZBufferImpl;
 import one.empty3.library.objloader.E3Model;
 
-import java.awt.*;
-import java.awt.event.*;
-
 import one.empty3.libs.Image;
 
 import java.io.*;
@@ -134,147 +131,8 @@ public class EditPolygonsMappings implements Runnable {
         return computeTimeMax;
     }
 
-    public void voiddimModelBoxRotate(MouseEvent mouseEvent) {
-        if (mode == EDIT_OBJECT_MODE_ROTATE) {
-
-        } else if (mode == EDIT_OBJECT_MODE_TRANSLATE) {
-
-        } else if (mode == EDIT_OBJECT_MODE_INT_UNROTATE_VECTOR) {
-
-        } else if (mode == EDIT_OBJECT_MODE_INT_TRANSLATE_VECTOR) {
-
-        } else if (mode == EDIT_OBJECT_MODE_INT_UNTRANSLATE_VECTOR) {
-
-        } else if (mode == EDIT_OBJECT_MODE_INT_RESET_VIEW) {
-
-        }
-    }
-
-    private void dimModelBoxMouseDragged(MouseEvent e) {
-        java.awt.Point point = e.getPoint();
-        if (image != null && model != null && selectedPointNo > -1) {
-            int x = point.x;
-            int y = point.y;
-            ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.z()).ime;
-            Point3D pointIme = null;
-            if (ime.checkCoordinates(x, y)) {
-                Representable elementRepresentable = ime.getrMap()[x][y];
-                System.out.println(elementRepresentable);
-                if (elementRepresentable instanceof E3Model.FaceWithUv
-                        && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)) {
-                    u = ime.getuMap()[x][y];
-                    v = ime.getvMap()[x][y];
-                    pointIme = new Point3D(u, v, 0.0);//ime.getElementPoint(x, y);
 
 
-                    final Point3D finalPointIme = pointIme;
-                    Logger.getAnonymousLogger().log(Level.INFO, "Point final ime : " + finalPointIme);
-                    pointsInModel.forEach((landmarkTypeItem, point3D) -> {
-                        if (landmarkTypeItem.equals(landmarkType)) {
-                            pointsInModel.put(landmarkTypeItem, finalPointIme);
-                        }
-                    });
-                    hasChangedAorB = true;
-                } else {
-                    Logger.getAnonymousLogger().log(Level.INFO, "Representable null : " + elementRepresentable);
-                }
-            } else {
-                Logger.getAnonymousLogger().log(Level.INFO, "Point out of bounds : " + pointIme);
-            }
-        }
-    }
-
-
-    private void panelPictureMouseClicked(MouseEvent e) {
-        java.awt.Point point = e.getPoint();
-        if (image != null && model != null) {
-            Point3D[] pNear = new Point3D[]{new Point3D(point.getX() / dimPictureBox.getWidth(),
-                    point.getY() / dimPictureBox.getHeight(), 0.)};
-            AtomicDouble distanceMin = new AtomicDouble(Double.MAX_VALUE);
-            pointsInImage.forEach((s, point3D) -> {
-                if (Point3D.distance(pNear[0], point3D) < distanceMin.get()) {
-                    distanceMin.set(Point3D.distance(pNear[0], point3D));
-                    pFound = point3D;
-                    landmarkType = s;
-                    selectedPointNo = 0;
-                }
-
-            });
-        }
-    }
-
-    private void dimModelBoxMouseClicked(MouseEvent e) {
-/*        Point point = e.getPoint();
-        if (model != null) {
-            int x = point.x;
-            int y = point.y;
-            ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.getZ()).ime;
-            Point3D pointIme = null;
-            if (ime.checkCoordinates(x, y)) {
-                u = ime.getuMap()[x][y];
-                v = ime.getvMap()[x][y];
-                pointIme = ime.getElementPoint(x, y);
-            }
-            Point3D finalPointIme = pointIme;
-            int[] i = new int[]{0};
-            selectedPointNoOut = -1;
-            AtomicReference<Double> dist = new AtomicReference<>(Double.MAX_VALUE);
-            pointsInModel.forEach((s, point3D) -> {
-                if (Point3D.distance(finalPointIme, point3D) < dist.get()) {
-                    dist.set(Point3D.distance(finalPointIme, point3D));
-                    pointsInModel.put(s, finalPointIme);
-                    selectedPointNoOut = i[0];
-                    selectedPointVertexOut = point3D;
-                    i[0]++;
-                }
-            });
-
-        } else if (model != null && mode == SELECT_POINT_POSITION) {
-            int x = point.x;
-            int y = point.y;
-            ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.getZ()).ime;
-            Point3D pointIme = null;
-            if (ime.checkCoordinates(x, y)) {
-                u = ime.getuMap()[x][y];
-                v = ime.getvMap()[x][y];
-                pointIme = ime.getElementPoint(x, y);
-            }
-            selectedPointOutUv = new Point3D(u, v);
-        }
-*/
-    }
-
-    private void dimModelBoxComponentResized(ComponentEvent e) {
-        int w = e.getComponent().getWidth();
-        int h = e.getComponent().getHeight();
-        if (testHumanHeadTexturing != null) {
-            testHumanHeadTexturing.loop(false);
-            testHumanHeadTexturing.setMaxFrames(0);
-            testHumanHeadTexturing.stop();
-            if (testHumanHeadTexturing.threadTest != null)
-                TestHumanHeadTexturing.threadTest.interrupt();
-        }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
-        hasChangedAorB = true;
-    }
-
-    private void panelPictureMouseDragged(MouseEvent e) {
-        java.awt.Point point = e.getPoint();
-        if (image != null && model != null && selectedPointNo > -1) {
-            int x = point.x;
-            int y = point.y;
-            //ime.getElementPoint(x, y);
-            final Point3D finalPointIme = new Point3D((double) (1.0 * x / dimPictureBox.getWidth()), (double) (1.0 * y / dimPictureBox.getHeight()), 0.0);
-            pointsInImage.forEach((landmarkTypeItem, point3D) -> {
-                if (landmarkTypeItem.equals(landmarkType)) {
-                    pointsInImage.put(landmarkTypeItem, finalPointIme);
-                }
-            });
-            hasChangedAorB = true;
-
-        }
-
-    }
 
 
     public void loadImage(File selectedFile) {
@@ -312,20 +170,10 @@ public class EditPolygonsMappings implements Runnable {
                             if(zBufferImage==null) {
                                 zBufferImage = (Image) new Image((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()).getBi();
                             }
-                            Graphics graphics = zBufferImage.getGraphics();
-                            if (graphics != null) {
-                                graphics.drawImage((Image) zBufferImage, 0, 0, (int) (dimModelBox.getWidth()-1), (int) (dimModelBox.getHeight()-1), null);
-                                displayPointsOut(pointsInModel);
-                            }
                         }
                         if (image == null) {
                             image = (Image) new Image((int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight()).getBi();
                         }
-                            Graphics graphics = image.getGraphics();
-                            if (graphics != null) {
-                                graphics.drawImage((Image) image, 0, 0, (int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight(), null);
-                                displayPointsIn(pointsInImage);
-                            }
 
                         try {
                             Thread.sleep(20);
@@ -439,23 +287,6 @@ public class EditPolygonsMappings implements Runnable {
         try {
             Thread.sleep(200);
             if (image != null && panelDraw != null) {
-                Graphics graphics = image.getGraphics();
-                if (graphics != null) {
-                    try {
-                        points.forEach((s, point3D) -> {
-                            Graphics graphics1 = image.getGraphics();
-                            if (landmarkType != null && landmarkType.equals(s))
-                                graphics1.setColor(Color.ORANGE);
-                            else
-                                graphics1.setColor(Color.GREEN);
-                            graphics1.fillOval((int) (double) (point3D.getX() * panelDraw.getWidth()) - 3,
-                                    (int) (double) (point3D.getY() * panelDraw.getHeight()) - 3, 7, 7);
-                        });
-                    } catch (ConcurrentModificationException ex) {
-
-                    }
-                    // Display 3D scene
-                }
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(EditPolygonsMappings.class.getName()).log(Level.SEVERE, null, ex);
@@ -484,37 +315,7 @@ public class EditPolygonsMappings implements Runnable {
                                         point.setLocation(point.getX() / testHumanHeadTexturing.z().la() * panelDraw.getWidth(),
                                                 point.getY() / testHumanHeadTexturing.z().ha() * panelDraw.getHeight());
                                         point2.setLocation(point2.getX() * dimModelBox.getWidth(), point2.getX() * dimModelBox.getWidth());
-                                        Graphics graphics = panelDraw.getGraphics();
-                                        // point.setLocation(point.getX(), point.getY());
-                                        if (testHumanHeadTexturing.z().checkScreen(point)) {
-                                            if (landmarkType != null && landmarkType.equals(s)) {
-                                                graphics.setColor(Color.PINK);
-                                            } else {
-                                                graphics.setColor(Color.GREEN);
-                                            }
-                                            graphics.fillOval((int) (point.getX() - 3),
-                                                    (int) ((point.getY()) - 3),
-                                                    7, 7);
-                                        }
-                                    /*
-                                    if (testHumanHeadTexturing.getZ().checkScreen(point2)
-                                            && iTextureMorphMove != null && iTextureMorphMove.distanceAB != null
-                                            && !iTextureMorphMove.distanceAB.isInvalidArray()) {
-                                        Point3D point3 = iTextureMorphMove.distanceAB.findAxPointInB(point2.getX(), point2.getY());
-                                        if (selectedPointNo == i[0]) {
-                                            graphics.setColor(Color.PINK);
-                                        } else {
-                                            graphics.setColor(Color.YELLOW);
-                                        }
-                                        graphics.fillOval((int) (point3.getX() - 3),
-                                                (int) ((point3.getY()) - 3),
-                                                7, 7);
-                                    }*/
                                     } else {
-                                        Graphics graphics = panelDraw.getGraphics();
-                                        graphics.setColor(Color.GREEN);
-                                        graphics.fillRect(0, 0, 10, 10);
-
                                     }
                                 }
                             }

@@ -28,8 +28,6 @@
  */
 package one.empty3.apps.testobject;
 
-//import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
 import one.empty3.gui.DataModel;
 import one.empty3.library.*;
 import one.empty3.library.ImageContainer;
@@ -41,14 +39,7 @@ import one.empty3.library.core.script.VersionNonSupporteeException;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import one.empty3.libs.commons.IImageMp;
-import org.jcodec.api.awt.AWTSequenceEncoder;
-import org.jcodec.common.io.FileChannelWrapper;
-import org.jcodec.common.io.NIOUtils;
-import org.jcodec.common.model.Rational;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import java.awt.*;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,6 +59,7 @@ import java.util.logging.Logger;
  * Updated: 04-02-2024
  */
 public abstract class TestObjet implements Test, Runnable {
+    public static File configFile = null;
     private static Logger logger = Logger.getLogger(TestObjet.class.getName());
     public static final int GENERATE_NOTHING = 0;
     public static final int GENERATE_IMAGE = 1;
@@ -102,7 +94,6 @@ public abstract class TestObjet implements Test, Runnable {
     protected ArrayList<TestInstance.Parameter> dynParams;
     protected ITexture couleurFond;
     protected ZBufferImpl z;
-    AWTSequenceEncoder encoder;
     Properties properties = new Properties();
     private File avif;
     //private AVIWriter aw;
@@ -124,7 +115,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int resx = 640;
     private int resy = 480;
     private File dir = null;
-    private IImageMp ri;
+    private Image ri;
     private String filename = "frame";
     private String fileExtension = "JPG";
     private boolean publish = true;
@@ -158,17 +149,14 @@ public abstract class TestObjet implements Test, Runnable {
     private ExportAnimationData dataWriter;
     private File audioTrack;
     private boolean isAudioDone;
-    private AudioInputStream audioIn;
     private int audioTrackNo;
     private int videoTrackNo;
     private int fps = 25;
     //private Buffer buf;
     //private ManualVideoCompile compiler;
     private boolean isVBR;
-    private AudioFormat audioFormat;
     private Resolution dimension = HD1080;
     private String name;
-    private FileChannelWrapper out;
     private File file0;
     private Thread threadGLafter;
     private boolean threadGLafterHasRun = false;
@@ -176,10 +164,6 @@ public abstract class TestObjet implements Test, Runnable {
     private boolean running = false;
     static int numInstancesRunning = 0;
 
-
-    {
-        FlatDarkLaf.setup();
-    }
 
     /**
      * The TestObjet class represents an object used for testing purposes.
@@ -243,25 +227,10 @@ public abstract class TestObjet implements Test, Runnable {
         avif = new File(this.dir.getAbsolutePath() + File.separator
                 + sousdossier + this.getClass().getName() + "__" + filmName + idxFilm + ".AVI");
 
-        out = null;
-        encoder = null;
-        try {
-            out = NIOUtils.writableFileChannel(avif.getAbsolutePath());
-            // for Android use: AndroidSequenceEncoder
-            encoder = new AWTSequenceEncoder(out, Rational.R(getFps(), 1));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            NIOUtils.closeQuietly(out);
-        }
-        aviOpen = true;
     }
 
     private boolean unterminable() {
         return unterminable;
-    }
-
-    public boolean isAviOpen() {
-        return (aviOpen && encoder != null);
     }
 
     public void setAviOpen(boolean aviOpen) {
@@ -335,6 +304,28 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
+    }
+    private static boolean isAndroid = false;
+
+    static {
+        isAndroid = isAndroidContext();
+    }
+
+    public static boolean isAndroidContext() {
+        try {
+            // Try to load an Android-specific class
+            Class.forName("android.os.Build");
+            return true; // If no exception, we're in Android
+        } catch (ClassNotFoundException e) {
+            // Check system properties as a fallback
+            String vmVendor = System.getProperty("java.vm.vendor");
+            String vmName = System.getProperty("java.vm.name");
+            if ((vmVendor != null && vmVendor.toLowerCase().contains("android")) ||
+                    (vmName != null && vmName.toLowerCase().contains("dalvik"))) {
+                return true;
+            }
+            return false; // Not in Android
+        }
     }
 
     public void exportFrame(String format, String filename) throws IOException {
@@ -416,6 +407,17 @@ public abstract class TestObjet implements Test, Runnable {
 
     public abstract void ginit();
 
+    public void someMethod() {
+        if (TestObjet.isAndroid) {
+            // Code specific to Android
+            Logger.getAnonymousLogger().log(Level.INFO, "Running in Android");
+        } else {
+            // Code specific to JVM
+            Logger.getAnonymousLogger().log(Level.INFO, "Running in JVM");
+        }
+    }
+
+
     /**
      * Initializes the object.
      * <p>
@@ -426,83 +428,88 @@ public abstract class TestObjet implements Test, Runnable {
      * <b>Note:</b> This method is called only once during the initialization process.
      * </p>
      */
+
     private void init() {
-        o.addOutput(System.out);
-
-        o.addOutput(Logger.getLogger(getClass().getCanonicalName()));
-
-
-
-        if (initialise) {
-            return;
-        }
-        c = new Camera(new Point3D(0d, 0d, -10d), Point3D.O0);
-
-        File dir1 = null;
-
-
-        Properties config = new Properties();
         try {
-            config.load(new FileInputStream(System.getProperty("user.home")
-                    + File.separator + "empty3.config"));
+            o.addOutput(System.out);
+
+            o.addOutput(Logger.getLogger(getClass().getCanonicalName()));
 
 
-        } catch (FileNotFoundException ex) {
-            Logger.getAnonymousLogger().log(Level.INFO, "userHome/empty3.config not found use default");
-            config = new Properties();
-            config.put("folderoutput",
-                    System.getProperty("user.home")
-                            + File.separator + "EmptyCanvasTest");
-            try {
-                config.store(new FileOutputStream(new File(System.getProperty("user.home")
-                                + File.separator + "empty3.config")),
-                        "Config file for empty3.one library");
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+            if (initialise) {
+                return;
             }
-        } catch (Exception ex) {
-            config.setProperty("folderoutput", "./EmptyCanvasTests");
-            Logger.getAnonymousLogger().log(Level.INFO, "userHome/empty3.config not found use default");
-        }
-        //          try {
-        if (config.getProperty("folderoutput") != null) {
-            dir1 = new File(config.getProperty("folderoutput"));
-        } else {
-            dir1 = new File("./"
-                    + File.separator + "EmptyCanvas");
-        }
-        // } catch (IOException ex) {
-        //   Logger.getAnonymousLogger().log(Level.INFO,ex.getLocalizedMessage());
-        //  }
-        dir1.mkdirs();
+            c = new Camera(new Point3D(0d, 0d, -10d), Point3D.O0);
 
-        this.dir = new File(dir1.getAbsolutePath() + File.separator
-                + this.getClass().getName());
-        if (!this.dir.exists()) {
-            this.dir.mkdirs();
-        } else {
-            Logger.getAnonymousLogger().log(Level.INFO, "Repertoire cree avec SUCCES");
-            // System.exit(1);
-        }
-        serid = new File(this.dir.getAbsolutePath() + File.separator
-                + "__SERID");
+            File dir1 = null;
 
-        sousdossier = "FICHIERS_" + dateForFilename(new Date());
 
-        directory = new File(this.dir.getAbsolutePath() + File.separator
-                + sousdossier);
-        directory.mkdirs();
+            Properties config = new Properties();
+
+            if(configFile==null) {
+                if (!TestObjet.isAndroid) {
+                    configFile = new File(System.getProperty("user.home")
+                            + File.separator + "empty3.config");
+                    try {
+                        if (configFile != null && !configFile.exists()) {
+                            configFile.createNewFile();
+                        }
+                        if (configFile.exists()) {
+                            config.load(new FileInputStream(configFile));
+                        }
+                    } catch (RuntimeException ex) {
+                        ex.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            if (configFile!=null && configFile.exists()) {
+                config = new Properties();
+                config.putIfAbsent("folderoutput",
+                        System.getProperty("user.home")
+                                + File.separator + "EmptyCanvasTest");
+                config.store(new FileOutputStream(configFile), "Config file for empty3.one library");
+            }
+            dir1.mkdirs();
+
+            this.dir = new File(dir1.getAbsolutePath() + File.separator
+                    + this.getClass().getName());
+            if (!this.dir.exists()) {
+                this.dir.mkdirs();
+            } else {
+                Logger.getAnonymousLogger().log(Level.INFO, "Repertoire cree avec SUCCES");
+                // System.exit(1);
+            }
+            serid = new File(this.dir.getAbsolutePath() + File.separator
+                    + "__SERID");
+
+            sousdossier = "FICHIERS_" + dateForFilename(new Date());
+
+            directory = new File(this.dir.getAbsolutePath() + File.separator
+                    + sousdossier);
+            directory.mkdirs();
 //        new File(directory.getAbsolutePath() + File.separator + "GAUCHE").mkdir();
 //        new File(directory.getAbsolutePath() + File.separator + "DROITE").mkdir();
 
-        ///setResolution(dimension.x(), dimension.y());
-        initialise = true;
-        ///publishResult(false);
-        ///setMaxFrames(100);
-        loop(true);
+            ///setResolution(dimension.x(), dimension.y());
+            initialise = true;
+            ///publishResult(false);
+            ///setMaxFrames(100);
+            loop(true);
 
-        //compiler = new ManualVideoCompile();
+            //compiler = new ManualVideoCompile();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        initialise = true;
+        loop(true);
     }
 
     private String dateForFilename(Date date) {
@@ -709,7 +716,7 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-             ri = Image.getFromInputStream(is);
+             ri = (Image) Image.getFromInputStream(is);
 
         } catch (Exception ex1) {
             ex1.printStackTrace();
@@ -734,15 +741,6 @@ public abstract class TestObjet implements Test, Runnable {
 
         Image i = (Image) Image.getFromInputStream(is);
 
-        //biic.setImage(eci);
-        try {
-            if (file.exists()) {
-                Desktop dt = Desktop.getDesktop();
-                dt.open(file);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public boolean copyResources() {
@@ -829,32 +827,6 @@ public abstract class TestObjet implements Test, Runnable {
         while ((nextFrame() || unterminable()) && !stop && isRunning()) {
 
 
-            byte[] audioBuffer = null;
-            // Advance audio to movie time + 1 second (audio must be ahead of video by 1 second)
-            while (audioTrack != null && !isAudioDone /*&& aw.getDuration(audioTrackNo).doubleValue() < 1.0
-             *frame() / fps*/) {
-                // => variable bit rate: format can change at any time
-                audioFormat = audioIn.getFormat();
-                if (audioFormat == null) {
-                    break;
-                }
-                int asSize = audioFormat.getFrameSize();
-                int asDuration = (int) (audioFormat.getSampleRate() / audioFormat.getFrameRate());
-                if (audioBuffer == null || audioBuffer.length < asSize) {
-                    audioBuffer = new byte[asSize];
-                }
-                int len = 0;
-                try {
-                    len = audioIn.read(audioBuffer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (len == -1) {
-                    isAudioDone = true;
-                } else {
-
-                }
-            }
 
 
             pauseActive = true;
@@ -1012,17 +984,6 @@ public abstract class TestObjet implements Test, Runnable {
                 //reportException(e);
             }
         }
-        if ((generate & GENERATE_MOVIE) > 0 && encoder != null) {
-            try {
-                encoder.finish();
-            } catch (IOException e) {
-                e.printStackTrace();
-                reportException(e);
-
-            } finally {
-                NIOUtils.closeQuietly(out);
-            }
-        }
         String cmd;
 
         if (loop() && avif != null) {
@@ -1142,16 +1103,6 @@ public abstract class TestObjet implements Test, Runnable {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
 
-        }
-        if (isAviOpen()) {
-            //   try {
-            // aw.finish();
-            // //    aw.close();
-            //   aw = null;
-            aviOpen = false;
-            //   } catch (IOException e) {
-            //   Logger.getAnonymousLogger().log(Level.INFO,"Can't close or flush movie" + runtimeInfoSucc());
-            //  }
         }
 
     }
