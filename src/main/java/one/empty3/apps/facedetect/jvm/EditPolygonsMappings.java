@@ -641,19 +641,12 @@ public class EditPolygonsMappings implements Runnable {
         while (threadTextureCreation != null && threadTextureCreation.isAlive()) {
             threadTextureCreation.interrupt();
         }
-        if (threadTextureCreation != null && threadTextureCreation.isAlive()) {
-            while (threadTextureCreation != null && threadTextureCreation.isAlive()) {
-                threadTextureCreation.interrupt();
-            }
-            if (threadTextureCreation != null && !threadTextureCreation.isAlive()) {
-                threadTextureCreation = null;
-            }
-        }
         iTextureMorphMove = null;
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
+        if(testHumanHeadTexturing!=null&&testHumanHeadTexturing.isRunning()) {
+            testHumanHeadTexturing.stop();
+        }
         renderingStopped = true;
         hasChangedAorB = true;
     }

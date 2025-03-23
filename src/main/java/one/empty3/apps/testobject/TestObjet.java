@@ -38,7 +38,6 @@ import one.empty3.library.core.script.Loader;
 import one.empty3.library.core.script.VersionNonSupporteeException;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
-import one.empty3.libs.commons.IImageMp;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -59,7 +58,8 @@ import java.util.logging.Logger;
  * Updated: 04-02-2024
  */
 public abstract class TestObjet implements Test, Runnable {
-    public static File configFile = null;
+    public static File configFile = new File("./empty3.config");;
+    public static boolean skipInit = true;
     private static Logger logger = Logger.getLogger(TestObjet.class.getName());
     public static final int GENERATE_NOTHING = 0;
     public static final int GENERATE_IMAGE = 1;
@@ -140,12 +140,9 @@ public abstract class TestObjet implements Test, Runnable {
     private File fileD;
     private boolean pause = false;
     private boolean pauseActive = false;
-    private File directory;
-    private ZipWriter zip;
     private boolean stop = false;
     private int onTextureEnds = ON_TEXTURE_ENDS_STOP;
     private int onMaxFrameEvent = ON_MAX_FRAMES_STOP;
-    private ExportAnimationData dataWriter;
     private File audioTrack;
     private boolean isAudioDone;
     private int audioTrackNo;
@@ -199,16 +196,13 @@ public abstract class TestObjet implements Test, Runnable {
         this.getClass();
     }
 
-    public ExportAnimationData getDataWriter() {
-        return dataWriter;
-    }
 
     public int getIdxFilm() {
         return idxFilm;
     }
 
     public File getSubfolder() {
-        return directory;
+        return configFile;
     }
 
     public void setResolution(int x, int y) {
@@ -217,16 +211,10 @@ public abstract class TestObjet implements Test, Runnable {
         dimension = new Resolution(x, y);
     }
 
-    public IImageMp img() {
+    public Image img() {
         return ri;
     }
 
-    public void startNewMovie() {
-        idxFilm++;
-        avif = new File(this.dir.getAbsolutePath() + File.separator
-                + sousdossier + this.getClass().getName() + "__" + filmName + idxFilm + ".AVI");
-
-    }
 
     private boolean unterminable() {
         return unterminable;
@@ -291,10 +279,10 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public File directory() {
-        return directory;
+        return configFile;
     }
 
-    protected void ecrireImage(IImageMp ri, String type, File fichier) {
+    protected void ecrireImage(Image ri, String type, File fichier) {
         if (fichier == null) {
             Logger.getAnonymousLogger().log(Level.INFO, "Erreur OBJET FICHIER (java.io.File) est NULL");
             System.exit(1);
@@ -327,11 +315,11 @@ public abstract class TestObjet implements Test, Runnable {
     public void exportFrame(String format, String filename) throws IOException {
 
         STLExport.save(
-                file0 = new File(directory.getAbsolutePath() + File.separator + "stlExportFormatTXT" + filename + ".stl"),
+                file0 = new File(configFile.getAbsolutePath() + File.separator + "stlExportFormatTXT" + filename + ".stl"),
                 scene(),
                 false);
         ObjExport.save(
-                /*file0=*/new File(directory.getAbsolutePath() + File.separator + "objExportFormatTXT" + filename + ".obj"),
+                /*file0=*/new File(configFile.getAbsolutePath() + File.separator + "objExportFormatTXT" + filename + ".obj"),
                 scene(),
                 false);
     }
@@ -426,6 +414,12 @@ public abstract class TestObjet implements Test, Runnable {
      */
 
     private void init() {
+        if(skipInit) {
+            dir = configFile;
+            c = new Camera(new Point3D(0d, 0d, -10d), Point3D.O0);
+            loop(true);
+            return;
+        }
         try {
 
 
@@ -439,7 +433,6 @@ public abstract class TestObjet implements Test, Runnable {
 
             Properties config = new Properties();
 
-            if(configFile==null) {
                 if (!TestObjet.isAndroid) {
                     configFile = new File(System.getProperty("user.home")
                             + File.separator + "empty3.config");
@@ -458,7 +451,6 @@ public abstract class TestObjet implements Test, Runnable {
                         throw new RuntimeException(e);
                     }
                 }
-            }
             if (configFile!=null && configFile.exists()) {
                 config = new Properties();
                 config.putIfAbsent("folderoutput",
@@ -481,9 +473,9 @@ public abstract class TestObjet implements Test, Runnable {
 
             sousdossier = "FICHIERS_" + dateForFilename(new Date());
 
-            directory = new File(this.dir.getAbsolutePath() + File.separator
+            configFile = new File(this.dir.getAbsolutePath() + File.separator
                     + sousdossier);
-            directory.mkdirs();
+            configFile.mkdirs();
 //        new File(directory.getAbsolutePath() + File.separator + "GAUCHE").mkdir();
 //        new File(directory.getAbsolutePath() + File.separator + "DROITE").mkdir();
 
@@ -775,7 +767,7 @@ public abstract class TestObjet implements Test, Runnable {
         if ((generate & GENERATE_OPENGL) > 0) {
         }
         if ((generate & GENERATE_MOVIE) > 0) {
-            startNewMovie();
+
         }
         serid();
 
@@ -788,24 +780,11 @@ public abstract class TestObjet implements Test, Runnable {
 
         File zipf = new File(this.dir.getAbsolutePath() + File.separator
                 + sousdossier + File.separator + filename + ".ZIP");
-        zip = new ZipWriter();
 
         File dataf = new File(this.dir.getAbsolutePath() + File.separator
                 + filename + ".XML");
 
-        try {
-            dataWriter = new ExportAnimationData(dataf, this);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            zip.init(zipf);
-        } catch (FileNotFoundException e1) {
-            reportException(e1);
-            e1.printStackTrace();
-            return;
-        }
 
         if (LOG) {
             Logger.getAnonymousLogger().log(Level.INFO, directory().getAbsolutePath());
@@ -906,7 +885,6 @@ public abstract class TestObjet implements Test, Runnable {
                     File fout = new File(this.dir.getAbsolutePath()
                             + File.separator + filename + ".bmo");
                     new Loader().saveTxt(fout, scene);
-                    dataWriter.writeFrameData(frame(), "Save text file: " + fout.getAbsolutePath());
                     fout = new File(this.dir.getAbsolutePath()
                             + File.separator + filename + "-description.xml");
                     final Scene scene2 = scene;
@@ -915,7 +893,6 @@ public abstract class TestObjet implements Test, Runnable {
                         dataModel.setScene(scene2);
                         dataModel.save(fout.getAbsolutePath());
                     }
-                    dataWriter.writeFrameData(frame(), "Save bin: " + fout.getAbsolutePath());
                 } catch (IOException e) {
                     e.printStackTrace();
                     reportException(e);
@@ -930,7 +907,6 @@ public abstract class TestObjet implements Test, Runnable {
                     }
                     String filename = "export-" + frame;
                     exportFrame("export", filename);
-                    dataWriter.writeFrameData(frame(), "Export model: " + filename);
                     if (LOG) {
                         Logger.getAnonymousLogger().log(Level.INFO, "End generating model");
                     }
@@ -966,48 +942,11 @@ public abstract class TestObjet implements Test, Runnable {
 
         }
         if (LOG) {
-            Logger.getAnonymousLogger().log(Level.INFO, "" + frame() + "\n" + runtimeInfoSucc());
+            Logger.getAnonymousLogger().log(Level.INFO, frame() + "\n" + runtimeInfoSucc());
 
             Logger.getAnonymousLogger().log(Level.INFO, "Fin de la création des image et/u des modèles" + "\n" + runtimeInfoSucc());
         }
-        if (zip != null) {
-            try {
-                zip.end();
-            } catch (IOException e) {
-                //reportException(e);
-            }
-        }
-        String cmd;
 
-        if (loop() && avif != null) {
-            try {
-                cmd = avif.getCanonicalPath();
-                Runtime runtime = Runtime.getRuntime();
-                if (runtime != null) {
-                    runtime.exec("explorer \"" + cmd + "\"");
-                    OutputStream outputStream = runtime.exec(cmd).getOutputStream();
-                    Logger.getAnonymousLogger().log(Level.INFO, outputStream.toString());
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                reportException(ex);
-                Logger.getAnonymousLogger().log(Level.INFO, ex.getLocalizedMessage());
-            }
-        } else if (file.exists()) {
-            try {
-                cmd = file.getCanonicalPath();
-                Runtime runtime = Runtime.getRuntime();
-                runtime.exec("start \"" + cmd + "\"");
-                OutputStream outputStream = runtime.exec(cmd).getOutputStream();
-                System.out.print(outputStream);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                reportException(ex);
-                Logger.getAnonymousLogger().log(Level.INFO, ex.getLocalizedMessage());
-            }
-        }
-
-        dataWriter.end();
 
 
         if (LOG) {

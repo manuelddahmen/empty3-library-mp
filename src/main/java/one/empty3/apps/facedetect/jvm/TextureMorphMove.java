@@ -38,7 +38,7 @@ public class TextureMorphMove extends ITexture {
     private final EditPolygonsMappings editPanel;
     public int selectedPointNo = -1;
     protected DistanceAB distanceAB;
-    private final int GRAY = Color.GRAY.getRGB();
+    private final int GRAY = Color.newCol(0.5f,0.5f,0.5f).getRGB();
     private Class<? extends DistanceBezier2> distanceABclass;
     private List<Point3D> polyConvA;
     private List<Point3D> polyConvB;
@@ -90,7 +90,7 @@ public class TextureMorphMove extends ITexture {
             /*if (x == 0 || y == 0 || x == editPanel.getWidth() - 1 || y == editPanel.getHeight() - 1) {
                 return 0;
             }*/
-            return editPanel.image.getRGB(x, y);
+            return editPanel.image.getRgb(x, y);
         }
         if (distanceAB.isInvalidArray()) {
             return 0;
@@ -141,7 +141,7 @@ public class TextureMorphMove extends ITexture {
                                 /*&&*/editPanel.convexHull1 != null && editPanel.convexHull1.testIfIn(xLeft, yLeft)
                                 /*&&editPanel.convexHull2!=null &&editPanel.convexHull2.testIfIn(x1, y1)*/) {
                                 markA = true;
-                                return dist4.jpgRight.getRGB(x3, y3);
+                                return dist4.jpgRight.getRgb(x3, y3);
                             }
                         }
                     } else if (distanceAB instanceof DistanceProxLinear44 dist4 && dist4.jpgRight != null) {
@@ -156,7 +156,7 @@ public class TextureMorphMove extends ITexture {
                                 /*&&editPanel.convexHull2!=null &&editPanel.convexHull2.testIfIn(x1, y1)*/) {
                                 markA = true;
                                 double[] color = new double[3];
-                                double[] rgb3 = Lumiere.getDoubles(dist4.jpgRight.getRGB(x3, y3));
+                                double[] rgb3 = Lumiere.getDoubles(dist4.jpgRight.getRgb(x3, y3));
                                 double[] rgb1 = Lumiere.getDoubles(editPanel.image.getRGB(xLeft, yLeft));
                                 for (int k = 0; k < 3; k++) {
                                     color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;
@@ -167,17 +167,17 @@ public class TextureMorphMove extends ITexture {
                             }
                         }
                     } else if (!(distanceAB instanceof DistanceProxLinear44)) {
-                        return editPanel.image.getRGB(xLeft, yLeft);
+                        return editPanel.image.getRgb(xLeft, yLeft);
                     }
                 }
-                return editPanel.image.getRGB(x1, y1);
+                return editPanel.image.getRgb(x1, y1);
 
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
         }
 
-        return one.empty3.libs.Color.YELLOW.getRGB();
+        return Color.newCol(255, 255, 0).getRGB();
     }
 
     private double distanceToConvexHull(Dimension2D bDimReal, ConvexHull convexHull2, Point3D axPointInB) {

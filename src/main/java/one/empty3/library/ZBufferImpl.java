@@ -51,6 +51,8 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.awt.Color.PINK;
+
 /*__
  * * Classe de rendu graphique
  */
@@ -154,7 +156,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public ZBufferImpl() {
         that = this;
         scene = new Scene();
-        texture(new TextureCol(Color.BLACK.getRGB()));
+        texture(new TextureCol(Color.newCol(0,0,0)));
         minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 3.0*Math.max(la,ha));
     }
 
@@ -584,7 +586,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         if (ime.getElementProf((int) p.getX(), (int) p.getY()) <= INFINITY_DEEP) {
             return ime.getElementCouleur((int) p.getX(), (int) p.getY());
         } else {
-            return Color.TRANSLUCENT;
+            return Color.newCol(1,1,1).getRGB();
         }
     }
 
@@ -611,7 +613,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public Image image() {
 
-        Image bi2 = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
+        Image bi2 = new one.empty3.libs.Image(la, ha);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = 0;
@@ -622,7 +624,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 } else {
                     elementCouleur = ime.getElementCouleur(i, j);
                 }
-                bi2.setRGB(i, j, elementCouleur);
+                bi2.setRgb(i, j, elementCouleur);
 
             }
         }
@@ -641,7 +643,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         ime.getElementPoint(i, j).equals(INFINITY))) {
                     //elementCouleur = Color.TRANSLUCENT;
                 }
-                bi2.setRGB(la - i - 1, j, elementCouleur);
+                bi2.setRgb(la - i - 1, j, elementCouleur);
 
             }
         }
@@ -1170,7 +1172,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
                         }
                     } else {
-                        if (testDeep(pFinal, Color.PINK.getRGB())) {
+                        if (testDeep(pFinal, Color.newCol(255, 175, 175))) {
                             Point ce = camera().coordonneesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
@@ -1178,7 +1180,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.RED.getRGB());
+                    TextureCol col = new TextureCol(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1275,7 +1277,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
                         }
                     } else {
-                        if (testDeep(pFinal, Color.PINK.getRGB())) {
+                        if (testDeep(pFinal, Color.newCol(255, 175, 175).getRGB())) {
                             Point ce = camera().coordonneesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
@@ -1284,7 +1286,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.RED.getRGB());
+                    TextureCol col = new TextureCol(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;

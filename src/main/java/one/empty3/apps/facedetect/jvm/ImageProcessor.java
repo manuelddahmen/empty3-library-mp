@@ -2,8 +2,10 @@ package one.empty3.apps.facedetect.jvm;
 
 
 import one.empty3.library.objloader.E3Model;
+import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
+import java.io.ByteArrayOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,15 +77,35 @@ public class ImageProcessor  implements Runnable {
             Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
 
-            while (editPolygonsMappings.zBufferImage == null) {
+            while (editPolygonsMappings.zBufferImage == null 
+                || isBlankImage(editPolygonsMappings.zBufferImage)) {
             }
-            if(editPolygonsMappings.zBufferImage!=null)
-                this.setImage(editPolygonsMappings.zBufferImage);
+            this.setImage(editPolygonsMappings.zBufferImage);
+
+            editPolygonsMappings.stopRenderer();
+
         } catch (RuntimeException e) {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 2 (run) error", e);
             editPolygonsMappings.isRunning = false;
             this.isRunning = false;
         }
+    }
+    public void stopAll() {
+
+        editPolygonsMappings.stopRenderer();
+
+    }
+    private boolean isBlankImage(Image zBufferImage) {
+        if(image==null) return true;
+
+        int c = image.getRgb(0, 0);
+        for (int i = 0; i < image.getWidth(); i++) {
+            for (int j = 0; j < image.getHeight(); j++) {
+                if(image.getRgb(i,j)!=c)
+                    return false;
+            }
+        }
+        return true;
     }
 
     private void setImage(Image zBufferImage) {
@@ -97,4 +119,14 @@ public class ImageProcessor  implements Runnable {
     public Image getImage() {
         return image;
     }
-}
+    public byte[] getResultMapImage() {
+        Image image2 = getImage();
+        if(image2!=null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            if (image2.toOutputStream(byteArrayOutputStream)) {
+                return byteArrayOutputStream.toByteArray();
+            }
+        }
+        return null;
+        }
+    }
