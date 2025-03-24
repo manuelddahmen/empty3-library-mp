@@ -62,10 +62,10 @@ public class ImageProcessor  implements Runnable {
                 case 5:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear5.class;
                     break;
-                case 43:
+                case 6:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear43.class;
                     break;
-                case 44:
+                case 7:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear44.class;
                     break;
                 default:
