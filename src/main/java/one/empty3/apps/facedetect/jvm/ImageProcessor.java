@@ -77,8 +77,7 @@ public class ImageProcessor  implements Runnable {
             Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
 
-            while (editPolygonsMappings.zBufferImage == null 
-                || isBlankImage(editPolygonsMappings.zBufferImage)) {
+            while ((editPolygonsMappings.zBufferImage == null || isBlankImage(editPolygonsMappings.zBufferImage)) && editPolygonsMappings.isRunning) {
             }
             this.setImage(editPolygonsMappings.zBufferImage);
 
