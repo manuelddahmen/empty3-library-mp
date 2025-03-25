@@ -95,7 +95,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
      * The default value is 6.
      */
     public static final int SURFACE_DISPLAY_POINTS = 6;
-    public static final ITexture DEFAULT_TEXTURE = new TextureCol(Colors.random());
+    public static final ITexture DEFAULT_TEXTURE = new ColorTexture((new Colors().random()));
     private static final int SURFACE_DISPLAY_TEXT_TRI = 2;
     private static final String[] displayTypes = {"All", "Textured Quad", "SURFACE_DISPLAY_TEXT_TRI", "SURFACE_DISPLAY_COL_QUADS", "SURFACE_DISPLAY_COL_TRI", "SURFACE_DISPLAY_LINES", "SURFACE_DISPLAY_POINTS"};
     public static Point3D SCALE1;
@@ -155,7 +155,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
         if (!(this instanceof Matrix33 || this instanceof Point3D || this instanceof Camera)) {
             //rotation.setElem(new Rotation(vU, getPosition(), a));
             //scale = new Point3D(1d, 1d, 1d);
-            //texture = new TextureCol(Colors.random());
+            //texture = new ColorTexture((new Colors().random()));
             vectors = new StructureMatrix<>(1, Point3D.class);
             vectors.setElem(Point3D.X, 0);
             vectors.setElem(Point3D.Y, 1);

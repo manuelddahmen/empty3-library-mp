@@ -318,7 +318,7 @@ public class RegionLineCorner extends ProcessFile {
             // grouper les points par similarites et distances
             List<List<Circle>> circles = group(pointsOfInterest);
             for (List<Circle> lc : circles) {
-                Color color = Colors.random();
+                Color color = (new Colors().random());
                 for (Circle c : lc) {
 
                     img4.setRgb((int) (c.x), (int) (c.y), color.getRGB());

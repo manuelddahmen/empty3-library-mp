@@ -340,6 +340,12 @@ tasks.register('FaceDetectAppEditor', JavaExec) {
     dependsOn(jar)
 
 }
+tasks.register('RunClass', JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = 'one.empty3.tests.Balade1'
+    args 'one.empty3.tests.Balade1'
+    dependsOn(jar)
+}
 
 
 signing {
@@ -358,8 +364,15 @@ compileTestKotlin {
 }
 dependencies {
     //androidCompile "one.empty3.libs:partial-android:0.0."
-    desktopCompile "one.empty3.libs:partial-desktop:0.0.20"
-    implementation "one.empty3.libs:commons-mp:0.0.9"
+//    desktopCompile "one.empty3.libs:partial-desktop:0.0.21"
+//    implementation "one.empty3.libs:commons-mp:0.0.9"
+
+
+        implementation("one.empty3.libs:partial-desktop:0.0.21") // <--- ADD THIS LINE
+        implementation "one.empty3.libs:commons-mp:0.0.9" // <--- ADD THIS LINE
+        // ... other dependencies ...
+// ... (rest of your build.gradle file) ...
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     implementation 'junit:junit:4.13.2'
@@ -458,7 +471,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2025.3.24-1'
+            version = '2025.3.25-1'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -474,7 +487,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2025.3.24-1'
+                version '2025.3.25-1'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -558,8 +571,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2025.3.24-1'
-        version = '2025.3.24-1'
+        java.version = '2025.3.25-1'
+        version = '2025.3.25-1'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

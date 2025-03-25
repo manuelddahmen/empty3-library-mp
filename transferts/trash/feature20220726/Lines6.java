@@ -200,7 +200,7 @@ public class Lines6 extends ProcessFile {
                 bLines.drawLine((int) (double) p1.getX(),
                         (int) (double) p1.getY(),
                         (int) (double) p2.getX(),
-                        (int) (double) p2.getY(), Colors.random().getRGB());
+                        (int) (double) p2.getY(), (new Colors().random()).getRGB());
             }
         });
 
@@ -230,7 +230,7 @@ public class Lines6 extends ProcessFile {
                     bLines.drawLine((int) (double) p1.getX(),
                             (int) (double) p1.getY(),
                             (int) (double) p2.getX(),
-                            (int) (double) p2.getY(), Colors.random().getRGB());
+                            (int) (double) p2.getY(), (new Colors().random()).getRGB());
                 }
                 /*
                 for (int j = 0; j < points.size() - 1; j++) {

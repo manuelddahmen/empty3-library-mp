@@ -309,7 +309,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
 
             Image bLines = new javaAnd.awt.image.Image(o.getColumns(), o.getLines(), javaAnd.awt.image.Image.TYPE_INT_RGB);
             for (LineSegment line : lines) {
-                Color ab = Colors.random();
+                Color ab = (new Colors().random());
                 if (line.getLength() >= 2) {
                     Point3D pDraw1 = line.getOrigine().plus(
                             line.getOrigine().plus(line.getExtremite().moins(line.getOrigine().mult(0.0))));

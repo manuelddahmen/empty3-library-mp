@@ -691,7 +691,7 @@ public class E3Model0 extends RepresentableConteneur {
                     Double tempz = ((Double[]) vertexsets.get(tempfaces[w] - 1))[2];
 
                     Point3D point3D = new Point3D(tempx, tempy, tempz);
-                    point3D.texture(new TextureCol(pointCol));
+                    point3D.texture(new ColorTexture(pointCol));
                     point3D.textureIndex(tempx, tempy, tempz);
                     //point3D.setNormale(norm);
                     if (quad instanceof TRI) {
@@ -711,7 +711,7 @@ public class E3Model0 extends RepresentableConteneur {
                 //// Quad End Footer /////
                 ///////////////////////////
 
-                quad.texture(new TextureCol(pointCol));
+                quad.texture(new ColorTexture(pointCol));
                 //add(quad);
                 Polygon p = (Polygon) quad;
                 if (p.getPoints().getData1d().size() > 3) {

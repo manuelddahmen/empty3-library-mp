@@ -38,12 +38,11 @@ import one.empty3.library.Lumiere;
 import one.empty3.libs.*;
 import java.util.Random;
 
-/*__
- * Meta Description missing
+/***
  * @author Manuel Dahmen dathewolf@gmail.com
  */
 public class Colors {
-    /*
+
     public class ColorDist implements Comparable {
         public Color color;
         public double dist;
@@ -56,16 +55,14 @@ public class Colors {
                 return 0;//throw??
         }
     }
-    */
-    public static Color TRANSPARENT = new Color(Lumiere.getIntFromFloats(1f, 0f, 0f, .5f));
+
     private static final Random random = new Random();
 
-    public static Color random() {
-        return new Color(Lumiere.getIntFromFloats(
-                (float) random.nextDouble(),
+    public Color random() {
+        return Color.newCol((float) random.nextDouble(),
                 (float) random.nextDouble(),
                 (float) random.nextDouble()
-        ));
+        );
     }
 
 

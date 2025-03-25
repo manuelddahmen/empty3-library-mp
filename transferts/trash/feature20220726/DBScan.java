@@ -137,7 +137,7 @@ public class DBScan extends ProcessFile {
             cluster();
 
             for (Cluster cluster : clusters) {
-                Color colorCluster = (Color) Colors.random();
+                Color colorCluster = (Color) (new Colors().random());
                 for (int i = 0; i < cluster.getPoints().size(); i++) {
                     DataPoint centroid = cluster.getPoints().get(i);
                     p.setValues(centroid.getX(), centroid.getY(), colorCluster.getRed(),

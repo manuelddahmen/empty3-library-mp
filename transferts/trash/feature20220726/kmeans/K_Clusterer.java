@@ -294,7 +294,7 @@ public class K_Clusterer /*extends ReadDataset*/ {
 
             Color[] colors = new Color[k];
             for (int i = 0; i < k; i++)
-                colors[i] = Colors.random();
+                colors[i] = (new Colors().random());
             clustersPrint = clusters;
 
             centroids.forEach((integer1, db1) -> clustersPrint.forEach((doubles, integer2) -> {

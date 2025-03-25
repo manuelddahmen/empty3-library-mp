@@ -191,8 +191,8 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
             Point3D ret = sommet.get(0).plus(
                     sommet.get(1).moins(sommet.get(0)).mult(ratioX)).plus(
                     sommet.get(2).moins(sommet.get(1)).mult(ratioY));
-            if (texture() == null) texture = new TextureCol(new Color(Lumiere.getIntFromInts(255, 128, 0)));
-            ret.texture(new TextureCol(texture.getColorAt(
+            if (texture() == null) texture = new ColorTexture(new Color(Lumiere.getIntFromInts(255, 128, 0)));
+            ret.texture(new ColorTexture(texture.getColorAt(
                     (numX + (numX + ratioX) / maxX.data0d), (numY + (numY + ratioY) / maxY.data0d))));
 
             ret.setNormale((tris[0].getSommet().getElem(1).moins(tris[0].getSommet().getElem(0))).prodVect((tris[0]
@@ -201,11 +201,11 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
             return ret;
         } else {
             List<Point3D> sommet = tris[1].getSommet().getData1d();
-            if (texture() == null) texture = new TextureCol(new Color(Lumiere.getIntFromInts(255, 128, 0)));
+            if (texture() == null) texture = new ColorTexture(new Color(Lumiere.getIntFromInts(255, 128, 0)));
             Point3D ret = sommet.get(1).plus(
                     sommet.get(0).moins(sommet.get(1)).mult(ratioY)).plus(
                     sommet.get(2).moins(sommet.get(0)).mult(ratioX));
-            ret.texture(new TextureCol(texture.getColorAt(
+            ret.texture(new ColorTexture(texture.getColorAt(
                     (numX + (numX + ratioX) / maxX.data0d), (numY + (numY + ratioY) / maxY.data0d))));
 
             ret.setNormale((tris[1].getSommet().getElem(1).moins(tris[1].getSommet().getElem(0)).prodVect((tris[1]
@@ -224,7 +224,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
      * @param z
      */
     public void draw(ZBuffer z) {
-        Point3D INFINI = new Point3D(0d, 0d, 10000d, new TextureCol(Color.BLUE.getRGB()));
+        Point3D INFINI = new Point3D(0d, 0d, 10000d, new ColorTexture(Color.BLUE.getRGB()));
         TRI[] tris = new TRI[2];
         tris[0] = new TRI(INFINI, INFINI, INFINI);
         tris[1] = new TRI(INFINI, INFINI, INFINI);

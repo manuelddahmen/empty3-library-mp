@@ -31,7 +31,7 @@ package one.empty3.library.core.script;
 
 import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.TextureImg;
 
 import one.empty3.libs.*;
@@ -70,7 +70,7 @@ public class InterpreteTexture implements Interprete {
             pos = ic.getPosition();
             pass = true;
 
-            tc = new TextureCol(c);
+            tc = new ColorTexture(c);
 
         } catch (InterpreteException ex) {
         }

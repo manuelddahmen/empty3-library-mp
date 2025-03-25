@@ -7,7 +7,7 @@
 //import one.empty3.library.ITexture;
 //import one.empty3.library.Lumiere;
 //import one.empty3.library.Point3D;
-//import one.empty3.library.TextureCol;
+//import one.empty3.library.ColorTexture;
 //import one.empty3.library.core.lighting.Colors;
 //import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 //
@@ -213,7 +213,7 @@ import java.util.logging.Logger;
 //        outRecompose = new PixM(input.getColumns(), input.getLines());
 //        Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 //
-//        final ITexture texture = new TextureCol(Color.BLACK);
+//        final ITexture texture = new ColorTexture(Color.BLACK);
 //
 //        for (int j = 0; j < input.getLines() - step; j += step) {
 //            if (j % (input.getLines() / 100) == 0)
@@ -330,8 +330,8 @@ import java.util.logging.Logger;
 //                    final String[] s = {""};
 //                    candidates.forEach(character -> s[0] += character);
 //                    writer.writeLine(new String[]{name, "" + i, "" + j, "" + w, "" + h, s[0]});
-//                    Color random = Colors.random();
-//                    output.plotCurve(rectangle, new TextureCol(random));
+//                    Color random = (new Colors().random());
+//                    output.plotCurve(rectangle, new ColorTexture(random));
 //                }
 //            }
 //        }
@@ -442,8 +442,8 @@ import java.util.logging.Logger;
 //                        final String[] s = {""};
 //                        candidates.forEach(character -> s[0] += character);
 //                        //writer.writeLine(new String[]{name, "" + i, "" + j, "" + w, "" + h, s[0]});
-//                        Color random = Colors.random();
-//                        output.plotCurve(rectangle, new TextureCol(random));
+//                        Color random = (new Colors().random());
+//                        output.plotCurve(rectangle, new ColorTexture(random));
 //                        countRects++;
 //                        if (isExporting()) {
 //                            File file = new File(dirOutChars + "-" + i + "-" + j + "-" + w + "-" + h + "-" + s[0] + ".jpg");
@@ -874,7 +874,7 @@ import java.util.logging.Logger;
 //            PixM pError = state.backgroundImage;
 //            PixM inputCopy = input.copy();
 //            state.currentCurves.forEach(courbeParametriquePolynomialeBezier -> {
-//                pError.plotCurve(courbeParametriquePolynomialeBezier, new TextureCol(Color.BLACK));
+//                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.BLACK));
 //                numCurves++;
 //            });
 //            PixM copy = pError.copy();

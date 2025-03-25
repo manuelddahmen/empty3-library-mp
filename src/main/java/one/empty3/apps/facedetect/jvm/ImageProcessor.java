@@ -85,9 +85,9 @@ public class ImageProcessor  implements Runnable {
 
         } catch (RuntimeException e) {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 2 (run) error", e);
-            editPolygonsMappings.isRunning = false;
-            this.isRunning = false;
         }
+        editPolygonsMappings.isRunning = false;
+        this.isRunning = false;
     }
     public void stopAll() {
 

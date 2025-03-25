@@ -390,7 +390,7 @@ public class Lines5colors extends ProcessFile {
                 int x2 = (int) (double) pDraw2.getX();
                 int y2 = (int) (double) pDraw2.getY();
                 if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                    bLines.drawLine(x1, y1, x2, y2, Colors.random().getRGB());
+                    bLines.drawLine(x1, y1, x2, y2, (new Colors().random()).getRGB());
                 }
             }
         }
@@ -405,7 +405,7 @@ public class Lines5colors extends ProcessFile {
 //                Point p1 = new Point(0, (int) b);
 //                Point p2 = new Point((int) (-b / a), 0);
 //                Graphics g2 = linesImg2.getGraphics();
-//                g2.setColor(Colors.random());
+//                g2.setColor((new Colors().random()));
 //                g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
 //            });
         points.forEach(new Consumer<List<Point3D>>() {

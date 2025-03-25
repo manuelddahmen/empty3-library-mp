@@ -121,7 +121,7 @@ public class CollineModele3 extends Representable implements TRIGenerable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public TextureCol texture() {
+    public ColorTexture texture() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

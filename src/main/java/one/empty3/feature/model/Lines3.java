@@ -357,7 +357,7 @@ public class Lines3 extends ProcessFile {
 
         Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines());
         for (LineSegment line : lines) {
-            int c = Colors.random().getRGB();
+            int c = (new Colors().random()).getRGB();
             if (line.getLength() >= 2) {
                 /*for (double c = 0.0; c <= 1.0; c += 1 / line.getLength()) {
                     Point3D pDraw = line.getOrigine().plus(
@@ -393,7 +393,7 @@ public class Lines3 extends ProcessFile {
 //                Point p1 = new Point(0, (int) b);
 //                Point p2 = new Point((int) (-b / a), 0);
 //                Graphics g2 = linesImg2.getGraphics();
-//                g2.setColor(Colors.random());
+//                g2.setColor((new Colors().random()));
 //                g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
 //            });
         points.forEach(new Consumer<List<Point3D>>() {

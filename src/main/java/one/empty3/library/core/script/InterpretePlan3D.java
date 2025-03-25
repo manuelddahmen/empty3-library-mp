@@ -35,7 +35,7 @@
 package one.empty3.library.core.script;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.tribase.Plan3D;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class InterpretePlan3D implements Interprete {
         is = new InterpreteTColor();
         is.setRepertoire(repertoire);
 
-        TextureCol tc = (TextureCol) is.interprete(text, pos);
+        ColorTexture tc = (ColorTexture) is.interprete(text, pos);
         plan.texture(tc);
         pos = is.getPosition();
 

@@ -30,7 +30,7 @@
 package one.empty3.pointset;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library1.tree.AlgebraicFormulaSyntaxException;
 import one.empty3.library1.tree.AlgebraicTree;
@@ -107,7 +107,7 @@ public class Move {
                             composanteForceSurface.get(t1).map2.get("z")
                     )
             );
-            t1.texture(new TextureCol(Colors.random()));
+            t1.texture(new ColorTexture((new Colors().random())));
         } catch (TreeNodeEvalException e) {
             e.printStackTrace();
         } catch (AlgebraicFormulaSyntaxException e) {

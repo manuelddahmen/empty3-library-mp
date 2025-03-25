@@ -49,7 +49,7 @@ import one.empty3.feature20220726.shape.Rectangle;
 import one.empty3.library.ITexture;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 public class ResolutionCharacter0 implements Runnable {
@@ -189,7 +189,7 @@ public class ResolutionCharacter0 implements Runnable {
 
         Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 
-        final ITexture texture = new TextureCol(Color.BLACK);
+        final ITexture texture = new ColorTexture(Color.BLACK);
 
         for (int j = 0; j < input.getLines() - step; j += step) {
             if (j % (input.getLines() / 10) == 0)
@@ -638,7 +638,7 @@ public class ResolutionCharacter0 implements Runnable {
             PixM pError = state.backgroundImage;
             PixM inputCopy = input.copy();
             state.currentCurves.forEach(courbeParametriquePolynomialeBezier -> {
-                pError.plotCurve(courbeParametriquePolynomialeBezier, new TextureCol(Color.BLACK));
+                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.BLACK));
                 numCurves++;
             });
             PixM copy = pError.copy();

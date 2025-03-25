@@ -39,7 +39,7 @@ package one.empty3.library.core.script;
 
 import one.empty3.library.Point3D;
 import one.empty3.library.Quads;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 
 import java.util.ArrayList;
 
@@ -104,7 +104,7 @@ public class InterpreteQuads implements Interprete {
         pos = ib.getPosition();
 
         InterpreteTColor itc = new InterpreteTColor();
-        TextureCol tc = (TextureCol) itc.interprete(text, pos);
+        ColorTexture tc = (ColorTexture) itc.interprete(text, pos);
         pos = itc.getPosition();
 
         ib = new InterpretesBase();

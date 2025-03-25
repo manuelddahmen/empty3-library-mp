@@ -59,12 +59,12 @@ import static java.awt.Color.PINK;
 public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
         public MinMaxOptimium(MinMax minMax, double v) {
-            //this.minMax = minMax;
+            this.minMax = minMax;
             this.divMax = v;
         }
 
         public enum MinMax {
-            Min, Max
+            Min, Max, None
         }
         private MinMax minMax = MinMax.Max;
         private double divMax = MIN_INCR;
@@ -156,8 +156,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public ZBufferImpl() {
         that = this;
         scene = new Scene();
-        texture(new TextureCol(Color.newCol(0,0,0)));
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 3.0*Math.max(la,ha));
+        texture(new ColorTexture(Color.newCol(0,0,0)));
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 1/3.0/Math.max(la,ha));
     }
 
     public ZBufferImpl(int l, int h) {
@@ -1180,7 +1180,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.newCol(255, 0, 0).getRGB());
+                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1286,7 +1286,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    TextureCol col = new TextureCol(Color.newCol(255, 0, 0).getRGB());
+                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1490,7 +1490,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
      */
     public Point3D clickAt(int x, int y) {
         Point3D p = ime.getElementPoint(x, y);
-        p.texture(new TextureCol(ime.getElementCouleur(x, y)));
+        p.texture(new ColorTexture(ime.getElementCouleur(x, y)));
         return p;
     }
 

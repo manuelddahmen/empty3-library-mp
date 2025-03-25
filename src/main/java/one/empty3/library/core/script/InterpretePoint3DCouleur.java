@@ -97,7 +97,7 @@ public class InterpretePoint3DCouleur implements Interprete {
 
         pos = ib.getPosition();
 
-        p.texture(new TextureCol(cc));
+        p.texture(new ColorTexture(cc));
 
         this.pos = pos;
 

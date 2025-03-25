@@ -102,7 +102,7 @@ public class ExtractIntensityInfo extends
         });
         Color[] colors = new Color[colorsLevels];
         for (int i = 0; i < colors.length; i++)
-            colors[i] = Colors.random();
+            colors[i] = (new Colors().random());
 
         double finalMin = min;
         pointsOfInterest.stream().filter(new Predicate<Histogram2.Circle>() {

@@ -54,7 +54,7 @@ import one.empty3.libs.Image;/*
 import one.empty3.library.Point3D;
 import one.empty3.library.Polygon;
 import one.empty3.library.RepresentableConteneur;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 
 /*__
  * Meta Description missing
@@ -86,7 +86,7 @@ public class Parallelepiped extends RepresentableConteneur {
 
     }
 
-    public Parallelepiped(double a, double b, double c, TextureCol texture) {
+    public Parallelepiped(double a, double b, double c, ColorTexture texture) {
         this.a = a;
         this.b = b;
         this.c = c;
