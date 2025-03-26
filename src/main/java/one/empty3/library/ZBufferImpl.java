@@ -58,53 +58,38 @@ import static java.awt.Color.PINK;
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
-        public MinMaxOptimium(MinMax minMax, double inverseSize) {
+        public MinMaxOptimium(MinMax minMax, double defaultSize) {
             this.minMax = minMax;
-            this.inverseSize = 1./inverseSize;
-            if(inverseSize<MIN_INCR)
-                this.inverseSize = MIN_INCR;
+            this.defaultIncr = 1./defaultSize;
+            if(defaultSize<MIN_INCR)
+                this.defaultIncr = MIN_INCR;
         }
 
         public enum MinMax {
             Min, Max, None
         }
-        private MinMax minMax = MinMax.Max;
-        private double inverseSize = MIN_INCR;
+        private MinMax minMax;
+        private double defaultIncr;
 
-        double computeIncr(double localIncrement) {
+        double computeIncr(double estimated1dSize) {
             if(minMax.equals(MinMax.Min)) {
-                return Math.min(inverseSize, localIncrement);
+                return Math.min(defaultIncr, 1./estimated1dSize);
             }
             if( minMax.equals(MinMax.Max)) {
-                return Math.max(inverseSize, localIncrement);
+                return Math.max(defaultIncr,  1./estimated1dSize);
             }
-            return localIncrement;
+            return estimated1dSize;
         }
-        double computeIncr(double localIncrement, MinMax minMax) {
+        double computeIncr(double estimated1dSize, MinMax minMax) {
             if(minMax.equals(MinMax.Min)) {
-                return Math.min(inverseSize, localIncrement);
+                return Math.min(defaultIncr,  1./estimated1dSize);
             }
             if( minMax.equals(MinMax.Max)) {
-                return Math.max(inverseSize, localIncrement);
+                return Math.max(defaultIncr,  1./estimated1dSize);
             }
-            return localIncrement;
+            return estimated1dSize;
         }
 
-        public MinMax getMinMax() {
-            return minMax;
-        }
-
-        public void setMinMax(MinMax minMax) {
-            this.minMax = minMax;
-        }
-
-        public double getDivMax() {
-            return inverseSize;
-        }
-
-        public void setDivMax(double divMax) {
-            this.inverseSize = divMax;
-        }
     }
     public static final int CHECKED_POINT_SIZE_TRI = 3;
     public static final int CHECKED_POINT_SIZE_QUADS = 4;
@@ -117,7 +102,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static final int SURFACE_DISPLAY_POINTS = 64;
     public static final int SURFACE_DISPLAY_POINTS_DEEP = 128;
     public static final int SURFACE_DISPLAY_POINTS_LARGE = 256;
-    public static double MIN_INCR = 0.0001;
+    public static double MIN_INCR = 0.001;
     public static int CURVES_MAX_SIZE = 10000;
     public static int SURFAS_MAX_SIZE = 1000000;
     public static int CURVES_MAX_DEEP = 10;
@@ -159,7 +144,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         that = this;
         scene = new Scene();
         texture(new ColorTexture(Color.BLACK.getRGB()));
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, (3.0*Math.max(la,ha)));
+        //minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, (3.0*Math.max(la,ha)));
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 100);
     }
 
     public ZBufferImpl(int l, int h) {

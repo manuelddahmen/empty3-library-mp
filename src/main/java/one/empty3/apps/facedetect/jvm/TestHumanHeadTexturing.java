@@ -58,7 +58,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void ginit() {
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.0007));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);/*
         super.ginit();
         if (objFile != null) {
@@ -214,11 +214,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
             if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
                 testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100);
 
             } else {
                 testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);

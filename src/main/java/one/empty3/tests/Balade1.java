@@ -62,15 +62,12 @@ public class Balade1 extends TestObjetSub {
         setGenerate(GENERATE_IMAGE|GENERATE_SAVE_IMAGE);
         useRecursive = false;
         super.ginit();
-        ITexture ciel_ensoleille = new ColorTexture(new Color(java.awt.Color.BLUE.getRGB()));
+        ITexture ciel_ensoleille = new ColorTexture(new Color(Color.newCol(0f,0f,1f)));
         ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
-        try {
-            imageTextureTrunk = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/img/CIMG0454-modif-cs4.jpg")))));
-            ciel_ensoleille = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/ciel_ensoleille.jpg")))));
-            sol_sableux = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("res/img/planets2/others/8k_saturn_ring_alpha.png")))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        imageTextureTrunk = new ImageTexture((Image) Image.getFromFile(new File("resources/img/CIMG0454-modif-cs4.jpg")));
+        ciel_ensoleille = new ImageTexture((Image) Image.getFromFile(new File("resources/ciel_ensoleille.jpg")));
+        sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets2/others/8k_saturn_ring_alpha.png")));
 
         polygonSol = new Tubulaire3refined();
         polygonSol.getSoulCurve().setElem(
