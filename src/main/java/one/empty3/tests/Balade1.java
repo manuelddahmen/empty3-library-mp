@@ -51,7 +51,7 @@ public class Balade1 extends TestObjetSub {
         Balade1 balade1 = new Balade1();
         balade1.loop(true);
         balade1.setMaxFrames(VUE_1 * FPS);
-        balade1.setDimension(new Resolution(1920, 1080));
+        balade1.setDimension(new Resolution(1920/8, 1080/8));
         //balade1.setDimension(new Resolution(320, 200));
         //balade1.setDimension(new Resolution(640, 480));
         new Thread(balade1).start();
@@ -94,16 +94,17 @@ public class Balade1 extends TestObjetSub {
         scene().add(polygonSol);
 
         frame = 0;
+
+        setZ(new ZBufferImpl(z.la(), z.ha()));
+        z().scene(scene());
+        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+        //z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
     @Override
     public void finit() throws Exception {
         super.finit();
 
-        setZ(new ZBufferImpl(z.la(), z.ha()));
-        z().scene(scene());
-        //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
-        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         if (frame() < VUE_1 * FPS) {
             Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
             Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) / getMaxFrames());

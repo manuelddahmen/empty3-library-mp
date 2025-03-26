@@ -95,7 +95,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
      * The default value is 6.
      */
     public static final int SURFACE_DISPLAY_POINTS = 6;
-    public static final ITexture DEFAULT_TEXTURE = new ColorTexture((new Colors().random()));
+    public static final ITexture DEFAULT_TEXTURE = new ColorTexture(new Colors().random());
     private static final int SURFACE_DISPLAY_TEXT_TRI = 2;
     private static final String[] displayTypes = {"All", "Textured Quad", "SURFACE_DISPLAY_TEXT_TRI", "SURFACE_DISPLAY_COL_QUADS", "SURFACE_DISPLAY_COL_TRI", "SURFACE_DISPLAY_LINES", "SURFACE_DISPLAY_POINTS"};
     public static Point3D SCALE1;
