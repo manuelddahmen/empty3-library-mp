@@ -143,7 +143,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public ZBufferImpl() {
         that = this;
         scene = new Scene();
-        texture(new ColorTexture(Color.BLACK.getRGB()));
+        texture(new ColorTexture(Color.newCol(0,0,0)));
         //minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, (3.0*Math.max(la,ha)));
         minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 100);
     }

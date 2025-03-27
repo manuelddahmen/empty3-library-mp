@@ -94,7 +94,7 @@ public class Balade1 extends TestObjetSub {
 
         setZ(new ZBufferImpl(z.la(), z.ha()));
         z().scene(scene());
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
         //z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 

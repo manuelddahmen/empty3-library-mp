@@ -156,9 +156,18 @@ public abstract class TestObjet implements Test, Runnable {
     private File file0;
     private Thread threadGLafter;
     private boolean threadGLafterHasRun = false;
-    private boolean LOG = false;
+    private boolean LOG = true;
     private boolean running = false;
     static int numInstancesRunning = 0;
+    public File getDir0() {
+        return dir0;
+    }
+
+    public void setDir0(File dir0) {
+        this.dir0 = dir0;
+    }
+
+    private File dir0 = new File("output"+File.separator+"frames"+File.separator+getClass().getCanonicalName());;
 
 
     /**
@@ -800,7 +809,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
 
-
+/*
             pauseActive = true;
             while (isPause()) {
                 try {
@@ -811,7 +820,7 @@ public abstract class TestObjet implements Test, Runnable {
                 }
             }
             pauseActive = false;
-
+*/
 
             try {
                 finit();
@@ -869,6 +878,21 @@ public abstract class TestObjet implements Test, Runnable {
                 if (getGenerate(TestObjet.GENERATE_IMAGE) && !(((generate & GENERATE_OPENGL) > 0))) {
                     try {
                         ri = z.image2();
+                        boolean pass = false;
+                        try {
+                            File output = dir0 ;
+                            if(!output.exists()) {
+                                if(!output.mkdirs())
+                                    pass = true;
+
+                            }
+                            if(!pass) {
+                                File file1 = new File(output.getAbsolutePath() + File.separator+ "frame" + getClass().getCanonicalName() + "__" + frame() + ".jpg");
+                                ri.saveFile(file1);
+                            }
+                        } catch (RuntimeException ex) {
+                            ex.printStackTrace();
+                        }
                         afterRenderFrame();
                     } catch (NullPointerException ex) {
                         ex.printStackTrace();
