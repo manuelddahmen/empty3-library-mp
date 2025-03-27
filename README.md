@@ -130,7 +130,7 @@ matrix c(x,y)
 - PixM components matrix of pictures. color component based.
 - M3 components
     + matrix (columnsIn, linesIn) internal matrix at x, y
-- conversion to Image, minMax normalize linear
+- conversion to Image, minMaxIncr normalize linear
 - gradient. dx, dy, phase atan dy/dy atan dx/dy
 - detecteur de contours
 

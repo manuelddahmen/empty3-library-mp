@@ -25,11 +25,7 @@ package one.empty3.apps.facedetect.jvm;
 import one.empty3.apps.testobject.TestObjetStub;
 import one.empty3.library.*;
 import one.empty3.apps.testobject.Resolution;
-import one.empty3.apps.testobject.TestObjet;
-import one.empty3.apps.testobject.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
-import one.empty3.libs.Image;
-
 import one.empty3.libs.Image;
 
 import java.io.File;
@@ -58,7 +54,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void ginit() {
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);/*
         super.ginit();
         if (objFile != null) {
@@ -214,11 +210,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
             if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
                 testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100);
 
             } else {
                 testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);

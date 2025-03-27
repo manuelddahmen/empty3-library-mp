@@ -51,40 +51,38 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.awt.Color.PINK;
-
 /*__
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
-        public MinMaxOptimium(MinMax minMax, double defaultSize) {
-            this.minMax = minMax;
+        public MinMaxOptimium(MinMaxIncr minMaxIncr, double defaultSize) {
+            this.minMaxIncr = minMaxIncr;
             this.defaultIncr = 1./defaultSize;
             if(defaultSize<MIN_INCR)
                 this.defaultIncr = MIN_INCR;
         }
 
-        public enum MinMax {
+        public enum MinMaxIncr {
             Min, Max, None
         }
-        private MinMax minMax;
+        private MinMaxIncr minMaxIncr;
         private double defaultIncr;
 
         double computeIncr(double estimated1dSize) {
-            if(minMax.equals(MinMax.Min)) {
+            if(minMaxIncr.equals(MinMaxIncr.Min)) {
                 return Math.min(defaultIncr, 1./estimated1dSize);
             }
-            if( minMax.equals(MinMax.Max)) {
+            if( minMaxIncr.equals(MinMaxIncr.Max)) {
                 return Math.max(defaultIncr,  1./estimated1dSize);
             }
             return estimated1dSize;
         }
-        double computeIncr(double estimated1dSize, MinMax minMax) {
-            if(minMax.equals(MinMax.Min)) {
+        double computeIncr(double estimated1dSize, MinMaxIncr minMaxIncr) {
+            if(minMaxIncr.equals(MinMaxIncr.Min)) {
                 return Math.min(defaultIncr,  1./estimated1dSize);
             }
-            if( minMax.equals(MinMax.Max)) {
+            if( minMaxIncr.equals(MinMaxIncr.Max)) {
                 return Math.max(defaultIncr,  1./estimated1dSize);
             }
             return estimated1dSize;
@@ -145,7 +143,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         scene = new Scene();
         texture(new ColorTexture(Color.newCol(0,0,0)));
         //minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, (3.0*Math.max(la,ha)));
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 100);
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Max, 100);
     }
 
     public ZBufferImpl(int l, int h) {
@@ -164,7 +162,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = h;
         dimx = la;
         dimy = ha;
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Min, 100.0);
+        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Min, 100.0);
         //Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
     }
@@ -259,7 +257,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         } else if (r instanceof ThickSurface) {
             setCurrentRepresentable(r);
             ThickSurface n = (ThickSurface) r;
-            // TODO Dessiner les bords
 
             for (double u = n.getStartU(); u <= n.getEndU(); u += n.getIncrU()) {
                 // Logger.getAnonymousLogger().log(Level.INFO, "(u,v) = ("+u+","+")");
@@ -391,7 +388,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                             p4 = p4.plus(n4.norme1().mult(h.height(u, v2)));
                         }
                         if (displayType == SURFACE_DISPLAY_POINTS || displayType == SURFACE_DISPLAY_POINTS_DEEP) {
-                            testDeep(p1, n.texture(), u, v, n);
+                            testDeep(p1, n.texture().getColorAt(u,v));
                             if (displayType == SURFACE_DISPLAY_POINTS_DEEP) {
                                 double v1p = maxDistance(camera().coordonneesPoint2D(p1, this), camera().coordonneesPoint2D(p2, this),
                                         camera().coordonneesPoint2D(p3, this), camera().coordonneesPoint2D(p4, this));
@@ -403,7 +400,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                             double u2p = u2 / (1 + v1p) * i;
                                             double v2p = v2 / (1 + v1p) * j;
                                             testDeep(n.calculerPoint3D(u2, v2),
-                                                    n.texture(), u2, v2, n);
+                                                    n.texture().getColorAt(u2, v2));
                                         }
                                 }
                             } else if (displayType == SURFACE_DISPLAY_POINTS_LARGE) {
@@ -1317,14 +1314,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        double inter = minMaxOptimium.computeIncr( (maxDistance(p1, p2, p3, p4) + 1) / 12);
+        double inter = minMaxOptimium.computeIncr(  (maxDistance(p1, p2, p3, p4) + 1) / 12, MinMaxOptimium.MinMaxIncr.Max);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
 
 
             double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(pElevation1, this),
-                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3.);
+                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3., MinMaxOptimium.MinMaxIncr.Max);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;

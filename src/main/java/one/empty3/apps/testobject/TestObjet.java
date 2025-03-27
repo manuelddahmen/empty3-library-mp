@@ -58,8 +58,9 @@ import java.util.logging.Logger;
  * Updated: 04-02-2024
  */
 public abstract class TestObjet implements Test, Runnable {
-    public static File configFile = new File("./empty3.config");;
-    public static boolean skipInit = true;
+    public static File configFile = new File("./empty3.config");
+    ;
+    public static boolean skipInit = false;
     private static Logger logger = Logger.getLogger(TestObjet.class.getName());
     public static final int GENERATE_NOTHING = 0;
     public static final int GENERATE_IMAGE = 1;
@@ -159,6 +160,10 @@ public abstract class TestObjet implements Test, Runnable {
     private boolean LOG = true;
     private boolean running = false;
     static int numInstancesRunning = 0;
+    private Object applicationContext;
+    private File androidDirData;
+    private String date;
+
     public File getDir0() {
         return dir0;
     }
@@ -167,8 +172,14 @@ public abstract class TestObjet implements Test, Runnable {
         this.dir0 = dir0;
     }
 
-    private File dir0 = new File("output"+File.separator+"frames"+File.separator+getClass().getCanonicalName());;
+    private File dir0 = new File("output" + File.separator + "frames" + File.separator + getClass().getCanonicalName());
+    ;
 
+    public void setAndroidContext(Object applicationContext) {
+        if (isAndroid) {
+            this.applicationContext = applicationContext;
+        }
+    }
 
     /**
      * The TestObjet class represents an object used for testing purposes.
@@ -260,13 +271,13 @@ public abstract class TestObjet implements Test, Runnable {
 
     public void camera(Camera c) {
 
-        if(scene()!=null) {
-            if(z().scene()==null)
+        if (scene() != null) {
+            if (z().scene() == null)
                 z().scene(scene());
             scene().cameraActive(c);
             z().camera(c);
         } else {
-            if(z().scene()!=null)
+            if (z().scene() != null)
                 scene(z().scene());
             else {
                 scene = new Scene();
@@ -298,6 +309,7 @@ public abstract class TestObjet implements Test, Runnable {
         }
 
     }
+
     private static boolean isAndroid = false;
 
     static {
@@ -423,7 +435,8 @@ public abstract class TestObjet implements Test, Runnable {
      */
 
     private void init() {
-        if(skipInit) {
+
+        if (skipInit) {
             dir = configFile;
             c = new Camera(new Point3D(0d, 0d, -10d), Point3D.O0);
             loop(true);
@@ -442,35 +455,60 @@ public abstract class TestObjet implements Test, Runnable {
 
             Properties config = new Properties();
 
-                if (!TestObjet.isAndroid) {
-                    configFile = new File(System.getProperty("user.home")
-                            + File.separator + "empty3.config");
-                    try {
-                        if (configFile != null && !configFile.exists()) {
-                            configFile.createNewFile();
-                        }
-                        if (configFile.exists()) {
-                            config.load(new FileInputStream(configFile));
-                        }
-                    } catch (RuntimeException ex) {
-                        ex.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+            if (!TestObjet.isAndroid) {
+                configFile = new File(System.getProperty("user.home")
+                        + File.separator + "empty3.config");
+                try {
+                    if (configFile != null && !configFile.exists()) {
+                        configFile.createNewFile();
                     }
+                    if (configFile.exists()) {
+                        config.load(new FileInputStream(configFile));
+                    }
+                } catch (RuntimeException ex) {
+                    ex.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            if (configFile!=null && configFile.exists()) {
+            } else {
+                //Use Android context
+                configFile = new File(androidDirData, "empty3.config");
+                //You need to pass the context to the class
+                try {
+                    if (configFile != null && !configFile.exists()) {
+                        configFile.createNewFile();
+                    }
+                    if (configFile.exists()) {
+                        config.load(new FileInputStream(configFile));
+                    }
+                } catch (RuntimeException ex) {
+                    ex.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (configFile != null && configFile.exists()) {
                 config = new Properties();
+                config.load(new FileReader(configFile));
                 config.putIfAbsent("folderoutput",
                         System.getProperty("user.home")
                                 + File.separator + "EmptyCanvasTest");
                 config.store(new FileOutputStream(configFile), "Config file for empty3.one library");
+
+
+                dir1 = new File((String) config.get("folderoutput"));
             }
-            dir1.mkdirs();
 
             this.dir = new File(dir1.getAbsolutePath() + File.separator
                     + this.getClass().getName());
+            if (dir1 != null) {
+                dir = dir1;
+                dir0 = dir1;
+            }
             if (!this.dir.exists()) {
                 this.dir.mkdirs();
             } else {
@@ -710,7 +748,7 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-             ri = (Image) Image.getFromInputStream(is);
+            ri = (Image) Image.getFromInputStream(is);
 
         } catch (Exception ex1) {
             ex1.printStackTrace();
@@ -768,6 +806,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
         z = ZBufferFactory.newInstance(resx, resy);
+        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 200));
         z.scene(scene);
         //z.next();
         long timeStart = System.currentTimeMillis();
@@ -794,9 +833,8 @@ public abstract class TestObjet implements Test, Runnable {
                 + filename + ".XML");
 
 
-
         if (LOG) {
-            Logger.getAnonymousLogger().log(Level.INFO, directory().getAbsolutePath());
+            Logger.getAnonymousLogger().log(Level.INFO, dir.getAbsolutePath());
             Logger.getAnonymousLogger().log(Level.INFO, "Generate (0 NOTHING  1 IMAGE  2 MODEL  4 OPENGL) {0}" + getGenerate());
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
@@ -878,25 +916,33 @@ public abstract class TestObjet implements Test, Runnable {
                 if (getGenerate(TestObjet.GENERATE_IMAGE) && !(((generate & GENERATE_OPENGL) > 0))) {
                     try {
                         ri = z.image2();
-                        boolean pass = false;
-                        try {
-                            File output = dir0 ;
-                            if(!output.exists()) {
-                                if(!output.mkdirs())
-                                    pass = true;
 
+                        if (getGenerate(TestObjet.GENERATE_SAVE_IMAGE)) {
+                            boolean pass = false;
+                            try {
+                                File output = dir;
+                                if (!output.exists()) {
+                                    if (!output.mkdirs())
+                                        pass = true;
+
+                                }
+                                if (!pass) {
+                                    File fileFrameWithoutExt = getNewDirectory();
+                                    File file1 = new File(fileFrameWithoutExt.getAbsolutePath() + ".jpg");
+                                    if (ri.saveToFile(file1.getAbsolutePath())) {
+                                        Logger.getAnonymousLogger().log(Level.INFO, "File written : " + file1.getAbsolutePath());
+                                    } else {
+                                        Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + file1.getAbsolutePath());
+
+                                    }
+                                }
+                            } catch (RuntimeException ex) {
+                                ex.printStackTrace();
                             }
-                            if(!pass) {
-                                File file1 = new File(output.getAbsolutePath() + File.separator+ "frame" + getClass().getCanonicalName() + "__" + frame() + ".jpg");
-                                ri.saveFile(file1);
-                            }
-                        } catch (RuntimeException ex) {
-                            ex.printStackTrace();
+                            afterRenderFrame();
                         }
-                        afterRenderFrame();
-                    } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                        continue;
+                    } catch (RuntimeException ex) {
+
                     }
                 }
             }
@@ -931,6 +977,7 @@ public abstract class TestObjet implements Test, Runnable {
                     }
                     String filename = "export-" + frame;
                     exportFrame("export", filename);
+                    //dataWriter.writeFrameData(frame(), "Export model: " + filename);
                     if (LOG) {
                         Logger.getAnonymousLogger().log(Level.INFO, "End generating model");
                     }
@@ -960,7 +1007,14 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
+            double sqrt = Math.sqrt(resx * resx + resy * resy);
             ri = new Image(getResx(), getResy());
+            for (int i = 0; i < sqrt; i++) {
+                int x = (int) (i * sqrt / resx);
+                int y = (int) (i * sqrt / resy);
+                ri.setRgb(x, y, 0xffff0000);
+            }
+
         } else {
             afterRender();
 
@@ -972,11 +1026,24 @@ public abstract class TestObjet implements Test, Runnable {
         }
 
 
-
         if (LOG) {
             Logger.getAnonymousLogger().log(Level.INFO, "End movie       " + runtimeInfoSucc());
             Logger.getAnonymousLogger().log(Level.INFO, "Quit run method " + runtimeInfoSucc());
         }
+    }
+
+    private File getNewDirectory() {
+        File dirFiles = new File(dir.getAbsolutePath() + File.separator +
+                getClass().getCanonicalName() + File.separator + "frames_" + getInitialDate() + File.separator + getClass().getCanonicalName() + "__" + frame());
+        if (!dirFiles.exists())
+            dirFiles.getParentFile().mkdirs();
+        return dirFiles;
+    }
+
+    private String getInitialDate() {
+        if (date == null)
+            date = dateForFilename(new Date());
+        return date;
     }
 
     private void setRunning(boolean running) {
@@ -1149,7 +1216,7 @@ public abstract class TestObjet implements Test, Runnable {
         if (z() != null) {
             z = z();
             Scene scene1 = z().scene();
-            if(scene1==null) scene1 = scene();
+            if (scene1 == null) scene1 = scene();
             Camera camera = camera();
             z().scene(scene1);
             z().camera(camera);
@@ -1165,10 +1232,10 @@ public abstract class TestObjet implements Test, Runnable {
             this.dimension = dimension;
             setZ(new ZBufferImpl(resx, resy));
             //z().camera(camera());
-            z().scene(scene()!=null?scene():new Scene());
-            z().camera(camera()!=null?camera():new Camera());
+            z().scene(scene() != null ? scene() : new Scene());
+            z().camera(camera() != null ? camera() : new Camera());
         }
-        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 100);
+        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 1000);
     }
 
     public void setName(String name) {

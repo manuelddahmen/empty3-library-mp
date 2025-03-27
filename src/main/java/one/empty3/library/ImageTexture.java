@@ -55,7 +55,7 @@ import java.util.Objects;
 public class ImageTexture extends ITexture {
     private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
     private String nom = "texture";
-    private int transparent = 0xFFFFFF00;
+    private int transparent = 0x00FFFFFF;
 
     public ImageTexture(Image bi) {
         image.setElem(bi);
@@ -63,7 +63,7 @@ public class ImageTexture extends ITexture {
 
     public ImageTexture(File bif) {
         try {
-            image.setElem(new one.empty3.libs.Image((Image)Objects.requireNonNull(new one.empty3.libs.Image(1,1,1).getFromFile(bif))));
+            image.setElem((Image) Image.getFromFile(bif));
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
         }
@@ -116,7 +116,7 @@ public class ImageTexture extends ITexture {
 
         int c = image != null
                 ? image
-                .getElem().getRGB(x, y) : transparent;
+                .getElem().getRgb(x, y) : transparent;
         if (c == transparent)
             return transparent;
         else
