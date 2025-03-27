@@ -95,7 +95,7 @@ public class Balade1 extends TestObjetSub {
         setZ(new ZBufferImpl(z.la(), z.ha()));
         z().scene(scene());
         z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
-        //z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.None, 1000));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Balade1 extends TestObjetSub {
             scene().cameraActive(camera);
 
             //z().setDisplayType(Representable.DISPLAY_ALL);
-            z().texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
+            //z().texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
             StructureMatrix<Point3D> mat = new StructureMatrix<>(2, Point.class);
             mat.setElem(new Point3D(-10d, 0d, -10d), 0, 0);
             mat.setElem(new Point3D(10d, 0d, -10d), 1, 0);

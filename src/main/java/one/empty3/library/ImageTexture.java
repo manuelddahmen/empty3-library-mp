@@ -114,24 +114,10 @@ public class ImageTexture extends ITexture {
         }
 
 
-        int c = image != null
-                ? image
-                .getElem().getRgb(x, y) : transparent;
-        if (c == transparent)
-            return transparent;
-        else
-            return c;
+        return image != null ? image.getElem().getRgb(x, y) : transparent;
     }
 
 
-    public Image getEcImageStructureMatrix() {
-        return image.getElem();
-    }
-
-    public void setEcImageStructureMatrix(Image image) {
-        this.image.setElem(image);
-        image = image;
-    }
 
     public Image getImage() {
         return image.getElem();

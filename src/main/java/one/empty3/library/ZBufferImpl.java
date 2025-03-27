@@ -58,37 +58,30 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public class MinMaxOptimium {
         public MinMaxOptimium(MinMaxIncr minMaxIncr, double defaultSize) {
             this.minMaxIncr = minMaxIncr;
-            this.defaultIncr = 1./defaultSize;
-            if(defaultSize<MIN_INCR)
+            this.defaultIncr = 1. / defaultSize;
+            if (defaultSize < MIN_INCR)
                 this.defaultIncr = MIN_INCR;
         }
 
         public enum MinMaxIncr {
             Min, Max, None
         }
+
         private MinMaxIncr minMaxIncr;
         private double defaultIncr;
 
         double computeIncr(double estimated1dSize) {
-            if(minMaxIncr.equals(MinMaxIncr.Min)) {
-                return Math.min(defaultIncr, 1./estimated1dSize);
+            if (minMaxIncr.equals(MinMaxIncr.Min)) {
+                return Math.min(defaultIncr, 1. / estimated1dSize);
             }
-            if( minMaxIncr.equals(MinMaxIncr.Max)) {
-                return Math.max(defaultIncr,  1./estimated1dSize);
-            }
-            return estimated1dSize;
-        }
-        double computeIncr(double estimated1dSize, MinMaxIncr minMaxIncr) {
-            if(minMaxIncr.equals(MinMaxIncr.Min)) {
-                return Math.min(defaultIncr,  1./estimated1dSize);
-            }
-            if( minMaxIncr.equals(MinMaxIncr.Max)) {
-                return Math.max(defaultIncr,  1./estimated1dSize);
+            if (minMaxIncr.equals(MinMaxIncr.Max)) {
+                return Math.max(defaultIncr, 1. / estimated1dSize);
             }
             return estimated1dSize;
         }
-
     }
+
+
     public static final int CHECKED_POINT_SIZE_TRI = 3;
     public static final int CHECKED_POINT_SIZE_QUADS = 4;
     public static final int DISPLAY_ALL = 1;
@@ -1314,14 +1307,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        double inter = minMaxOptimium.computeIncr(  (maxDistance(p1, p2, p3, p4) + 1) / 12, MinMaxOptimium.MinMaxIncr.Max);
+        double inter = minMaxOptimium.computeIncr(  (maxDistance(p1, p2, p3, p4) + 1) / 12);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
 
 
             double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(pElevation1, this),
-                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3., MinMaxOptimium.MinMaxIncr.Max);
+                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;
