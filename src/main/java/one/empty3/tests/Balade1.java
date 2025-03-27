@@ -95,7 +95,8 @@ public class Balade1 extends TestObjetSub {
         setZ(new ZBufferImpl(z.la(), z.ha()));
         z().scene(scene());
         z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
+        z().texture(new ColorTexture(0x00FF0000));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 40));
     }
 
     @Override

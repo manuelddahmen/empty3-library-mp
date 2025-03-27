@@ -806,7 +806,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
         z = ZBufferFactory.newInstance(resx, resy);
-        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 200));
+        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, Math.max(resx, resy)));
         z.scene(scene);
         //z.next();
         long timeStart = System.currentTimeMillis();
