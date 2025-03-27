@@ -1012,7 +1012,7 @@ public abstract class TestObjet implements Test, Runnable {
             for (int i = 0; i < sqrt; i++) {
                 int x = (int) (i * sqrt / resx);
                 int y = (int) (i * sqrt / resy);
-                ri.setRgb(x, y, 0xffff0000);
+                ri.setRgb(x, y, 0x00ff0000);
             }
 
         } else {

@@ -55,7 +55,7 @@ import java.util.Objects;
 public class ImageTexture extends ITexture {
     private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
     private String nom = "texture";
-    private int transparent = 0x00FFFFFF;
+    private int transparent = 0xFFFFFFFF;
 
     public ImageTexture(Image bi) {
         image.setElem(bi);

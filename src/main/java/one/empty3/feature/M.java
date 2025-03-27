@@ -252,7 +252,7 @@ public class M implements InterfaceMatrix {
     public double[] readCompsA(int i, int j) {
         if(i>=0&&i<columns&&j>=0&&j<lines&&index(i,j)<x.length&&index(i,j)>=0) {
         int d = x[index(i, j)];
-        int a = ((d & 0xFF000000) >> 24);
+        int a = (0);
         int r = ((d & 0x00FF0000) >> 16);
         int g = ((d & 0x0000FF00) >> 8);
         int b = ((d & 0x000000FF));
