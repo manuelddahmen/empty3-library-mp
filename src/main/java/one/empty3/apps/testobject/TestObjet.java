@@ -509,7 +509,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
                 dir1 = new File((String) config.get("folderoutput"));
-            }
+
 
             this.dir = new File(dir1.getAbsolutePath() + File.separator
                     + this.getClass().getName());
@@ -533,7 +533,7 @@ public abstract class TestObjet implements Test, Runnable {
             configFile.mkdirs();
 //        new File(directory.getAbsolutePath() + File.separator + "GAUCHE").mkdir();
 //        new File(directory.getAbsolutePath() + File.separator + "DROITE").mkdir();
-
+            }
             ///setResolution(dimension.x(), dimension.y());
             initialise = true;
             ///publishResult(false);
@@ -597,6 +597,9 @@ public abstract class TestObjet implements Test, Runnable {
 
     public boolean nextFrame() {
         frame++;
+
+        if(!getGenerate(GENERATE_SAVE_IMAGE))
+            return true;
 
         if (D3()) {
             fileG = new File(this.dir.getAbsolutePath() + File.separator
@@ -687,7 +690,7 @@ public abstract class TestObjet implements Test, Runnable {
                         + File.separator + "__SERID_" + (serie) + "__"
                         + filename + (1000000 + frame) + "." + fileExtension);
             }
-        } else {
+        } else {/*
             file = new File(this.dir.getAbsolutePath() + File.separator
                     + sousdossier + File.separator + "__SERID_" + (serie)
                     + "__" + filename + (1000000 + frame) + "." + fileExtension);
@@ -706,6 +709,7 @@ public abstract class TestObjet implements Test, Runnable {
                         + "__SERID_" + (serie) + "__" + filename
                         + (1000000 + frame) + "." + binaryExtension);
             }
+        */
         }
         /*
          * ObjectOutputStream oos = null; try { oos = new ObjectOutputStream(new
@@ -843,7 +847,7 @@ public abstract class TestObjet implements Test, Runnable {
         }
 
         if (LOG) {
-            Logger.getAnonymousLogger().log(Level.INFO,( dir!=null?dir.getAbsolutePath():" No directory") );
+            Logger.getAnonymousLogger().log(Level.INFO,( dir!=null&&dir.exists()?dir.getAbsolutePath():" No directory") );
             Logger.getAnonymousLogger().log(Level.INFO, "Generate (0 NOTHING  1 IMAGE  2 MODEL  4 OPENGL) {0}" + getGenerate());
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
@@ -1158,6 +1162,7 @@ public abstract class TestObjet implements Test, Runnable {
     public abstract void testScene() throws Exception;
 
     public void testScene(File f) throws Exception {
+
         if (f.getAbsolutePath().toLowerCase().endsWith("mood")
                 || f.getAbsolutePath().toLowerCase().endsWith("moo")
                 || f.getAbsolutePath().toLowerCase().endsWith("bmood")
@@ -1176,9 +1181,6 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
-    public String getFolder() {
-        return dir.getAbsolutePath();
-    }
 
     /**
      * Sets the unterminable flag of the object.
