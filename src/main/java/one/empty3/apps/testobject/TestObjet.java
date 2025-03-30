@@ -452,15 +452,19 @@ public abstract class TestObjet implements Test, Runnable {
 
             File dir1 = null;
 
+            boolean noConfigFile = false;
 
             Properties config = new Properties();
-
             if (!TestObjet.isAndroid) {
                 configFile = new File(System.getProperty("user.home")
                         + File.separator + "empty3.config");
                 try {
                     if (configFile != null && !configFile.exists()) {
-                        configFile.createNewFile();
+                        try {
+                            configFile.createNewFile();
+                        } catch (RuntimeException | IOException ex) {
+                            noConfigFile = true;
+                        }
                     }
                     if (configFile.exists()) {
                         config.load(new FileInputStream(configFile));
@@ -478,7 +482,11 @@ public abstract class TestObjet implements Test, Runnable {
                 //You need to pass the context to the class
                 try {
                     if (configFile != null && !configFile.exists()) {
-                        configFile.createNewFile();
+                        try {
+                            configFile.createNewFile();
+                        } catch (RuntimeException | IOException ex) {
+                            noConfigFile = true;
+                        }
                     }
                     if (configFile.exists()) {
                         config.load(new FileInputStream(configFile));
@@ -491,7 +499,7 @@ public abstract class TestObjet implements Test, Runnable {
                     throw new RuntimeException(e);
                 }
             }
-            if (configFile != null && configFile.exists()) {
+            if (!noConfigFile && configFile != null && configFile.exists()) {
                 config = new Properties();
                 config.load(new FileReader(configFile));
                 config.putIfAbsent("folderoutput",
@@ -826,12 +834,13 @@ public abstract class TestObjet implements Test, Runnable {
 
         }
 
+        if(getGenerate(GENERATE_SAVE_IMAGE)) {
         File zipf = new File(this.dir.getAbsolutePath() + File.separator
                 + sousdossier + File.separator + filename + ".ZIP");
 
         File dataf = new File(this.dir.getAbsolutePath() + File.separator
                 + filename + ".XML");
-
+        }
 
         if (LOG) {
             Logger.getAnonymousLogger().log(Level.INFO, dir.getAbsolutePath());
@@ -942,7 +951,7 @@ public abstract class TestObjet implements Test, Runnable {
                             afterRenderFrame();
                         }
                     } catch (RuntimeException ex) {
-
+                        ex.printStackTrace();
                     }
                 }
             }
