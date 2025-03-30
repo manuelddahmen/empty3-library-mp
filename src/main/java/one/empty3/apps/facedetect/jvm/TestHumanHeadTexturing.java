@@ -185,7 +185,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             instance.editPolygonsMappings = null;
         }
         TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
-
+        testHumanHeadTexturing.setGenerate(TestObjet.GENERATE_IMAGE);
         TestHumanHeadTexturing.instance = testHumanHeadTexturing;
         testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings;
         if (editPolygonsMappings.distanceABClass != null) {

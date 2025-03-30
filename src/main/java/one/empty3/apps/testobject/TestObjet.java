@@ -843,7 +843,7 @@ public abstract class TestObjet implements Test, Runnable {
         }
 
         if (LOG) {
-            Logger.getAnonymousLogger().log(Level.INFO, dir.getAbsolutePath());
+            Logger.getAnonymousLogger().log(Level.INFO,( dir!=null?dir.getAbsolutePath():" No directory") );
             Logger.getAnonymousLogger().log(Level.INFO, "Generate (0 NOTHING  1 IMAGE  2 MODEL  4 OPENGL) {0}" + getGenerate());
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
