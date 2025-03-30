@@ -38,8 +38,8 @@ public class DistanceProxLinear42 extends DistanceBezier2 {
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
-     * @param A
-     * @param B
+     * @param A set of Point3D x:%width, y:%height, z:0
+     * @param B set of Point3D x:%width, y:%height, z:0
      * @param aDimReal
      * @param bDimReal
      * @param opt1

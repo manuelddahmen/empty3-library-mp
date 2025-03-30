@@ -22,9 +22,9 @@
 
 package one.empty3.apps.facedetect.jvm;
 
-import one.empty3.apps.testobject.TestObjetStub;
 import one.empty3.library.*;
-import one.empty3.apps.testobject.Resolution;
+import one.empty3.library.core.lighting.Colors;
+import one.empty3.apps.testobject.*;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
@@ -54,41 +54,39 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void ginit() {
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
-        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);/*
-        super.ginit();
-        if (objFile != null) {
-            z().scene().getObjets().getData1d().clear();
-            z().scene().getObjets().setElem(objFile, 0);
-        }
-*/
+        z().texture(new ColorTexture(new Colors().random()));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
     @Override
     public void finit() {
         super.finit();
+
         if (editPolygonsMappings == null)
             return;
         if (editPolygonsMappings.model != null) {
+            setObj(editPolygonsMappings.model);
             setObj(editPolygonsMappings.model);
         }
         if (editPolygonsMappings.image != null) {
             setJpg(editPolygonsMappings.image);
         }
 
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         File intPart = new File("faceSkin.txt");
 
         Camera c = new Camera();
 
         scene = new Scene();
 
-        if (editPolygonsMappings!=null&&editPolygonsMappings.model != null) {
+        if (editPolygonsMappings != null && editPolygonsMappings.model != null) {
             scene().add(editPolygonsMappings.model);
             //addEyePolygons(scene, editPolygonsMappings.model);
         }
-        if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
-            editPolygonsMappings.model.texture(new ImageTexture(editPolygonsMappings.image));
-        } else if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
+        if (editPolygonsMappings != null && editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
+            editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
+        } else if (editPolygonsMappings != null && editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
         } else {
         }
@@ -106,7 +104,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 c.getEye().setX(maxBox.getX() / 2 + minBox.getX() / 2);
                 c.getEye().setY(maxBox.getY() / 2 + minBox.getY() / 2);
                 //c.getEye().setZ(maxBox.getZ() + Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2)));
-                c.getEye().setZ(maxBox.getZ()*2 + Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2)));
+                c.getEye().setZ(maxBox.getZ() * 2 + Math.sqrt(Math.pow(maxBox.getX() - minBox.getX(), 2) + Math.pow(maxBox.getY() - minBox.getY(), 2)));
                 c.calculerMatrice(Point3D.Y.mult(-1));
                 //c.setAngleYr(60, 1.0 * z().ha() / z().la());
             } else {
@@ -129,16 +127,14 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 }
             }
         }*/
-        if(z().scene().getObjets().getData1d().size()>1)
+        if (z().scene().getObjets().getData1d().size() > 1)
             Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
     }
-
-
 
     private void addEyePolygons(Scene scene, E3Model model) {
         E3Model.FaceWithUv[] quads = new E3Model.FaceWithUv[2];
         HashMap<String, Point3D> modp = editPolygonsMappings.pointsInModel;
-        if(model!=null && !modp.isEmpty()) {
+        if (model != null && !modp.isEmpty()) {
             quads = new E3Model.FaceWithUv[]{
                     model.new FaceWithUv(new Polygon(
                             new Point3D[]{modp.get("RIGHT_EYE_RIGHT_CORNER"), modp.get("RIGHT_EYE_TOP_BOUNDARY"), modp.get("RIGHT_EYE_BOTTOM_BOUNDARY"),
@@ -162,11 +158,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void afterRender() {
-        if (getPicture() != null) {
+        if (getPicture() != null && getPicture().getBi() != null) {
             zBufferImages.add(getPicture());
         }
     }
-
 
 
     public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, Image jpg, Image jpgRight, E3Model obj, Resolution resolution) {
@@ -202,19 +197,22 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 editPolygonsMappings.iTextureMorphMove.distanceAB.refineMatrix = editPolygonsMappings.refineMatrix;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
-                if(editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 &&jpgRight!=null)
+                if (editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 && jpgRight != null)
                     editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = editPolygonsMappings.imageFileRight;
 
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
 
-            if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
-                testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100);
+            if (resolution == null || !resolution.equals(Resolution.HD1080RESOLUTION)) {
+                testHumanHeadTexturing.setResx((int) editPolygonsMappings.dimModelBox.getWidth());
+                testHumanHeadTexturing.setResy((int) editPolygonsMappings.dimModelBox.getHeight());
+                testHumanHeadTexturing.setDimension(
+                        new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
 
             } else {
-                testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100);
+                testHumanHeadTexturing.setResx(resolution.x());
+                testHumanHeadTexturing.setResy(resolution.y());
+                testHumanHeadTexturing.setDimension(TestObjet.HD1080);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
@@ -240,27 +238,27 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     protected void setJpg(Image jpgFile) {
         this.jpgFile = jpgFile;
     }
+
     public void setJpgRight(Image image) {
         this.jpgFileRight = image;
-        if(editPolygonsMappings!=null&&editPolygonsMappings.iTextureMorphMove!=null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
+        if (editPolygonsMappings != null && editPolygonsMappings.iTextureMorphMove != null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
             editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = image;
     }
 
     public Image getJpgFile() {
         int i = zBufferImages.size() - 1;
-        if(i>10){
+        if (i > 10) {
             for (int j = 0; j < 9; j++) {
                 zBufferImages.remove(0);
             }
         }
         i = zBufferImages.size() - 1;
-        if (i < 0) return (Image) getPicture();
+        if (i < 0) return getPicture();
         Image current = zBufferImages.get(i);
         zBufferImages.clear();
         return current;
 
     }
-
 
     void setObj(E3Model objFile) {
         if (objFile != null) {
@@ -286,7 +284,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
     public Image zBufferImage() {
-        return getJpgFile();
+        return getPicture()!=null?getPicture():null;
     }
-
 }
