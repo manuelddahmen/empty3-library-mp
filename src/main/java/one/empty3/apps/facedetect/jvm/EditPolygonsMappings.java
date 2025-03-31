@@ -635,6 +635,7 @@ public class EditPolygonsMappings implements Runnable {
     public void stopRenderer() {
         hasChangedAorB = false;
         testHumanHeadTexturing.stop();
+        testHumanHeadTexturing.setMaxFrames(0);
         //while (TestHumanHeadTexturing.threadTest.isAlive()) {
         //     TestHumanHeadTexturing.threadTest.interrupt();
         //}
