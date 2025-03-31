@@ -221,10 +221,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             testHumanHeadTexturing.loop(true);
             testHumanHeadTexturing.setMaxFrames(Integer.MAX_VALUE);
             testHumanHeadTexturing.setPublish(false);
+
         }
         threadTest = new Thread(testHumanHeadTexturing);
         threadTest.start();
-
+        testHumanHeadTexturing.setMaxFrames(10);
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {

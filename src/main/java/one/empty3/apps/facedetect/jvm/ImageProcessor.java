@@ -110,6 +110,15 @@ public class ImageProcessor  implements Runnable {
     public void stopAll() {
 
         editPolygonsMappings.stopRenderer();
+        editPolygonsMappings.stopThreadDispaly();
+        Image image2 = editPolygonsMappings.testHumanHeadTexturing.zBufferImage();
+        if(image2!=(null)) {
+            setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
+        }
+        editPolygonsMappings.testHumanHeadTexturing.stop();
+        editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(0);
+        editPolygonsMappings.stopRenderer();
+        editPolygonsMappings.isRunning = false;
 
     }
     private boolean isBlankImage(Image zBufferImage) {
