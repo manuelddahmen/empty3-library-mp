@@ -158,7 +158,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void afterRender() {
-        if (getPicture() != null && getPicture().getBi() != null) {
+        if (getPicture() != null) {
             zBufferImages.add(getPicture());
         }
     }

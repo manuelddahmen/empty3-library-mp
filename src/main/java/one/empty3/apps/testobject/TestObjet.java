@@ -511,26 +511,26 @@ public abstract class TestObjet implements Test, Runnable {
                 dir1 = new File((String) config.get("folderoutput"));
 
 
-            this.dir = new File(dir1.getAbsolutePath() + File.separator
-                    + this.getClass().getName());
-            if (dir1 != null) {
-                dir = dir1;
-                dir0 = dir1;
-            }
-            if (!this.dir.exists()) {
-                this.dir.mkdirs();
-            } else {
-                Logger.getAnonymousLogger().log(Level.INFO, "Repertoire cree avec SUCCES");
-                // System.exit(1);
-            }
-            serid = new File(this.dir.getAbsolutePath() + File.separator
-                    + "__SERID");
+                this.dir = new File(dir1.getAbsolutePath() + File.separator
+                        + this.getClass().getName());
+                if (dir1 != null) {
+                    dir = dir1;
+                    dir0 = dir1;
+                }
+                if (!this.dir.exists()) {
+                    this.dir.mkdirs();
+                } else {
+                    Logger.getAnonymousLogger().log(Level.INFO, "Repertoire cree avec SUCCES");
+                    // System.exit(1);
+                }
+                serid = new File(this.dir.getAbsolutePath() + File.separator
+                        + "__SERID");
 
-            sousdossier = "FICHIERS_" + dateForFilename(new Date());
+                sousdossier = "FICHIERS_" + dateForFilename(new Date());
 
-            configFile = new File(this.dir.getAbsolutePath() + File.separator
-                    + sousdossier);
-            configFile.mkdirs();
+                configFile = new File(this.dir.getAbsolutePath() + File.separator
+                        + sousdossier);
+                configFile.mkdirs();
 //        new File(directory.getAbsolutePath() + File.separator + "GAUCHE").mkdir();
 //        new File(directory.getAbsolutePath() + File.separator + "DROITE").mkdir();
             }
@@ -598,7 +598,7 @@ public abstract class TestObjet implements Test, Runnable {
     public boolean nextFrame() {
         frame++;
 
-        if(!getGenerate(GENERATE_SAVE_IMAGE))
+        if (!getGenerate(GENERATE_SAVE_IMAGE))
             return true;
 
         if (D3()) {
@@ -838,16 +838,16 @@ public abstract class TestObjet implements Test, Runnable {
 
         }
 
-        if(getGenerate(GENERATE_SAVE_IMAGE)) {
-        File zipf = new File(this.dir.getAbsolutePath() + File.separator
-                + sousdossier + File.separator + filename + ".ZIP");
+        if (getGenerate(GENERATE_SAVE_IMAGE)) {
+            File zipf = new File(this.dir.getAbsolutePath() + File.separator
+                    + sousdossier + File.separator + filename + ".ZIP");
 
-        File dataf = new File(this.dir.getAbsolutePath() + File.separator
-                + filename + ".XML");
+            File dataf = new File(this.dir.getAbsolutePath() + File.separator
+                    + filename + ".XML");
         }
 
         if (LOG) {
-            Logger.getAnonymousLogger().log(Level.INFO,( dir!=null&&dir.exists()?dir.getAbsolutePath():" No directory") );
+            Logger.getAnonymousLogger().log(Level.INFO, (dir != null && dir.exists() ? dir.getAbsolutePath() : " No directory"));
             Logger.getAnonymousLogger().log(Level.INFO, "Generate (0 NOTHING  1 IMAGE  2 MODEL  4 OPENGL) {0}" + getGenerate());
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
@@ -859,7 +859,8 @@ public abstract class TestObjet implements Test, Runnable {
         while ((nextFrame() || unterminable()) && !stop && isRunning()) {
 
 
-
+            if (frame() > getMaxFrames())
+                break;
 /*
             pauseActive = true;
             while (isPause()) {
@@ -1059,8 +1060,8 @@ public abstract class TestObjet implements Test, Runnable {
         return date;
     }
 
-    private void setRunning(boolean running) {
-        this.running = true;
+    public void setRunning(boolean running) {
+        this.running = running;
         numInstancesRunning += running ? 1 : 0;
     }
 
@@ -1135,12 +1136,6 @@ public abstract class TestObjet implements Test, Runnable {
         stop = true;
         setGenerate(GENERATE_NOTHING);
         setRunning(false);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-
-        }
-
     }
 
     /**
@@ -1179,7 +1174,6 @@ public abstract class TestObjet implements Test, Runnable {
 
         }
     }
-
 
 
     /**

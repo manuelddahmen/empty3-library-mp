@@ -72,23 +72,34 @@ public class ImageProcessor  implements Runnable {
                     editPolygonsMappings.distanceABClass = DistanceIdent.class;
                     break;
             }
-            editPolygonsMappings.typeShape = DistanceAB.TYPE_SHAPE_QUADR;//!Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?  : DistanceAB.TYPE_SHAPE_BEZIER;
+            editPolygonsMappings.typeShape = isBezier?DistanceAB.TYPE_SHAPE_BEZIER:DistanceAB.TYPE_SHAPE_QUADR;//!Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?  : DistanceAB.TYPE_SHAPE_BEZIER;
+            editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(10);
 
             Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
 
-            while ((editPolygonsMappings.zBufferImage == null || isBlankImage(editPolygonsMappings.zBufferImage)) && editPolygonsMappings.isRunning) {
-
+            while (editPolygonsMappings.testHumanHeadTexturing.zBufferImage()==null && editPolygonsMappings.isRunning && editPolygonsMappings.testHumanHeadTexturing.frame()<10) {
+                Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Running ImageProcessor wait loop ...");
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(100);
                 } catch (InterruptedException ignored) {
 
                 }
-
+                if(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()!=null) {
+                    editPolygonsMappings.testHumanHeadTexturing.loop(false);
+                    editPolygonsMappings.testHumanHeadTexturing.stop();
+                }
+                }
+            editPolygonsMappings.stopThreadDispaly();
+            Image image2 = editPolygonsMappings.testHumanHeadTexturing.zBufferImage();
+            if(image2!=(null)) {
+                setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
             }
-            this.setImage(editPolygonsMappings.zBufferImage);
-
+            editPolygonsMappings.testHumanHeadTexturing.stop();
+            editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(0);
             editPolygonsMappings.stopRenderer();
+            editPolygonsMappings.isRunning = false;
+
 
         } catch (RuntimeException e) {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 2 (run) error", e);

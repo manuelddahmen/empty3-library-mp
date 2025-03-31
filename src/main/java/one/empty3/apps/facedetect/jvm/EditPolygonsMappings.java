@@ -186,74 +186,76 @@ public class EditPolygonsMappings implements Runnable {
                     threadDisplay.start();
                     firstTime = false;
                 }
-                if (pointsInImage != null && dimModelBox != null && !pointsInImage.isEmpty()
-                        && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
-                        && threadDistanceIsNotRunning && iTextureMorphMove != null) {
-                    if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
-                        threadDistanceIsNotRunning = false;
-                        hasChangedAorB = false;
-                        threadTextureCreation = new Thread(() -> {
-                            try {
-                                if (hasChangedAorB())
-                                    oneMore.set(true);
-                                else
-                                    oneMore.set(false);
-                                long l = System.nanoTime();
-                                Logger.getAnonymousLogger().log(Level.INFO, "All loaded resources finished. Starts distance calculation");
-                                if (iTextureMorphMove == null) {
-                                    iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
-                                }
-                                if(  !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
-                                    if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
-
-                                        if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
-                                            //iTextureMorphMove.setConvHullAB();
-                                        }
-                                        if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
-                                            // Display 3D scene
-                                            if (model != null) {
-                                                iTextureMorphMove.distanceAB.setModel(model);
-                                                model.texture(iTextureMorphMove);
-                                            }
-                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight != null) {
-                                                d4.jpgRight = imageFileRight;
-                                            }
-                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d43 && imageFileRight != null) {
-                                                d43.jpgRight = imageFileRight;
-                                            }
-                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d44 && imageFileRight != null) {
-                                                d44.jpgRight = imageFileRight;
-                                            }
-                                        } else {
-                                            Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");
-                                        }
-                                        l = System.nanoTime() - l;
-                                        Logger.getAnonymousLogger().log(Level.INFO, "Distance calculation finished" + (l / 1000000.0));
-                                    }
-                                }
-                            } catch (RuntimeException ex) {
-                                ex.printStackTrace();
-                            } finally {
-
-                            }
-                            threadTextureCreation = null;
+                if(isRunning) {
+                    if (pointsInImage != null && dimModelBox != null && !pointsInImage.isEmpty()
+                            && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
+                            && threadDistanceIsNotRunning && iTextureMorphMove != null) {
+                        if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
+                            threadDistanceIsNotRunning = false;
                             hasChangedAorB = false;
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        threadTextureCreation.start();
-                        Thread.sleep(1000);
-                        threadDistanceIsNotRunning = true;
-                        Logger.getAnonymousLogger().log(Level.INFO, "Thread texture creation started");
-                        //Logger.getAnonymousLogger().log(Level.INFO, "Pause because no changes, and texture updated");
+                            threadTextureCreation = new Thread(() -> {
+                                try {
+                                    if (hasChangedAorB())
+                                        oneMore.set(true);
+                                    else
+                                        oneMore.set(false);
+                                    long l = System.nanoTime();
+                                    Logger.getAnonymousLogger().log(Level.INFO, "All loaded resources finished. Starts distance calculation");
+                                    if (iTextureMorphMove == null) {
+                                        iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
+                                    }
+                                    if (!distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
+                                        if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
+
+                                            if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
+                                                //iTextureMorphMove.setConvHullAB();
+                                            }
+                                            if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
+                                                // Display 3D scene
+                                                if (model != null) {
+                                                    iTextureMorphMove.distanceAB.setModel(model);
+                                                    model.texture(iTextureMorphMove);
+                                                }
+                                                if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight != null) {
+                                                    d4.jpgRight = imageFileRight;
+                                                }
+                                                if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d43 && imageFileRight != null) {
+                                                    d43.jpgRight = imageFileRight;
+                                                }
+                                                if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d44 && imageFileRight != null) {
+                                                    d44.jpgRight = imageFileRight;
+                                                }
+                                            } else {
+                                                Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");
+                                            }
+                                            l = System.nanoTime() - l;
+                                            Logger.getAnonymousLogger().log(Level.INFO, "Distance calculation finished" + (l / 1000000.0));
+                                        }
+                                    }
+                                } catch (RuntimeException ex) {
+                                    ex.printStackTrace();
+                                } finally {
+
+                                }
+                                threadTextureCreation = null;
+                                hasChangedAorB = false;
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                            threadTextureCreation.start();
+                            Thread.sleep(1000);
+                            threadDistanceIsNotRunning = true;
+                            Logger.getAnonymousLogger().log(Level.INFO, "Thread texture creation started");
+                            //Logger.getAnonymousLogger().log(Level.INFO, "Pause because no changes, and texture updated");
+                        }
                     }
+                    if (!threadDistanceIsNotRunning)
+                        Thread.sleep(10);// Logger.getAnonymousLogger().log(Level.INFO, "Thread 'Texture creation' still in progress...");
+                    //}
                 }
-                if (!threadDistanceIsNotRunning)
-                    Thread.sleep(10);// Logger.getAnonymousLogger().log(Level.INFO, "Thread 'Texture creation' still in progress...");
-                //}
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 hasChangedAorB = true;
@@ -773,5 +775,9 @@ public class EditPolygonsMappings implements Runnable {
     public void loadImage1(Image image1) {
         image = image1;
 
+    }
+
+    public void stopThreadDispaly() {
+        isRunning = false;
     }
 }
