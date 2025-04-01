@@ -2,7 +2,6 @@ package one.empty3.apps.facedetect.jvm;
 
 
 import one.empty3.library.objloader.E3Model;
-import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import java.io.ByteArrayOutputStream;
@@ -47,33 +46,35 @@ public class ImageProcessor  implements Runnable {
             editPolygonsMappings.loadTxtData(txt3, 2);
             editPolygonsMappings.hdTextures = hd_texture;
             switch (selected_algorithm) {
-                case 1:
+                case 0:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear1.class;
                     break;
-                case 2:
+                case 1:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear2.class;
                     break;
-                case 3:
+                case 2:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear3.class;
                     break;
-                case 4:
+                case 3:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear4.class;
                     break;
-                case 5:
+                case 4:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear5.class;
                     break;
-                case 6:
+                case 5:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear43.class;
                     break;
-                case 7:
+                case 6:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear44.class;
                     break;
-                default:
+                case 7:
                     editPolygonsMappings.distanceABClass = DistanceIdent.class;
                     break;
+                default:
+                    return;
             }
             editPolygonsMappings.typeShape = isBezier?DistanceAB.TYPE_SHAPE_BEZIER:DistanceAB.TYPE_SHAPE_QUADR;//!Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?  : DistanceAB.TYPE_SHAPE_BEZIER;
-            editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(10);
+            editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(200);
 
             Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
@@ -86,14 +87,14 @@ public class ImageProcessor  implements Runnable {
 
                 }
                 if(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()!=null) {
+                    setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
                     editPolygonsMappings.testHumanHeadTexturing.loop(false);
                     editPolygonsMappings.testHumanHeadTexturing.stop();
                 }
                 }
-            editPolygonsMappings.stopThreadDispaly();
-            Image image2 = editPolygonsMappings.testHumanHeadTexturing.zBufferImage();
-            if(image2!=(null)) {
+            if((editPolygonsMappings.testHumanHeadTexturing.zBufferImage())!=(null)) {
                 setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
+                editPolygonsMappings.stopThreadDisplay();
             }
             editPolygonsMappings.testHumanHeadTexturing.stop();
             editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(0);
@@ -110,7 +111,7 @@ public class ImageProcessor  implements Runnable {
     public void stopAll() {
 
         editPolygonsMappings.stopRenderer();
-        editPolygonsMappings.stopThreadDispaly();
+        editPolygonsMappings.stopThreadDisplay();
         Image image2 = editPolygonsMappings.testHumanHeadTexturing.zBufferImage();
         if(image2!=(null)) {
             setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());

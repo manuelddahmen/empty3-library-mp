@@ -27,13 +27,11 @@
 package one.empty3.apps.facedetect.jvm;
 
 
-import com.google.common.util.concurrent.AtomicDouble;
 import one.empty3.apps.testobject.Resolution;
 import one.empty3.library.Point3D;
 import one.empty3.library.Point;
 import one.empty3.library.Representable;
 import one.empty3.library.RepresentableConteneur;
-import one.empty3.library.ZBufferImpl;
 import one.empty3.library.objloader.E3Model;
 
 import one.empty3.libs.Image;
@@ -777,7 +775,7 @@ public class EditPolygonsMappings implements Runnable {
 
     }
 
-    public void stopThreadDispaly() {
+    public void stopThreadDisplay() {
         isRunning = false;
     }
 }
