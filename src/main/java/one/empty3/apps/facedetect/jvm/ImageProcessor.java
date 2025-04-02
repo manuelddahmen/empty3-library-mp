@@ -5,18 +5,26 @@ import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ImageProcessor  implements Runnable {
+public class ImageProcessor implements Runnable {
 
-    Image image1; E3Model model;Image image3; String txt1; String txt2; String txt3; boolean hd_texture; int selected_algorithm;
+    Image image1;
+    E3Model model;
+    Image image3;
+    String txt1;
+    String txt2;
+    String txt3;
+    boolean hd_texture;
+    int selected_algorithm;
     boolean isBezier;
     private boolean isRunning;
     EditPolygonsMappings editPolygonsMappings;
     private Image image;
 
-    public ImageProcessor(Image image1, E3Model model,Image image3, String txt1, String txt2, String txt3, boolean hd_texture, int selected_algorithm,
+    public ImageProcessor(Image image1, E3Model model, Image image3, String txt1, String txt2, String txt3, boolean hd_texture, int selected_algorithm,
                           boolean isBezier) {
         try {
             this.image1 = image1;
@@ -32,7 +40,6 @@ public class ImageProcessor  implements Runnable {
             Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "unknown 1 error", e);
         }
     }
-
 
 
     public void run() {
@@ -73,7 +80,7 @@ public class ImageProcessor  implements Runnable {
                 default:
                     return;
             }
-            editPolygonsMappings.typeShape = isBezier?DistanceAB.TYPE_SHAPE_BEZIER:DistanceAB.TYPE_SHAPE_QUADR;//!Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?  : DistanceAB.TYPE_SHAPE_BEZIER;
+            editPolygonsMappings.typeShape = isBezier ? DistanceAB.TYPE_SHAPE_BEZIER : DistanceAB.TYPE_SHAPE_QUADR;//!Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?  : DistanceAB.TYPE_SHAPE_BEZIER;
             editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(200);
 
             Thread runApp = new Thread(editPolygonsMappings);
@@ -85,36 +92,39 @@ public class ImageProcessor  implements Runnable {
             runApp.start();
 
 
-            while(editPolygonsMappings.iTextureMorphMove.distanceAB==null) {
+            while (editPolygonsMappings.iTextureMorphMove == null
+                    || editPolygonsMappings.iTextureMorphMove.distanceAB == null) {
                 try {
                     Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-
-            editPolygonsMappings.iTextureMorphMove.distanceAB.addFinishInitListener(new FinishInitListener() {
-                @Override
-                public void fire() {
-                    phase[0] = 1;
-                }
-            });
-
-            while(phase[0]==0) {
-                Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ...");
-                try {
-                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ... DONE");
 
-            while ((editPolygonsMappings.testHumanHeadTexturing.zBufferImage()==null
+
+            try {
+                editPolygonsMappings.iTextureMorphMove.distanceAB.addFinishInitListener(new FinishInitListener() {
+                    @Override
+                    public void fire() {
+                        phase[0] = 1;
+                    }
+                });
+                Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ...");
+            } catch (NullPointerException ex) {
+
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(phase[0]==1) {
+                Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ... DONE");
+            }
+            while ((editPolygonsMappings.testHumanHeadTexturing != null && editPolygonsMappings.testHumanHeadTexturing.zBufferImage() == null
                     && editPolygonsMappings.isRunning
                     && isBlankImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()))
-                    || editPolygonsMappings.testHumanHeadTexturing.frame()<=3) {
+                    || editPolygonsMappings.testHumanHeadTexturing.frame() <= 3) {
                 Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Running ImageProcessor wait loop ...");
                 try {
                     Thread.sleep(100);
@@ -122,14 +132,14 @@ public class ImageProcessor  implements Runnable {
                     ignored.printStackTrace();
                 }
 
-                if(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()!=null) {
+                if (editPolygonsMappings.testHumanHeadTexturing.zBufferImage() != null) {
                     Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Running ImageProcessor wait loop ... DONE");
                     setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
                     editPolygonsMappings.testHumanHeadTexturing.loop(false);
                     editPolygonsMappings.testHumanHeadTexturing.stop();
                 }
-                }
-            if((editPolygonsMappings.testHumanHeadTexturing.zBufferImage())!=(null)) {
+            }
+            if ((editPolygonsMappings.testHumanHeadTexturing.zBufferImage()) != (null)) {
                 setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
                 editPolygonsMappings.stopThreadDisplay();
             }
@@ -145,12 +155,13 @@ public class ImageProcessor  implements Runnable {
         editPolygonsMappings.isRunning = false;
         this.isRunning = false;
     }
+
     public void stopAll() {
 
         editPolygonsMappings.stopRenderer();
         editPolygonsMappings.stopThreadDisplay();
         Image image2 = editPolygonsMappings.testHumanHeadTexturing.zBufferImage();
-        if(image2!=(null)) {
+        if (image2 != (null)) {
             setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
         }
         editPolygonsMappings.testHumanHeadTexturing.stop();
@@ -159,13 +170,14 @@ public class ImageProcessor  implements Runnable {
         editPolygonsMappings.isRunning = false;
 
     }
+
     private boolean isBlankImage(Image zBufferImage) {
-        if(image==null) return true;
+        if (image == null) return true;
 
         int c = image.getRgb(0, 0);
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-                if(image.getRgb(i,j)!=c)
+                if (image.getRgb(i, j) != c)
                     return false;
             }
         }
@@ -183,14 +195,15 @@ public class ImageProcessor  implements Runnable {
     public Image getImage() {
         return image;
     }
+
     public byte[] getResultMapImage() {
         Image image2 = getImage();
-        if(image2!=null) {
+        if (image2 != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             if (image2.toOutputStream(byteArrayOutputStream)) {
                 return byteArrayOutputStream.toByteArray();
             }
         }
         return null;
-        }
     }
+}
