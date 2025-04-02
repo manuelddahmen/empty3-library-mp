@@ -79,7 +79,10 @@ public class ImageProcessor  implements Runnable {
             Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
 
-            while (editPolygonsMappings.testHumanHeadTexturing.zBufferImage()==null && editPolygonsMappings.isRunning && editPolygonsMappings.testHumanHeadTexturing.frame()<10) {
+            while ((editPolygonsMappings.testHumanHeadTexturing.zBufferImage()==null
+                    && editPolygonsMappings.isRunning
+                    && isBlankImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()))
+                    || editPolygonsMappings.testHumanHeadTexturing.frame()<=3) {
                 Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Running ImageProcessor wait loop ...");
                 try {
                     Thread.sleep(100);
