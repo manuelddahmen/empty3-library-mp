@@ -40,6 +40,10 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         imageCB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         if(cDimReal!=null && C.size()>0)
             init_1();
+
+        if(finishInitListener!=null)
+            finishInitListener.fire();
+
     }
 
     public void setComputeMaxTime(double value) {

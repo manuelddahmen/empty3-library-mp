@@ -165,6 +165,10 @@ public class DistanceProxLinear5 extends DistanceBezier2 {
         }
 
         System.out.println("Compute texturing ended");
+
+        if(finishInitListener!=null)
+            finishInitListener.fire();
+
     }
 
     public void init_2() {

@@ -29,6 +29,8 @@ import one.empty3.library.objloader.E3Model;
 
 
 import one.empty3.libs.Image;
+
+import javax.print.attribute.standard.Finishings;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public abstract class DistanceAB {
     protected double bottom;
     public int distanceABdimSize = 25;
     Image jpgRight;
+    protected FinishInitListener finishInitListener;
 
     public void setJpgRight(Image jpgFileRight) {
         this.jpgRight = jpgFileRight;
@@ -152,5 +155,9 @@ public abstract class DistanceAB {
 
         //Point3D P1+(u*(P2-P1)+v*(P3+(1-u)*(P4-P3)-P1+u*(P2-P1))-(P2+v*(P3-P2)+u*(P4+(1-v)(P1-P4)-P2+v*(P3-P2))))
 
+    }
+
+    public void addFinishInitListener(FinishInitListener finishInitListener) {
+        this.finishInitListener = finishInitListener;
     }
 }

@@ -53,6 +53,10 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         init_1();
+
+        if(finishInitListener!=null)
+            finishInitListener.fire();
+
     }
 
     int nIteration0 = 7;

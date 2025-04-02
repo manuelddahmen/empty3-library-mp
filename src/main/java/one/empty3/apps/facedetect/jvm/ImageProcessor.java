@@ -77,7 +77,39 @@ public class ImageProcessor  implements Runnable {
             editPolygonsMappings.testHumanHeadTexturing.setMaxFrames(200);
 
             Thread runApp = new Thread(editPolygonsMappings);
+
+
+            final int[] phase = {0};
+
+
             runApp.start();
+
+
+            while(editPolygonsMappings.iTextureMorphMove.distanceAB==null) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+            editPolygonsMappings.iTextureMorphMove.distanceAB.addFinishInitListener(new FinishInitListener() {
+                @Override
+                public void fire() {
+                    phase[0] = 1;
+                }
+            });
+
+            while(phase[0]==0) {
+                Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ...");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Compute texture ... DONE");
 
             while ((editPolygonsMappings.testHumanHeadTexturing.zBufferImage()==null
                     && editPolygonsMappings.isRunning
@@ -87,9 +119,11 @@ public class ImageProcessor  implements Runnable {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ignored) {
-
+                    ignored.printStackTrace();
                 }
+
                 if(editPolygonsMappings.testHumanHeadTexturing.zBufferImage()!=null) {
+                    Logger.getLogger(this.getClass().getCanonicalName()).log(Level.INFO, "Running ImageProcessor wait loop ... DONE");
                     setImage(editPolygonsMappings.testHumanHeadTexturing.zBufferImage());
                     editPolygonsMappings.testHumanHeadTexturing.loop(false);
                     editPolygonsMappings.testHumanHeadTexturing.stop();

@@ -202,6 +202,11 @@ public abstract class DistanceBezier2 extends DistanceAB {
 
         precomputeX2(aDimReal, aDimReduced, sAij, surfaceA, rectA);
         precomputeX2(bDimReal, bDimReduced, sBij, surfaceB, rectB);
+
+
+        if(finishInitListener!=null)
+            finishInitListener.fire();
+
     }
 
     public double maxBox(double v, double min, double max) {
