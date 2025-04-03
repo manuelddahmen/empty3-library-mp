@@ -31,7 +31,7 @@ import java.util.List;
 
 
 public class DistanceProxLinear3 extends DistanceBezier2 {
-    private static final int MAX_SUB_ITERE_X = 10;
+    public static final int MAX_SUB_ITERE_X = 10;
 
     public DistanceProxLinear3(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
@@ -71,21 +71,21 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
         //}
     }
 
-    private Point3D findAxPointInBal1(double u, double v) {
+    public Point3D findAxPointInBal1(double u, double v) {
         Point3D pb = nearLandmark(u, v);
         //pb = new Point3D(Math.max(0, Math.min(pb.get(0), listBX.size() - 1)), Math.max(0, Math.min(pb.get(1), listBY.size() - 1)), 0.0);
         Point3D pa = surfaceA.getCoefficients().getElem((int) (double) pb.getX(), (int) (double) pb.get(1));
         return pa;
     }
 
-    private Point3D findAxPointInBal2(double u, double v) {
+    public Point3D findAxPointInBal2(double u, double v) {
         Point3D pb = nearLandmark(u, v);
         pb = new Point3D(Math.max(0, Math.min(pb.get(0), listBX.size() - 1)), Math.max(0, Math.min(pb.get(1), listBY.size() - 1)), 0.0);
         Point3D pa = surfaceA.calculerPoint3D((double) pb.getX(), (double) pb.getY());
         return pa;
     }
 
-    private Point3D findAxPointInBal3(double u, double v) {
+    public Point3D findAxPointInBal3(double u, double v) {
         Point3D pb = nearLandmark3(u, v);
         pb = new Point3D(Math.max(0, Math.min(pb.get(0), listBX.size() - 1)), Math.max(0, Math.min(pb.get(1), listBY.size() - 1)), 0.0);
         Point3D pa = surfaceA.getCoefficients().getElem((int) (double) pb.getX(), (int) (double) pb.get(1));
@@ -98,7 +98,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
      * @param v
      * @return
      */
-    private Point3D nearLandmark(double u, double v) {
+    public Point3D nearLandmark(double u, double v) {
         Point3D uv = new Point3D(u, v, 0.0);
         double distance = Double.MAX_VALUE;
         int indexI = -1, indexJ = -1;
@@ -121,7 +121,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
      * @param v
      * @return
      */
-    private Point3D nearLandmark2(double u, double v) {
+    public Point3D nearLandmark2(double u, double v) {
         Point3D uv = new Point3D(u, v, 0.0);
         double distance = Double.MAX_VALUE;
         int indexI = -1, indexJ = -1, indexK = -1, indexL = -1;
@@ -151,7 +151,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
         return p2;
     }
 
-    private Point3D nearLandmark3(double u, double v) {
+    public Point3D nearLandmark3(double u, double v) {
         Point3D uv = new Point3D(u, v, 0.0);
         double distance = Double.MAX_VALUE;
         int indexI = -1, indexJ = -1, indexK = -1, indexL = -1;
@@ -207,7 +207,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
     }
 
 
-    private Point3D precision2(int i1, int j1, int k1, int l1) {
+    public Point3D precision2(int i1, int j1, int k1, int l1) {
         double i = i1;
         double j = j1;
         double sizeBi;
@@ -322,7 +322,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
      * @param v
      * @return
      */
-    private Point3D nearLandmark1(double u, double v) {
+    public Point3D nearLandmark1(double u, double v) {
         Point3D uv = new Point3D(u, v, 0.0);
         Point3D uvFace = model.findUvFace(u, v);
         double distance = Double.MAX_VALUE;

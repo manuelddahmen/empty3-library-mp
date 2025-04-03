@@ -32,11 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DistanceProxLinear4 extends DistanceBezier2 {
-    private Point3D[][] imageAB;
-    private List<Point3D> pointsB;
-    private List<Point3D> pointsA;
+    public Point3D[][] imageAB;
+    public List<Point3D> pointsB;
+    public List<Point3D> pointsA;
     boolean[][] checkedList;
-    private static final int MAX_SUB_ITERE_X = 10;
+    public static final int MAX_SUB_ITERE_X = 10;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -251,12 +251,12 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         return findAxPointInBa12(u, v);
     }
 
-    private Point3D findAxPointInBa11(double u, double v) {
+    public Point3D findAxPointInBa11(double u, double v) {
         return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
                 : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
     }
 
-    private Point3D findAxPointInBa12(double u, double v) {
+    public Point3D findAxPointInBa12(double u, double v) {
         double distance = Double.MAX_VALUE;
         Point3D currentDist = new Point3D(u, v, 0.0);
         int j = 0;

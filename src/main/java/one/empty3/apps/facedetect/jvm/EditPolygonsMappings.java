@@ -49,9 +49,9 @@ import java.util.logging.Logger;
  * @author manue
  */
 public class EditPolygonsMappings implements Runnable {
-    private static final int EDIT_POINT_POSITION = 1;
-    private static final int SELECT_POINT_POSITION = 2;
-    private static final int SELECT_POINT_VERTEX = 4;
+    public static final int EDIT_POINT_POSITION = 1;
+    public  static final int SELECT_POINT_POSITION = 2;
+    public static final int SELECT_POINT_VERTEX = 4;
     public static final int EDIT_OBJECT_MODE_ROTATE = 8;
     public static final int EDIT_OBJECT_MODE_TRANSLATE = 16;
     public static final int EDIT_OBJECT_MODE_INT_TRANSLATE_VECTOR = 32;
@@ -70,49 +70,49 @@ public class EditPolygonsMappings implements Runnable {
     public File txtFile;
     public boolean hdTextures = true;
     public boolean textureWired = false;
-    private final int mode = EDIT_POINT_POSITION;
+    public  final int mode = EDIT_POINT_POSITION;
     public ConvexHull convexHull1;
     public ConvexHull convexHull2;
-    int selectedPointNo = -1;
-    protected E3Model model;
-    protected TestHumanHeadTexturing testHumanHeadTexturing;
-    boolean threadDistanceIsNotRunning = true;
-    protected boolean isRunning = true;
-    private Point3D pFound = null;
-    private String landmarkType = "";
-    private double u;
-    private double v;
-    private int selectedPointNoOut = -1;
-    private Point3D selectedPointOutUv = null;
-    private Point3D selectedPointVertexOut;
-    TextureMorphMove iTextureMorphMove;
-    boolean hasChangedAorB = true;
-    boolean notMenuOpen = true;
+    public int selectedPointNo = -1;
+    public E3Model model;
+    public TestHumanHeadTexturing testHumanHeadTexturing;
+    public boolean threadDistanceIsNotRunning = true;
+    public boolean isRunning = true;
+    public Point3D pFound = null;
+    public String landmarkType = "";
+    public double u;
+    public double v;
+    public int selectedPointNoOut = -1;
+    public Point3D selectedPointOutUv = null;
+    public Point3D selectedPointVertexOut;
+    public TextureMorphMove iTextureMorphMove;
+    public boolean hasChangedAorB = true;
+    public boolean notMenuOpen = true;
     public HashMap<String, Point3D> pointsInModel = new HashMap<>();
     public HashMap<String, Point3D> pointsInImage = new HashMap<>();
     public HashMap<String, Point3D> points3 = new HashMap<>();
-    Image image = new one.empty3.libs.Image(200, 200);
-    Image imageFileRight = new one.empty3.libs.Image(200, 200);
+    public Image image = new one.empty3.libs.Image(200, 200);
+    public Image imageFileRight = new one.empty3.libs.Image(200, 200);
     public int distanceABdimSize = 25;
     public Class<? extends DistanceAB> distanceABClass = DistanceProxLinear2.class;
     public boolean opt1 = false;
     public boolean optimizeGrid = false;
-    boolean renderingStarted = false;
-    boolean renderingStopped = true;
-    int inImageType;
-    int outTxtType;
-    int inTxtType;
-    File imagesDirectory;
-    File txtInDirectory;
-    File txtOutDirectory;
-    private File modelFile;
-    private Thread threadDisplay;
-    Thread threadTextureCreation;
-    ConvexHull convexHull3;
-    private double computeTimeMax;
+    public boolean renderingStarted = false;
+    public boolean renderingStopped = true;
+    public int inImageType;
+    public int outTxtType;
+    public int inTxtType;
+    public File imagesDirectory;
+    public File txtInDirectory;
+    public File txtOutDirectory;
+    public File modelFile;
+    public Thread threadDisplay;
+    public Thread threadTextureCreation;
+    public ConvexHull convexHull3;
+    public double computeTimeMax;
     public Dimension2D dimPictureBox = new Dimension(200, 200);
     public Dimension2D dimModelBox = new Dimension(200, 200);
-    private Image image1;
+    public Image image1;
 
 
     public EditPolygonsMappings() {
@@ -272,16 +272,16 @@ public class EditPolygonsMappings implements Runnable {
         }
     }
 
-    private boolean isNotMenuOpen() {
+    public  boolean isNotMenuOpen() {
         return notMenuOpen;
     }
 
 
-    private boolean hasChangedAorB() {
+    public  boolean hasChangedAorB() {
         return hasChangedAorB;
     }
 
-    private void displayPointsIn(HashMap<String, Point3D> points) {
+    public  void displayPointsIn(HashMap<String, Point3D> points) {
         if (points == null) return;
         Dimension2D panelDraw = dimPictureBox;
         try {
@@ -294,7 +294,7 @@ public class EditPolygonsMappings implements Runnable {
 
     }
 
-    private void displayPointsOut(HashMap<String, Point3D> points) {
+    public  void displayPointsOut(HashMap<String, Point3D> points) {
         Image panelDraw = image1;
         if (image != null && panelDraw != null && testHumanHeadTexturing != null && testHumanHeadTexturing.z().la() == dimModelBox.getWidth()
                 && testHumanHeadTexturing.z().ha() == dimModelBox.getHeight()) {

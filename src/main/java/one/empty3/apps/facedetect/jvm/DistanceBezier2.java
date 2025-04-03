@@ -35,12 +35,12 @@ import java.util.List;
 
 public abstract class DistanceBezier2 extends DistanceAB {
 
-    protected Point3D getFromModelUvTo01(Point3D uv) {
+    public Point3D getFromModelUvTo01(Point3D uv) {
         return new Point3D((uv.getX()-model.uMin)/(model.uMax-model.uMax),
                 (uv.getX()-model.vMin)/(model.uMax-model.vMax), 0.0
         );
     }
-    protected Point3D getUvFrom01ToModelUv(Point3D uvScaled) {
+    public Point3D getUvFrom01ToModelUv(Point3D uvScaled) {
         return new Point3D(model.uMin+(uvScaled.getX()*(model.uMax-model.uMin)),
                 model.vMin+(uvScaled.getX()*(model.vMax-model.vMin)),0.0);
     }

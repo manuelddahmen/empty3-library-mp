@@ -37,19 +37,19 @@ import java.util.List;
 public abstract class DistanceAB {
 
     public boolean refineMatrix = false;
-    int REFINE_MATRIX_FACTOR = 5;
-    protected boolean borderNotIinitialized;
-    protected double right;
-    protected double bottom;
+    public int REFINE_MATRIX_FACTOR = 5;
+    public boolean borderNotIinitialized;
+    public double right;
+    public double bottom;
     public int distanceABdimSize = 25;
-    Image jpgRight;
-    protected FinishInitListener finishInitListener;
+    public Image jpgRight;
+    public FinishInitListener finishInitListener;
 
     public void setJpgRight(Image jpgFileRight) {
         this.jpgRight = jpgFileRight;
     }
 
-    static class Rectangle2 {
+    public static class Rectangle2 {
         public double getX1() {
             return x1;
         }
@@ -103,34 +103,34 @@ public abstract class DistanceAB {
         }
     }
 
-    protected boolean optimizeGrid = false;
-    protected int OPTIMIZED_GRID_SIZE = 5;
-    protected SurfaceParametriquePolynomiale surfaceA;
-    protected SurfaceParametriquePolynomiale surfaceB;
-    protected Dimension2D aDimReduced = new Dimension(20, 20);
-    protected Dimension2D bDimReduced = new Dimension(20, 20);
-    protected static final int TYPE_SHAPE_BEZIER = 1;
+    public boolean optimizeGrid = false;
+    public int OPTIMIZED_GRID_SIZE = 5;
+    public SurfaceParametriquePolynomiale surfaceA;
+    public SurfaceParametriquePolynomiale surfaceB;
+    public Dimension2D aDimReduced = new Dimension(20, 20);
+    public Dimension2D bDimReduced = new Dimension(20, 20);
+    public static final int TYPE_SHAPE_BEZIER = 1;
     public static final int TYPE_SHAPE_QUADR = 2;
-    protected int typeShape = TYPE_SHAPE_QUADR;
+    public int typeShape = TYPE_SHAPE_QUADR;
     public static final boolean BAL_GET_CCNTROLS_A = true;
-    static final boolean BAL_GET_MULTPLY_BDIM_A = true;
-    protected boolean opt1 = false;
-    protected DistanceBezier2.Rectangle2 rectA;
-    protected DistanceBezier2.Rectangle2 rectB;
-    protected Dimension2D aDimReal;
-    protected Dimension2D bDimReal;
-    protected List<Point3D> A;
-    protected List<Point3D> B;
-    protected Point3D[][] sAij;
-    protected Point3D[][] sBij;
+    public static final boolean BAL_GET_MULTPLY_BDIM_A = true;
+    public boolean opt1 = false;
+    public DistanceBezier2.Rectangle2 rectA;
+    public DistanceBezier2.Rectangle2 rectB;
+    public Dimension2D aDimReal;
+    public Dimension2D bDimReal;
+    public List<Point3D> A;
+    public List<Point3D> B;
+    public Point3D[][] sAij;
+    public Point3D[][] sBij;
 
-    protected List<Double> listAX = new ArrayList<>();
-    protected List<Double> listAY = new ArrayList<>();
-    protected List<Double> listBX = new ArrayList<>();
-    protected List<Double> listBY = new ArrayList<>();
+    public List<Double> listAX = new ArrayList<>();
+    public List<Double> listAY = new ArrayList<>();
+    public List<Double> listBX = new ArrayList<>();
+    public List<Double> listBY = new ArrayList<>();
 
-    protected E3Model model;
-    protected boolean isInvalidArray = false;
+    public E3Model model;
+    public boolean isInvalidArray = false;
 
     public abstract Point3D findAxPointInB(double u, double v);
 

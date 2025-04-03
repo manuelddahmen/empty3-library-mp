@@ -9,17 +9,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DistanceProxLinear44 extends DistanceBezier2 {
-    private Point3D[][] imageCB;
-    private final List<Point3D> C;
-    private final Dimension2D cDimReal;
-    private Point3D[][] imageAB;
-    private List<Point3D> pointsB;
-    private List<Point3D> pointsA;
+    public Point3D[][] imageCB;
+    public final List<Point3D> C;
+    public final Dimension2D cDimReal;
+    public Point3D[][] imageAB;
+    public List<Point3D> pointsB;
+    public List<Point3D> pointsA;
     boolean[][] checkedListA;
-    private static final int MAX_SUB_ITERE_X = 10;
-    private List<Point3D> pointsC;
+    public static final int MAX_SUB_ITERE_X = 10;
+    public List<Point3D> pointsC;
     boolean[][] checkedListC;
-    private double computeTimeMax = 1000*10e9d;
+    public double computeTimeMax = 1000*10e9d;
     boolean[][] checkedListB;
 
     /***
@@ -251,7 +251,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         return p;
     }
 
-    private Point3D searchNeighbours(int i, int j, Point3D[][] image) {
+    public Point3D searchNeighbours(int i, int j, Point3D[][] image) {
         for(int dist = 0; dist<1000; dist++) {
             for(int c=0; c<4; c++) {
                 int incrI = 0;
@@ -287,12 +287,12 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         return findAxPointInBa12(u, v);
     }
 
-    private Point3D findAxPointInBa11(double u, double v) {
+    public Point3D findAxPointInBa11(double u, double v) {
         return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
                 : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
     }
 /*
-    private Point3D findAxPointInBa12(double u, double v) {
+    public Point3D findAxPointInBa12(double u, double v) {
         Point3D searchedB = new Point3D(u*(bDimReal.getWidth()-1), v*(bDimReal.getHeight()-1), 0.0);
         for (int i = 0; i < pointsB.size(); i++) {
             Point3D currentB = pointsB.get(i).multDot(new Point3D(bDimReal.getWidth()-1, bDimReal.getHeight()-1, 0.0));
@@ -312,7 +312,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     }*/
 
 
-    private Point3D findAxPointInBa12(double u, double v) {
+    public Point3D findAxPointInBa12(double u, double v) {
         if(u>=0&&v>=0&&u<1&&v<1)
             return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
         return Point3D.O0;
