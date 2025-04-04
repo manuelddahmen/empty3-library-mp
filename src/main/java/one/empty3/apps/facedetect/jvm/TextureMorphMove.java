@@ -34,14 +34,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TextureMorphMove extends ITexture {
-    private static final Color WHITE = Color.newCol(1f,1f,1f);
-    private final EditPolygonsMappings editPanel;
+    public static final Color WHITE = Color.newCol(1f,1f,1f);
+    public final EditPolygonsMappings editPanel;
     public int selectedPointNo = -1;
-    protected DistanceAB distanceAB;
-    private final int GRAY = Color.newCol(0.5f,0.5f,0.5f).getRGB();
-    private Class<? extends DistanceBezier2> distanceABclass;
-    private List<Point3D> polyConvA;
-    private List<Point3D> polyConvB;
+    public DistanceAB distanceAB;
+    public final int GRAY = Color.newCol(0.5f,0.5f,0.5f).getRGB();
+    public Class<? extends DistanceBezier2> distanceABclass;
+    public List<Point3D> polyConvA;
+    public List<Point3D> polyConvB;
 
     @Override
     public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {

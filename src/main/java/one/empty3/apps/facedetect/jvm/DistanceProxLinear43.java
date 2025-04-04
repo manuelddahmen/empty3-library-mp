@@ -298,7 +298,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         }
         return searchedB;
     }
-    Point3D findAxPointInBa13(double u, double v) {
+    public Point3D findAxPointInBa13(double u, double v) {
         Point3D searchedB = new Point3D(u, v, 0.0);
         Point3D found = searchedB;
         if(pointsB!=null&&pointsC!=null) {

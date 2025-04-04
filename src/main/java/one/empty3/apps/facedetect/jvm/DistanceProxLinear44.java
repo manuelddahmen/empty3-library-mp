@@ -317,7 +317,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
             return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
         return Point3D.O0;
     }
-    Point3D findAxPointInBa13(double u, double v) {
+    public Point3D findAxPointInBa13(double u, double v) {
         if(u>=0&&v>=0&&u<1&&v<1)
             return imageCB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
         return Point3D.O0;

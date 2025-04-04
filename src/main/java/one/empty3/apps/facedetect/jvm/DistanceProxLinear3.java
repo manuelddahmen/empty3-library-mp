@@ -175,7 +175,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
         return p2;
     }
 
-    Point3D proxima(Point3D ij, double stepX, double stepY, double eps) {
+    public Point3D proxima(Point3D ij, double stepX, double stepY, double eps) {
         Point3D[] testedPoints = {
                 ij.plus(Point3D.X.mult(stepX).plus(Point3D.Y.mult(stepY))),
                 ij.plus(Point3D.X.mult(-stepX).plus(Point3D.Y.mult(stepY))),
@@ -244,7 +244,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
 
     }
 
-    Point3D precision(Point3D ij, double u, double v) {
+    public Point3D precision(Point3D ij, double u, double v) {
         double i = ij.getX();
         double j = ij.getY();
         double sizeBi;
@@ -280,7 +280,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
         return ij;
     }
 
-    Point3D precision2(Point3D ij, double k, double l) {
+    public Point3D precision2(Point3D ij, double k, double l) {
         double i = ij.getX();
         double j = ij.getY();
         double sizeBi;
@@ -348,7 +348,7 @@ public class DistanceProxLinear3 extends DistanceBezier2 {
      * @param surfaceX
      * @return
      */
-    Point3D percentList(Point3D textureCord2D, List<Point3D> listXX, List<Point3D> listXY, SurfaceParametriquePolynomiale surfaceX) {
+    public Point3D percentList(Point3D textureCord2D, List<Point3D> listXX, List<Point3D> listXY, SurfaceParametriquePolynomiale surfaceX) {
         return null;
     }
 }
