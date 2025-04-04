@@ -157,7 +157,7 @@ public class TextureMorphMove extends ITexture {
                                 markA = true;
                                 double[] color = new double[3];
                                 double[] rgb3 = Lumiere.getDoubles(dist4.jpgRight.getRgb(x3, y3));
-                                double[] rgb1 = Lumiere.getDoubles(editPanel.image.getRGB(xLeft, yLeft));
+                                double[] rgb1 = Lumiere.getDoubles(editPanel.image.getRgb(xLeft, yLeft));
                                 for (int k = 0; k < 3; k++) {
                                     color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;
                                 }
