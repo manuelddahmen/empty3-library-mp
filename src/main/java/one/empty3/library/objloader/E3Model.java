@@ -40,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -834,5 +835,47 @@ public class E3Model extends RepresentableConteneur {
         }
 
         return selectedUv;
+    }
+
+    @Override
+    public String toString() {
+        return "E3Model{" +
+                "vertexsets=" + vertexsets +
+                ", vertexsetsnorms=" + vertexsetsnorms +
+                ", vertexsetstexs=" + vertexsetstexs +
+                ", faces=" + faces +
+                ", facestexs=" + facestexs +
+                ", facesnorms=" + facesnorms +
+                ", mattimings=" + mattimings +
+                ", materials=" + materials +
+                ", numpolys=" + numpolys +
+                ", surfacesDegrees=" + surfacesDegrees +
+                ", surfacesVertex=" + surfacesVertex +
+                ", toppoint=" + toppoint +
+                ", bottompoint=" + bottompoint +
+                ", leftpoint=" + leftpoint +
+                ", rightpoint=" + rightpoint +
+                ", farpoint=" + farpoint +
+                ", nearpoint=" + nearpoint +
+                ", mtl_path='" + mtl_path + '\'' +
+                ", color=" + color +
+                ", csDim=" + csDim +
+                ", rat=" + rat +
+                ", cstype='" + cstype + '\'' +
+                ", degU=" + degU +
+                ", degV=" + degV +
+                ", surface=" + surface +
+                ", curve=" + curve +
+                ", s=" + s +
+                ", k=" + k +
+                ", knotV=" + Arrays.toString(knotV) +
+                ", knotU=" + Arrays.toString(knotU) +
+                ", objects=" + objects +
+                ", uMin=" + uMin +
+                ", vMin=" + vMin +
+                ", uMax=" + uMax +
+                ", vMax=" + vMax +
+                ", thisModel=" + thisModel +
+                '}';
     }
 }
