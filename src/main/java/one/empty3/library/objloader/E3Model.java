@@ -208,6 +208,20 @@ public class E3Model extends RepresentableConteneur {
         public void setTextUv(double[] textUv) {
             this.textUv = textUv;
         }
+
+        @Override
+        public String toString() {
+            return "FaceWithUv{" +
+                    "polygon0=" + polygon0 +
+                    ", model=" + model +
+                    ", polygon=" + polygon +
+                    ", textUv=" + Arrays.toString(textUv) +
+                    ", u1=" + u1 +
+                    ", u2=" + u2 +
+                    ", v1=" + v1 +
+                    ", v2=" + v2 +
+                    '}';
+        }
     }
 
     //THIS CLASS LOADS THE MODELS
@@ -840,42 +854,11 @@ public class E3Model extends RepresentableConteneur {
     @Override
     public String toString() {
         return "E3Model{" +
-                "vertexsets=" + vertexsets +
-                ", vertexsetsnorms=" + vertexsetsnorms +
-                ", vertexsetstexs=" + vertexsetstexs +
-                ", faces=" + faces +
-                ", facestexs=" + facestexs +
-                ", facesnorms=" + facesnorms +
-                ", mattimings=" + mattimings +
-                ", materials=" + materials +
-                ", numpolys=" + numpolys +
-                ", surfacesDegrees=" + surfacesDegrees +
-                ", surfacesVertex=" + surfacesVertex +
-                ", toppoint=" + toppoint +
-                ", bottompoint=" + bottompoint +
-                ", leftpoint=" + leftpoint +
-                ", rightpoint=" + rightpoint +
-                ", farpoint=" + farpoint +
-                ", nearpoint=" + nearpoint +
-                ", mtl_path='" + mtl_path + '\'' +
-                ", color=" + color +
-                ", csDim=" + csDim +
-                ", rat=" + rat +
-                ", cstype='" + cstype + '\'' +
-                ", degU=" + degU +
-                ", degV=" + degV +
-                ", surface=" + surface +
-                ", curve=" + curve +
-                ", s=" + s +
-                ", k=" + k +
-                ", knotV=" + Arrays.toString(knotV) +
-                ", knotU=" + Arrays.toString(knotU) +
-                ", objects=" + objects +
+                "representables=[" + getListRepresentable().size() +
                 ", uMin=" + uMin +
                 ", vMin=" + vMin +
                 ", uMax=" + uMax +
                 ", vMax=" + vMax +
-                ", thisModel=" + thisModel +
                 '}';
     }
 }
