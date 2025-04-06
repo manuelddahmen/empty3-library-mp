@@ -612,7 +612,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     @Override
     public Image imageInvX() {
-        Image bi2 = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
+        Image bi2 = new one.empty3.libs.Image(la, ha);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -1057,10 +1057,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int col = texture.getColorAt(uPoint, vPoint);
                 if (displayType <= SURFACE_DISPLAY_TEXT_QUADS) {
                     if (face != null) {
-                        testDeep(pFinal, original.getRGB((int) (double) (pFinalOnImage.getX()), (int) (double) (pFinalOnImage.getY())));
+                        testDeep(pFinal, original.getRgb((int) (double) (pFinalOnImage.getX()), (int) (double) (pFinalOnImage.getY())));
 
                     } else if (original != null) {
-                        testDeep(pFinal, original.getRGB((int) (double) (pFinalOnImage.getX()), (int) (double) (pFinalOnImage.getY())));
+                        testDeep(pFinal, original.getRgb((int) (double) (pFinalOnImage.getX()), (int) (double) (pFinalOnImage.getY())));
                     } else {
                         testDeep(pFinal, col);
                     }

@@ -855,7 +855,8 @@ public class E3Model extends RepresentableConteneur {
     public String toString() {
         return "E3Model{" +
                 "representables=[" + getListRepresentable().size() +
-                ", uMin=" + uMin +
+                "],objects=["+objects.getListRepresentable().size()+
+                "], uMin=" + uMin +
                 ", vMin=" + vMin +
                 ", uMax=" + uMax +
                 ", vMax=" + vMax +
