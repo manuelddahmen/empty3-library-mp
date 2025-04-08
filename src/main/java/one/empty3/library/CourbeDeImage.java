@@ -66,7 +66,7 @@ public class CourbeDeImage {
                     y0 = y1;
                     y1 = j;
                     if (y0 == -1 || (y1 > y0 + 1)) {
-                        points.put(new Point2D(i, j), new Color(image.getRGB(i, j)));
+                        points.put(new Point2D(i, j), new Color(image.getRgb(i, j)));
                         break;
                     }
                 }

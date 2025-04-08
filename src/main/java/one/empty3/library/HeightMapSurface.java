@@ -74,7 +74,7 @@ public abstract class HeightMapSurface extends ParametricSurface {
 
         return surface.getElem().calculerPoint3D(u, v).plus(
                 surface.getElem().calculerTangenteU(u, v).prodVect(surface.getElem().calculerTangenteV(u, v)
-                ).norme1().mult(elem.getRGB(i, j)));
+                ).norme1().mult(elem.getRgb(i, j)));
     }
 
     @Override

@@ -596,10 +596,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int elementCouleur = 0;
                 if(ime.imeProf[i][j] == INFINITY.getZ()) {
                     if(texture()!=null) {
-                        elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha);
+                        elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha)&0x00ffffff;
                     }
                 } else {
-                    elementCouleur = ime.getElementCouleur(i, j);
+                    elementCouleur = ime.getElementCouleur(i, j)&0x00ffffff;
                 }
                 bi2.setRgb(i, j, elementCouleur);
 
@@ -618,7 +618,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int elementCouleur = ime.getElementCouleur(i, j);
                 if (ime != null && (ime.getElementPoint(i, j) == null ||
                         ime.getElementPoint(i, j).equals(INFINITY))) {
-                    //elementCouleur = Color.TRANSLUCENT;
+                    elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha)&0x00ffffff;
                 }
                 bi2.setRgb(la - i - 1, j, elementCouleur);
 
@@ -2156,7 +2156,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             int y = (int) ce.getY();
             double deep = camera().distanceCamera(x3d);
             if (x >= 0 & x < la & y >= 0 & y < ha
-                    && (deep >= ime.getElementProf(x, y))) {
+                    && (deep >= ime.getElementProf(x, y)
+                    ||ime.getElementProf(x, y) == INFINITY.getZ())) {
                 Point3D n = x3d.getNormale();
                 // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
                 // dans la même direction par rapport à la caméra.

@@ -30,14 +30,15 @@
 package one.empty3.library;
 
 
-import java.awt.Color;
+import one.empty3.libs.Color;
 
 /*__
  * @author Atelier
  */
 public abstract class Lumiere extends Representable {
     // ambient specular diffuse shinyness
-    protected Color La = Color.BLACK, Ls = Color.WHITE, Ld = Color.WHITE;
+    protected Color La = one.empty3.libs.Color.newCol(0,0,0)
+            , Ls = Color.newCol(1,1,1), Ld = Color.newCol(1,1,1);
 
     protected double S = 0.5;
 
@@ -52,7 +53,7 @@ public abstract class Lumiere extends Representable {
                 c[i] = 255;
             res += c[i];
         }
-        return new Color(c[0], c[1], c[2]);
+        return Color.newCol(c[0], c[1], c[2]);
     }
 
     public static int getIntFromInts(int r, int g, int b) {
@@ -61,6 +62,11 @@ public abstract class Lumiere extends Representable {
 
     public static int getIntFromFloats(float... kd) {
         return getInt(new double[]{kd[0], kd[1], kd[2]});
+    }
+
+    public static float[] getFloatFromColorInt(int c) {
+        double[] c1 = Lumiere.getDoubles(c);
+        return new float[] {(float) c1[0], (float) c1[1], (float) c1[2]};
     }
 
     public abstract int getCouleur(int base, Point3D p, Point3D n);
@@ -117,6 +123,6 @@ public abstract class Lumiere extends Representable {
     }
 
     public static Color getColorD(double[] d) {
-        return new Color((float) (d[0]), (float) (d[1]), (float) (d[2]));
+        return Color.newCol((float) (d[0]), (float) (d[1]), (float) (d[2]));
     }
 }

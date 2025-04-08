@@ -124,7 +124,7 @@ public class Scene extends Representable implements Serializable {
         int l = cs.length;
         for (int c = 0; c < l; c++) {
             for (int i = 0; i < 3; i++) {
-                compArray3 = new Color(cs[i]).getRGBComponents(compArray);
+                compArray3 = Lumiere.getFloatFromColorInt(cs[i]);
 
                 compArray3[i] += compArray[i] / l;
             }
