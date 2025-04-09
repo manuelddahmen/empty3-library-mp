@@ -290,7 +290,7 @@ public class Lines6 extends ProcessFile {
 
         list3.forEach(point3DS -> {
             paste.pasteList(point3DS,
-                    stack, new ColorTexture(new one.empty3.libs.Color(((one.empty3.libs.Color.WHITE)))));
+                    stack, new ColorTexture(new one.empty3.libs.Color(((one.empty3.libs.Color.newCol(1f,1f,1f))))));
         });
 
         Image.saveFile(stack.getImage(), "jpg", out, shouldOverwrite);

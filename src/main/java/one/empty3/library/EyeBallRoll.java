@@ -114,7 +114,7 @@ public class EyeBallRoll extends JPanel {
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(8.).plus(y1.mult(-8.)))),
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(8.).plus(y1.mult(8.)))),
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(-8.).plus(y1.mult(8.)))),
-                    }, new ColorTexture(Lumiere.getIntFromFloats(Color.RED.getRgb())));
+                    }, new ColorTexture(Lumiere.getIntFromFloats(Color.newCol(1f,0f,0f).getRgb())));
 
                     Point3D z0 = z1;//Point3D.Z;
                     Point3D x0 = x1;
@@ -125,7 +125,7 @@ public class EyeBallRoll extends JPanel {
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(4.).plus(y0.mult(-4.)))),
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(4.).plus(y0.mult(4.)))),
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(-2.).plus(y0.mult(2.)))),
-                    }, new ColorTexture(Color.RED.getRgb()));
+                    }, new ColorTexture(Color.newCol(1f,0f,0f).getRgb()));
                     //scene.cameraActive(new Camera2Quad(z, p1, p0));//???
                     //scene.cameraActive().imposerMatrice(matrice.tild());
                     scene.cameraActive(new Camera2Quad(z, p0, p1));
@@ -160,7 +160,7 @@ public class EyeBallRoll extends JPanel {
                     draw(pInitial);
                     draw(pMoved);
                     //graphics.drawImage(z.image(), 0, 0, getWidth(), getHeight(), null);
-                    graphics.setColor(Color.WHITE);
+                    graphics.setColor(Color.newCol(1f,1f,1f));
                     graphics.fillRect(0, 0, RES, RES);
 
                     graphics.setColor(Color.RED);
@@ -219,9 +219,9 @@ public class EyeBallRoll extends JPanel {
         Graphics graphics = getGraphics();
         if (p3_current.texture() != null) {
             graphics.setColor(new Color(p3_current.texture().getColorAt(0.5, 0.5)));
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(Color.newCol(0f,0f,0f));
         } else {
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(Color.newCol(0f,0f,0f));
         }
     }
 
@@ -232,7 +232,7 @@ public class EyeBallRoll extends JPanel {
             if (p3_current.texture() != null) {
                 graphics.setColor(new Color(p3_current.texture().getColorAt(0.5, 0.5)));
             } else {
-                graphics.setColor(Color.BLACK);
+                graphics.setColor(Color.newCol(0f,0f,0f));
             }
             Point2D proj = transform3D2D1(p3_current);
             graphics.drawLine((int) proj.getX(), (int) proj.getY(), 0, 0);
@@ -529,10 +529,10 @@ public class EyeBallRoll extends JPanel {
         frame.setVisible(true);
 
         Scene scene = new Scene();
-        scene.add(new LineSegment(Point3D.O0, Point3D.X, new ColorTexture(Color.RED.getRgb())));
-        scene.add(new LineSegment(Point3D.O0, Point3D.Y, new ColorTexture(Color.GREEN.getRgb())));
-        scene.add(new LineSegment(Point3D.O0, Point3D.Z, new ColorTexture(Color.BLUE.getRgb())));
-//        scene.add(new Cube(new ColorTexture(Color.BLACK)));
+        scene.add(new LineSegment(Point3D.O0, Point3D.X, new ColorTexture(Color.newCol(1f,0f,0f).getRgb())));
+        scene.add(new LineSegment(Point3D.O0, Point3D.Y, new ColorTexture(Color.newCol(0f,1f,0f).getRgb())));
+        scene.add(new LineSegment(Point3D.O0, Point3D.Z, new ColorTexture(Color.newCol(0f,0f,1f).getRgb())));
+//        scene.add(new Cube(new ColorTexture(Color.newCol(0f,0f,0f))));
         panelSphereMove.draw = panelSphereMove.new Draw(scene);
         panelSphereMove.draw.start();
 

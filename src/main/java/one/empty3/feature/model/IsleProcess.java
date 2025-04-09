@@ -57,7 +57,7 @@ public class IsleProcess extends ProcessFile {
         }
 
         IsleFilterPixM il = new IsleFilterPixM(pix);
-        il.setValues(Color.BLUE.getRgb(), Color.WHITE.getRgb(), 0.4);
+        il.setValues(Color.newCol(0f,0f,1f).getRgb(), Color.newCol(1f,1f,1f).getRgb(), 0.4);
         il.filter();
         try {
 

@@ -330,7 +330,7 @@ public class InterpreteFacade {
 
     public Color interpreteColor() throws InterpreteException {
         InterpreteCouleur pc = new InterpreteCouleur();
-        Color c = new Color(Color.BLACK.getRgb());
+        Color c = new Color(Color.newCol(0f,0f,0f).getRgb());
         try {
             c = (Color) pc.interprete(text, pos);
             pos = pc.getPosition();

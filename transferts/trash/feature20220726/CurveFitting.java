@@ -298,9 +298,9 @@ public class CurveFitting extends ProcessFile {
         //        pix.getLines()/2, 0)), Point3D.Z.mult(-1)), (imgX2-imgX1)/3.*2);
 
         inPix.paintAll(new double[]{0, 0, 0});
-        inPix.fillIn(curveInitial, new ColorTexture(Color.WHITE), new ColorTexture(Color.RED));
+        inPix.fillIn(curveInitial, new ColorTexture(Color.newCol(1f,1f,1f)), new ColorTexture(Color.RED));
         outPix.paintAll(new double[]{1, 1, 1});
-        outPix.fillIn(curveInitial, new ColorTexture(Color.BLACK), new ColorTexture(Color.RED));
+        outPix.fillIn(curveInitial, new ColorTexture(Color.newCol(0f,0f,0f)), new ColorTexture(Color.RED));
 
         curvePoints = approx();
 
@@ -308,8 +308,8 @@ public class CurveFitting extends ProcessFile {
         //double[][] distances = distances();
         //inPix.paintAll(new double[]{0, 0, 0});
         //outPix.paintAll(new double[]{1, 1, 1});
-        inPix.fillIn(curvePoints, new ColorTexture(Color.WHITE), new ColorTexture(Color.WHITE));
-        outPix.fillIn(curvePoints, new ColorTexture(Color.BLACK), new ColorTexture(Color.BLACK));
+        inPix.fillIn(curvePoints, new ColorTexture(Color.newCol(1f,1f,1f)), new ColorTexture(Color.newCol(1f,1f,1f)));
+        outPix.fillIn(curvePoints, new ColorTexture(Color.newCol(0f,0f,0f)), new ColorTexture(Color.newCol(0f,0f,0f)));
 
         double e = E();
         //curveResult = modify();
@@ -319,7 +319,7 @@ public class CurveFitting extends ProcessFile {
         curvePoints.setIncrU(1. / maxRes / curvePoints.getCoefficients().data1d.size());
 
         Logger.getAnonymousLogger().log(Level.INFO, "Courbe 4/5");
-        p.plotCurve(curvePoints, new ColorTexture(Color.WHITE));
+        p.plotCurve(curvePoints, new ColorTexture(Color.newCol(1f,1f,1f)));
         Logger.getAnonymousLogger().log(Level.INFO, "Courbe 5/5");
         p.plotCurve(circle, new ColorTexture(Color.BLUE));
         for (Point3D c : curvePoints.getCoefficients().getData1d()) {
@@ -336,7 +336,7 @@ public class CurveFitting extends ProcessFile {
         //normalize.plotCurve(courbeParametriquePolynomialeBezier, Color.GREEN);
         //normalize.plotCurve(curvePoints, Color.BLUE);
 
-        //normalize.fillIn(courbeParametriquePolynomialeBezier, Color.BLACK, Color.WHITE);
+        //normalize.fillIn(courbeParametriquePolynomialeBezier, Color.newCol(0f,0f,0f), Color.newCol(1f,1f,1f));
 
         System.out.printf("curveResult  %d\n", curveResult.getCoefficients().getData1d().size());
         System.out.printf("curveInitial %d\n", ((CourbeParametriquePolynomialeBezier) curveInitial)

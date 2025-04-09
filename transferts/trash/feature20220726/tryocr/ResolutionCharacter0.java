@@ -189,7 +189,7 @@ public class ResolutionCharacter0 implements Runnable {
 
         Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 
-        final ITexture texture = new ColorTexture(Color.BLACK);
+        final ITexture texture = new ColorTexture(Color.newCol(0f,0f,0f));
 
         for (int j = 0; j < input.getLines() - step; j += step) {
             if (j % (input.getLines() / 10) == 0)
@@ -623,7 +623,7 @@ public class ResolutionCharacter0 implements Runnable {
         State previousState;
         PixM input;
         PixM backgroundImage;
-        int textColor = Color.BLACK.getRgb();
+        int textColor = Color.newCol(0f,0f,0f).getRgb();
         int dim;
 
         public State(PixM image, PixM backgroundImage, int i, int j, int step) {
@@ -638,7 +638,7 @@ public class ResolutionCharacter0 implements Runnable {
             PixM pError = state.backgroundImage;
             PixM inputCopy = input.copy();
             state.currentCurves.forEach(courbeParametriquePolynomialeBezier -> {
-                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.BLACK));
+                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.newCol(0f,0f,0f)));
                 numCurves++;
             });
             PixM copy = pError.copy();

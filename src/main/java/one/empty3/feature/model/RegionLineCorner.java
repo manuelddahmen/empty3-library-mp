@@ -290,7 +290,7 @@ public class RegionLineCorner extends ProcessFile {
         pointsOfInterest.stream().forEach(circle -> {
                 if (circle.i >= min && circle.r>0) {
                     Graphics graphics = img.getGraphics();
-                    graphics.setColor(Color.WHITE);
+                    graphics.setColor(Color.newCol(1f,1f,1f));
                     graphics.drawOval((int) (circle.x - circle.r), (int) (circle.y - circle.r), (int) (circle.r * 2), (int) (circle.r * 2));
                     graphics = img2.getGraphics();
                     Color color = new Color((float) circle.i, 0f, (float) (circle.i / circle.r));

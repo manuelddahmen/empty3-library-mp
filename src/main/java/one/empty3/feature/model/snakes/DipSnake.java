@@ -97,7 +97,7 @@ public class DipSnake /*extends ParametricCurve*/ {
 
     public double pointsIn(PixM original) {
         PixM m = new PixM(original.getColumns(), original.getLines());
-        //m.fillIn(this, Color.colorTexture(Color.BLACK), Color.colorTexture(Color.WHITE));
+        //m.fillIn(this, Color.colorTexture(Color.newCol(0f,0f,0f)), Color.colorTexture(Color.newCol(1f,1f,1f)));
         double moy = 0.0;
         int countIn = 0;
         for (int l = 0; l < original.getLines(); l++)
@@ -124,7 +124,7 @@ public class DipSnake /*extends ParametricCurve*/ {
     public double pointsOut(M original) {
         PixM m = new PixM(original.getColumns(), original.getLines());
 
-        //m.fillIn(this, Color.colorTexture(Color.WHITE), Color.colorTexture(Color.WHITE));
+        //m.fillIn(this, Color.colorTexture(Color.newCol(1f,1f,1f)), Color.colorTexture(Color.newCol(1f,1f,1f)));
         for (int l = 0; l < original.getLines(); l++)
             for (int c = 0; c < original.getColumns(); c++) {
                 m.set(c, l, 1 - m.get(c, l));

@@ -69,7 +69,7 @@ public class Classification extends ProcessFile {
         selectPointColorMassAglo = PixM.getPixM(read, maxRes);
         imageOut = new one.empty3.libs.Image(in);
         SelectPointColorMassAglo selectPointColorMassAglo1 = new SelectPointColorMassAglo(read);
-        int color = Color.WHITE.getRgb();
+        int color = Color.newCol(1f,1f,1f).getRgb();
         for (int i = 0; i < imageOut.getWidth(); i += 1)
             for (int j = 0; j < imageOut.getHeight(); j += 1) {
                 selectPointColorMassAglo1.setTmpColor((new Colors().random()));

@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                if (sobelArray[i][j] > threshold) {
-//                    img.setRGB(i, j, Color.WHITE.getRgb());
+//                    img.setRGB(i, j, Color.newCol(1f,1f,1f).getRgb());
 //                }
 //            }
 //        }

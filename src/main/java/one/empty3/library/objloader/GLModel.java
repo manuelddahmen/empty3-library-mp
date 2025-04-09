@@ -436,11 +436,11 @@ public class GLModel {
                 float tempy = ((float[]) vertexsets.get(tempfaces[w] - 1))[1];
                 float tempz = ((float[]) vertexsets.get(tempfaces[w] - 1))[2];
                 face[w] = new Point3D(1.0 * tempx, 1.0 * tempy, 1.0 * tempz);
-                face[w].texture(new ColorTexture((color != null) ? color : new Color(Color.WHITE.getRgb())));
+                face[w].texture(new ColorTexture((color != null) ? color : new Color(Color.newCol(1f,1f,1f).getRgb())));
             }
 
             if (color == null)
-                color = new Color(Color.WHITE);
+                color = new Color(Color.newCol(1f,1f,1f));
             Representable r = null;
             if (faceLength >= 4) {
                 r = new Polygon(face, color);

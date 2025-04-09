@@ -197,7 +197,7 @@ public class Lines5 extends ProcessFile {
                /* bLines.drawLine((int) (double) p1.getX(),
                         (int) (double) p1.getY(),
                         (int) (double) p2.getX(),
-                        (int) (double) p2.getY(), Color.BLACK);
+                        (int) (double) p2.getY(), Color.newCol(0f,0f,0f));
         */
             }
         });

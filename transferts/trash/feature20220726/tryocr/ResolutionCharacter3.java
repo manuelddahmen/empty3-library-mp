@@ -213,7 +213,7 @@ import java.util.logging.Logger;
 //        outRecompose = new PixM(input.getColumns(), input.getLines());
 //        Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 //
-//        final ITexture texture = new ColorTexture(Color.BLACK);
+//        final ITexture texture = new ColorTexture(Color.newCol(0f,0f,0f));
 //
 //        for (int j = 0; j < input.getLines() - step; j += step) {
 //            if (j % (input.getLines() / 100) == 0)
@@ -859,7 +859,7 @@ import java.util.logging.Logger;
 //        State previousState;
 //        PixM input;
 //        PixM backgroundImage;
-//        Color textColor = Color.BLACK;
+//        Color textColor = Color.newCol(0f,0f,0f);
 //        int dim;
 //
 //        public State(PixM image, PixM backgroundImage, int i, int j, int step) {
@@ -874,7 +874,7 @@ import java.util.logging.Logger;
 //            PixM pError = state.backgroundImage;
 //            PixM inputCopy = input.copy();
 //            state.currentCurves.forEach(courbeParametriquePolynomialeBezier -> {
-//                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.BLACK));
+//                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(Color.newCol(0f,0f,0f)));
 //                numCurves++;
 //            });
 //            PixM copy = pError.copy();

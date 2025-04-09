@@ -367,7 +367,7 @@ dependencies {
 //    implementation "one.empty3.libs:commons-mp:0.0.9"
 
 
-    implementation  "one.empty3.libs:partial-desktop:0.0.23" // <--- ADD THIS LINE
+    implementation  "one.empty3.libs:partial-desktop:0.0.24" // <--- ADD THIS LINE
     implementation "one.empty3.libs:commons-mp:0.0.10" // <--- ADD THIS LINE
     // ... other dependencies ...
 // ... (rest of your build.gradle file) ...

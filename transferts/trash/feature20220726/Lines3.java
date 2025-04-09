@@ -379,8 +379,8 @@ public class Lines3 extends ProcessFile {
                 int x2 = (int) (double) pDraw2.getX();
                 int y2 = (int) (double) pDraw2.getY();
                 if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                    bLines.setRGB(x1, y1, Color.WHITE.getRgb());
-                    bLines.setRGB(x2, y2, Color.WHITE.getRgb());
+                    bLines.setRGB(x1, y1, Color.newCol(1f,1f,1f).getRgb());
+                    bLines.setRGB(x2, y2, Color.newCol(1f,1f,1f).getRgb());
                 }
             }
         }

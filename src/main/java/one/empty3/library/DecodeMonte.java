@@ -142,8 +142,8 @@ if(in==null)
             out.setPalette(0, img.getColorModel());
 
             // initialize the animation
-            g.setBackground(Color.WHITE);
-            g.setColor(Color.BLACK);
+            g.setBackground(Color.newCol(1f,1f,1f));
+            g.setColor(Color.newCol(0f,0f,0f));
             int rhour = Math.min(img.getWidth(), img.getHeight()) / 2 - 50;
             int rminute = Math.min(img.getWidth(), img.getHeight()) / 2 - 30;
             int cx = img.getWidth() / 2;
@@ -159,7 +159,7 @@ if(in==null)
                 // Create an animation frame
                 g.clearRect(0, 0, img.getWidth(), img.getHeight());
                 Line2D.Double lhour = new Line2D.Double(cx, cy, cx + Math.sin(thour * Math.PI * 2) * rhour, cy - Math.cos(thour * Math.PI * 2) * rhour);
-                g.setColor(Color.BLACK);
+                g.setColor(Color.newCol(0f,0f,0f));
                 g.setStroke(shour);
                 g.draw(lhour);
                 Line2D.Double lminute = new Line2D.Double(cx, cy, cx + Math.sin(tminute * Math.PI * 2) * rminute, cy - Math.cos(tminute * Math.PI * 2) * rminute);

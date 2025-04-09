@@ -44,7 +44,7 @@ public class Turtle3D_2 {
     private Point3D positionTurtle = Point3D.O0;
 
     private double diametre;
-    private Color color = new Color(Color.BLACK);
+    private Color color = new Color(Color.newCol(0f,0f,0f));
 
     private Point3D matriceRepereULH(Point3D p3dUnite) {
         return /* RZ */new Matrix33(new double[]{

@@ -38,14 +38,14 @@ import one.empty3.libs.*;
  * @author Atelier
  */
 public class LumierePointSimple extends LumierePoint {
-    public static final Lumiere PARDEFAUT = new LumierePointSimple(new Color(Color.WHITE),
+    public static final Lumiere PARDEFAUT = new LumierePointSimple(new Color(Color.newCol(1f,1f,1f)),
             Point3D.O0, 2.0);
     float[] f = new float[3];
     private Color couleur;
     private Point3D point;
     private double intensite = 1.0;
     private float[] comp = new float[3];
-    private int baseBlack = Color.BLACK.getRgb();
+    private int baseBlack = Color.newCol(0f,0f,0f).getRgb();
 
     public LumierePointSimple(Color c, Point3D pl, double intensite) {
         this.couleur = c;

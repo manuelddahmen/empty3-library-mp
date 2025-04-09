@@ -204,7 +204,7 @@ public class Lines5 extends ProcessFile {
                 bLines.drawLine((int) (double) p1.getX(),
                         (int) (double) p1.getY(),
                         (int) (double) p2.getX(),
-                        (int) (double) p2.getY(), Color.BLACK.getRgb());
+                        (int) (double) p2.getY(), Color.newCol(0f,0f,0f).getRgb());
         });
 
         double longueur = 0.0;
@@ -281,7 +281,7 @@ public class Lines5 extends ProcessFile {
         temp1.forEach(point3D -> {
                     System.out.printf("POINT LIST TEMP1 %s", point3D);
                     bLines.drawLine((int) (double) point3D.getX() - 2, (int) (double) point3D.getY() - 2,
-                            (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, Color.BLUE.getRgb());
+                            (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, Color.newCol(0f,0f,1f).getRgb());
                 }
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));

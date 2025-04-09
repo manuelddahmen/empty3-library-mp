@@ -184,7 +184,7 @@ public class BallePanel extends DataPanel implements Runnable {
         while (true) {
             f.calculer();
 
-            g.setColor(Color.BLACK);
+            g.setColor(Color.newCol(0f,0f,0f));
             g.fillRect(0, 0, getWidth(), getHeight());
 
 

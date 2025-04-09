@@ -61,7 +61,7 @@ public class PasteRect extends ProcessFile {
             int rgb = col.getColorAt(
                     pi.getX() / img.getColumns(),
                     pi.getY() / img.getLines());
-            rgb = Color.BLACK.getRgb();
+            rgb = Color.newCol(0f,0f,0f).getRgb();
             double[] rgbD = lookForColor(img, x, y, Lumiere.getDoubles(rgb));
             for (int comp = 0; comp < 3; comp++) {
                 img.setCompNo(comp);
@@ -154,7 +154,7 @@ public class PasteRect extends ProcessFile {
         Image read = new one.empty3.libs.Image(in);
         PixM pixM = PixM.getPixM(read, maxRes);
         getSource("paste");
-        PixM pixM1 = pasteList(pixM, new ColorTexture(Color.BLACK.getRgb()));
+        PixM pixM1 = pasteList(pixM, new ColorTexture(Color.newCol(0f,0f,0f).getRgb()));
         pixM1.normalize(0, 1).getImage().saveFile( out);
         return true;
     }

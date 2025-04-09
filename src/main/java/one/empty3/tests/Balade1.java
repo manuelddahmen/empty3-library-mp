@@ -117,7 +117,7 @@ public class Balade1 extends TestObjetSub {
             scene().cameraActive(camera);
 
             //z().setDisplayType(Representable.DISPLAY_ALL);
-            //z().texture(new ColorTexture(java.awt.Color.BLACK.getRgb()));
+            //z().texture(new ColorTexture(java.awt.Color.newCol(0f,0f,0f).getRgb()));
             StructureMatrix<Point3D> mat = new StructureMatrix<>(2, Point.class);
             mat.setElem(new Point3D(-10d, 0d, -10d), 0, 0);
             mat.setElem(new Point3D(10d, 0d, -10d), 1, 0);

@@ -50,7 +50,7 @@ public class LumiereScene {/*
      public class Lumiere
      {
      private double ratio = 1.0;
-     private Color baseCouleur = Color.WHITE;
+     private Color baseCouleur = Color.newCol(1f,1f,1f);
      private Point3D vecteur = new Point3D(0,0,1);
      public void ratio(double r)
      {
