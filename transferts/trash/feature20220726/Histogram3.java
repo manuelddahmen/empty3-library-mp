@@ -206,7 +206,7 @@ public class Histogram3 extends ProcessFile {
             Circle circle = pointsOfInterest.get(i);
             double v = circle.i / circle.r / i_ir[1];
             Color color = new Color((float) (v), (float) (v), (float) (v));
-            img2.setRGB((int) (circle.x), (int) (circle.y), color.getRGB());
+            img2.setRGB((int) (circle.x), (int) (circle.y), color.getRgb());
         }
         // grouper les points par similarités et distances
               /*  group(pointsOfInterest);

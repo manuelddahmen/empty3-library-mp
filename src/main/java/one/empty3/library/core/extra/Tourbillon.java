@@ -56,10 +56,10 @@ public class Tourbillon extends Representable implements
         // this.axe = new Axe(new Point3D(0, 0, 0), new Point3D(0, 1, 0));
         this.obj = new PObjet();
         this.tours = 4.0;
-        int[] colors = new int[]{Color.red.getRGB(), Color.green.getRGB(), Color.blue.getRGB(),
-                Color.orange.getRGB(), Color.cyan.getRGB(), Color.darkGray.getRGB(), Color.black.getRGB(),
-                Color.gray.getRGB(), Color.lightGray.getRGB(), Color.magenta.getRGB(), Color.pink.getRGB(),
-                Color.yellow.getRGB()};
+        int[] colors = new int[]{Color.red.getRgb(), Color.green.getRgb(), Color.blue.getRgb(),
+                Color.orange.getRgb(), Color.cyan.getRgb(), Color.darkGray.getRgb(), Color.black.getRgb(),
+                Color.gray.getRgb(), Color.lightGray.getRgb(), Color.magenta.getRgb(), Color.pink.getRgb(),
+                Color.yellow.getRgb()};
 
         double angle = 0.0;
 

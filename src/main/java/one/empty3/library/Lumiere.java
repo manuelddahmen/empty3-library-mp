@@ -72,15 +72,15 @@ public abstract class Lumiere extends Representable {
     public abstract int getCouleur(int base, Point3D p, Point3D n);
 
     public int getLa() {
-        return La.getRGB();
+        return La.getRgb();
     }
 
     public int getLs() {
-        return Ls.getRGB();
+        return Ls.getRgb();
     }
 
     public int getLd() {
-        return Ld.getRGB();
+        return Ld.getRgb();
     }
 
     public static double[] getRgb(Color c) {

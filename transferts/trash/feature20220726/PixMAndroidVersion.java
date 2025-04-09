@@ -220,7 +220,7 @@ public class PixMAndroidVersion extends MBitmap {
 
                     rgba[comp] = value;
                 }
-                image.setRGB(i, j, new Color(rgba[0], rgba[1], rgba[2]).getRGB());
+                image.setRGB(i, j, new Color(rgba[0], rgba[1], rgba[2]).getRgb());
             }
         }
         return image;
@@ -584,7 +584,7 @@ public class PixMAndroidVersion extends MBitmap {
 
         double[] rgba = new double[getCompCount()];
         for (double t = 0; t < 1.0; t += 0.001) {
-            rgba = Lumiere.getDoubles(Color.valueOf(curve.texture().getColorAt(t, 0.)).getRGB());
+            rgba = Lumiere.getDoubles(Color.valueOf(curve.texture().getColorAt(t, 0.)).getRgb());
             Point3D p = curve.calculerPoint3D(t);
             for (int c = 0; c < 3; c++) {
                 setCompNo(c);
@@ -598,7 +598,7 @@ public class PixMAndroidVersion extends MBitmap {
         double[] rgba = new double[getCompCount()];
         for (double t = 0; t < 1.0; t += 0.001) {
             for (int c = 0; c < 3; c++) {
-                rgba = Lumiere.getDoubles(Color.valueOf(curve.texture().getColorAt(t, 0.)).getRGB());
+                rgba = Lumiere.getDoubles(Color.valueOf(curve.texture().getColorAt(t, 0.)).getRgb());
                 Point3D p = curve.calculerPoint3D(t);
                 setCompNo(c);
                 set((int) (double) p.getX(), (int) (double) p.getY(), rgba[c]);

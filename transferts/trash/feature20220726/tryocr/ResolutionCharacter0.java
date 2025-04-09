@@ -623,7 +623,7 @@ public class ResolutionCharacter0 implements Runnable {
         State previousState;
         PixM input;
         PixM backgroundImage;
-        int textColor = Color.BLACK.getRGB();
+        int textColor = Color.BLACK.getRgb();
         int dim;
 
         public State(PixM image, PixM backgroundImage, int i, int j, int step) {

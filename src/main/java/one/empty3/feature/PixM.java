@@ -189,7 +189,7 @@ public class PixM extends M {
         double[] rgba = new double[getCompCount()];
         Point3D p0 = null;
         for (double t = 0; t < 1.0; t += INCR_T) {
-            rgba = Lumiere.getDoubles(new Color(curve.texture().getColorAt(t, 0.5)).getRGB());
+            rgba = Lumiere.getDoubles(new Color(curve.texture().getColorAt(t, 0.5)).getRgb());
             Point3D p = curve.calculerPoint3D(t);
             for (int c = 0; c < 3; c++) {
                 setCompNo(c);

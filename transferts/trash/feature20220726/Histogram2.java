@@ -212,7 +212,7 @@ public class Histogram2 extends ProcessFile {
                         ? circle.i / circle.r : 1.0));
                 //graphics.setColor(color);
                 //graphics.drawOval((int) (circle.x - circle.r), (int) (circle.y - circle.r), (int) (circle.r * 2), (int) (circle.r * 2));
-                img3.setRGB((int) (circle.x), (int) (circle.y), color.getRGB());
+                img3.setRGB((int) (circle.x), (int) (circle.y), color.getRgb());
             }
         });
         // grands;cercles = grandes iles les separer

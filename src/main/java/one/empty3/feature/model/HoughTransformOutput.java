@@ -21,7 +21,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        Image img = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_RGB);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
-//                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
+//                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRgb());
 //            }
 //        }
 //        one.empty3.libs.Image.saveFile(img, "png", outFile);
@@ -46,7 +46,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                if (sobelArray[i][j] > threshold) {
-//                    img.setRGB(i, j, Color.WHITE.getRGB());
+//                    img.setRGB(i, j, Color.WHITE.getRgb());
 //                }
 //            }
 //        }
@@ -114,7 +114,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //                //maps every pixel to a grayscale value between 0 and 255 from between 0 and the max value in sobelTotal
 //                int rgb = new Color((int) map(sobelTotal[i][j], 0, max, 0, 255),
 //                        (int) map(sobelTotal[i][j], 0, max, 0, 255),
-//                        (int) map(sobelTotal[i][j], 0, max, 0, 255), 255).getRGB();
+//                        (int) map(sobelTotal[i][j], 0, max, 0, 255), 255).getRgb();
 //                total.setRGB(i, j, rgb);
 //            }
 //        }

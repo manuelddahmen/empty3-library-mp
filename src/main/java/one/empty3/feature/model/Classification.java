@@ -69,13 +69,13 @@ public class Classification extends ProcessFile {
         selectPointColorMassAglo = PixM.getPixM(read, maxRes);
         imageOut = new one.empty3.libs.Image(in);
         SelectPointColorMassAglo selectPointColorMassAglo1 = new SelectPointColorMassAglo(read);
-        int color = Color.WHITE.getRGB();
+        int color = Color.WHITE.getRgb();
         for (int i = 0; i < imageOut.getWidth(); i += 1)
             for (int j = 0; j < imageOut.getHeight(); j += 1) {
                 selectPointColorMassAglo1.setTmpColor((new Colors().random()));
                 double v = selectPointColorMassAglo1.averageCountMeanOf(i, j, SIZE, SIZE, threshold);
                 if (v > ratio) {
-                    imageOut.setRgb(i, j, color);/*selectPointColorMassAglo.getChosenColor().getRGB()*/
+                    imageOut.setRgb(i, j, color);/*selectPointColorMassAglo.getChosenColor().getRgb()*/
                 } else {
                     double[] doubles = Lumiere.getDoubles(read.getRgb(i, j));
                     /*for(int c=0; c<3; c++)

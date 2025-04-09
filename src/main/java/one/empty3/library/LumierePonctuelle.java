@@ -58,7 +58,7 @@ public class LumierePonctuelle extends Lumiere {
 
     public LumierePonctuelle() {
         position.setElem(Point3D.O0);
-        this.couleurLumiere.setElem(new ColorTexture(new Color(Color.YELLOW.getRGB())));
+        this.couleurLumiere.setElem(new ColorTexture(new Color(Color.YELLOW.getRgb())));
         directional.setElem(Boolean.FALSE);
     }
 

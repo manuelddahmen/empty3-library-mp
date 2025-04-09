@@ -359,7 +359,7 @@ public class Lines3 extends ProcessFile {
 
         Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
         for (LineSegment line : lines) {
-            int c = (new Colors().random()).getRGB();
+            int c = (new Colors().random()).getRgb();
             if (line.getLength() >= 2) {
                 /*for (double c = 0.0; c <= 1.0; c += 1 / line.getLength()) {
                     Point3D pDraw = line.getOrigine().plus(
@@ -379,8 +379,8 @@ public class Lines3 extends ProcessFile {
                 int x2 = (int) (double) pDraw2.getX();
                 int y2 = (int) (double) pDraw2.getY();
                 if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                    bLines.setRGB(x1, y1, Color.WHITE.getRGB());
-                    bLines.setRGB(x2, y2, Color.WHITE.getRGB());
+                    bLines.setRGB(x1, y1, Color.WHITE.getRgb());
+                    bLines.setRGB(x2, y2, Color.WHITE.getRgb());
                 }
             }
         }

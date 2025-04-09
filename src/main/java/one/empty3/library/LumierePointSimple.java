@@ -45,7 +45,7 @@ public class LumierePointSimple extends LumierePoint {
     private Point3D point;
     private double intensite = 1.0;
     private float[] comp = new float[3];
-    private int baseBlack = Color.BLACK.getRGB();
+    private int baseBlack = Color.BLACK.getRgb();
 
     public LumierePointSimple(Color c, Point3D pl, double intensite) {
         this.couleur = c;
@@ -82,7 +82,7 @@ public class LumierePointSimple extends LumierePoint {
                 f[i] = 0f;
             }
         }
-        return new Color(Lumiere.getInt(f[0], f[1], f[2])).getRGB();
+        return new Color(Lumiere.getInt(f[0], f[1], f[2])).getRgb();
     }
 
     public float[] getF() {

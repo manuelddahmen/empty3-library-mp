@@ -45,7 +45,7 @@ public class TextureMov extends ITexture {
     Image image;
     VideoDecoder defs;
     private File file = null;
-    private int transparent = Color.BLACK.getRGB();
+    private int transparent = Color.BLACK.getRgb();
 
     public TextureMov() {
     }
@@ -133,7 +133,7 @@ public class TextureMov extends ITexture {
     }
 
     public void setTransparent(Color black) {
-        this.transparent = black.getRGB();
+        this.transparent = black.getRgb();
     }
 
     public Image getImage() {

@@ -368,7 +368,7 @@ dependencies {
 
 
     implementation  "one.empty3.libs:partial-desktop:0.0.23" // <--- ADD THIS LINE
-    implementation "one.empty3.libs:commons-mp:0.0.9" // <--- ADD THIS LINE
+    implementation "one.empty3.libs:commons-mp:0.0.10" // <--- ADD THIS LINE
     // ... other dependencies ...
 // ... (rest of your build.gradle file) ...
 
@@ -469,7 +469,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2025.4.6-2'
+            version = '2025.4.9'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -485,7 +485,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-library-mp"
-                version '2025.4.6-2'
+                version '2025.4.9'
                 inceptionYear = '2008'
                 licenses {
                     license {
@@ -569,8 +569,8 @@ jreleaser {
         name = 'empty3-library-mp'
         java.artifactId = 'empty3-library-mp'
         java.groupId = 'one.empty3'
-        java.version = '2025.4.6-2'
-        version = '2025.4.6-2'
+        java.version = '2025.4.9'
+        version = '2025.4.9'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

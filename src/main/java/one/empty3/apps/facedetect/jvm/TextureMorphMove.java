@@ -38,7 +38,7 @@ public class TextureMorphMove extends ITexture {
     public final EditPolygonsMappings editPanel;
     public int selectedPointNo = -1;
     public DistanceAB distanceAB;
-    public final int GRAY = Color.newCol(0.5f,0.5f,0.5f).getRGB();
+    public final int GRAY = Color.newCol(0.5f,0.5f,0.5f).getRgb();
     public Class<? extends DistanceBezier2> distanceABclass;
     public List<Point3D> polyConvA;
     public List<Point3D> polyConvB;
@@ -162,8 +162,8 @@ public class TextureMorphMove extends ITexture {
                                     color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;
                                 }
 
-                                //return one.empty3.libs.Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
-                                return Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
+                                //return one.empty3.libs.Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRgb();
+                                return Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRgb();
                             }
                         }
                     } else if (!(distanceAB instanceof DistanceProxLinear44)) {
@@ -177,7 +177,7 @@ public class TextureMorphMove extends ITexture {
             }
         }
 
-        return Color.newCol(255, 255, 0).getRGB();
+        return Color.newCol(255, 255, 0).getRgb();
     }
 
     private double distanceToConvexHull(Dimension2D bDimReal, ConvexHull convexHull2, Point3D axPointInB) {

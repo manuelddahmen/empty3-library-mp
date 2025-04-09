@@ -44,7 +44,8 @@ import one.empty3.tests.Animation;
 
 public class Scene extends Representable implements Serializable {
 
-    public static final String VERSION = "2021.6";
+    public static final String VERSION0 = "2021.6";
+    public static final String VERSION = "2025.1";
     /*__
      *
      */

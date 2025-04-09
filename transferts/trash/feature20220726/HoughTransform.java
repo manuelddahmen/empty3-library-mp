@@ -100,7 +100,7 @@ public class HoughTransform extends ProcessFile {
         // draw the lines back onto the image
         for (int j = 0; j < maxDrawn && j < lines.size(); j++) {
             HoughLine line = lines.elementAt(j);
-            line.draw(image, Color.RED.getRGB());
+            line.draw(image, Color.RED.getRgb());
         }
 
         new one.empty3.libs.Image(1,1,1.saveToFile(image, "jpg", out);
@@ -295,7 +295,7 @@ public class HoughTransform extends ProcessFile {
             for (int r = 0; r < doubleHeight; r++) {
                 double value = 255 * ((double) houghArray[t][r]) / max;
                 int v = 255 - (int) value;
-                int c = new Color(v, v, v).getRGB();
+                int c = new Color(v, v, v).getRgb();
                 image.setRGB(t, r, c);
             }
         }
