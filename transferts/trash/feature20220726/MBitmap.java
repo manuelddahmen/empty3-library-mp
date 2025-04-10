@@ -129,7 +129,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
 
     public void setP(int i, int j, Point3D p) {
         if (bitmap != null && i < bitmap.getWidth() && i >= 0 && j < bitmap.getHeight() && j >= 0) {
-            bitmap.setRGB(i, j, Lumiere.getInt(new double[]
+            bitmap.setRgb(i, j, Lumiere.getInt(new double[]
                     {p.get(0), p.get(1), p.get(2)}));
             return;
         }
@@ -143,7 +143,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public Point3D getP(int i, int j) {
         if (bitmap != null && i < bitmap.getWidth() && i >= 0 && j < bitmap.getHeight() && j >= 0) {
             if (i >= 0 && i < getColumns() && j >= 0 && j < getLines()) {
-                int pixel = bitmap.getRGB(i, j);
+                int pixel = bitmap.getRgb(i, j);
                 double[] p = Lumiere.getDoubles(pixel);
                 return new Point3D(p[0], p[1], p[2]);
             }
@@ -162,7 +162,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public void setValues(int i, int j, double... v) {
         if (bitmap != null) {
             if (i >= 0 && i < bitmap.getWidth() && j >= 0 && j < bitmap.getHeight()) {
-                bitmap.setRGB(i, j, Lumiere.getInt(new double[]
+                bitmap.setRgb(i, j, Lumiere.getInt(new double[]
                         {v[0], v[1], v[2]}));
             }
         }
@@ -206,7 +206,7 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public double get(int column, int line) {
         if (column >= 0 && column < columns && line >= 0 && line < lines && compNo >= 0 && compNo < compCount) {
             if (bitmap != null) {
-                return Lumiere.getDoubles(bitmap.getRGB(column, line))[compNo];
+                return Lumiere.getDoubles(bitmap.getRgb(column, line))[compNo];
             }
 
             return x[index(column, line)];
@@ -248,11 +248,11 @@ public class MBitmap /*implements InterfaceMatrix*/ {
     public void set(int column, int line, double d) {
         if (column >= 0 && column < columns && line >= 0 && line < lines) {
             if (bitmap != null) {
-                int pixel = bitmap.getRGB(column, line);
+                int pixel = bitmap.getRgb(column, line);
                 double[] ps = new double[]{0, 0, 0};
                 ps[compNo] = d;
                 int p = pixel | Lumiere.getInt(ps);
-                bitmap.setRGB(column, line, p);
+                bitmap.setRgb(column, line, p);
                 return;
             }
             x[index(column, line)] = d;

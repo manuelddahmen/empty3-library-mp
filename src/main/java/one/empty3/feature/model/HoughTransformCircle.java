@@ -33,7 +33,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //            double[][] imgArray = new double[imgWidth][imgHeight];
 //            for (int x = 0; x < imgWidth; x++) {
 //                for (int y = 0; y < imgHeight; y++) {
-//                    imgArray[x][y] = (Lumiere.getDoubles(grey.getRGB(x, y))[0]);
+//                    imgArray[x][y] = (Lumiere.getDoubles(grey.getRgb(x, y))[0]);
 //                }
 //            }
 //

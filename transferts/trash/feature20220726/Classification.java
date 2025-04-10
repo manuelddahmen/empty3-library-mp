@@ -77,13 +77,13 @@ public class Classification extends ProcessFile {
                 selectPointColorMassAglo1.setTmpColor((new Colors().random()));
                 double v = selectPointColorMassAglo1.averageCountMeanOf(i, j, SIZE, SIZE, threshold);
                 if (v > ratio) {
-                    imageOut.setRGB(i, j, color);/*selectPointColorMassAglo.getChosenColor().getRgb()*/
+                    imageOut.setRgb(i, j, color);/*selectPointColorMassAglo.getChosenColor().getRgb()*/
                 } else {
-                    double[] doubles = Lumiere.getDoubles(read.getRGB(i, j));
+                    double[] doubles = Lumiere.getDoubles(read.getRgb(i, j));
                     /*for(int c=0; c<3; c++)
                         doubles[c] = doubles[c]/3;
 */
-                    imageOut.setRGB(i, j, Lumiere.getInt(doubles));
+                    imageOut.setRgb(i, j, Lumiere.getInt(doubles));
                 }
             }
 

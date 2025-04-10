@@ -365,7 +365,7 @@ public class Lines3 extends ProcessFile {
                     int x = (int) (double) pDraw.getX();
                     int y = (int) (double) pDraw.getY();
                     if (isInBound(pDraw))
-                        bLines.setRGB(x, y, line.texture().getColorAt(0, 0));
+                        bLines.setRgb(x, y, line.texture().getColorAt(0, 0));
                 }*/
 
                 Point3D pDraw1 = line.getOrigine().plus(

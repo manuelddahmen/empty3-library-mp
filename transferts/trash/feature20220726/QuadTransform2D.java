@@ -87,8 +87,8 @@ public class QuadTransform2D {
         Point3D[] p0 = quadTemp(0.0);
         Point3D pa0 = pT(p0, p1243, p1423);
         Point3D pa1 = pT(p1, p1243, p1423);
-        Point3D ca0 = new Point3D(i1.getRGB((int) (double) (pa0.getX()), (int) (double) pa0.getY()));
-        Point3D ca1 = new Point3D(i1.getRGB((int) (double) (pa0.getX()), (int) (double) pa0.getY()));
+        Point3D ca0 = new Point3D(i1.getRgb((int) (double) (pa0.getX()), (int) (double) pa0.getY()));
+        Point3D ca1 = new Point3D(i1.getRgb((int) (double) (pa0.getX()), (int) (double) pa0.getY()));
         Point3D pT = pT(pTemp, p1243, p1423);
         Point3D cAt = ca0.plus(ca1.moins(ca0).mult(t));
         Color color = new Color((float) (double) (cAt.get(0)),

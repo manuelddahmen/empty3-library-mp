@@ -21,7 +21,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        Image img = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_RGB);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
-//                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRgb());
+//                img.setRgb(i, j, new Color(255, 255, 255, imgArray[i][j]).getRgb());
 //            }
 //        }
 //        one.empty3.libs.Image.saveFile(img, "png", outFile);
@@ -31,7 +31,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        Image img = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_BYTE_GRAY);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
-//                img.setRGB(i, j, (int) imgArray[i][j]);
+//                img.setRgb(i, j, (int) imgArray[i][j]);
 //            }
 //        }
 //        one.empty3.libs.Image.saveFile(img, "png", outFile);
@@ -46,7 +46,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                if (sobelArray[i][j] > threshold) {
-//                    img.setRGB(i, j, Color.newCol(1f,1f,1f).getRgb());
+//                    img.setRgb(i, j, Color.newCol(1f,1f,1f).getRgb());
 //                }
 //            }
 //        }
@@ -115,7 +115,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //                int rgb = new Color((int) map(sobelTotal[i][j], 0, max, 0, 255),
 //                        (int) map(sobelTotal[i][j], 0, max, 0, 255),
 //                        (int) map(sobelTotal[i][j], 0, max, 0, 255), 255).getRgb();
-//                total.setRGB(i, j, rgb);
+//                total.setRgb(i, j, rgb);
 //            }
 //        }
 //        return changeBrightness(20.0f, total);

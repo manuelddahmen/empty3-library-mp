@@ -124,7 +124,7 @@ public class M3 {
         double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
-                int rgb = image.getRGB((int) (1.0 * i / columns * image.getWidth()), (int) (1.0 * j / lines * image.getHeight()));
+                int rgb = image.getRgb((int) (1.0 * i / columns * image.getWidth()), (int) (1.0 * j / lines * image.getHeight()));
                 colorComponents = Lumiere.getDoubles(rgb);
                 for (int ii = 0; ii < columnsIn; ii++)
                     for (int ij = 0; ij < linesIn; ij++) {
@@ -145,7 +145,7 @@ public class M3 {
         double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
-                int rgb = image.getRGB(i, j);
+                int rgb = image.getRgb(i, j);
                 colorComponents = Lumiere.getDoubles(rgb);
                 for (int ii = 0; ii < columnsIn; ii++)
                     for (int ij = 0; ij < linesIn; ij++) {

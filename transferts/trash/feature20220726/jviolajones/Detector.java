@@ -144,7 +144,7 @@ import java.util.logging.Logger;
 //            int col = 0;
 //            int col2 = 0;
 //            for (int j = 0; j < height; j++) {
-//                int c = image.getRGB(i, j);
+//                int c = image.getRgb(i, j);
 //                int red = (c & 0x00ff0000) >> 16;
 //                int green = (c & 0x0000ff00) >> 8;
 //                int blue = c & 0x000000ff;

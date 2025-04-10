@@ -633,7 +633,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         //return image2();
 
 //        Image bi = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
-//        bi.setRGB(0, 0, la, ha, getData(), 0, la);
+//        bi.setRgb(0, 0, la, ha, getData(), 0, la);
 //        return new one.empty3.libs.Image(bi);
         return image();
 
@@ -2007,7 +2007,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             if (checkCoordinates(x, y)
                     && ime.imeId[x][y] == idImg
                     && ime.imeProf[x][y] > INFINITY.getZ()) {
-                return getRGBInt(ime.color, x, y);
+                return getRgbInt(ime.color, x, y);
             } else {
                 return COULEUR_FOND_INT(x, y);
             }
@@ -2032,14 +2032,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return instance;
         }
 
-        protected int getRGBInt(int[] sc, int x, int y) {
+        protected int getRgbInt(int[] sc, int x, int y) {
             return color[x + y * la];
 
         }
 
         public void setElementCouleur(int x, int y, int pc) {
             setElementID(x, y, idImg);
-            setRGBInts(pc, ime.color, x, y);
+            setRgbInts(pc, ime.color, x, y);
         }
 
         public void setElementID(int x, int y, long id) {
@@ -2083,7 +2083,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             }
         }
 
-        protected void setRGBInts(int rgb, int[] sc, int x, int y) {
+        protected void setRgbInts(int rgb, int[] sc, int x, int y) {
             color[x + y * la] = rgb;
         }
 

@@ -181,7 +181,7 @@ public class ImageTexture extends ITexture {
         if (yi >= image.getHeight()) {
             yi = image.getHeight() - 1;
         }
-        Color c = new Color(image.getRGB(xi, yi));
+        Color c = new Color(image.getRgb(xi, yi));
         if (c.equals(transparent)) {
             return new Color(transparent);
         } else {
@@ -221,7 +221,7 @@ public class ImageTexture extends ITexture {
         int x1 = (int) p.x;
         int y1 = (int) p.y;
 
-        Color c = new Color(image.getRGB(x1, y1));
+        Color c = new Color(image.getRgb(x1, y1));
         if (c.equals(transparent)) {
             return new Color(transparent);
         } else {

@@ -89,7 +89,7 @@ public class TextureMov extends ITexture {
         int x = (int) (u * image.getWidth());
         int y = (int) (v * image.getHeight());
         if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-            int rgb = image.getRGB(x, y);
+            int rgb = image.getRgb(x, y);
             int a = rgb >> 24 & 0xFF;
             int r = rgb >> 16 & 0xFF;
             int g = rgb >> 8 & 0xFF;

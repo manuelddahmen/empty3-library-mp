@@ -55,7 +55,7 @@ public class PixMAndroidVersion extends MBitmap {
         float[] colorComponents = new float[4];
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-                int rgb = image.getRGB(i, j);
+                int rgb = image.getRgb(i, j);
                 colorComponents = Color.valueOf(rgb).getComponents(colorComponents);
                 for (int com = 0; com < getCompCount(); com++) {
                     setCompNo(com);
@@ -120,7 +120,7 @@ public class PixMAndroidVersion extends MBitmap {
             for (int j = 0; j < (int) lines2; j++) {
 
 
-                int rgb = image.getRGB(
+                int rgb = image.getRgb(
                         (int) (1.0 * i / columns2 * image.getWidth())
 
 
@@ -220,7 +220,7 @@ public class PixMAndroidVersion extends MBitmap {
 
                     rgba[comp] = value;
                 }
-                image.setRGB(i, j, new Color(rgba[0], rgba[1], rgba[2]).getRgb());
+                image.setRgb(i, j, new Color(rgba[0], rgba[1], rgba[2]).getRgb());
             }
         }
         return image;
@@ -689,7 +689,7 @@ public class PixMAndroidVersion extends MBitmap {
                             set(i2, j2, vc[c]);
                         }
                         if (bitmap != null) {
-                            bitmap.setRGB(i2, j2, Lumiere.getInt(vc));
+                            bitmap.setRgb(i2, j2, Lumiere.getInt(vc));
                         }
                     }
                 }

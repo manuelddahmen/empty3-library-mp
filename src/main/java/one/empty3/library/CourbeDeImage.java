@@ -62,7 +62,7 @@ public class CourbeDeImage {
             int y0 = -1;
             int y1 = -1;
             for (int j = 0; j < image.getHeight(); j++) {
-                if (!new Color(image.getRGB(i, j)).equals(Color.newCol(1f,1f,1f))) {
+                if (!new Color(image.getRgb(i, j)).equals(Color.newCol(1f,1f,1f))) {
                     y0 = y1;
                     y1 = j;
                     if (y0 == -1 || (y1 > y0 + 1)) {

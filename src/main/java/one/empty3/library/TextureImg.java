@@ -99,7 +99,7 @@ public class TextureImg extends ITexture {
 
 
         int c = image != null ? image
-                .getElem().getRGB(x, y)
+                .getElem().getRgb(x, y)
                 :
                 transparent;
         if(c==transparent)

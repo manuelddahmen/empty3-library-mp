@@ -186,7 +186,7 @@ public class HoughTransform extends ProcessFile {
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 // Find non-black pixels 
-                if ((image.getRGB(x, y) & 0x000000ff) != 0) {
+                if ((image.getRgb(x, y) & 0x000000ff) != 0) {
                     addPoint(x, y);
                 }
             }
@@ -296,7 +296,7 @@ public class HoughTransform extends ProcessFile {
                 double value = 255 * ((double) houghArray[t][r]) / max;
                 int v = 255 - (int) value;
                 int c = new Color(v, v, v).getRgb();
-                image.setRGB(t, r, c);
+                image.setRgb(t, r, c);
             }
         }
         return image;

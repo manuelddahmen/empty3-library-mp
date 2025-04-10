@@ -48,8 +48,8 @@ public class TextureGrad extends TextureMov {
         nextImg = images.get(1);
 
         //TODO
-        int[] col1 = getRGB(currentImg, u, v);
-        int[] colN = getRGB(nextImg, u, v);
+        int[] col1 = getRgb(currentImg, u, v);
+        int[] colN = getRgb(nextImg, u, v);
         int[] col = new int[]{0, 0, 0, 0};
         col[0] = (int) ((col1[0] - colN[0]) / 2. + 256.);
 
@@ -63,11 +63,11 @@ public class TextureGrad extends TextureMov {
         return 0;
     }
 
-    public int[] getRGB(Image image, double u, double v) {
+    public int[] getRgb(Image image, double u, double v) {
         int x = (int) u * image.getWidth();
         int y = (int) v * image.getHeight();
         if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-            int rgb = image.getRGB(x, y);
+            int rgb = image.getRgb(x, y);
             int a = rgb >> 24 & 0xFF;
             int r = rgb >> 16 & 0xFF;
             int g = rgb >> 8 & 0xFF;

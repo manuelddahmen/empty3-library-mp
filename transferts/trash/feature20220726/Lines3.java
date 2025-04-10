@@ -367,7 +367,7 @@ public class Lines3 extends ProcessFile {
                     int x = (int) (double) pDraw.getX();
                     int y = (int) (double) pDraw.getY();
                     if (isInBound(pDraw))
-                        bLines.setRGB(x, y, line.texture().getColorAt(0, 0));
+                        bLines.setRgb(x, y, line.texture().getColorAt(0, 0));
                 }*/
 
                 Point3D pDraw1 = line.getOrigine().plus(
@@ -379,8 +379,8 @@ public class Lines3 extends ProcessFile {
                 int x2 = (int) (double) pDraw2.getX();
                 int y2 = (int) (double) pDraw2.getY();
                 if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                    bLines.setRGB(x1, y1, Color.newCol(1f,1f,1f).getRgb());
-                    bLines.setRGB(x2, y2, Color.newCol(1f,1f,1f).getRgb());
+                    bLines.setRgb(x1, y1, Color.newCol(1f,1f,1f).getRgb());
+                    bLines.setRgb(x2, y2, Color.newCol(1f,1f,1f).getRgb());
                 }
             }
         }

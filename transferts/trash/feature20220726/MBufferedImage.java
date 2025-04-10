@@ -127,7 +127,7 @@ public class MImage /*implements InterfaceMatrix*/ {
 
     public void setP(int i, int j, Point3D p) {
         if (Image != null && i < Image.getWidth() && i >= 0 && j < Image.getHeight() && j >= 0) {
-            Image.setRGB(i, j, Lumiere.getInt(new double[]
+            Image.setRgb(i, j, Lumiere.getInt(new double[]
                     {p.get(0), p.get(1), p.get(2)}));
             return;
         }
@@ -141,7 +141,7 @@ public class MImage /*implements InterfaceMatrix*/ {
     public Point3D getP(int i, int j) {
         if (Image != null && i < Image.getWidth() && i >= 0 && j < Image.getHeight() && j >= 0) {
             if (i >= 0 && i < getColumns() && j >= 0 && j < getLines()) {
-                int pixel = Image.getRGB(i, j);
+                int pixel = Image.getRgb(i, j);
                 double[] p = Lumiere.getDoubles(pixel);
                 return new Point3D(p[0], p[1], p[2]);
             }
@@ -160,7 +160,7 @@ public class MImage /*implements InterfaceMatrix*/ {
     public void setValues(int i, int j, double... v) {
         if (Image != null) {
             if (i >= 0 && i < Image.getWidth() && j >= 0 && j < Image.getHeight()) {
-                Image.setRGB(i, j, Lumiere.getInt(new double[]
+                Image.setRgb(i, j, Lumiere.getInt(new double[]
                         {v[0], v[1], v[2]}));
             }
         }
@@ -204,7 +204,7 @@ public class MImage /*implements InterfaceMatrix*/ {
     public double get(int column, int line) {
         if (column >= 0 && column < columns && line >= 0 && line < lines && compNo >= 0 && compNo < compCount) {
             if (Image != null) {
-                return Lumiere.getDoubles(Image.getRGB(column, line))[compNo];
+                return Lumiere.getDoubles(Image.getRgb(column, line))[compNo];
             }
 
             return x[index(column, line)];
@@ -246,11 +246,11 @@ public class MImage /*implements InterfaceMatrix*/ {
     public void set(int column, int line, double d) {
         if (column >= 0 && column < columns && line >= 0 && line < lines) {
             if (Image != null) {
-                int pixel = Image.getRGB(column, line);
+                int pixel = Image.getRgb(column, line);
                 double[] ps = new double[]{0, 0, 0};
                 ps[compNo] = d;
                 int p = pixel | Lumiere.getInt(ps);
-                Image.setRGB(column, line, p);
+                Image.setRgb(column, line, p);
                 return;
             }
             x[index(column, line)] = d;

@@ -189,7 +189,7 @@ public class Lines5 extends ProcessFile {
         // d'après pcount x, y et curve xy supprimer les courbes en trop.
         Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines());
 
-        //bLines.setRGB(Color.RED);
+        //bLines.setRgb(Color.RED);
         list3.forEach(point3DS -> {
             Point3D p1 = point3DS.get(0);
             Point3D p2 = point3DS.get(point3DS.size() - 1);

@@ -161,7 +161,7 @@ public class Histogram {
                     ///?? img.drawOval((int) (circle.x - circle.r), (int) (circle.y - circle.r), (int) (circle.r * 2), (int) (circle.r * 2));
                     Color color = new Color((float) circle.i, 0f, (float) (circle.i / circle.r));
                     img3.drawOval((int) (circle.x - circle.r), (int) (circle.y - circle.r), (int) (circle.r * 2), (int) (circle.r * 2));
-                    img3.setRGB((int) (circle.x), (int) (circle.y), color.getRgb());
+                    img3.setRgb((int) (circle.x), (int) (circle.y), color.getRgb());
                 }
             });
             pointsOfInterest.sort(new Comparator<Circle>() {

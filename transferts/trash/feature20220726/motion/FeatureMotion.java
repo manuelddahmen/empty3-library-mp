@@ -48,12 +48,12 @@ public class FeatureMotion extends Motion {
         for (int i = 0; i < frame1.getColumns(); i++) {
             for (int j = 0; j < frame1.getLines(); j++) {
                 for (int c = 0; c < frame1.getCompCount(); c++) {
-                    image.setRGB(i, j, Lumiere.getInt(frame1.getValues(i, j)));
+                    image.setRgb(i, j, Lumiere.getInt(frame1.getValues(i, j)));
                 }
             }
         }
         for (int i = 0; i < match.size(); i++) {
-            image.setRGB((int) match.get(i)[0], (int) match.get(i)[1], Color.newCol(1f,1f,1f).getRgb());
+            image.setRgb((int) match.get(i)[0], (int) match.get(i)[1], Color.newCol(1f,1f,1f).getRgb());
         }
         return image.image;
     }

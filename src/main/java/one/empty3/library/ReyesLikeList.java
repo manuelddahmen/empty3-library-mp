@@ -60,7 +60,7 @@ public class ReyesLikeList {
 
     public void render(Image image) {
         for(int i=0; i<idx; i++) {
-            image.setRGB((int) listsPolygons[idx][12],
+            image.setRgb((int) listsPolygons[idx][12],
                     (int) listsPolygons[idx][13],
                     Lumiere.getInt(new double[]{listsPolygons[idx][14],
                             listsPolygons[idx][15],

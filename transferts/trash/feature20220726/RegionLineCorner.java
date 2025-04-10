@@ -304,7 +304,7 @@ public class RegionLineCorner extends ProcessFile {
                     Color color = new Color((float) circle.i, 0f, (float) (circle.i / circle.r));
                     graphics.setColor(color);
                     graphics.drawOval((int) (circle.x - circle.r), (int) (circle.y - circle.r), (int) (circle.r * 2), (int) (circle.r * 2));
-                    img3.setRGB((int) (circle.x), (int) (circle.y), color.getRgb());
+                    img3.setRgb((int) (circle.x), (int) (circle.y), color.getRgb());
                 }
             });*/
             // grands;cercles = grandes iles les separer
@@ -329,7 +329,7 @@ public class RegionLineCorner extends ProcessFile {
                 Color color = (new Colors().random());
                 for (Circle c : lc) {
 
-                    img4.setRGB((int) (c.x), (int) (c.y), color.getRgb());
+                    img4.setRgb((int) (c.x), (int) (c.y), color.getRgb());
                 }
             }
             File fileToWrite = new File(directory.getAbsolutePath()

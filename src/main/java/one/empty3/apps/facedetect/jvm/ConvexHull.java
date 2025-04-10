@@ -22,7 +22,7 @@ public class ConvexHull {
     public ConvexHull(List<Point3D> list, Dimension2D dimension2D) {
         List<Point3D> list1 = new ArrayList<>();
 
-        mask = new Image((int) dimension2D.getWidth(), (int) dimension2D.getHeight(), Image.TYPE_INT_RGB );
+        mask = new Image((int) dimension2D.getWidth(), (int) dimension2D.getHeight());
 
         for (Point3D point3D : list) {
             list1.add(point3D.multDot(new Point3D(dimension2D.getWidth(), dimension2D.getHeight(), 0.0)));
