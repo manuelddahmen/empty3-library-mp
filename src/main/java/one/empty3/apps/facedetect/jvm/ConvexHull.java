@@ -160,4 +160,20 @@ public class ConvexHull {
         }
         return false;
     }
+
+    public List<Point3D> getList() {
+        return list;
+    }
+
+    public Image getMask() {
+        return mask;
+    }
+
+    public List<Point3D> getP() {
+        return p;
+    }
+
+    public void setP(List<Point3D> p) {
+        this.p = p;
+    }
 }

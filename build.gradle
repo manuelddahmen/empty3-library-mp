@@ -469,7 +469,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-library-mp'
-            version = '2025.4.9'
+            version = '2025.4.10'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {

@@ -109,7 +109,7 @@ public class EditPolygonsMappings implements Runnable {
     public Thread threadDisplay;
     public Thread threadTextureCreation;
     public ConvexHull convexHull3;
-    public double computeTimeMax;
+    public double computeTimeMax = 3600;
     public Dimension2D dimPictureBox = new Dimension(200, 200);
     public Dimension2D dimModelBox = new Dimension(200, 200);
     public Image image1;
