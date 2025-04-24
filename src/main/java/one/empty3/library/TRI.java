@@ -52,7 +52,7 @@ public class TRI extends Representable {
     }
 
     public TRI(Point3D coordPoint3D, Point3D coordPoint3D0, Point3D coordPoint3D1) {
-        this(coordPoint3D, coordPoint3D0, coordPoint3D1, new ColorTexture(Color.newCol(0f,0f,0f).getRgb()));
+        this(coordPoint3D, coordPoint3D0, coordPoint3D1, new ColorTexture(Color.newCol(0f,0f,0f).getRGB()));
     }
 
     public TRI(Point3D point3d, Point3D point3d2, Point3D point3d3,

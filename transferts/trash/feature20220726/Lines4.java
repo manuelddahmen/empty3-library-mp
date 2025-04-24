@@ -369,7 +369,7 @@ public class Lines4 extends ProcessFile {
                 int x2 = (int) (double) pDraw2.getX();
                 int y2 = (int) (double) pDraw2.getY();
                 if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                    bLines.drawLine(x1, y1, x2, y2, Color.newCol(1f,0f,0f).getRgb());
+                    bLines.drawLine(x1, y1, x2, y2, Color.newCol(1f,0f,0f).getRGB());
                 }
             }
         }

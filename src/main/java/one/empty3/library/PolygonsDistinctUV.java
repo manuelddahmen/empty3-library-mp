@@ -100,7 +100,7 @@ public class PolygonsDistinctUV extends Polygons {
                 } catch(Exception ex) {
                     ex.printStackTrace();
                 }
-                return Color.newCol(0f,0f,0f).getRgb();
+                return Color.newCol(0f,0f,0f).getRGB();
             }
         };
     }

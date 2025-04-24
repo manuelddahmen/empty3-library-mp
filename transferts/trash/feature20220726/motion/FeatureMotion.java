@@ -53,7 +53,7 @@ public class FeatureMotion extends Motion {
             }
         }
         for (int i = 0; i < match.size(); i++) {
-            image.setRgb((int) match.get(i)[0], (int) match.get(i)[1], Color.newCol(1f,1f,1f).getRgb());
+            image.setRgb((int) match.get(i)[0], (int) match.get(i)[1], Color.newCol(1f,1f,1f).getRGB());
         }
         return image.image;
     }

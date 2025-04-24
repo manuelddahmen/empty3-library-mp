@@ -69,7 +69,7 @@ public class TubulaireN2 extends ParametricSurface {
 
     public TubulaireN2(ParametricCurve curve, double diameter) {
         soulCurve.setElem(curve);
-        soulCurve.getElem().texture(new ColorTexture(Color.newCol(0f,0f,0f).getRgb()));
+        soulCurve.getElem().texture(new ColorTexture(Color.newCol(0f,0f,0f).getRGB()));
         FctXY fctXY = new FctXY();
         fctXY.setFormulaX("" + diameter);
         diameterFunction.setElem(fctXY);

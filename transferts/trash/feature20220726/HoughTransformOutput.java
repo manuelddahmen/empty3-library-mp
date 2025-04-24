@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 //        Image img = new javaAnd.awt.image.Image(imgWidth, imgHeight, javaAnd.awt.image.Image.TYPE_INT_RGB);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
-//                img.setRgb(i, j, new Color(255, 255, 255, imgArray[i][j]).getRgb());
+//                img.setRgb(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
 //            }
 //        }
 //        new one.empty3.libs.Image(1,1,1.saveToFile(img, "png", outFile);
@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                if (sobelArray[i][j] > threshold) {
-//                    img.setRgb(i, j, Color.newCol(1f,1f,1f).getRgb());
+//                    img.setRgb(i, j, Color.newCol(1f,1f,1f).getRGB());
 //                }
 //            }
 //        }
@@ -118,7 +118,7 @@ import java.util.logging.Logger;
 //                //maps every pixel to a grayscale value between 0 and 255 from between 0 and the max value in sobelTotal
 //                int rgb = new Color((int) map(sobelTotal[i][j], 0, max, 0, 255),
 //                        (int) map(sobelTotal[i][j], 0, max, 0, 255),
-//                        (int) map(sobelTotal[i][j], 0, max, 0, 255), 255).getRgb();
+//                        (int) map(sobelTotal[i][j], 0, max, 0, 255), 255).getRGB();
 //                total.setRgb(i, j, rgb);
 //            }
 //        }

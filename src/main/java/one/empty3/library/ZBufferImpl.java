@@ -563,7 +563,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         if (ime.getElementProf((int) p.getX(), (int) p.getY()) <= INFINITY_DEEP) {
             return ime.getElementCouleur((int) p.getX(), (int) p.getY());
         } else {
-            return Color.newCol(1,1,1).getRgb();
+            return Color.newCol(1,1,1).getRGB();
         }
     }
 
@@ -822,7 +822,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void plotPoint(Color color, Point3D p) {
         if (p != null && color != null) {
-            testDeep(p, color.getRgb());
+            testDeep(p, color.getRGB());
         }
 
     }
@@ -835,7 +835,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void plotPoint(Point3D p, Color c) {
         if (p != null && c != null) {
-            ime.dessine(p, c.getRgb());
+            ime.dessine(p, c.getRGB());
         }
     }
 
@@ -895,8 +895,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public boolean testPoint(Point3D p, Color c) {
-        int cc = c.getRgb();
-        cc = scene().lumiereActive().getCouleur(c.getRgb(), p, p.getNormale());
+        int cc = c.getRGB();
+        cc = scene().lumiereActive().getCouleur(c.getRGB(), p, p.getNormale());
         return testDeep(p, cc);
     }
 
@@ -912,7 +912,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Point3D p = point3d.mult(a).plus(point3d2.mult(1 - a));
             pp.setLocation(p1.getX() + (int) (a * (p2.getX() - p1.getX())),
                     p1.getY() + (int) (a * (p2.getY() - p1.getY())));
-            testDeep(p, c.getRgb());
+            testDeep(p, c.getRGB());
 
         }
 
@@ -1157,7 +1157,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRgb());
+                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1254,7 +1254,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
                         }
                     } else {
-                        if (testDeep(pFinal, Color.newCol(255, 175, 175).getRgb())) {
+                        if (testDeep(pFinal, Color.newCol(255, 175, 175).getRGB())) {
                             Point ce = camera().coordonneesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
@@ -1263,7 +1263,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRgb());
+                    ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
                         Point ce = camera().coordonneesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
@@ -1905,7 +1905,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         public void testDeep(Point3D p, Point3D n, Color c) {
             // Color cc = c.getCouleur();
             p.setNormale(n);
-            ime.testDeep(p, c.getRgb());
+            ime.testDeep(p, c.getRGB());
         }
 
         public void testDeep(Point3D p, Point3D n, int c) {
@@ -2092,7 +2092,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
 
         public void dessine(Point3D p, Color colorAt) {
-            dessine(p, colorAt.getRgb());
+            dessine(p, colorAt.getRGB());
         }
 
         public void dessine(Point3D x3d, int c1) {
@@ -2132,7 +2132,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
 
         public boolean testDeep(Point3D p, Color c) {
-            return testDeep(p, c.getRgb());
+            return testDeep(p, c.getRGB());
         }
 
         public boolean testDeep(Point3D p) {

@@ -59,7 +59,7 @@ public class PasteBlank extends ProcessFile {
             int rgb = col.getColorAt(
                     pi.getX() / img.getColumns(),
                     pi.getY() / img.getLines());
-            rgb = Color.newCol(0f,0f,0f).getRgb();
+            rgb = Color.newCol(0f,0f,0f).getRGB();
             double[] rgbD = lookForColor(img, x, y, Lumiere.getDoubles(rgb));
             for (int comp = 0; comp < 3; comp++) {
                 img.setCompNo(comp);
@@ -130,7 +130,7 @@ public class PasteBlank extends ProcessFile {
             return false;
         Image read = new one.empty3.libs.Image(in);
         PixM pixM = PixM.getPixM(read, maxRes);
-        PixM pixM1 = pasteList(pixM, new ColorTexture(Color.newCol(0f,0f,0f).getRgb()));
+        PixM pixM1 = pasteList(pixM, new ColorTexture(Color.newCol(0f,0f,0f).getRGB()));
         pixM1.normalize(0, 1).getImage().saveFile(out);
         return true;
     }

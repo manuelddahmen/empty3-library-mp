@@ -114,7 +114,7 @@ public class EyeBallRoll extends JPanel {
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(8.).plus(y1.mult(-8.)))),
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(8.).plus(y1.mult(8.)))),
                             matrice1.mult(z1.mult(-8.).plus(x1.mult(-8.).plus(y1.mult(8.)))),
-                    }, new ColorTexture(Lumiere.getIntFromFloats(Color.newCol(1f,0f,0f).getRgb())));
+                    }, new ColorTexture(Lumiere.getIntFromFloats(Color.newCol(1f,0f,0f).getRGB())));
 
                     Point3D z0 = z1;//Point3D.Z;
                     Point3D x0 = x1;
@@ -125,7 +125,7 @@ public class EyeBallRoll extends JPanel {
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(4.).plus(y0.mult(-4.)))),
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(4.).plus(y0.mult(4.)))),
                             matrice1.mult(z0.mult(-12.).plus(x0.mult(-2.).plus(y0.mult(2.)))),
-                    }, new ColorTexture(Color.newCol(1f,0f,0f).getRgb()));
+                    }, new ColorTexture(Color.newCol(1f,0f,0f).getRGB()));
                     //scene.cameraActive(new Camera2Quad(z, p1, p0));//???
                     //scene.cameraActive().imposerMatrice(matrice.tild());
                     scene.cameraActive(new Camera2Quad(z, p0, p1));
@@ -529,9 +529,9 @@ public class EyeBallRoll extends JPanel {
         frame.setVisible(true);
 
         Scene scene = new Scene();
-        scene.add(new LineSegment(Point3D.O0, Point3D.X, new ColorTexture(Color.newCol(1f,0f,0f).getRgb())));
-        scene.add(new LineSegment(Point3D.O0, Point3D.Y, new ColorTexture(Color.newCol(0f,1f,0f).getRgb())));
-        scene.add(new LineSegment(Point3D.O0, Point3D.Z, new ColorTexture(Color.newCol(0f,0f,1f).getRgb())));
+        scene.add(new LineSegment(Point3D.O0, Point3D.X, new ColorTexture(Color.newCol(1f,0f,0f).getRGB())));
+        scene.add(new LineSegment(Point3D.O0, Point3D.Y, new ColorTexture(Color.newCol(0f,1f,0f).getRGB())));
+        scene.add(new LineSegment(Point3D.O0, Point3D.Z, new ColorTexture(Color.newCol(0f,0f,1f).getRGB())));
 //        scene.add(new Cube(new ColorTexture(Color.newCol(0f,0f,0f))));
         panelSphereMove.draw = panelSphereMove.new Draw(scene);
         panelSphereMove.draw.start();

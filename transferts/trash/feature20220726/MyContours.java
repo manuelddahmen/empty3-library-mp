@@ -61,7 +61,7 @@ public class MyContours extends ProcessFile {
             int rgb = col.getColorAt(
                     pi.getX() / img.getColumns(),
                     pi.getY() / img.getLines());
-            rgb = Color.newCol(0f,0f,0f).getRgb();
+            rgb = Color.newCol(0f,0f,0f).getRGB();
             double[] rgbD = lookForColor(img, x, y, Lumiere.getDoubles(rgb));
             for (int comp = 0; comp < 3; comp++) {
                 img.setCompNo(comp);

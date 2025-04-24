@@ -200,7 +200,7 @@ public class Lines6 extends ProcessFile {
                 bLines.drawLine((int) (double) p1.getX(),
                         (int) (double) p1.getY(),
                         (int) (double) p2.getX(),
-                        (int) (double) p2.getY(), (new Colors().random()).getRgb());
+                        (int) (double) p2.getY(), (new Colors().random()).getRGB());
             }
         });
 
@@ -230,7 +230,7 @@ public class Lines6 extends ProcessFile {
                     bLines.drawLine((int) (double) p1.getX(),
                             (int) (double) p1.getY(),
                             (int) (double) p2.getX(),
-                            (int) (double) p2.getY(), (new Colors().random()).getRgb());
+                            (int) (double) p2.getY(), (new Colors().random()).getRGB());
                 }
                 /*
                 for (int j = 0; j < points.size() - 1; j++) {
@@ -275,7 +275,7 @@ public class Lines6 extends ProcessFile {
         temp1.forEach(point3D -> {
                     System.out.printf("POINT LIST TEMP1 %s", point3D);
                     bLines.drawLine((int) (double) point3D.getX() - 2, (int) (double) point3D.getY() - 2,
-                            (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, Color.newCol(0f,0f,1f).getRgb());
+                            (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, Color.newCol(0f,0f,1f).getRGB());
                 }
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));

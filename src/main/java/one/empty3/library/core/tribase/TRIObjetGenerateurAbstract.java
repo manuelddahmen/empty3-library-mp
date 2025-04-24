@@ -224,7 +224,7 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
      * @param z
      */
     public void draw(ZBuffer z) {
-        Point3D INFINI = new Point3D(0d, 0d, 10000d, new ColorTexture(Color.newCol(0f,0f,1f).getRgb()));
+        Point3D INFINI = new Point3D(0d, 0d, 10000d, new ColorTexture(Color.newCol(0f,0f,1f).getRGB()));
         TRI[] tris = new TRI[2];
         tris[0] = new TRI(INFINI, INFINI, INFINI);
         tris[1] = new TRI(INFINI, INFINI, INFINI);

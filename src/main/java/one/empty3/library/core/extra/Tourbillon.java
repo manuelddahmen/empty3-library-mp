@@ -57,18 +57,18 @@ public class Tourbillon extends Representable implements
         this.obj = new PObjet();
         this.tours = 4.0;
         int[] colors = new int[]{
-                Color.newCol(1f,0f,0f).getRgb(),
-                Color.newCol(0f,1f,0f).getRgb(),
-                Color.newCol(0f,0f,1f).getRgb(),
-                Color.newCol(1.0f, 0.78f, 0.0f).getRgb(), // orange (approx)
-                Color.newCol(0.0f, 1.0f, 1.0f).getRgb(), // cyan
-                Color.newCol(0.25f, 0.25f, 0.25f).getRgb(), // darkGray (approx)
-                Color.newCol(0.0f, 0.0f, 0.0f).getRgb(), // black
-                Color.newCol(0.5f, 0.5f, 0.5f).getRgb(), // gray (approx)
-                Color.newCol(0.75f, 0.75f, 0.75f).getRgb(), // lightGray (approx)
-                Color.newCol(1.0f, 0.0f, 1.0f).getRgb(), // magenta
-                Color.newCol(1.0f, 0.68f, 0.68f).getRgb(), // pink (approx)
-                Color.newCol(1.0f, 1.0f, 0.0f).getRgb()  // yellow
+                Color.newCol(1f,0f,0f).getRGB(),
+                Color.newCol(0f,1f,0f).getRGB(),
+                Color.newCol(0f,0f,1f).getRGB(),
+                Color.newCol(1.0f, 0.78f, 0.0f).getRGB(), // orange (approx)
+                Color.newCol(0.0f, 1.0f, 1.0f).getRGB(), // cyan
+                Color.newCol(0.25f, 0.25f, 0.25f).getRGB(), // darkGray (approx)
+                Color.newCol(0.0f, 0.0f, 0.0f).getRGB(), // black
+                Color.newCol(0.5f, 0.5f, 0.5f).getRGB(), // gray (approx)
+                Color.newCol(0.75f, 0.75f, 0.75f).getRGB(), // lightGray (approx)
+                Color.newCol(1.0f, 0.0f, 1.0f).getRGB(), // magenta
+                Color.newCol(1.0f, 0.68f, 0.68f).getRGB(), // pink (approx)
+                Color.newCol(1.0f, 1.0f, 0.0f).getRGB()  // yellow
         };
 
         double angle = 0.0;

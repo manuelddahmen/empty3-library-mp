@@ -48,7 +48,7 @@ public class ColorTexture extends ITexture {
     public ColorTexture(Color c) {
         this();
         if (c != null) {
-            color.setElem(c.getRgb());
+            color.setElem(c.getRGB());
         }
     }
 
@@ -61,7 +61,7 @@ public class ColorTexture extends ITexture {
     }
 
     public void color(Color c) {
-        color.setElem(c.getRgb());
+        color.setElem(c.getRGB());
     }
 
     @Override

@@ -137,7 +137,7 @@ public class ImageTexture extends ITexture {
     }
 
     public void setTransparent(Color tr) {
-        this.transparent = tr.getRgb();
+        this.transparent = tr.getRGB();
     }
 
     public void timeNext() {

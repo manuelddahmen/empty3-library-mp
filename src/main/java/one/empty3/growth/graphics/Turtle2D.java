@@ -40,7 +40,7 @@ import one.empty3.libs.Image;
 import java.awt.*;
 
 public class Turtle2D {
-    private Color zeColor = new Color(Color.newCol(0.5f,0.5f,0.5f).getRgb());
+    private Color zeColor = new Color(Color.newCol(0.5f,0.5f,0.5f).getRGB());
 
     private Matrix33 theRot(double angle) {
         return new Matrix33(new double[]
