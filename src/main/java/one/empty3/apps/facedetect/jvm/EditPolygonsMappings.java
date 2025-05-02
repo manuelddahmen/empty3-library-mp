@@ -63,8 +63,8 @@ public class EditPolygonsMappings implements Runnable {
     public one.empty3.libs.Image zBufferImage = new one.empty3.libs.Image(200, 200);
     public int typeShape = DistanceAB.TYPE_SHAPE_QUADR;
     public boolean refineMatrix = false;
-    public Dimension2D aDimReduced = new Dimension(20, 20);
-    public Dimension2D bDimReduced = new Dimension(20, 20);
+    public Dimension aDimReduced = new Dimension(20, 20);
+    public Dimension bDimReduced = new Dimension(20, 20);
     public int durationMilliS = 30000;
     public File imageFile;
     public File txtFile;
@@ -110,8 +110,8 @@ public class EditPolygonsMappings implements Runnable {
     public Thread threadTextureCreation;
     public ConvexHull convexHull3;
     public double computeTimeMax = 3600;
-    public Dimension2D dimPictureBox = new Dimension(200, 200);
-    public Dimension2D dimModelBox = new Dimension(200, 200);
+    public Dimension dimPictureBox = new Dimension(200, 200);
+    public Dimension dimModelBox = new Dimension(200, 200);
     public Image image1;
 
 
@@ -153,7 +153,8 @@ public class EditPolygonsMappings implements Runnable {
 
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:
+                new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -283,7 +284,7 @@ public class EditPolygonsMappings implements Runnable {
 
     public  void displayPointsIn(HashMap<String, Point3D> points) {
         if (points == null) return;
-        Dimension2D panelDraw = dimPictureBox;
+        Dimension panelDraw = dimPictureBox;
         try {
             Thread.sleep(200);
             if (image != null && panelDraw != null) {

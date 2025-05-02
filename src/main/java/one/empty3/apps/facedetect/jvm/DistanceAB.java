@@ -107,8 +107,8 @@ public abstract class DistanceAB {
     public int OPTIMIZED_GRID_SIZE = 5;
     public SurfaceParametriquePolynomiale surfaceA;
     public SurfaceParametriquePolynomiale surfaceB;
-    public Dimension2D aDimReduced = new Dimension(20, 20);
-    public Dimension2D bDimReduced = new Dimension(20, 20);
+    public Dimension aDimReduced = new Dimension(20, 20);
+    public Dimension bDimReduced = new Dimension(20, 20);
     public static final int TYPE_SHAPE_BEZIER = 1;
     public static final int TYPE_SHAPE_QUADR = 2;
     public int typeShape = TYPE_SHAPE_QUADR;
@@ -117,8 +117,8 @@ public abstract class DistanceAB {
     public boolean opt1 = false;
     public DistanceBezier2.Rectangle2 rectA;
     public DistanceBezier2.Rectangle2 rectB;
-    public Dimension2D aDimReal;
-    public Dimension2D bDimReal;
+    public Dimension aDimReal;
+    public Dimension bDimReal;
     public List<Point3D> A;
     public List<Point3D> B;
     public Point3D[][] sAij;

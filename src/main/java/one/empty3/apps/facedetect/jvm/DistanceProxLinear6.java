@@ -467,7 +467,7 @@ public class DistanceProxLinear6 extends DistanceBezier2 {
 
     public static final int MAX_SUB_ITERE_X = 10;
 
-    public DistanceProxLinear6(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear6(List<Point3D> A, List<Point3D> B, Dimension aDimReal, Dimension bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         List<Edge> triangularize = triangularize(A, B, aDimReal, bDimReal);
@@ -514,7 +514,7 @@ public class DistanceProxLinear6 extends DistanceBezier2 {
         }
     }
 
-    public List<Edge> triangularize(List<Point3D> a, List<Point3D> b, Dimension2D aDimReal, Dimension2D bDimReal) {
+    public List<Edge> triangularize(List<Point3D> a, List<Point3D> b, Dimension aDimReal, Dimension bDimReal) {
 
         double x, y;
         int n = 0;

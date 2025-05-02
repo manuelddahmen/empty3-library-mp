@@ -48,7 +48,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
      * @param optimizeGrid
      */
     public DistanceProxLinear4(@NonNull List<Point3D> A, @NonNull List<Point3D> B,
-                               @NonNull Dimension2D aDimReal, @NonNull Dimension2D bDimReal,
+                               @NonNull Dimension aDimReal, @NonNull Dimension bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];

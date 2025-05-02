@@ -14,7 +14,7 @@ public class DistanceBezier3 extends DistanceBezier2 {
     final double DIM_MAX = Double.MAX_VALUE;
     final int dim = 1000;
 
-    public DistanceBezier3(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal, boolean opt1, boolean optimizeGrid) {
+    public DistanceBezier3(List<Point3D> A, List<Point3D> B, Dimension aDimReal, Dimension bDimReal, boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         if (A == null || B == null || A.size() == 0 || B.size() == 0 || A.size() != B.size()) {
             setInvalidArray(true);

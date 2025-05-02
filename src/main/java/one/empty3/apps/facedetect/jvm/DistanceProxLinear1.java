@@ -40,7 +40,7 @@ public class DistanceProxLinear1 extends DistanceBezier2 {
     public double bottom = -1;
     public boolean borderNotIinitialized = true;
 
-    public DistanceProxLinear1(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear1(List<Point3D> A, List<Point3D> B, Dimension aDimReal, Dimension bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         if(finishInitListener!=null)

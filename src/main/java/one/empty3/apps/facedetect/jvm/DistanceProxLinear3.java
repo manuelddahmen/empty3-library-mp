@@ -33,7 +33,7 @@ import java.util.List;
 public class DistanceProxLinear3 extends DistanceBezier2 {
     public static final int MAX_SUB_ITERE_X = 10;
 
-    public DistanceProxLinear3(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear3(List<Point3D> A, List<Point3D> B, Dimension aDimReal, Dimension bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         if(finishInitListener!=null)

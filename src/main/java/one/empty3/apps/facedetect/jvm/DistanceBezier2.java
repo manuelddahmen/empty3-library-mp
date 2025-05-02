@@ -45,14 +45,14 @@ public abstract class DistanceBezier2 extends DistanceAB {
                 model.vMin+(uvScaled.getX()*(model.vMax-model.vMin)),0.0);
     }
     public DistanceBezier2(@NonNull List<Point3D> A, @NonNull List<Point3D> B,
-                           @NonNull Dimension2D aDimReal, @NonNull Dimension2D bDimReal, boolean opt1, boolean optimizeGrid) {
+                           @NonNull Dimension aDimReal, @NonNull Dimension bDimReal, boolean opt1, boolean optimizeGrid) {
         super();
         this.opt1 = opt1;
         this.optimizeGrid = optimizeGrid;
 
 
-        aDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);
-        bDimReduced = new Dimension2D(distanceABdimSize, distanceABdimSize);
+        aDimReduced = new Dimension(distanceABdimSize, distanceABdimSize);
+        bDimReduced = new Dimension(distanceABdimSize, distanceABdimSize);
         System.out.println("\nStart properties\n\tOpt1 : " + opt1 + "\n\tOptimizeGrid: " + optimizeGrid + "\n\tTypeShape : " + typeShape + "\n\t" + "refineGrid : " + refineMatrix + "\n" + getClass().getCanonicalName() + "\nEnd of properties");
 
         if (A != null && B != null && A.size() > 0 && B.size() > 0) {
@@ -275,7 +275,7 @@ public abstract class DistanceBezier2 extends DistanceAB {
         //return sAij[(int) Math.min((found.getX() * aDimReduced.getWidth()), aDimReduced.getWidth() - 1)][(int) Math.min((found.getY() * aDimReduced.getHeight()), aDimReduced.getHeight() - 1)];
     }
 
-    public void precomputeX(Dimension2D xDimReal, Dimension2D xDimReduced, Point3D[][] sXij, ParametricSurface surfaceX) {
+    public void precomputeX(Dimension xDimReal, Dimension xDimReduced, Point3D[][] sXij, ParametricSurface surfaceX) {
         for (int i = 0; i < xDimReduced.getWidth(); i++) {
             for (int j = 0; j < xDimReduced.getHeight(); j++) {
                 Point3D tried = new Point3D(1.0 * i / xDimReduced.getWidth() * xDimReal.getWidth(),
@@ -287,7 +287,7 @@ public abstract class DistanceBezier2 extends DistanceAB {
         }
     }
 
-    public void precomputeX2(Dimension2D xDimReal, Dimension2D xDimReduced, Point3D[][] sXij, ParametricSurface surfaceX, Rectangle2 rectX) {
+    public void precomputeX2(Dimension xDimReal, Dimension xDimReduced, Point3D[][] sXij, ParametricSurface surfaceX, Rectangle2 rectX) {
         for (int i = 0; i < xDimReduced.getWidth(); i++) {
             for (int j = 0; j < xDimReduced.getHeight(); j++) {
                 if (opt1) {

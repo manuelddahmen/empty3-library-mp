@@ -1,7 +1,19 @@
 package one.empty3.apps.facedetect.jvm;
 
-public class Dimension extends Dimension2D{
-    public Dimension(double xMax, double yMax) {
-        super(xMax, yMax);
+import one.empty3.library.Point2D;
+
+public class Dimension extends Point2D {
+
+    public Dimension(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getWidth() {
+        return x;
+    }
+
+    public double getHeight() {
+        return y;
     }
 }

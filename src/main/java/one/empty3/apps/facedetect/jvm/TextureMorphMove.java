@@ -113,7 +113,7 @@ public class TextureMorphMove extends ITexture {
                 if (axPointInB != null) {
                     Point3D p = new Point3D(axPointInB.getX() * editPanel.image.getWidth(), axPointInB.getY() * editPanel.image.getHeight(), 0.0);
 
-                    double percentB =  distanceToConvexHull(distanceAB.bDimReal, editPanel.convexHull1, p) + 10;
+                    double percentB = distanceToConvexHull(distanceAB.bDimReal, editPanel.convexHull1, p) + 10;
 
                     percentB = percentB / 20;
                     if (percentB < 0) {
@@ -180,7 +180,7 @@ public class TextureMorphMove extends ITexture {
         return Color.newCol(255, 255, 0).getRGB();
     }
 
-    private double distanceToConvexHull(Dimension2D bDimReal, ConvexHull convexHull2, Point3D axPointInB) {
+    private double distanceToConvexHull(Dimension bDimReal, ConvexHull convexHull2, Point3D axPointInB) {
         List<Point3D> p = new ArrayList<>();
 /*
         for (int i = 0; i < convexHull2.p.size(); i++) {

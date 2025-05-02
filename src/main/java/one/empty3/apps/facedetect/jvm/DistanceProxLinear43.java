@@ -33,7 +33,7 @@ import java.util.List;
 public class DistanceProxLinear43 extends DistanceBezier2 {
     public final Point3D[][] imageCB;
     public final List<Point3D> C;
-    public final Dimension2D cDimReal;
+    public final Dimension cDimReal;
     public Point3D[][] imageAB;
     public List<Point3D> pointsB;
     public List<Point3D> pointsA;
@@ -53,7 +53,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
      * @param opt1
      * @param optimizeGrid
      */
-    public DistanceProxLinear43(List<Point3D> A, List<Point3D> B, List<Point3D> C, Dimension2D aDimReal, Dimension2D bDimReal, Dimension2D cDimReal,
+    public DistanceProxLinear43(List<Point3D> A, List<Point3D> B, List<Point3D> C, Dimension aDimReal, Dimension bDimReal, Dimension cDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         this.C  = C;
