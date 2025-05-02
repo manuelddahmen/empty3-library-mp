@@ -437,7 +437,6 @@ public class EditPolygonsMappings implements Runnable {
                     double x;
                     double y;
                     if (!line.isEmpty()) {
-                        if (Character.isLetter(line.charAt(0))) {
                             landmarkType = line;
                             // X
                             line = bufferedReader.nextLine().trim();
@@ -449,7 +448,6 @@ public class EditPolygonsMappings implements Runnable {
                             line = bufferedReader.nextLine().trim();
 
                             pointsInImage.put(landmarkType, new Point3D(x, y, 0.0));
-                        }
                     }
                 }
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInImage.size());
@@ -530,7 +528,6 @@ public class EditPolygonsMappings implements Runnable {
                     double x;
                     double y;
                     if (!line.isEmpty()) {
-                        if (Character.isLetter(line.charAt(0))) {
                             landmarkType = line;
                             // X
                             line = bufferedReader.nextLine().trim();
@@ -543,7 +540,6 @@ public class EditPolygonsMappings implements Runnable {
 
                             pointsInModel.put(landmarkType, new Point3D(x, y, 0.0));
                         }
-                    }
                 }
                 pointsInImage.forEach(new BiConsumer<String, Point3D>() {
                     @Override
@@ -670,7 +666,6 @@ public class EditPolygonsMappings implements Runnable {
                     double x;
                     double y;
                     if (!line.isEmpty()) {
-                        if (Character.isLetter(line.charAt(0))) {
                             landmarkType = line;
                             // X
                             line = bufferedReader.nextLine().trim();
@@ -682,7 +677,6 @@ public class EditPolygonsMappings implements Runnable {
                             line = bufferedReader.nextLine().trim();
 
                             points3.put(landmarkType, new Point3D(x, y, 0.0));
-                        }
                     }
                 }
                 pointsInImage.forEach(new BiConsumer<String, Point3D>() {
