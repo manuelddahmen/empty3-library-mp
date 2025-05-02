@@ -16,4 +16,10 @@ public class Dimension extends Point2D {
     public double getHeight() {
         return y;
     }
+    public void setWidth(int x) {
+        this.x = x;
+    }
+    public void setHeight(int y) {
+        this.y = y;
+    }
 }

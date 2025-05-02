@@ -19,13 +19,13 @@ public class ConvexHull {
     private final Image mask;
     List<Point3D> p = new ArrayList<>();
 
-    public ConvexHull(List<Point3D> list, Dimension dimension2D) {
+    public ConvexHull(List<Point3D> list, Dimension dimension) {
         List<Point3D> list1 = new ArrayList<>();
 
-        mask = new Image((int) dimension2D.getWidth(), (int) dimension2D.getHeight());
+        mask = new Image((int) dimension.getWidth(), (int) dimension.getHeight());
 
         for (Point3D point3D : list) {
-            list1.add(point3D.multDot(new Point3D(dimension2D.getWidth(), dimension2D.getHeight(), 0.0)));
+            list1.add(point3D.multDot(new Point3D(dimension.getWidth(), dimension.getHeight(), 0.0)));
         }
         this.list = list1;
 
