@@ -138,7 +138,7 @@ public class TextureMorphMove extends ITexture {
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
                             //if(dist4.checkedListC[x3][y3]) {
                             if (/*editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)*/
-                                /*&&*/editPanel.convexHull1 != null && editPanel.convexHull1.testIfIn(xLeft, yLeft)
+                                /*&&*/editPanel.convexHull1 != null && editPanel.convexHull1.isPointInHull(xLeft, yLeft)
                                 /*&&editPanel.convexHull2!=null &&editPanel.convexHull2.testIfIn(x1, y1)*/) {
                                 markA = true;
                                 return dist4.jpgRight.getRgb(x3, y3);
@@ -152,7 +152,7 @@ public class TextureMorphMove extends ITexture {
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
                             //if(dist4.checkedListC[x3][y3]) {
                             if (/*editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)*/
-                                /*&&*/editPanel.convexHull1 != null && editPanel.convexHull1.testIfIn(xLeft, yLeft)
+                                /*&&*/editPanel.convexHull1 != null && editPanel.convexHull1.isPointInHull(xLeft, yLeft)
                                 /*&&editPanel.convexHull2!=null &&editPanel.convexHull2.testIfIn(x1, y1)*/) {
                                 markA = true;
                                 double[] color = new double[3];
@@ -187,8 +187,8 @@ public class TextureMorphMove extends ITexture {
             p.add(convexHull2.p.get(i).multDot(new Point3D(bDimReal.getHeight(),bDimReal.getHeight()));
         }
 */
-        double d = PolygonDistance.distanceToPolygon(axPointInB, convexHull2.p);
-        return (d * (convexHull2.testIfIn((int) axPointInB.getX(), (int) axPointInB.getY()) ? 1 : -1) + 1) / 2.0;
+        double d = PolygonDistance.distanceToPolygon(axPointInB, convexHull2.getHullPoints());
+        return (d * (convexHull2.isPointInHull((int) axPointInB.getX(), (int) axPointInB.getY()) ? 1 : -1) + 1) / 2.0;
     }
 
 
