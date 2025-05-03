@@ -78,11 +78,9 @@ public class AnimationTime {
     }
 
     public void increase(double time) {
-        // TODO
     }
 
     public void increase(int numberOfFrames) {
-        // TODO
     }
 
     public double getTimeMin() {

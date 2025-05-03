@@ -9,6 +9,8 @@ import one.empty3.library.Point3D;
 
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,51 +74,6 @@ public class ConvexHull {
 
     public void createConvexHull() {
         List<Point3D> hull = computeHull();
-        /*
-        Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull started");
-        double maxX = 0;
-        Point3D first = null;
-        for (Point3D d : list) {
-            if (d.getX() > maxX) {
-                maxX = d.getX();
-                first = d;
-            } else if (d.getX() == maxX && (first == null || d.getY() > first.getY())) {
-                first = d;
-            }
-        }
-
-        if(first==null) {
-            Logger.getAnonymousLogger().log(Level.INFO , "ConvexHull first =="+first);
-            return;
-        }
-        p.add(first);
-
-        double a=Math.PI/2; // a vers -2*PI
-        double angleMax = a+Math.PI;
-        Point3D current = first;
-        angleMax = 0;
-        double at = 0;
-        Point3D t;
-        while(!list.isEmpty()) {
-            Point3D selPoint = null;
-            angleMax = a+Math.PI;
-            for (Point3D point3D : list) {
-                if (!p.contains(point3D)) {
-                    t = point3D.moins(current).norme1();
-                    at = Math.atan2(t.getY(), t.getX());
-                    if (at>a && at <= angleMax) {
-                        selPoint = point3D;
-                        a = angleMax;
-                    }
-                }
-            }
-            if(selPoint==null||(selPoint==first&&p.size()>1))
-                break;
-            current = selPoint;
-            p.add(current);
-        }
-*/
-
 
         p = hull;
 
@@ -128,6 +85,8 @@ public class ConvexHull {
         }
 
 
+
+        fillPolyMp(mask, xPoints, yPoints, p.size());
 
 /*
         try {
@@ -150,6 +109,16 @@ public class ConvexHull {
 */
         Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull done " + p.size()+"/"+list.size());
    }
+
+    private void fillPolyMp(Image mask, int[] xPoints, int[] yPoints, int size) {
+        for (int i = 0; i < mask.getWidth(); i++) {
+            for (int j = 0; j < mask.getHeight(); j++) {
+                if(testIfIn(i,j ))
+                    mask.setRgb(i, j, Color.newCol(1f,1f,1f).getRGB());
+
+            }
+        }
+    }
 
     public boolean testIfIn(int x, int y) {
         double[] rgb1 = Lumiere.getDoubles(mask.getRgb(x,y));
