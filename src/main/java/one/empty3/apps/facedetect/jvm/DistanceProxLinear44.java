@@ -2,7 +2,6 @@ package one.empty3.apps.facedetect.jvm;
 
 import one.empty3.library.Point3D;
 
-import one.empty3.apps.facedetect.jvm.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +19,8 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     boolean[][] checkedListC;
     private double computeTimeMax = 1000*10e9d;
     boolean[][] checkedListB;
+    private float[][][] imageAB2;
+    private float[][][] imageCB2;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -225,25 +226,28 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         System.out.println("Compute texturing ended 1/2");
         System.out.println("Next: fills arrays avoiding blanks ");
 
-        imageAB = fillArray(imageAB);
-        imageCB = fillArray(imageCB);
+        imageAB2 = fillArray(imageAB);
+        imageCB2 = fillArray(imageCB);
         System.out.println("Compute texturing ended 2/2") ;
     }
 
-    public Point3D[][] fillArray(Point3D[][] image) {
-        Point3D[][] p = new Point3D[image.length][image[0].length];
+    public float[][][] fillArray(Point3D[][] image) {
+        float[][][] p2 = new float[image.length][image[0].length][2];
 
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
                 if(image[i][j]!=null) {
-                    p[i][j] = image[i][j];
+                    p2[i][j][0] = (float) image[i][j].getX();
+                    p2[i][j][1] = (float) image[i][j].getY();
                 } else {
-                    p[i][j] = searchNeighbours(i, j, image);
+                    Point3D p = searchNeighbours(i, j, image);
+                    p2[i][j][0] = (float) p.getX();
+                    p2[i][j][1] = (float) p.getY();
                 }
             }
         }
 
-        return p;
+        return p2;
     }
 
     private Point3D searchNeighbours(int i, int j, Point3D[][] image) {
@@ -283,8 +287,10 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     }
 
     public Point3D findAxPointInBa11(double u, double v) {
-        return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
-                : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+        float[] floats = imageAB2[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+        Point3D ret;
+        ret = new Point3D((double) floats[0], (double) floats[1], 0.0);
+        return ret;
     }
 /*
     private Point3D findAxPointInBa12(double u, double v) {
