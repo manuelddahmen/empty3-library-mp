@@ -11,8 +11,8 @@ public class PolygonDistance {
 
         // Iterate through all edges of the polygon
         for (int i = 0; i < polygon.size(); i++) {
-            Point3D p1 = polygon.get((2*polygon.size()+i)% polygon.size());
-            Point3D p2 = polygon.get((2*polygon.size()+i + 1) % polygon.size()); // Wrap around for the last edge
+            Point3D p1 = polygon.get(i);
+            Point3D p2 = polygon.get((i + 1) % polygon.size()); // Wrap around for the last edge
 
             double distance = distanceToLineSegment(point, p1, p2);
             minDistance = Math.min(minDistance, distance);

@@ -6,9 +6,8 @@ public class RunAppCmd {
     public RunAppCmd() {
 
     }
-    public void setAlgmrithm(String algorithm) {
+    public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
-
     }
 
     public static void main(String[] args) {

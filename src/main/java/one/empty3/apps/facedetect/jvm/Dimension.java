@@ -4,22 +4,23 @@ import one.empty3.library.Point2D;
 
 public class Dimension extends Point2D {
 
-    public Dimension(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Dimension(int width, int height) {
+        super(width, height);
     }
 
     public double getWidth() {
-        return x;
+        return getX();
     }
 
     public double getHeight() {
-        return y;
+        return getY();
     }
-    public void setWidth(int x) {
-        this.x = x;
+    
+    public void setWidth(int width) {
+        setX(width);
     }
-    public void setHeight(int y) {
-        this.y = y;
+    
+    public void setHeight(int height) {
+        setY(height);
     }
 }
