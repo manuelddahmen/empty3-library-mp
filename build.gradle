@@ -33,16 +33,16 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.14.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("1.9.24")
+    id("org.jetbrains.kotlin.jvm") version("2.1.21")
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(23)
 }
-sourceCompatibility = 21
-targetCompatibility = 21
+sourceCompatibility = 23
+targetCompatibility = 23
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 21
+    options.release = 23
 }
 
 configurations {
@@ -395,6 +395,8 @@ dependencies {
     implementation 'com.google.guava:guava:32.0.1-android'
     implementation 'com.google.http-client:google-http-client-jackson2:1.44.2'
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
+
+    implementation("org.bytedeco:javacv-platform:1.5.11")
 }
 
 tasks.register('javadocJar', Jar) {
