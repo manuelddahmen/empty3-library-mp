@@ -50,7 +50,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                                @NonNull Dimension aDimReal, @NonNull Dimension bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
-        imageAB = new float[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()][3];
+        imageAB = new float[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()][4];
         init_1();
     }
 
@@ -107,6 +107,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                     imageAB[j1][j2][0] = (float)(double) pointsA.get(i).getX();
                     imageAB[j1][j2][1] = (float)(double) pointsA.get(i).getY();
                     imageAB[j1][j2][2] = (float)(double) pointsA.get(i).getZ();
+                    imageAB[j1][j2][3] = 1f;
                     newA.add(pointsA.get(i));
                     newB.add(pointsB.get(i));
                     continue;
@@ -156,6 +157,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                         imageAB[j1][j2][0] =(float) (double) pA.get(0);
                         imageAB[j1][j2][1] =(float) (double) pA.get(1);
                         imageAB[j1][j2][2] =(float)(double)  pA.get(2);
+                        imageAB[j1][j2][3] = 1f;
                         gen[i1][i2] = iteration;
                         pointAdded[i1][i2] = pA;
                         checked++;
@@ -251,7 +253,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     }
 
     private Point3D findAxPointInBa11(double u, double v) {
-        return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
+        return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][3]==0 ? null
                 : new Point3D((double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][0],
                 (double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][1],
                 (double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][2]);
