@@ -59,7 +59,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         public MinMaxOptimium(MinMaxIncr minMaxIncr, double defaultSize) {
             this.minMaxIncr = minMaxIncr;
             this.defaultIncr = 1. / defaultSize;
-            if (defaultSize < MIN_INCR)
+            if (1./defaultSize < MIN_INCR)
                 this.defaultIncr = MIN_INCR;
         }
 
