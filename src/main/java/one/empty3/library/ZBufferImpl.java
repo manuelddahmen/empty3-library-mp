@@ -93,7 +93,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static final int SURFACE_DISPLAY_POINTS = 64;
     public static final int SURFACE_DISPLAY_POINTS_DEEP = 128;
     public static final int SURFACE_DISPLAY_POINTS_LARGE = 256;
-    public static double MIN_INCR = 0.001;
+    public static double MIN_INCR = 0.000001;
     public static int CURVES_MAX_SIZE = 10000;
     public static int SURFAS_MAX_SIZE = 1000000;
     public static int CURVES_MAX_DEEP = 10;
