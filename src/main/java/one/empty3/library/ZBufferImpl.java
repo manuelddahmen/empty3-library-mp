@@ -93,7 +93,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static final int SURFACE_DISPLAY_POINTS = 64;
     public static final int SURFACE_DISPLAY_POINTS_DEEP = 128;
     public static final int SURFACE_DISPLAY_POINTS_LARGE = 256;
-    public static double MIN_INCR = 0.000001;
+    public static double MIN_INCR = 0.0001;
     public static int CURVES_MAX_SIZE = 10000;
     public static int SURFAS_MAX_SIZE = 1000000;
     public static int CURVES_MAX_DEEP = 10;
@@ -135,8 +135,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         that = this;
         scene = new Scene();
         texture(new ColorTexture(Color.newCol(0,0,0)));
-        //minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMax.Max, (3.0*Math.max(la,ha)));
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Max, 1000);
     }
 
     public ZBufferImpl(int l, int h) {
@@ -145,7 +143,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = h;
         dimx = la;
         dimy = ha;
-        //Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
+        Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
     }
 
@@ -155,8 +153,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = h;
         dimx = la;
         dimy = ha;
-        minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Min, 100.0);
-        //Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
+        Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
     }
 
@@ -2180,6 +2177,43 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
 
     }
+
+    public boolean testDeep(double x3, double y3, double z3, int c) {
+        int cc = c;
+        Point ce = camera().coordonneesPoint2D(x3, y3, z3, that);
+        if (ce == null)
+            return false;
+        int x = (int) ce.getX();
+        int y = (int) ce.getY();
+        double deep = camera().distanceCamera(x3,y3,z3);
+        if (x >= 0 & x < la & y >= 0 & y < ha
+                && (deep >= ime.getElementProf(x, y)
+                ||ime.getElementProf(x, y) == INFINITY.getZ())) {
+//            !!!!Point3D n = x3d.getNormale();
+            // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
+            // dans la même direction par rapport à la caméra.
+//            if (n == null || n.norme() == 0)
+//                n = x3d.moins(camera().getEye());
+//            else if (FORCE_POSITIVE_NORMALS && n.norme1().dot(scene().cameraActive().getEye().norme1()) < 0)
+//                n = n.mult(-1);
+            Point3D point3D = new Point3D(x3, y3, z3);
+            if(scene().lumieres().size()>0) {
+                cc = scene().lumiereTotaleCouleur(c, point3D, Point3D.X);
+            }
+            ime.setElementCouleur(x, y, cc);
+            ime.setElementID(x, y, idImg);
+            ime.setDeep(x, y, deep);
+            ime.setElementPoint(x, y, point3D);
+            ime.setElementProf(x, y, deep);
+            if (toDrawR != null) {
+                ime.setElementRepresentable(x, y, deep, toDrawR);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
 
     public void setCheckedOccupied(boolean checkedOccupied) {
         isCheckedOccupied = checkedOccupied;

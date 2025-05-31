@@ -827,6 +827,7 @@ public abstract class TestObjet implements Test, Runnable {
         if ((generate & GENERATE_OPENGL) > 0) {
         }
         if ((generate & GENERATE_MOVIE) > 0) {
+            createMovie();
 
         }
         serid();
@@ -959,6 +960,9 @@ public abstract class TestObjet implements Test, Runnable {
                         ex.printStackTrace();
                     }
                 }
+                if(getGenerate(GENERATE_MOVIE)) {
+                    addFrame(ri);
+                }
             }
             lastInfoEllapsedMillis = System.currentTimeMillis() - timeStart;
             if (LOG) {
@@ -1020,6 +1024,9 @@ public abstract class TestObjet implements Test, Runnable {
 
         setRunning(false);
 
+
+
+
         if (img() == null) {
             double sqrt = Math.sqrt(resx * resx + resy * resy);
             ri = new Image(getResx(), getResy());
@@ -1033,6 +1040,12 @@ public abstract class TestObjet implements Test, Runnable {
             afterRender();
 
         }
+
+        if(getGenerate(GENERATE_MOVIE)) {
+            endMovie();
+        }
+
+
         if (LOG) {
             Logger.getAnonymousLogger().log(Level.INFO, frame() + "\n" + runtimeInfoSucc());
 
@@ -1044,6 +1057,18 @@ public abstract class TestObjet implements Test, Runnable {
             Logger.getAnonymousLogger().log(Level.INFO, "End movie       " + runtimeInfoSucc());
             Logger.getAnonymousLogger().log(Level.INFO, "Quit run method " + runtimeInfoSucc());
         }
+    }
+
+    private void endMovie() {
+
+    }
+
+    private void addFrame(Image ri) {
+
+    }
+
+    private void createMovie() {
+
     }
 
     private File getNewDirectory() {

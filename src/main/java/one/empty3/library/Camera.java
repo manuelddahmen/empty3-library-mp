@@ -159,6 +159,19 @@ public class Camera extends CameraBox {
         p2.texture(p.texture());
         return p2;
     }
+    public double []  calculerPointDansRepereDoubles(double [] p) {
+        double [] res = new double[3 ];
+        for(int i=0; i<3; i++) {
+            for (int j = 0; j < 3; j++) {
+                res[i] += matrice.getElem().get(i, j) * p[j];
+            }
+        }
+        double[] p2 = new double[3];
+        for (int i = 0; i < 3; i++) {
+            p2[i] = (double) p2[i]*scale.getElem();
+        }
+        return p2;
+    }
 
     /*__
      * @return
@@ -252,6 +265,32 @@ public class Camera extends CameraBox {
         return null;
 
     }
+    public Point coordonneesPointEcranPerspective(double [] p, int la, int ha) {
+        double x= p[0];
+        double y= p[1];
+        double z= p[2];
+        boolean conditionInBounds =
+                (z > 0 && -getAngleX() < Math.atan(x / z)
+                        && Math.atan(x / z) < getAngleX() && -getAngleY() < Math.atan(y / z)
+                        && Math.atan(y / z) < getAngleY());
+        if (!conditionInBounds) {
+            return null;
+        }
+
+
+            double scale = (1.0 / (z));
+
+            double r = (angleY.getElem() / angleX.getElem());
+            return new Point(
+                    (int) ((x * scale * la * r + (double) la / 2)),
+                    (int) ((-y * scale * ha + (double) ha / 2)));
+/*
+            Point p = new Point((int) (x + la / 2), (int) (y + ha / 2));
+            Logger.getAnonymousLogger().log(Level.INFO, p.toString());
+
+            return p;
+  */
+    }
 
     private double coordXfAxZ(double angleX, double z, double xBase, double la, double ha, boolean xOrY) {
         return Math.sin(angleX) * Math.sqrt(z * z + xBase * xBase);//(xOrY?la:ha);//
@@ -305,6 +344,10 @@ public class Camera extends CameraBox {
         }
     }
 
+    public Point coordonneesPoint2D(double x, double y, double z, ZBuffer impl) {
+        return coordonneesPointEcranPerspective(calculerPointDansRepereDoubles(new double[] {x,y , z}), impl.la(), impl.ha());
+    }
+
     private Point3D calculerPointDansRepereIsometrique(Point3D p) {
         return null;
     }
@@ -316,6 +359,10 @@ public class Camera extends CameraBox {
             default -> throw new UnsupportedOperationException("Type de perspective non reconnu");
         };
 
+    }
+
+    public double distanceCamera(double x, double y, double z) {
+        return z-eye.getElem().getZ();
     }
 
     public StructureMatrix<Double> getScale() {

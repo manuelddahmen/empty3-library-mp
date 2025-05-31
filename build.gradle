@@ -446,7 +446,7 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2025.5.24'
+def versionName = '2025.5.31'
 publishing {
     publications {
         maven(MavenPublication) {

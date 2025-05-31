@@ -246,7 +246,9 @@ public class Point3D extends Representable {
      * @param p2 The second 3D point.
      * @return The Euclidean distance between p1 and p2.
      */
-    public static Double distance(one.empty3.library.Point3D p1, one.empty3.library.Point3D p2) {
+    public static Double distance(Point3D p1, Point3D p2) {
+        if(p1==null || p2==null)
+            return Double.NaN;
         double d = 0.0;
         for (int i = 0; i < 3; i++)
             d += (p1.get(i) - p2.get(i)) * (p1.get(i) - p2.get(i));
