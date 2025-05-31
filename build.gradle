@@ -33,16 +33,16 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.14.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.1.21")
+    id("org.jetbrains.kotlin.jvm") version("2.0.0")
 }
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(21)
 }
-sourceCompatibility = 23
-targetCompatibility = 23
+sourceCompatibility = 21
+targetCompatibility = 21
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 23
+    options.release = 21
 }
 
 configurations {
@@ -446,7 +446,7 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2025.5.31'
+def versionName = '2025.5.31-1'
 publishing {
     publications {
         maven(MavenPublication) {
