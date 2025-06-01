@@ -33,14 +33,11 @@
 package one.empty3.library.core.tribase;
 
 
-import one.empty3.*;
 import one.empty3.library.*;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /*__
@@ -249,9 +246,9 @@ public class TRIObjetGenerateurAbstract extends Representable implements TRIObje
                 double incrMax = 1;
                 for (int t = 0; t < 2; t++) {
                     for (int c = 0; c < 3; c++) {
-                        one.empty3.library.Point p1 = z.camera().coordonneesPoint2D(tris[t]
+                        one.empty3.library.Point p1 = z.camera().coordinatesPoint2D(tris[t]
                                 .getSommet().getElem(c), (ZBufferImpl) z);
-                        Point p2 = z.camera().coordonneesPoint2D(tris[t]
+                        Point p2 = z.camera().coordinatesPoint2D(tris[t]
                                 .getSommet().getElem((c + 1) % 3), (ZBufferImpl) z);
                         if (p1 != null & p2 != null) {
                             double incr = 1.0 / (Math

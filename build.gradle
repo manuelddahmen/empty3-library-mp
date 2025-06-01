@@ -51,12 +51,6 @@ java {
     }
 }
 
-javadoc {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(22)
-    }
-}
-
 configurations {
     desktopCompile
     androidCompile

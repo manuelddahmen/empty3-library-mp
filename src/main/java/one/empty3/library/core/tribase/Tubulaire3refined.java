@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 
 public class Tubulaire3refined extends ParametricSurface implements Precomputable {
     public double TAN_FCT_INCR  = 0.0001;
-    public double NORM_FCT_INCR = 0.0001;
+    public double NORM_FCT_INCR = 0.000001;
 
     protected StructureMatrix<CourbeParametriquePolynomialeBezier> soulCurve = new StructureMatrix<>(0, CourbeParametriquePolynomialeBezier.class);
     protected StructureMatrix<Fct1D_1D> diameterFunction = new StructureMatrix<>(0, Fct1D_1D.class);

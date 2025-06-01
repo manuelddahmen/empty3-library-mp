@@ -34,7 +34,6 @@ import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import javax.swing.*;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -249,7 +248,7 @@ public class EyeBallRoll extends JPanel {
 
                         if (r instanceof Point3D) {
                             Point3D p = (Point3D) r;
-                            Point point = draw.scene.cameraActive().coordonneesPoint2D(p, draw.z);
+                            Point point = draw.scene.cameraActive().coordinatesPoint2D(p, draw.z);
                             double x = point.getX();
                             double y = point.getY();
 

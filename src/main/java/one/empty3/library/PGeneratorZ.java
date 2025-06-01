@@ -35,10 +35,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
-import one.empty3.libs.*;
-
 /*__
  * @author MANUEL DAHMEN
  *         <p>
@@ -66,6 +62,6 @@ public abstract class PGeneratorZ extends Representable {
     }
 
     public Point point(ZBuffer z, Point3D p) {
-        return z.camera().coordonneesPoint2D(p, ((ZBufferImpl)z));
+        return z.camera().coordinatesPoint2D(p, ((ZBufferImpl)z));
     }
 }

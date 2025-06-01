@@ -310,8 +310,8 @@ public class EditPolygonsMappings implements Runnable {
                                     uvCoordinates.getY());
                             if (uvFace != null) {
                                 if (testHumanHeadTexturing.scene() != null && testHumanHeadTexturing.scene().cameraActive() != null) {
-                                    Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.z());
-                                    Point point2 = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.z());
+                                    Point point = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(uvFace, testHumanHeadTexturing.z());
+                                    Point point2 = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(uvFace, testHumanHeadTexturing.z());
                                     if (point != null && point2 != null) {
                                         point.setLocation(point.getX() / testHumanHeadTexturing.z().la() * panelDraw.getWidth(),
                                                 point.getY() / testHumanHeadTexturing.z().ha() * panelDraw.getHeight());

@@ -238,7 +238,7 @@ public class Camera extends CameraBox {
 
     }
 
-    public Point coordonneesPointEcranPerspective(Point3D x3d, int la, int ha) {
+    public Point coordinatesPointScreenPerspective(Point3D x3d, int la, int ha) {
         boolean conditionInBounds =
                 (x3d.getZ() > 0 && -getAngleX() < Math.atan(x3d.getX() / x3d.getZ())
                         && Math.atan(x3d.getX() / x3d.getZ()) < getAngleX() && -getAngleY() < Math.atan(x3d.getY() / x3d.getZ())
@@ -252,6 +252,7 @@ public class Camera extends CameraBox {
             double scale = (1.0 / (x3d.getZ()));
 
             double r = (angleY.getElem() / angleX.getElem());
+            r = 1;
             return new Point(
                     (int) ((x3d.getX() * scale * la * r + (double) la / 2)),
                     (int) ((-x3d.getY() * scale * ha + (double) ha / 2)));
@@ -295,7 +296,7 @@ public class Camera extends CameraBox {
         return null;
     }
 
-    public Point coordonneesPointEcranIsometrique(Point3D p, ZBufferImpl.Box2D box, int la, int ha) {
+    public Point coordinatesPointScreenIso(Point3D p, ZBufferImpl.Box2D box, int la, int ha) {
         Point p2 = new Point(
                 (int) (1.0 * la / (box.getMaxx() - box.getMinx()) * (p.getX() - box.getMinx())),
                 ha - (int) (1.0 * ha / (box.getMaxy() - box.getMiny()) * (p.getY() - box.getMiny())));
@@ -307,18 +308,18 @@ public class Camera extends CameraBox {
     }
 
 
-    public Point coordonneesPoint2D(Point3D p, ZBuffer impl) {
+    public Point coordinatesPoint2D(Point3D p, ZBuffer impl) {
         switch (type_perspective) {
             case PERSPECTIVE_ISOM:
-                return coordonneesPointEcranIsometrique(calculerPointDansRepereIsometrique(p), impl.getCube(), impl.la(), impl.ha());
+                return coordinatesPointScreenIso(calculerPointDansAxesIso(p), impl.getCube(), impl.la(), impl.ha());
             case PERSPECTIVE_OEIL:
-                return coordonneesPointEcranPerspective(calculerPointDansRepere(p), impl.la(), impl.ha());
+                return coordinatesPointScreenPerspective(calculerPointDansRepere(p), impl.la(), impl.ha());
             default:
                 throw new UnsupportedOperationException("Type de perspective non reconnu");
         }
     }
 
-    private Point3D calculerPointDansRepereIsometrique(Point3D p) {
+    private Point3D calculerPointDansAxesIso(Point3D p) {
         return null;
     }
 

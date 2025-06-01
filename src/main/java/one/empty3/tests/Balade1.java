@@ -81,8 +81,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        polygonSol.setIncrU(0.002);
-        polygonSol.setIncrV(0.002);
+        polygonSol.setIncrU(0.0002);
+        polygonSol.setIncrV(0.0002);
 
 
         polygonSol.texture(sol_sableux);
@@ -92,7 +92,7 @@ public class Balade1 extends TestObjetSub {
         frame = 0;
 
         z().scene(scene());
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         z().texture(new ColorTexture(0x00FF0000));
         int numFaces = 1;
         //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
@@ -100,16 +100,16 @@ public class Balade1 extends TestObjetSub {
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
-        z().setMinMaxOptimium(
+        /*z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
                 )
-        );
-        z().setMinMaxOptimium(
+        );*/
+        /*z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 1000.0
                 )
-        );
+        );*/
         Logger.getAnonymousLogger().info("MinMaxOptimum set " + v);
     }
 

@@ -380,8 +380,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         if (displayType == SURFACE_DISPLAY_POINTS || displayType == SURFACE_DISPLAY_POINTS_DEEP) {
                             testDeep(p1, n.texture().getColorAt(u,v));
                             if (displayType == SURFACE_DISPLAY_POINTS_DEEP) {
-                                double v1p = maxDistance(camera().coordonneesPoint2D(p1, this), camera().coordonneesPoint2D(p2, this),
-                                        camera().coordonneesPoint2D(p3, this), camera().coordonneesPoint2D(p4, this));
+                                double v1p = maxDistance(camera().coordinatesPoint2D(p1, this), camera().coordinatesPoint2D(p2, this),
+                                        camera().coordinatesPoint2D(p3, this), camera().coordinatesPoint2D(p4, this));
                                 if (v1p > 1 && v1p < la && v1p < ha) {
                                     int i = 0;
                                     int j = 0;
@@ -658,8 +658,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
      * @param t  colour of de la line
      */
     public void line(Point3D p1, Point3D p2, ITexture t) {
-        Point x1 = camera().coordonneesPoint2D(p1, this);
-        Point x2 = camera().coordonneesPoint2D(p2, this);
+        Point x1 = camera().coordinatesPoint2D(p1, this);
+        Point x2 = camera().coordinatesPoint2D(p2, this);
         if ((x1 == null || x2 == null) || (!checkScreen(x1) && !checkScreen(x2))) {
             return;
         }
@@ -673,8 +673,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public void line(Point3D p1, Point3D p2, ITexture t, double u, double u1, ParametricCurve curve) {
-        Point x1 = camera().coordonneesPoint2D(p1, this);
-        Point x2 = camera().coordonneesPoint2D(p2, this);
+        Point x1 = camera().coordinatesPoint2D(p1, this);
+        Point x2 = camera().coordinatesPoint2D(p2, this);
         if ((x1 == null || x2 == null) || (!checkScreen(x1) && !checkScreen(x2))) {
             return;
         }
@@ -692,8 +692,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void line(Point3D p1, Point3D p2, ITexture texture, double u1, double v1, double u2, double v2,
                      ParametricSurface surface) {
-        Point x1 = camera().coordonneesPoint2D(p1, this);
-        Point x2 = camera().coordonneesPoint2D(p2, this);
+        Point x1 = camera().coordinatesPoint2D(p1, this);
+        Point x2 = camera().coordinatesPoint2D(p2, this);
         if ((x1 == null || x2 == null) || (!checkScreen(x1) && !checkScreen(x2))) {
             return;
         }
@@ -784,8 +784,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         Point3D p2start = v.calculerPoint3D(pc.calculerPoint3D(pStart));
         Point3D p2End = v.calculerPoint3D(pc.calculerPoint3D(pEnd));
         double dist = Point.distance(
-                new Point(camera().coordonneesPoint2D(p2start, this)),
-                new Point(camera().coordonneesPoint2D(p2End, this)));
+                new Point(camera().coordinatesPoint2D(p2start, this)),
+                new Point(camera().coordinatesPoint2D(p2End, this)));
         if (dist <= 1.0) {
             points.add(pStart);
             points.add(pEnd);
@@ -802,8 +802,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         Point3D p2 = v.calculerPoint3D(ps.calculerPoint3D(u1, v0));
         Point3D p3 = v.calculerPoint3D(ps.calculerPoint3D(u1, v1));
         Point3D p4 = v.calculerPoint3D(ps.calculerPoint3D(u0, v1));
-        double dist = maxDistance(camera().coordonneesPoint2D(p1, this), camera().coordonneesPoint2D(p2, this),
-                camera().coordonneesPoint2D(p3, this), camera().coordonneesPoint2D(p4, this)
+        double dist = maxDistance(camera().coordinatesPoint2D(p1, this), camera().coordinatesPoint2D(p2, this),
+                camera().coordinatesPoint2D(p3, this), camera().coordinatesPoint2D(p4, this)
         );
         if (dist <= 1.0) {
             polygons.add(new Double[]{u0, u1, v0, v1});
@@ -898,8 +898,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     protected void tracerAretes(Point3D point3d, Point3D point3d2, Color c) {
-        Point p1 = camera().coordonneesPoint2D(point3d, this);
-        Point p2 = camera().coordonneesPoint2D(point3d2, this);
+        Point p1 = camera().coordinatesPoint2D(point3d, this);
+        Point p2 = camera().coordinatesPoint2D(point3d2, this);
         if (p1 == null || p2 == null || (!checkScreen(p1) || !checkScreen(p2))) {
             return;
         }
@@ -941,9 +941,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                double u0, double v0, double u1, double v1) {
         if (camera() == null || pp1 == null || pp2 == null || pp3 == null)
             return;
-        Point p1 = camera().coordonneesPoint2D(pp1, this);
-        Point p2 = camera().coordonneesPoint2D(pp2, this);
-        Point p3 = camera().coordonneesPoint2D(pp3, this);
+        Point p1 = camera().coordinatesPoint2D(pp1, this);
+        Point p2 = camera().coordinatesPoint2D(pp2, this);
+        Point p3 = camera().coordinatesPoint2D(pp3, this);
 
         int checkedFalse = 0;
         if (!checkScreen(p1) || isOccupied(pp1))
@@ -966,7 +966,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             for (double a = 0; a < 1.0; a += iteres1) {
                 Point3D p3a = pp1.plus(pp2.moins(pp1).mult(a));
                 Point3D uv3a = uvs[0].plus(uvs[1].moins(uvs[0]).mult(a));
-                Point pp = camera().coordonneesPoint2D(p3a, this);
+                Point pp = camera().coordinatesPoint2D(p3a, this);
                 if (pp != null) {
                     double iteres2 = 1.0 / (1 + mathUtilPow2(p3, pp));
                     Point3D p3ab;
@@ -1019,10 +1019,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         v02 = face.getV2() * height;
 
         Point p1, p2, p3, p4;
-        p1 = camera().coordonneesPoint2D(polygon.getPoints().getElem(0), this);
-        p2 = camera().coordonneesPoint2D(polygon.getPoints().getElem(1), this);
-        p3 = camera().coordonneesPoint2D(polygon.getPoints().getElem(2), this);
-        p4 = camera().coordonneesPoint2D(polygon.getPoints().getElem(3), this);
+        p1 = camera().coordinatesPoint2D(polygon.getPoints().getElem(0), this);
+        p2 = camera().coordinatesPoint2D(polygon.getPoints().getElem(1), this);
+        p3 = camera().coordinatesPoint2D(polygon.getPoints().getElem(2), this);
+        p4 = camera().coordinatesPoint2D(polygon.getPoints().getElem(3), this);
 
         double inter = minMaxOptimium.computeIncr( (maxDistance(p1, p2, p3, p4) + 1) / 3);
         for (double a = 0; a < 1.0; a += inter) {
@@ -1032,8 +1032,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Point3D pE1Image = polygonOnImage.getPoints().getElem(0).plus(polygonOnImage.getPoints().getElem(0).mult(-1d).plus(polygonOnImage.getPoints().getElem(1)).mult(a));
             Point3D pE2Image = polygonOnImage.getPoints().getElem(3).plus(polygonOnImage.getPoints().getElem(3).mult(-1d).plus(polygonOnImage.getPoints().getElem(3)).mult(a));
 
-            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(pElevation1, this),
-                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3.);
+            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordinatesPoint2D(pElevation1, this),
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 Point3D pFinalOnImage = (pE1Image.plus(pE1Image.mult(-1d).plus(pE2Image).mult(b)));
@@ -1082,10 +1082,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
 
         Point p1, p2, p3, p4;
-        p1 = camera().coordonneesPoint2D(pp1, this);
-        p2 = camera().coordonneesPoint2D(pp2, this);
-        p3 = camera().coordonneesPoint2D(pp3, this);
-        p4 = camera().coordonneesPoint2D(pp4, this);
+        p1 = camera().coordinatesPoint2D(pp1, this);
+        p2 = camera().coordinatesPoint2D(pp2, this);
+        p3 = camera().coordinatesPoint2D(pp3, this);
+        p4 = camera().coordinatesPoint2D(pp4, this);
 
         int checkedFalse = 0;
         if (!checkScreen(p1) || isOccupied(pp1))
@@ -1111,8 +1111,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             double u00 = textUv[0] + (textUv[2] - textUv[0]) * a;
             double u01 = textUv[4] + (textUv[2] - textUv[4]) * a;
             double u = (u00 + u01) / 2;
-            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(pElevation1, this),
-                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3.);
+            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordinatesPoint2D(pElevation1, this),
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double v00 = textUv[1] + (textUv[7] - textUv[1]) * b;
@@ -1133,21 +1133,21 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 if (displayType <= SURFACE_DISPLAY_TEXT_QUADS) {
                     if (n != null) {
                         if (testDeep(pFinal, n.texture(), u, v, n)) {
-                            Point ce = camera().coordonneesPoint2D(pFinal, that);
+                            Point ce = camera().coordinatesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
 
                         }
                     } else if (texture != null) {
                         if (testDeep(pFinal, texture, u, v, n)) {
-                            Point ce = camera().coordonneesPoint2D(pFinal, that);
+                            Point ce = camera().coordinatesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
 
                         }
                     } else {
                         if (testDeep(pFinal, Color.newCol(255, 175, 175))) {
-                            Point ce = camera().coordonneesPoint2D(pFinal, that);
+                            Point ce = camera().coordinatesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
 
@@ -1156,7 +1156,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 } else {
                     ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
-                        Point ce = camera().coordonneesPoint2D(pFinal, that);
+                        Point ce = camera().coordinatesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                         ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
 
@@ -1172,10 +1172,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
 
         Point p1, p2, p3, p4;
-        p1 = camera().coordonneesPoint2D(pp1, this);
-        p2 = camera().coordonneesPoint2D(pp2, this);
-        p3 = camera().coordonneesPoint2D(pp3, this);
-        p4 = camera().coordonneesPoint2D(pp4, this);
+        p1 = camera().coordinatesPoint2D(pp1, this);
+        p2 = camera().coordinatesPoint2D(pp2, this);
+        p3 = camera().coordinatesPoint2D(pp3, this);
+        p4 = camera().coordinatesPoint2D(pp4, this);
 
         Vec v1 = new Vec(5);
         Vec v2 = new Vec(5);
@@ -1210,8 +1210,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Vec pElevation2 = v4.add(v4.multiply(-1d).add(v3).multiply(a));
             double u00 = textUv[0] + (textUv[2] - textUv[0]) * a;
             double u01 = textUv[4] + (textUv[2] - textUv[4]) * a;
-            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(new Point3D(pElevation1.get(0), pElevation1.get(1), pElevation1.get(2)), this),
-                    camera().coordonneesPoint2D(new Point3D(pElevation2.get(0), pElevation2.get(1), pElevation2.get(2)), this)) + 1.) / 12.0);
+            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordinatesPoint2D(new Point3D(pElevation1.get(0), pElevation1.get(1), pElevation1.get(2)), this),
+                    camera().coordinatesPoint2D(new Point3D(pElevation2.get(0), pElevation2.get(1), pElevation2.get(2)), this)) + 1.) / 12.0);
             for (double b = 0; b < 1.0; b += inter2) {
                 Vec pFinal0 = (pElevation1.add(pElevation1.multiply(-1d).add(pElevation2).multiply(b)));
                 double u = pFinal0.get(3);
@@ -1244,7 +1244,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     } else*/
                     if (texture != null) {
                         if (testDeep(pFinal, texture, u, v, n)) {
-                            Point ce = camera().coordonneesPoint2D(pFinal, that);
+                            Point ce = camera().coordinatesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
                             ime.rMap[(int) ce.getX()][(int) ce.getY()] = n;
@@ -1252,7 +1252,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     } else {
                         if (testDeep(pFinal, Color.newCol(255, 175, 175).getRGB())) {
-                            Point ce = camera().coordonneesPoint2D(pFinal, that);
+                            Point ce = camera().coordinatesPoint2D(pFinal, that);
                             ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                             ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
                             ime.rMap[(int) ce.getX()][(int) ce.getY()] = n;
@@ -1262,7 +1262,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 } else {
                     ColorTexture col = new ColorTexture(Color.newCol(255, 0, 0).getRGB());
                     if (testDeep(pFinal, col, u, v, n)) {
-                        Point ce = camera().coordonneesPoint2D(pFinal, that);
+                        Point ce = camera().coordinatesPoint2D(pFinal, that);
                         ime.uMap[(int) ce.getX()][(int) ce.getY()] = u;
                         ime.vMap[(int) ce.getX()][(int) ce.getY()] = v;
                         ime.rMap[(int) ce.getX()][(int) ce.getY()] = n;
@@ -1280,10 +1280,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
 
         Point p1, p2, p3, p4;
-        p1 = camera().coordonneesPoint2D(pp1, this);
-        p2 = camera().coordonneesPoint2D(pp2, this);
-        p3 = camera().coordonneesPoint2D(pp3, this);
-        p4 = camera().coordonneesPoint2D(pp4, this);
+        p1 = camera().coordinatesPoint2D(pp1, this);
+        p2 = camera().coordinatesPoint2D(pp2, this);
+        p3 = camera().coordinatesPoint2D(pp3, this);
+        p4 = camera().coordinatesPoint2D(pp4, this);
 
         int checkedFalse = 0;
         if (!checkScreen(p1) || isOccupied(pp1))
@@ -1310,8 +1310,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
 
 
-            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordonneesPoint2D(pElevation1, this),
-                    camera().coordonneesPoint2D(pElevation2, this)) + 1.) / 3.);
+            double inter2 = minMaxOptimium.computeIncr( (maxDistance(camera().coordinatesPoint2D(pElevation1, this),
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;
@@ -1353,7 +1353,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
         double newCandidateDeep = camera().distanceCamera(newValue);
         if (newValue != null) {
-            Point point = camera().coordonneesPoint2D(newValue, this);
+            Point point = camera().coordinatesPoint2D(newValue, this);
             if (checkScreen(point)) {
 
                 Point3D previousPixelValue = ime.getElementPoint(
@@ -1374,9 +1374,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void tracerTriangle(Point3D pp1, Point3D pp2, Point3D pp3, ITexture c) {
         Point p1, p2, p3;
-        p1 = camera().coordonneesPoint2D(pp1, this);
-        p2 = camera().coordonneesPoint2D(pp2, this);
-        p3 = camera().coordonneesPoint2D(pp3, this);
+        p1 = camera().coordinatesPoint2D(pp1, this);
+        p2 = camera().coordinatesPoint2D(pp2, this);
+        p3 = camera().coordinatesPoint2D(pp3, this);
         if (p1 == null || p2 == null || p3 == null) {
             return;
         }
@@ -1912,7 +1912,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         public boolean testDeep(Point3D p, ITexture texture, double u, double v, Representable representable) {
             if (texture.getColorAt(u, v) != texture.getTransparent()
                     && ime.testDeep(p, texture.getColorAt(u, v))) {
-                Point point = camera().coordonneesPoint2D(p, that);
+                Point point = camera().coordinatesPoint2D(p, that);
                 int x = (int) point.x, y = (int) point.y;
                 ime.getuMap()[x][y] = u;
                 ime.getvMap()[x][y] = v;
@@ -1924,7 +1924,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         public void testDeep(Point3D pFinal, Point3D point3D, int colorAt, Representable n) {
             testDeep(pFinal, point3D, colorAt);
-            Point point = camera().coordonneesPoint2D(pFinal, that);
+            Point point = camera().coordinatesPoint2D(pFinal, that);
         }
 
         public void testDeep(Point3D pFinal, int colorAt, Representable n) {
@@ -2094,7 +2094,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         public void dessine(Point3D x3d, int c1) {
             double[] c = Lumiere.getDoubles(c1);
-            Point ce = camera().coordonneesPoint2D(x3d, that);
+            Point ce = camera().coordinatesPoint2D(x3d, that);
             if (ce == null) {
                 return;
             }
@@ -2146,7 +2146,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             if (x3d == null)
                 return false;
             int cc = c;
-            Point ce = camera().coordonneesPoint2D(x3d, that);
+            Point ce = camera().coordinatesPoint2D(x3d, that);
             if (ce == null)
                 return false;
             int x = (int) ce.getX();

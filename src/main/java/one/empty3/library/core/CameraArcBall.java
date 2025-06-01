@@ -29,10 +29,7 @@
 
 package one.empty3.library.core;
 
-import one.empty3.*;
 import one.empty3.library.*;
-
-import one.empty3.libs.*;
 
 /*__
  * Created by manue on 23-11-19.
@@ -92,7 +89,7 @@ public class CameraArcBall {
 
     public void init(Representable representable) {
         this.representable = representable;
-        Point p = currentCamera.coordonneesPoint2D(pointCenter, zBuffer);
+        Point p = currentCamera.coordinatesPoint2D(pointCenter, zBuffer);
         lastX = p.getX();
         lastY = p.getY();
 

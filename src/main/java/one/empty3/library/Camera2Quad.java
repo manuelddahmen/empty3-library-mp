@@ -32,10 +32,6 @@ package one.empty3.library;
 
 
 import one.empty3.library.core.nurbs.ParametricSurface;
-import one.empty3.library.core.nurbs.ParametricVolume;
-import one.empty3.library.core.nurbs.Quad2Volume;
-
-import one.empty3.libs.*;
 
 public class Camera2Quad extends Camera {
     protected final StructureMatrix<Polygon> near = new StructureMatrix(0, Polygon.class);
@@ -93,10 +89,10 @@ public class Camera2Quad extends Camera {
 
 
         Point p1, p2, p3, p4;
-        p1 = coordonneesPoint2D(pp1, z);
-        p2 = coordonneesPoint2D(pp2, z);
-        p3 = coordonneesPoint2D(pp3, z);
-        p4 = coordonneesPoint2D(pp4, z);
+        p1 = coordinatesPoint2D(pp1, z);
+        p2 = coordinatesPoint2D(pp2, z);
+        p3 = coordinatesPoint2D(pp3, z);
+        p4 = coordinatesPoint2D(pp4, z);
         /*if (!z.checkScreen(p1))
             return;
         if (!z.checkScreen(p2))

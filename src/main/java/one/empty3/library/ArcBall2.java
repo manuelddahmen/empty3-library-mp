@@ -30,10 +30,6 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;
-
-import one.empty3.libs.*;
-
 /*__
  * Created by manue on 06-11-19.
  */
@@ -88,7 +84,7 @@ public class ArcBall2 {
 
     public void init(Representable representable) {
         this.representable = representable;
-        Point p = currentCamera.coordonneesPoint2D(pointCenter, zBuffer);
+        Point p = currentCamera.coordinatesPoint2D(pointCenter, zBuffer);
         lastX = p.getX();
         lastY = p.getY();
 
