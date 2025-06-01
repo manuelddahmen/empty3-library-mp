@@ -81,8 +81,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        polygonSol.setIncrU(0.02);
-        polygonSol.setIncrV(0.02);
+        polygonSol.setIncrU(0.002);
+        polygonSol.setIncrV(0.002);
 
 
         polygonSol.texture(sol_sableux);
@@ -101,13 +101,13 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setMinMaxOptimium(
-                z().new MinMaxOptimium(
+                new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
                 )
         );
         z().setMinMaxOptimium(
-                z().new MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 100.0
+                new ZBufferImpl.MinMaxOptimium(
+                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 1000.0
                 )
         );
         Logger.getAnonymousLogger().info("MinMaxOptimum set " + v);
@@ -119,7 +119,7 @@ public class Balade1 extends TestObjetSub {
 
         if (frame() < VUE_1 * FPS) {
             Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
-            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) / getMaxFrames());
+            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 1.0) / getMaxFrames());
 
             Point3D y = polygonSol.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
             Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());

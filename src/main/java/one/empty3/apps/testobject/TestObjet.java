@@ -818,7 +818,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
         z = ZBufferFactory.newInstance(resx, resy);
-        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, Math.max(resx, resy)));
+        z.setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, Math.max(resx, resy)));
         z.scene(scene);
         //z.next();
         long timeStart = System.currentTimeMillis();
@@ -1265,7 +1265,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());
         }
-        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 1000);
+        z.minMaxOptimium = new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 1000);
     }
 
     public void setName(String name) {

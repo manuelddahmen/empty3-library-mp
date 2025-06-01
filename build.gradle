@@ -33,16 +33,28 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.14.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.0.0")
+    id("org.jetbrains.kotlin.jvm") version("2.2.0-RC")
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(22)
 }
-sourceCompatibility = 21
-targetCompatibility = 21
+sourceCompatibility = 22
+targetCompatibility = 22
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 21
+    options.release = 22
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(22)
+    }
+}
+
+javadoc {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(22)
+    }
 }
 
 configurations {
@@ -231,8 +243,8 @@ tasks.register('runtest', JavaExec) {
 
 tasks.register('Balade1', JavaExec) {
     classpath sourceSets.main.runtimeClasspath
-    mainClass = 'one.empty3.testscopy.tests.test4.Balade1'
-    args 'one.empty3.testscopy.tests.test4.Balade1'
+    mainClass = 'one.empty3.tests.Balade1'
+    args 'one.empty3.tests.Balade1'
     dependsOn(jar)
 }
 /***
@@ -440,13 +452,26 @@ tasks.named("processResources") {
 tasks.withType(Jar).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+
+kotlin {
+    jvmToolchain(22)
+}
+sourceCompatibility = 22
+targetCompatibility = 22
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 22
+}
+
+
 tasks.register("publishAll") {
     dependsOn(getTasksByName("publishAllPublicationsToJetBrainsSpaceEmpty3Repository", true))
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2025.5.31-1'
+def versionName = '2025.5.31-2'
 publishing {
     publications {
         maven(MavenPublication) {

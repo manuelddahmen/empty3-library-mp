@@ -253,8 +253,8 @@ public class Camera extends CameraBox {
 
             double r = (angleY.getElem() / angleX.getElem());
             return new Point(
-                    (int) ((x3d.getX() * scale * la * r + la / 2)),
-                    (int) ((-x3d.getY() * scale * ha + ha / 2)));
+                    (int) ((x3d.getX() * scale * la * r + (double) la / 2)),
+                    (int) ((-x3d.getY() * scale * ha + (double) ha / 2)));
 /*
             Point p = new Point((int) (x + la / 2), (int) (y + ha / 2));
             Logger.getAnonymousLogger().log(Level.INFO, p.toString());
@@ -264,32 +264,6 @@ public class Camera extends CameraBox {
         }
         return null;
 
-    }
-    public Point coordonneesPointEcranPerspective(double [] p, int la, int ha) {
-        double x= p[0];
-        double y= p[1];
-        double z= p[2];
-        boolean conditionInBounds =
-                (z > 0 && -getAngleX() < Math.atan(x / z)
-                        && Math.atan(x / z) < getAngleX() && -getAngleY() < Math.atan(y / z)
-                        && Math.atan(y / z) < getAngleY());
-        if (!conditionInBounds) {
-            return null;
-        }
-
-
-            double scale = (1.0 / (z));
-
-            double r = (angleY.getElem() / angleX.getElem());
-            return new Point(
-                    (int) ((x * scale * la * r + (double) la / 2)),
-                    (int) ((-y * scale * ha + (double) ha / 2)));
-/*
-            Point p = new Point((int) (x + la / 2), (int) (y + ha / 2));
-            Logger.getAnonymousLogger().log(Level.INFO, p.toString());
-
-            return p;
-  */
     }
 
     private double coordXfAxZ(double angleX, double z, double xBase, double la, double ha, boolean xOrY) {
@@ -342,10 +316,6 @@ public class Camera extends CameraBox {
             default:
                 throw new UnsupportedOperationException("Type de perspective non reconnu");
         }
-    }
-
-    public Point coordonneesPoint2D(double x, double y, double z, ZBuffer impl) {
-        return coordonneesPointEcranPerspective(calculerPointDansRepereDoubles(new double[] {x,y , z}), impl.la(), impl.ha());
     }
 
     private Point3D calculerPointDansRepereIsometrique(Point3D p) {

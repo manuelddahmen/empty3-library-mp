@@ -55,11 +55,11 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
-    public class MinMaxOptimium {
+    public static class MinMaxOptimium {
         public MinMaxOptimium(MinMaxIncr minMaxIncr, double defaultSize) {
             this.minMaxIncr = minMaxIncr;
             this.defaultIncr = 1. / defaultSize;
-            if (1./defaultSize < MIN_INCR)
+            if (defaultIncr < MIN_INCR)
                 this.defaultIncr = MIN_INCR;
         }
 
@@ -67,7 +67,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Min, Max, None
         }
 
-        private MinMaxIncr minMaxIncr;
+        private final MinMaxIncr minMaxIncr;
         private double defaultIncr;
 
         double computeIncr(double estimated1dSize) {
@@ -77,7 +77,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             if (minMaxIncr.equals(MinMaxIncr.Max)) {
                 return Math.max(defaultIncr, 1. / estimated1dSize);
             }
-            return estimated1dSize;
+            return 1./estimated1dSize;
         }
     }
 
@@ -2176,41 +2176,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return false;
         }
 
-    }
-
-    public boolean testDeep(double x3, double y3, double z3, int c) {
-        int cc = c;
-        Point ce = camera().coordonneesPoint2D(x3, y3, z3, that);
-        if (ce == null)
-            return false;
-        int x = (int) ce.getX();
-        int y = (int) ce.getY();
-        double deep = camera().distanceCamera(x3,y3,z3);
-        if (x >= 0 & x < la & y >= 0 & y < ha
-                && (deep >= ime.getElementProf(x, y)
-                ||ime.getElementProf(x, y) == INFINITY.getZ())) {
-//            !!!!Point3D n = x3d.getNormale();
-            // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
-            // dans la même direction par rapport à la caméra.
-//            if (n == null || n.norme() == 0)
-//                n = x3d.moins(camera().getEye());
-//            else if (FORCE_POSITIVE_NORMALS && n.norme1().dot(scene().cameraActive().getEye().norme1()) < 0)
-//                n = n.mult(-1);
-            Point3D point3D = new Point3D(x3, y3, z3);
-            if(scene().lumieres().size()>0) {
-                cc = scene().lumiereTotaleCouleur(c, point3D, Point3D.X);
-            }
-            ime.setElementCouleur(x, y, cc);
-            ime.setElementID(x, y, idImg);
-            ime.setDeep(x, y, deep);
-            ime.setElementPoint(x, y, point3D);
-            ime.setElementProf(x, y, deep);
-            if (toDrawR != null) {
-                ime.setElementRepresentable(x, y, deep, toDrawR);
-            }
-            return true;
-        }
-        return false;
     }
 
 
