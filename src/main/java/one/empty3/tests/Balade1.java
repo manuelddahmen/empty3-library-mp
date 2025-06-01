@@ -100,11 +100,11 @@ public class Balade1 extends TestObjetSub {
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
-        /*z().setMinMaxOptimium(
+        z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
+                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v
                 )
-        );*/
+        );
         /*z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 1000.0
@@ -125,7 +125,7 @@ public class Balade1 extends TestObjetSub {
             Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
 
 
-            Camera camera = new Camera(a, b, y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
+            Camera camera = new Camera(a.mult(100.0), b, y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
 
             //camera.getScale().setElem(100.0);
             scene().cameraActive(camera);

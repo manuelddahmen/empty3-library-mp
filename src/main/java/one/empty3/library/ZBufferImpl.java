@@ -65,19 +65,21 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         public enum MinMaxIncr {
             Min, Max, None
+
         }
 
         private final MinMaxIncr minMaxIncr;
         private double defaultIncr;
 
         double computeIncr(double estimated1dSize) {
+            double localIncr = 1. / estimated1dSize;
             if (minMaxIncr.equals(MinMaxIncr.Min)) {
-                return Math.min(defaultIncr, 1. / estimated1dSize);
+                return Math.min(defaultIncr,localIncr );
             }
             if (minMaxIncr.equals(MinMaxIncr.Max)) {
-                return Math.max(defaultIncr, 1. / estimated1dSize);
+                return Math.max(defaultIncr, localIncr);
             }
-            return 1./estimated1dSize;
+            return localIncr;
         }
     }
 
@@ -472,7 +474,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     for (int j = 0; j < i2; j++) {
                         double tx = (Math.max(i - 1, 0)) * 1d / i1;
                         double ty = (Math.max(j - 1, 0)) * 1d / i2;
-                        draw(new one.empty3.library.Polygon(new Point3D[]{
+                        draw(new Polygon(new Point3D[]{
                                 b.calculerPoint3D(tx, (j) * 1d / i2),
                                 b.calculerPoint3D((i) * 1d / i1, (j) * 1d / i2),
                                 b.calculerPoint3D((i) * 1d / i1, ty),
@@ -587,7 +589,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public Image image() {
 
-        Image bi2 = new one.empty3.libs.Image(la, ha);
+        Image bi2 = new Image(la, ha);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = 0;
@@ -609,7 +611,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     @Override
     public Image imageInvX() {
-        Image bi2 = new one.empty3.libs.Image(la, ha);
+        Image bi2 = new Image(la, ha);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
                 int elementCouleur = ime.getElementCouleur(i, j);
@@ -836,7 +838,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
     }
 
-    public one.empty3.libs.Image rendu() {
+    public Image rendu() {
         return null;
     }
 
