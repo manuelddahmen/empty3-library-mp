@@ -72,7 +72,7 @@ public class Tubulaire3refined extends ParametricSurface implements Precomputabl
     public Tubulaire3refined() {
         super();
         level = 0;
-        this.quad_not_computed = QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
+        this.quad_not_computed = 0;//QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
         soulCurve.setElem(new CourbeParametriquePolynomialeBezier());
         diameterFunction.setElem(new FctXY());
         declareProperties();
@@ -259,7 +259,7 @@ public class Tubulaire3refined extends ParametricSurface implements Precomputabl
         if (level == 0 && quad_not_computed > 0) {
             super.calculerPoint3D(v, u);
         }
-        Point3D[] vectPerp = vectPerp(u, v);
+        Point3D[] vecPerp = vectPerp(u, v);
 
         int indexU = 0;
         for(double t1=getStartU(); t1<v; t1+=getIncrU()) {
@@ -270,9 +270,11 @@ public class Tubulaire3refined extends ParametricSurface implements Precomputabl
 
         //v = v - (int) v ;
 
-        return soulCurve.getElem().calculerPoint3D(u).plus(
-                vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v))).plus(
-                vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)));
+        Point3D plus = soulCurve.getElem().calculerPoint3D(u).plus(
+                vecPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v))).plus(
+                vecPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)));
+        plus.texture(texture());
+        return plus;
     }
 
     @Override

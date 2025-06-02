@@ -38,8 +38,8 @@ import java.util.logging.Logger;
 
 public class Balade1 extends TestObjetSub {
 
-    private static final int VUE_1 = 30;
-    private static final int FPS = 50;
+    private static final int VUE_1 = 25;
+    private static final int FPS = 25;
     Tubulaire3refined polygonSol = new Tubulaire3refined();
     ImageTexture imageTextureTrunk;
     private boolean useRecursive;
@@ -81,8 +81,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        polygonSol.setIncrU(0.0002);
-        polygonSol.setIncrV(0.0002);
+        //polygonSol.setIncrU(0.0002);
+       // polygonSol.setIncrV(0.0002);
 
 
         polygonSol.texture(sol_sableux);
@@ -92,17 +92,17 @@ public class Balade1 extends TestObjetSub {
         frame = 0;
 
         z().scene(scene());
-        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
+        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
         z().texture(new ColorTexture(0x00FF0000));
         int numFaces = 1;
         //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
-        double v = 2.0 * Math.pow(1.0 * z().la() * z().ha() * numFaces, .5) + 1.0;
+        double v = 2.0 * Math.pow(1.0 * z().la() * z().ha() *polygonSol.getIncrU()*polygonSol.getIncrV(), .5) + 1.0;
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v
+                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
                 )
         );
         /*z().setMinMaxOptimium(
@@ -110,7 +110,6 @@ public class Balade1 extends TestObjetSub {
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 1000.0
                 )
         );*/
-        Logger.getAnonymousLogger().info("MinMaxOptimum set " + v);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class Balade1 extends TestObjetSub {
             Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
 
 
-            Camera camera = new Camera(a.mult(100.0), b, y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
+            Camera camera = new Camera(a/*.mult(3.0)*/, a.plus(b.moins(a).mult(1.0 / Point3D.distance(a, b))), y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
 
             //camera.getScale().setElem(100.0);
             scene().cameraActive(camera);

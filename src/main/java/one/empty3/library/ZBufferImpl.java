@@ -61,6 +61,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             this.defaultIncr = 1. / defaultSize;
             if (defaultIncr < MIN_INCR)
                 this.defaultIncr = MIN_INCR;
+            Logger.getLogger(this.getClass().getCanonicalName()).info("MinMaxOptimum distance set to " + this.defaultIncr);
         }
 
         public enum MinMaxIncr {
