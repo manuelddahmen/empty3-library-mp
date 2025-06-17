@@ -64,7 +64,7 @@ package one.empty3.library1.tree;
 /*__
  * Created by manuel on 17-12-16.
  */
-public class TreeNodeEvalException extends Exception {
+public class TreeNodeEvalException extends RuntimeException {
     public TreeNodeEvalException(String s) {
         super(s);
     }

@@ -131,7 +131,7 @@ public class FunctionSurface extends ParametricSurface {
             double evalY = treeY.eval().getElem();
             double evalZ = treeZ.eval().getElem();
             return new Point3D(evalX, evalY, evalZ);
-        } catch (TreeNodeEvalRuntimeException | NullPointerException exceptione) {
+        } catch (TreeNodeEvalException | NullPointerException exceptione) {
             exceptione.printStackTrace();
         }
 

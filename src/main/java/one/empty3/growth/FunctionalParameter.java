@@ -98,7 +98,7 @@ public class FunctionalParameter extends Parameter {
                 setValue(d);
                 Logger.getAnonymousLogger().log(Level.INFO, "" + d);
                 return d;
-            } catch (TreeNodeEvalRuntimeException e) {
+            } catch (TreeNodeEvalException e) {
                 e.printStackTrace();
             }
 
