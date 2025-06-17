@@ -273,7 +273,6 @@ public class Tubulaire3refined extends ParametricSurface implements Precomputabl
         Point3D plus = soulCurve.getElem().calculerPoint3D(u).plus(
                 vecPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v))).plus(
                 vecPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)));
-        plus.texture(texture());
         return plus;
     }
 

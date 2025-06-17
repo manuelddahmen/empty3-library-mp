@@ -760,7 +760,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     @Override
     public boolean testDeep(Point3D pFinal, ITexture texture, double u, double v, ParametricSurface n) {
-        return testDeep(pFinal, texture.getColorAt(u, v));
+        return testDeep(pFinal, n.texture().getColorAt(u, v));
     }
 
     public boolean testDeep(Point3D pFinal, ITexture texture, double u, double v, ParametricCurve n) {
@@ -1334,12 +1334,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
                 if (displayType <= SURFACE_DISPLAY_TEXT_QUADS) {
                     if (n != null) {
-                        testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
-
-                    } else if (texture != null) {
-                        testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
+                        //testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
+                        testDeep(pFinal, n.texture(), uPoint, vPoint, n);
                     } else {
-                        testDeep(pFinal, col);
+                        testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
                     }
                 } else {
                     testDeep(pFinal, col);

@@ -36,25 +36,14 @@ package one.empty3.library;
 
 
 import one.empty3.libs.Image;
-
-//import org.monte.media.avi.AVIReader;
-
-import one.empty3.libs.Image;
-
-import one.empty3.libs.*;
-
-import one.empty3.libs.Image;
-
+import one.empty3.libs.Color;
 import java.io.File;
-import java.util.Objects;
-
 
 /*__
  * @author manu
  */
 public class ImageTexture extends ITexture {
     private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
-    private String nom = "texture";
     private int transparent = 0xFFFFFFFF;
 
     public ImageTexture(Image bi) {
@@ -125,16 +114,8 @@ public class ImageTexture extends ITexture {
 
     public void setImage(Image bi) {
         image.setElem(bi);
-        image.setElem(bi);
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     public void setTransparent(Color tr) {
         this.transparent = tr.getRGB();

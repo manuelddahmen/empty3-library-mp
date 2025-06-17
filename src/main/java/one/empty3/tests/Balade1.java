@@ -61,12 +61,12 @@ public class Balade1 extends TestObjetSub {
     public void ginit() {
         useRecursive = false;
         super.ginit();
-        ITexture ciel_ensoleille = new ColorTexture(new Color(Color.newCol(0f, 0f, 1f)));
+        ITexture ciel_ensoleille = new ColorTexture(Color.newCol(0f, 0f, 1f));
         ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
 
         imageTextureTrunk = new ImageTexture((Image) Image.getFromFile(new File("resources/img/CIMG0454-modif-cs4.jpg")));
         ciel_ensoleille = new ImageTexture((Image) Image.getFromFile(new File("resources/ciel_ensoleille.jpg")));
-        sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets2/others/8k_saturn_ring_alpha.png")));
+        sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets/carte-monde-vue-satellite.jpg")));
 
         polygonSol = new Tubulaire3refined();
         polygonSol.getSoulCurve().setElem(
@@ -81,8 +81,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        //polygonSol.setIncrU(0.0002);
-       // polygonSol.setIncrV(0.0002);
+        polygonSol.setIncrU(0.01);
+        polygonSol.setIncrV(0.01);
 
 
         polygonSol.texture(sol_sableux);
@@ -92,8 +92,8 @@ public class Balade1 extends TestObjetSub {
         frame = 0;
 
         z().scene(scene());
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
-        z().texture(new ColorTexture(0x00FF0000));
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
+        //z().texture(new ColorTexture(0x00FF0000));
         int numFaces = 1;
         //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
         double v = 2.0 * Math.pow(1.0 * z().la() * z().ha() *polygonSol.getIncrU()*polygonSol.getIncrV(), .5) + 1.0;
@@ -102,7 +102,7 @@ public class Balade1 extends TestObjetSub {
         }
         z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
+                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v*10
                 )
         );
         /*z().setMinMaxOptimium(
@@ -123,8 +123,9 @@ public class Balade1 extends TestObjetSub {
             Point3D y = polygonSol.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
             Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
 
-
-            Camera camera = new Camera(a/*.mult(3.0)*/, a.plus(b.moins(a).mult(1.0 / Point3D.distance(a, b))), y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
+            double ca = Math.max(1.0, 3.0 * (getMaxFrames() - frame() * 3) / getMaxFrames());
+            ca = 1;
+            Camera camera = new Camera(a.mult(ca), a.plus(b.moins(a).mult(1.0 / Point3D.distance(a, b))), y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
 
             //camera.getScale().setElem(100.0);
             scene().cameraActive(camera);

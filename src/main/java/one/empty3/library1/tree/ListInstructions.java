@@ -30,12 +30,9 @@
 package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +52,7 @@ public class ListInstructions {
         StringAnalyzerJava2.TokenExpression2 tokenExpression2;
         private String originalString;
 
-        public Instruction(int id, String leftHand, String expression, @NotNull String originalString) {
+        public Instruction(int id, String leftHand, String expression,  String originalString) {
             this.id = id;
             this.leftHand = leftHand;
             setExpression(expression);
@@ -149,7 +146,7 @@ public class ListInstructions {
         this.assignations = assignations;
     }
 
-    public void addInstructions(@NotNull String toString) {
+    public void addInstructions( String toString) {
         if (assignations == null)
             assignations = new ArrayList<>();
 
@@ -253,10 +250,7 @@ public class ListInstructions {
                     tree.setParametersValuesVecComputed(currentParamsValuesVecComputed);
                     try {
                         tree.construct();
-                    } catch (AlgebraicFormulaSyntaxException | RuntimeException ex) {
-                        //String errors1 = String.format(
-                        //        "\n##Error: can't execute");
-                        //returnedCode.add(instruction.originalString + errors1);
+                    } catch (RuntimeException ex) {
                         returnedCode.add(instruction.originalString);
                         continue;
                     }

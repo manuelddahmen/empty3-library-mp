@@ -32,6 +32,8 @@ package one.empty3;
 import one.empty3.library1.tree.AlgebraicTree;
 import one.empty3.library1.tree.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 /***
  programme de calcul vectoriel matriciel ou en
  nombres réels
@@ -63,8 +65,14 @@ public class E3ja {
                 AlgebraicTree tree = new AlgebraicTree(formula);
                 tree.construct();
                 Pojo.setProperty(o, propertyName, (Object) tree, tree.getClass());
-            } catch (Exception | AlgebraicFormulaSyntaxException ex) {
+            } catch (RuntimeException ex) {
                 ex.printStackTrace();
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
             }
 
         }

@@ -64,7 +64,7 @@ package one.empty3.library1.tree;
 /*__
  * Created by Manuel Dahmen on 15-12-16.
  */
-public class AlgebraicFormulaSyntaxException extends Throwable {
+public class AlgebraicFormulaSyntaxException extends RuntimeException {
     public AlgebraicFormulaSyntaxException(String msg) {
         super(msg);
     }
@@ -81,5 +81,11 @@ public class AlgebraicFormulaSyntaxException extends Throwable {
     public AlgebraicFormulaSyntaxException(String s, AlgebraicTree algebraicTree) {
         this(s);
         //System.err.println(algebraicTree);
+    }
+
+    @Override
+    public void printStackTrace() {
+        super.printStackTrace();
+
     }
 }

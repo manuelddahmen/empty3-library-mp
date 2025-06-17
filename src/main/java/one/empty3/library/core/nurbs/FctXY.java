@@ -70,7 +70,7 @@ public class FctXY extends Fct1D_1D {
         treeX.getParametersValues().put("x", input);
         try {
             return treeX.eval().getElem();
-        } catch (TreeNodeEvalException | AlgebraicFormulaSyntaxException e) {
+        } catch (TreeNodeEvalRuntimeException e) {
             e.printStackTrace();
         }
         return Double.NaN;

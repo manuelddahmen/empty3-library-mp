@@ -63,7 +63,6 @@
 package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -344,7 +343,7 @@ public class AlgebraicTree extends Tree {
 
 
             }
-        } catch (Exception | AlgebraicFormulaSyntaxException ex) {
+        } catch (RuntimeException ex) {
             return false;
         }
         return t.getChildren().size() > 0;
@@ -1287,7 +1286,6 @@ public class AlgebraicTree extends Tree {
         return root.eval();
     }
 
-    @NotNull
     public String toString() {
         String s = "Arbre algébrique\n";
         if (root != null) {

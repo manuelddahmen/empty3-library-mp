@@ -26,6 +26,8 @@
  *
  *
  */
+
+
 plugins {
     id("application") // enabling the plugin here
     id("java")
@@ -35,19 +37,21 @@ plugins {
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.0-RC")
 }
+def JAVA_VERSION = 23
+
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = 22
-targetCompatibility = 22
+sourceCompatibility = JAVA_VERSION
+targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 22
+    options.release = JAVA_VERSION
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(22)
+        languageVersion = JavaLanguageVersion.of(JAVA_VERSION)
     }
 }
 
@@ -449,13 +453,13 @@ tasks.withType(Jar).configureEach {
 
 
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = 22
-targetCompatibility = 22
+sourceCompatibility = JAVA_VERSION
+targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 22
+    options.release = JAVA_VERSION
 }
 
 
@@ -465,7 +469,7 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2025.5.31-2'
+def versionName = '2025.6.17'
 publishing {
     publications {
         maven(MavenPublication) {
