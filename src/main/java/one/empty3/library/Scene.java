@@ -223,9 +223,15 @@ public class Scene extends Representable implements Serializable {
             cpt++;
         }
 
+
+        if(cpt==0)
+            return c;
+
         for (int j = 0; j < 3; j++) {
             t[j] /= cpt;
         }
+
+
 
         return Lumiere.getInt(t);
     }

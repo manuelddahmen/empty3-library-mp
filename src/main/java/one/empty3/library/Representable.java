@@ -57,6 +57,21 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
      * The vectors can be accessed using various methods provided by the StructureMatrix class.
      */
     protected StructureMatrix<Point3D> vectors;
+
+    {
+        if (!(this instanceof Matrix33 || this instanceof Point3D || this instanceof Camera)) {
+            //rotation.setElem(new Rotation(vU, getPosition(), a));
+            //scale = new Point3D(1d, 1d, 1d);
+            //texture = new ColorTexture((new Colors().random()));
+            vectors = new StructureMatrix<>(1, Point3D.class);
+            vectors.setElem(new Point3D(Point3D.X), 0);
+            vectors.setElem(new Point3D(Point3D.Y), 1);
+            vectors.setElem(new Point3D(Point3D.Z), 2);
+            vectors.setElem(new Point3D(Point3D.O0), 3);
+
+        }
+    }
+
     /**
      * Represents the display option for rendering all elements.
      * The value of this variable is 0.
@@ -152,17 +167,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
      * </p>
      */
     public Representable() {
-        if (!(this instanceof Matrix33 || this instanceof Point3D || this instanceof Camera)) {
-            //rotation.setElem(new Rotation(vU, getPosition(), a));
-            //scale = new Point3D(1d, 1d, 1d);
-            //texture = new ColorTexture((new Colors().random()));
-            vectors = new StructureMatrix<>(1, Point3D.class);
-            vectors.setElem(Point3D.X, 0);
-            vectors.setElem(Point3D.Y, 1);
-            vectors.setElem(Point3D.Z, 2);
-            vectors.setElem(Point3D.O0, 3);
 
-        }
     }
 
     public Point3D getOrientedPoint(Point3D a) {

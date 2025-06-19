@@ -64,9 +64,13 @@ public class Balade1 extends TestObjetSub {
         ITexture ciel_ensoleille = new ColorTexture(Color.newCol(0f, 0f, 1f));
         ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
 
-        imageTextureTrunk = new ImageTexture((Image) Image.getFromFile(new File("resources/img/CIMG0454-modif-cs4.jpg")));
-        ciel_ensoleille = new ImageTexture((Image) Image.getFromFile(new File("resources/ciel_ensoleille.jpg")));
         sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets/carte-monde-vue-satellite.jpg")));
+        sol_sableux.setDeformMap(new DeformMap() {
+            @Override
+            public Point2D getOtherCordinates(double ValueX, double ValueY) {
+                return new Point2D(ValueY, ValueX);
+            }
+        });
 
         polygonSol = new Tubulaire3refined();
         polygonSol.getSoulCurve().setElem(
@@ -86,6 +90,8 @@ public class Balade1 extends TestObjetSub {
 
 
         polygonSol.texture(sol_sableux);
+
+        Logger.getLogger(getClass().getCanonicalName()).info("texture at 0.5,0.5 : " + polygonSol.texture().getColorAt(0.5,0.5));
 
         scene().add(polygonSol);
 
@@ -115,6 +121,7 @@ public class Balade1 extends TestObjetSub {
     @Override
     public void finit() throws Exception {
         super.finit();
+        z().idzpp();
 
         if (frame() < VUE_1 * FPS) {
             Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
@@ -162,6 +169,7 @@ public class Balade1 extends TestObjetSub {
 
 
         }
+
 
     }
 
