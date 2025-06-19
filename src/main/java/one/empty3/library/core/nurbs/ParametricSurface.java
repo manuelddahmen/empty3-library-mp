@@ -52,7 +52,7 @@ public abstract class ParametricSurface extends Representable {
     public static final int QUAD_NOT_COMPUTE_V2 = 2;
     private static final double MIN_NORMGT0 = 0.000000001;
     private static final double TANGENT_INCR = 0.00000001;
-    protected int quad_not_computed = 3;
+    protected int quad_not_computed = 0;
     //    private static Globals globals;
     protected StructureMatrix<Point2Point> terminalU = new StructureMatrix<>(0, Point2Point.class);
     protected StructureMatrix<Point2Point> terminalV = new StructureMatrix<>(0, Point2Point.class);

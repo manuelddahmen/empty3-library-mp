@@ -37,22 +37,28 @@ package one.empty3.library;
 
 import one.empty3.libs.Image;
 import one.empty3.libs.Color;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /*__
  * @author manu
  */
 public class ImageTexture extends ITexture {
-    private StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
-    private int transparent = 0xFFFFFFFF;
+    private final StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
+
 
     public ImageTexture(Image bi) {
         image.setElem(bi);
+        if(image.getElem()==null)
+            throw new RuntimeException("Image null");
     }
 
     public ImageTexture(File bif) {
         try {
             image.setElem((Image) Image.getFromFile(bif));
+            if(image.getElem()==null)
+                throw new RuntimeException("Image null");
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
         }
@@ -103,7 +109,7 @@ public class ImageTexture extends ITexture {
         }
 
 
-        return image != null ? image.getElem().getRgb(x, y) : transparent;
+        return image.getElem() != null ? image.getElem().getRgb(x, y) : transparent;
     }
 
 
@@ -112,7 +118,7 @@ public class ImageTexture extends ITexture {
         return image.getElem();
     }
 
-    public void setImage(Image bi) {
+    public void setImage(@NotNull Image bi) {
         image.setElem(bi);
     }
 

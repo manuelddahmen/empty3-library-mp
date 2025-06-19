@@ -1350,8 +1350,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     private boolean isOccupied(Point3D newValue) {
-        return false;
-        /*
         if (!isCheckedOccupied()) {
             return false;
         }
@@ -1370,8 +1368,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             }
         }
         return false;
-
-         */
     }
 
     private boolean isCheckedOccupied() {

@@ -40,9 +40,7 @@ public class Balade1 extends TestObjetSub {
 
     private static final int VUE_1 = 25;
     private static final int FPS = 25;
-    Tubulaire3refined polygonSol = new Tubulaire3refined();
-    ImageTexture imageTextureTrunk;
-    private boolean useRecursive;
+    Tubulaire3refined tube = new Tubulaire3refined();
 
     public static void main(String[] args) {
         Balade1 balade1 = new Balade1();
@@ -59,12 +57,12 @@ public class Balade1 extends TestObjetSub {
 
     @Override
     public void ginit() {
-        useRecursive = false;
+
         super.ginit();
         ITexture ciel_ensoleille = new ColorTexture(Color.newCol(0f, 0f, 1f));
         ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
 
-        sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets/carte-monde-vue-satellite.jpg")));
+        sol_sableux = new ImageTexture(new File("res/img/planets/carte-monde-vue-satellite.jpg"));
         sol_sableux.setDeformMap(new DeformMap() {
             @Override
             public Point2D getOtherCordinates(double ValueX, double ValueY) {
@@ -72,28 +70,28 @@ public class Balade1 extends TestObjetSub {
             }
         });
 
-        polygonSol = new Tubulaire3refined();
-        polygonSol.getSoulCurve().setElem(
+        tube = new Tubulaire3refined();
+        tube.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
 
         for (int i = 0; i < 5; i++) {
-            polygonSol.getSoulCurve().getElem().getCoefficients().setElem(Point3D.random(10.0), i);
+            tube.getSoulCurve().getElem().getCoefficients().setElem(Point3D.random(10.0), i);
         }
-        polygonSol.getDiameterFunction().setElem(new FctXY() {
+        tube.getDiameterFunction().setElem(new FctXY() {
             @Override
             public double result(double input) {
                 return 2.0;
             }
         });
-        polygonSol.setIncrU(0.01);
-        polygonSol.setIncrV(0.01);
+        tube.setIncrU(0.01);
+        tube.setIncrV(0.01);
 
 
-        polygonSol.texture(sol_sableux);
+        tube.texture(sol_sableux);
 
-        Logger.getLogger(getClass().getCanonicalName()).info("texture at 0.5,0.5 : " + polygonSol.texture().getColorAt(0.5,0.5));
+        Logger.getLogger(getClass().getCanonicalName()).info("texture at 0.5,0.5 : " + tube.texture().getColorAt(0.5,0.5));
 
-        scene().add(polygonSol);
+        scene().add(tube);
 
         frame = 0;
 
@@ -102,7 +100,7 @@ public class Balade1 extends TestObjetSub {
         //z().texture(new ColorTexture(0x00FF0000));
         int numFaces = 1;
         //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
-        double v = 2.0 * Math.pow(1.0 * z().la() * z().ha() *polygonSol.getIncrU()*polygonSol.getIncrV(), .5) + 1.0;
+        double v = 2.0 * Math.pow(1.0 * z().la() * z().ha() * tube.getIncrU()* tube.getIncrV(), .5) + 1.0;
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
@@ -124,11 +122,11 @@ public class Balade1 extends TestObjetSub {
         z().idzpp();
 
         if (frame() < VUE_1 * FPS) {
-            Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
-            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 1.0) / getMaxFrames());
+            Point3D a = tube.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
+            Point3D b = tube.getSoulCurve().getElem().calculerPoint3D((frame() + 1.0) / getMaxFrames());
 
-            Point3D y = polygonSol.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
-            Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
+            Point3D y = tube.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
+            Point3D ym = tube.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
 
             double ca = Math.max(1.0, 3.0 * (getMaxFrames() - frame() * 3) / getMaxFrames());
             ca = 1;
@@ -169,11 +167,6 @@ public class Balade1 extends TestObjetSub {
 
 
         }
-
-
     }
 
-    private boolean useRecursive() {
-        return useRecursive;
-    }
 }

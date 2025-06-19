@@ -44,7 +44,7 @@ import java.util.HashMap;
  * @author manu
  */
 public abstract class ITexture implements MatrixPropertiesObject{
-    private int transparent = 0;
+    protected int transparent = 0xFFFFFFFF;
     public static final int COLOR_IDENT = 0;
     public static final int COLOR_MIROR_X = 1;
     public static final int COLOR_MIROR_Y = 2;
