@@ -64,19 +64,8 @@ public class ColorTexture extends ITexture {
         color.setElem(c.getRGB());
     }
 
-    @Override
-    public void iterate() throws EOFVideoException {
-
-    }
-
     public int getColorAt(double x, double y) {
         return color.getElem();
-    }
-
-    public void timeNext() {
-    }
-
-    public void timeNext(long milli) {
     }
 
     @Override

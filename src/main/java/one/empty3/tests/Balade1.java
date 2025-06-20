@@ -29,7 +29,6 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.Tubulaire3refined;
 
-import one.empty3.library.Point;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
@@ -59,16 +58,14 @@ public class Balade1 extends TestObjetSub {
     public void ginit() {
 
         super.ginit();
-        ITexture ciel_ensoleille = new ColorTexture(Color.newCol(0f, 0f, 1f));
-        ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
+        ImageTexture sol_sableux;
 
-        sol_sableux = new ImageTexture(new File("res/img/planets/carte-monde-vue-satellite.jpg"));
-        sol_sableux.setDeformMap(new DeformMap() {
-            @Override
-            public Point2D getOtherCordinates(double ValueX, double ValueY) {
-                return new Point2D(ValueY, ValueX);
-            }
-        });
+        File f = new File(".\\res\\img\\planets\\carte-monde-vue-satellite.jpg");
+        if(f.exists() && f.canRead()) {
+            sol_sableux = new ImageTexture(f);
+        } else {
+            throw new RuntimeException("file not exists or can't read");
+        }
 
         tube = new Tubulaire3refined();
         tube.getSoulCurve().setElem(

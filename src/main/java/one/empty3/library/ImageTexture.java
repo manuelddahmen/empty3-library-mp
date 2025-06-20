@@ -48,19 +48,27 @@ public class ImageTexture extends ITexture {
     private final StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
 
 
-    public ImageTexture(Image bi) {
-        image.setElem(bi);
-        if(image.getElem()==null)
+    public ImageTexture(@NotNull Image imageE) {
+        image.setElem(imageE);
+        if(image.getElem()==null || image.getElem().getWidth()==0 || image.getElem().getHeight()==0)
             throw new RuntimeException("Image null");
     }
 
     public ImageTexture(File bif) {
         try {
-            image.setElem((Image) Image.getFromFile(bif));
-            if(image.getElem()==null)
+            if(bif==null||!bif.exists()||!bif.isFile()) {
+                throw new RuntimeException("Image file null or not exists" );
+            }
+            Image image1;
+            image1=(Image) Image.getFromFile(bif);
+            if(image1==null&&image1.getBi()==null || image1.getWidth()==0 || image1.getHeight()==0)
+                throw new RuntimeException("Image null");
+            image.setElem(image1);
+            if(image.getElem()==null || image.getElem().getWidth()==0 || image.getElem().getHeight()==0)
                 throw new RuntimeException("Image null");
         } catch (RuntimeException ex) {
             System.err.println("Error constructor" + this.getClass() + "\n" + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -142,78 +150,4 @@ public class ImageTexture extends ITexture {
     public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {
         return null;
     }
-
-
-    /*__
-     * Quadrilatère numQuadX = 1, numQuadY = 1, coordArr, y 3----2 ^2y |\ | | 4 |
-     * 0--\-1 1 -> 2x
-     *
-     * @param numQuadX nombre de maillage en coordArr
-     * @param numQuadY nombre de maillage en y
-     * @param x        valeur de coordArr
-     * @param y        valeur de y
-     * @return
-     */
-/*    public Color getMaillageTexturedColor(int numQuadX, int numQuadY, double x,
-                                          double y) {
-        Point2D p = getCoord(x, y);
-
-        int xi = ((int) (1d * image.getWidth() * p.x));
-        int yi = ((int) (1d * image.getHeight() * p.y));
-
-
-        if (xi >= image.getWidth()) {
-            xi = image.getWidth() - 1;
-        }
-        if (yi >= image.getHeight()) {
-            yi = image.getHeight() - 1;
-        }
-        Color c = new Color(image.getRgb(xi, yi));
-        if (c.equals(transparent)) {
-            return new Color(transparent);
-        } else {
-            return c;
-        }
-    }
-*/
-    /*__
-     * +|--r11->/-----| y^r12^ 0/1 ^r12^ -|-----/<-r11--|+coordArr
-     *
-     * @param numQuadX
-     * @param numQuadY
-     * @param x
-     * @param y
-     * @param r11
-     * @param r12
-     * @param numTRI
-     * @return
-     */
-  /*  public Color getMaillageTRIColor(int numQuadX, int numQuadY, double x,
-                                     double y, double r11, double r12, int numTRI) {
-
-        double dx = 0;
-        double dy = 0;
-        if (numTRI == 0) {
-            dx = r11;
-            dy = r12;
-        } else if (numTRI == 1) {
-            dx = 1 - r11;
-            dy = r12;
-        }
-        int xi = ((int) ((((int) x + dx) / numQuadX + Math.signum(numTRI - 0.5)
-                * image.getWidth())));
-        int yi = ((int) ((((int) y + dy) / numQuadY * image.getHeight())));
-        Point2D p = getCoord(xi / (double) image.getWidth(), yi / (double) image.getHeight());
-
-        int x1 = (int) p.x;
-        int y1 = (int) p.y;
-
-        Color c = new Color(image.getRgb(x1, y1));
-        if (c.equals(transparent)) {
-            return new Color(transparent);
-        } else {
-            return c;
-        }
-    }
-*/
 }

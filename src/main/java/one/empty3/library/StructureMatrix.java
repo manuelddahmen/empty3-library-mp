@@ -80,13 +80,8 @@ public class StructureMatrix<T> implements Serializable, Serialisable {
     }
 
     public StructureMatrix<T> setElem(@NotNull T value) {
-        dim = 0;
-        if (value instanceof Point3D) {
-
-        }
         this.data0d = value;
-        if (value != null)
-            this.classType = value.getClass();
+        this.classType = value.getClass();
         listenersPropertyChanged(null, value, 0, 0, 0);
         return this;
     }
