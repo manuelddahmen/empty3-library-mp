@@ -591,7 +591,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = height;
     }
 
-    public Image image() {
+    public Image image3() {
 
         Image i2 = new Image(la, ha);
         for (int i = 0; i < la; i++) {
@@ -612,7 +612,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         return i2;
 
     }
-
+    public Image image() {
+        BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_ARGB);
+        bi.setRGB(0, 0, la, ha, ime.color, 0, la);
+        return new Image(bi);
+    }
     @Override
     public Image imageInvX() {
         Image bi2 = new Image(la, ha);
@@ -974,19 +978,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 Point3D uv3a = uvs[0].plus(uvs[1].moins(uvs[0]).mult(a));
                 Point pp = camera().coordinatesPoint2D(p3a, this);
                 if (pp != null) {
-                    double iteres2 = 1 + mathUtilPow2(p3, pp);
-                    double v = minMaxOptimium.computeIncr(iteres2);
+                    double iteres2 = 1.0 / (1 + mathUtilPow2(p3, pp));
                     Point3D p3ab;
                     for (double b = 0; b <= 1.0/*Math.sqrt(p3a.moins(pp3).norme()*p3a.moins(pp3).norme()
-                        -pp2.moins(pp1).norme()*pp2.moins(pp1).norme())>=b*/; b += v) {
+                        -pp2.moins(pp1).norme()*pp2.moins(pp1).norme())>=b*/; b += iteres2) {
                         p3ab = p3a.plus(pp3.moins(p3a).mult(b));
                         Point3D uv3ab = uv3a.plus(uvs[2].moins(uv3a).mult(b));
                         // Corriger la méthode.
                         p3ab.setNormale(n);
                         // Point p22 = coordonneesPoint2D(p);
                         if (displayType <= SURFACE_DISPLAY_TEXT_TRI) {
-                            testDeep(p3ab, t.getColorAt(u0 + a * (u1 - u0), v0 + b * (v1 - v0)));
-                            //testDeep(p3ab, t.getColorAt(uv3ab.getX(), uv3ab.getY()));
+                            //testDeep(p3ab, t.getColorAt(u0 + a * (u1 - u0), v0 + b * (v1 - v0)));
+                            testDeep(p3ab, t.getColorAt(uv3ab.getX(), uv3ab.getY()));
                         } else if (displayType >= SURFACE_DISPLAY_COL_TRI)
                             testDeep(p3ab, col);
                         // LINES, POINTS;
@@ -1323,29 +1326,29 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;
                 double vPoint = v0 + (v1 - v0) * b;
-                pFinal = n.calculerPoint3D(uPoint, vPoint);
+                pFinal.setNormale(normale);
+                pFinal.texture(texture);
                 if (n != null) {
                     pFinal.setNormale(n.calculerNormale3D(uPoint, vPoint));
                     if (displayType == DISPLAY_ALL) {
-                        pFinal.setNormale(normale);
+                        pFinal = n.calculerPoint3D(uPoint, vPoint);
                         pFinal.texture(texture);
                     } else {
                         pFinal.setNormale(normale);
                         pFinal.texture(texture);
+
                     }
                 }
-                pFinal.setNormale(normale);
-                pFinal.texture(texture);
                 if (displayType <= SURFACE_DISPLAY_TEXT_QUADS) {
                     if (n != null) {
-                        testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
+                        //testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
                         testDeep(pFinal, n.texture(), uPoint, vPoint, n);
                     } else {
                         testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
                     }
+                } else {
+                    testDeep(pFinal, col);
                 }
-                testDeep(pFinal,n.texture().getColorAt(uPoint, vPoint));
-
             }
         }
 
@@ -2167,10 +2170,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     n = x3d.moins(camera().getEye());
                 else if (FORCE_POSITIVE_NORMALS && n.norme1().dot(scene().cameraActive().getEye().norme1()) < 0)
                     n = n.mult(-1);
-                if(scene().lumieres().size()>0 )
-                    cc = scene().lumiereTotaleCouleur(c, x3d, n);
+                if(!scene().lumieres().isEmpty())
+                    cc = scene().lumiereTotaleCouleur(c|0xff000000, x3d, n);
                 else
-                    cc = c;
+                    cc = c|0xff000000;
                 ime.setElementID(x, y, idImg);
                 ime.setElementCouleur(x, y, cc);
                 ime.setDeep(x, y, deep);
@@ -2179,7 +2182,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 if (toDrawR != null) {
                     ime.setElementRepresentable(x, y, deep, toDrawR);
                 }else  if(getCurrentRepresentable()!=null) {
-                    ime.setElementRepresentable(x, y, deep, n);
+                    ime.setElementRepresentable(x, y, deep, x3d);
                 }
                 return true;
             }

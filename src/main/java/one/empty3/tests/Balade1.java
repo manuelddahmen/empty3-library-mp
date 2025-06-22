@@ -32,7 +32,10 @@ import one.empty3.library.core.tribase.Tubulaire3refined;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Balade1 extends TestObjetSub {
@@ -53,6 +56,11 @@ public class Balade1 extends TestObjetSub {
         balade1.setPublish(true);
         new Thread(balade1).start();
     }
+    public Image convertJpegToImage(BufferedImage jpgSrc) {
+        BufferedImage jpgDst = new BufferedImage(jpgSrc.getWidth(), jpgSrc.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        jpgDst.getGraphics().drawImage(jpgSrc, 0, 0, null);
+        return new Image(jpgDst);
+    }
 
     @Override
     public void ginit() {
@@ -61,8 +69,15 @@ public class Balade1 extends TestObjetSub {
         ImageTexture sol_sableux;
 
         File f = new File(".\\res\\img\\planets\\carte-monde-vue-satellite.jpg");
+
         if(f.exists()) {
-            sol_sableux = new ImageTexture(f);
+            Image i = null;
+            try {
+                i = convertJpegToImage(ImageIO.read(f));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            sol_sableux = new ImageTexture(i);
         } else {
             throw new RuntimeException("file not exists or can't read");
         }
@@ -103,7 +118,7 @@ public class Balade1 extends TestObjetSub {
         }
         z().setMinMaxOptimium(
                 new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v*10
+                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v*10
                 )
         );
         /*z().setMinMaxOptimium(
@@ -116,7 +131,6 @@ public class Balade1 extends TestObjetSub {
     @Override
     public void finit() throws Exception {
         super.finit();
-        z().idzpp();
 
         if (frame() < VUE_1 * FPS) {
             Point3D a = tube.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
