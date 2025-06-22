@@ -60,7 +60,7 @@ public class ImageTexture extends ITexture {
                 throw new RuntimeException("Image file null or not exists" );
             }
             Image image1;
-            image1=(Image) Image.getFromFile(bif);
+            image1= (Image) Image.getFromFile(bif);
             if(image1==null&&image1.getBi()==null || image1.getWidth()==0 || image1.getHeight()==0)
                 throw new RuntimeException("Image null");
             image.setElem(image1);

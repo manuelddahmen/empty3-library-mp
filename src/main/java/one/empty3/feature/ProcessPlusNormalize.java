@@ -34,6 +34,7 @@ import one.empty3.io.ProcessNFiles;
 import one.empty3.library.Point;
 import one.empty3.libs.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class ProcessPlusNormalize extends ProcessNFiles {
@@ -66,6 +67,10 @@ public class ProcessPlusNormalize extends ProcessNFiles {
                 }
             }
         }
-        return pixM.getImage().saveToFile(out.getAbsolutePath());
+        try {
+            return pixM.getImage().saveToFile(out.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

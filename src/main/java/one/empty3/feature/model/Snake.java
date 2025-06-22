@@ -136,7 +136,11 @@ public class Snake extends ProcessFile {
         initCurve();
         classification();
 
-        pix3.normalize(0., 1.).getImage().saveToFile(out.getAbsolutePath());
+        try {
+            pix3.normalize(0., 1.).getImage().saveToFile(out.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 }

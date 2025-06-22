@@ -29,6 +29,7 @@ import one.empty3.library.Point3D;
 import one.empty3.libs.Image;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -283,7 +284,11 @@ public class Lines5 extends ProcessFile {
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));
 
-        bLines.saveToFile( out.getAbsolutePath());
+        try {
+            bLines.saveToFile( out.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return true;
 
     }

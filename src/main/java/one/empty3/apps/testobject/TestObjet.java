@@ -118,7 +118,7 @@ public abstract class TestObjet implements Test, Runnable {
     private File dir = null;
     private Image ri;
     private String filename = "frame";
-    private String fileExtension = "JPG";
+    private String fileExtension = "PNG";
     private boolean publish = true;
     private boolean isometrique = false;
     private boolean loop = true;
@@ -846,6 +846,14 @@ public abstract class TestObjet implements Test, Runnable {
             File dataf = new File(this.dir.getAbsolutePath() + File.separator
                     + filename + ".XML");
         }
+        File subDir = new File(dir.getAbsolutePath() + File.separator + getClass().getCanonicalName()+ File.separator+getInitialDate());
+        if(!subDir.exists()){
+            if(!subDir.mkdirs()) {
+                Logger.getLogger(getClass().getCanonicalName()).severe("Cannot create dir :" + subDir.getAbsolutePath());
+            } else {
+                Logger.getLogger(getClass().getCanonicalName()).info("Dir created :" + subDir.getAbsolutePath());
+            }
+        }
 
         if (LOG) {
             Logger.getAnonymousLogger().log(Level.INFO, (dir != null && dir.exists() ? dir.getAbsolutePath() : " No directory"));
@@ -913,7 +921,6 @@ public abstract class TestObjet implements Test, Runnable {
                         scene().cameraActive().declareProperties();
                         z.camera(scene().cameraActive());
                     }
-                    z.idzpp();
 
 
                     if (LOG) {
@@ -927,7 +934,6 @@ public abstract class TestObjet implements Test, Runnable {
                     ex.printStackTrace();
                     reportException(ex);
                 }
-
                 if (getGenerate(TestObjet.GENERATE_IMAGE) && !(((generate & GENERATE_OPENGL) > 0))) {
                     try {
                         ri = z.image2();
@@ -935,24 +941,21 @@ public abstract class TestObjet implements Test, Runnable {
                         if (getGenerate(TestObjet.GENERATE_SAVE_IMAGE)) {
                             boolean pass = false;
                             try {
-                                File output = dir;
-                                if (!output.exists()) {
-                                    if (!output.mkdirs())
-                                        pass = true;
 
-                                }
                                 if (!pass) {
-                                    File fileFrameWithoutExt = getNewDirectory();
-                                    File file1 = new File(fileFrameWithoutExt.getAbsolutePath() + ".jpg");
-                                    if (ri.saveToFile(file1.getAbsolutePath())) {
-                                        Logger.getAnonymousLogger().log(Level.INFO, "File written : " + file1.getAbsolutePath());
+                                    File f = new File(subDir , getFilenameWoExt()+ ".png");
+                                    ri.saveToFile(f.getAbsolutePath());
+                                    if(f.exists()) {
+                                        Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath());
                                     } else {
-                                        Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + file1.getAbsolutePath());
+                                        Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + f.getAbsolutePath());
 
                                     }
                                 }
                             } catch (RuntimeException ex) {
                                 ex.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                             afterRenderFrame();
                         }
@@ -1072,12 +1075,16 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private File getNewDirectory() {
-        File dirFiles = new File(dir.getAbsolutePath() + File.separator +
+        return dir;
+/*        File dirFiles = new File(dir.getAbsolutePath() + File.separator +
                 getClass().getCanonicalName() + File.separator + "frames_" + getInitialDate() + File.separator + getClass().getCanonicalName() + "__" + frame());
         if (!dirFiles.exists())
-            dirFiles.getParentFile().mkdirs();
-        return dirFiles;
+            dirFiles.getParentFile().mkdirs();*./
+        return dirFiles;*/
     }
+    private String getFilenameWoExt() {
+        return "frame_" + String.format("%08d", frame());
+   }
 
     private String getInitialDate() {
         if (date == null)

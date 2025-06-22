@@ -61,7 +61,7 @@ public class Balade1 extends TestObjetSub {
         ImageTexture sol_sableux;
 
         File f = new File(".\\res\\img\\planets\\carte-monde-vue-satellite.jpg");
-        if(f.exists() && f.canRead()) {
+        if(f.exists()) {
             sol_sableux = new ImageTexture(f);
         } else {
             throw new RuntimeException("file not exists or can't read");

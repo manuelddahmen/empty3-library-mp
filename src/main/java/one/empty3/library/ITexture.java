@@ -44,7 +44,7 @@ import java.util.HashMap;
  * @author manu
  */
 public abstract class ITexture implements MatrixPropertiesObject{
-    protected int transparent = 0xFFFFFFFF;
+    protected int transparent = 0x00FF0000;
     public static final int COLOR_IDENT = 0;
     public static final int COLOR_MIROR_X = 1;
     public static final int COLOR_MIROR_Y = 2;
@@ -57,7 +57,12 @@ public abstract class ITexture implements MatrixPropertiesObject{
     protected int repeatX = 1;
     protected int repeatY = 1;
 
-    DeformMap dm;
+    DeformMap dm = new DeformMap() {
+        @Override
+        public Point2D getOtherCordinates(double ValueX, double ValueY) {
+            return new Point2D(ValueX, ValueY);
+        }
+    };
 
     public int getColorMask() {
         return colorMask;
@@ -69,7 +74,7 @@ public abstract class ITexture implements MatrixPropertiesObject{
 
     public Point2D getCoord(double x, double y) {
 
-        Point2D p = new Point2D(x, y);
+        Point2D p = dm.getOtherCordinates(x, y);
 
         if (getColorMask() == COLOR_IDENT) {
 
