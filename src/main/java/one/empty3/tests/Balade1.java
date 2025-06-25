@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 public class Balade1 extends TestObjetSub {
 
-    private static final int VUE_1 = 25;
+    private static final int VUE_1 = 75;
     private static final int FPS = 25;
     Tubulaire3refined tube = new Tubulaire3refined();
 
@@ -95,8 +95,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        tube.setIncrU(0.01);
-        tube.setIncrV(0.01);
+        tube.setIncrU(0.001);
+        tube.setIncrV(0.001);
 
 
         tube.texture(sol_sableux);
@@ -116,14 +116,12 @@ public class Balade1 extends TestObjetSub {
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
-        z().setMinMaxOptimium(
-                new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v*10
-                )
+        z().setIncrementOptimizer(
+                new ZBufferImpl.IncrementOptimizer(.1/v,1.0/v)
         );
-        /*z().setMinMaxOptimium(
-                new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 1000.0
+        /*z().setIncrementOptimizer(
+                new ZBufferImpl.IncrementOptimizer(
+                        ZBufferImpl..Strategy.IncrementOptimizer.Strategy.NONE, 1000.0
                 )
         );*/
     }

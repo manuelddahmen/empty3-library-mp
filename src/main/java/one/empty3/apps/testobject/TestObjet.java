@@ -59,9 +59,10 @@ import java.util.logging.Logger;
  */
 public abstract class TestObjet implements Test, Runnable {
     public static File configFile = new File("./empty3.config");
-    ;
+    protected IShowTestResult str;
+    protected Class<? extends IShowTestResult> strClass = ShowTestResult.class;
     public static boolean skipInit = false;
-    private static Logger logger = Logger.getLogger(TestObjet.class.getName());
+    protected static Logger logger = Logger.getLogger(TestObjet.class.getName());
     public static final int GENERATE_NOTHING = 0;
     public static final int GENERATE_IMAGE = 1;
     public static final int GENERATE_MODEL = 2;
@@ -96,73 +97,73 @@ public abstract class TestObjet implements Test, Runnable {
     protected ITexture couleurFond;
     protected ZBufferImpl z;
     Properties properties = new Properties();
-    private File avif;
-    //private AVIWriter aw;
-    private boolean aviOpen = false;
+    protected File avif;
+    //protected AVIWriter aw;
+    protected boolean aviOpen = false;
     public String filmName;
-    private int idxFilm;
-    private boolean unterminable = false;
-    private long timeStart;
-    private long lastInfoEllapsedMillis;
-    private int generate = GENERATE_IMAGE | GENERATE_MOVIE |
+    protected int idxFilm;
+    protected boolean unterminable = false;
+    protected long timeStart;
+    protected long lastInfoEllapsedMillis;
+    protected int generate = GENERATE_IMAGE | GENERATE_MOVIE |
             GENERATE_SAVE_IMAGE | GENERATE_SAVE_OBJ |
             GENERATE_SAVE_STL | GENERATE_SAVE_ZIP;
-    private int version = 1;
-    private String template = "";
-    private String type = "JPEG";
-    private String filenameZIP = "one/empty3/test/tests";
-    private String fileextZIP = "diapo";
-    private File file = null;
-    private int resx = 640;
-    private int resy = 480;
-    private File dir = null;
-    private Image ri;
-    private String filename = "frame";
-    private String fileExtension = "PNG";
-    private boolean publish = true;
-    private boolean isometrique = false;
-    private boolean loop = true;
-    private int maxFrames = 5000;
-    private String text = "scene";
-    private File fileScene;
-    private boolean saveTxt = true;
-    private String binaryExtension = "mood";
-    private int serie = 0;
-    private File serid = null;
-    private boolean initialise;
-    private boolean structure = false;
-    private boolean noZoom;
+    protected int version = 1;
+    protected String template = "";
+    protected String type = "JPEG";
+    protected String filenameZIP = "one/empty3/test/tests";
+    protected String fileextZIP = "diapo";
+    protected File file = null;
+    protected int resx = 640;
+    protected int resy = 480;
+    protected File dir = null;
+    protected Image ri;
+    protected String filename = "frame";
+    protected String fileExtension = "PNG";
+    protected boolean publish = true;
+    protected boolean isometrique = false;
+    protected boolean loop = true;
+    protected int maxFrames = 5000;
+    protected String text = "scene";
+    protected File fileScene;
+    protected boolean saveTxt = true;
+    protected String binaryExtension = "mood";
+    protected int serie = 0;
+    protected File serid = null;
+    protected boolean initialise;
+    protected boolean structure = false;
+    protected boolean noZoom;
     public String sousdossier;
-    private boolean D3 = false;
-    private one.empty3.library.ImageContainer biic;
-    private Image riG;
-    private Image riD;
-    private File fileG;
-    private File fileD;
-    private boolean pause = false;
-    private boolean pauseActive = false;
-    private boolean stop = false;
-    private int onTextureEnds = ON_TEXTURE_ENDS_STOP;
-    private int onMaxFrameEvent = ON_MAX_FRAMES_STOP;
-    private File audioTrack;
-    private boolean isAudioDone;
-    private int audioTrackNo;
-    private int videoTrackNo;
-    private int fps = 25;
-    //private Buffer buf;
-    //private ManualVideoCompile compiler;
-    private boolean isVBR;
-    private Resolution dimension = HD1080;
-    private String name;
-    private File file0;
-    private Thread threadGLafter;
-    private boolean threadGLafterHasRun = false;
-    private boolean LOG = true;
-    private boolean running = false;
+    protected boolean D3 = false;
+    protected one.empty3.library.ImageContainer biic;
+    protected Image riG;
+    protected Image riD;
+    protected File fileG;
+    protected File fileD;
+    protected boolean pause = false;
+    protected boolean pauseActive = false;
+    protected boolean stop = false;
+    protected int onTextureEnds = ON_TEXTURE_ENDS_STOP;
+    protected int onMaxFrameEvent = ON_MAX_FRAMES_STOP;
+    protected File audioTrack;
+    protected boolean isAudioDone;
+    protected int audioTrackNo;
+    protected int videoTrackNo;
+    protected int fps = 25;
+    //protected Buffer buf;
+    //protected ManualVideoCompile compiler;
+    protected boolean isVBR;
+    protected Resolution dimension = HD1080;
+    protected String name;
+    protected File file0;
+    protected Thread threadGLafter;
+    protected boolean threadGLafterHasRun = false;
+    protected boolean LOG = true;
+    protected boolean running = false;
     static int numInstancesRunning = 0;
-    private Object applicationContext;
-    private File androidDirData;
-    private String date;
+    protected Object applicationContext;
+    protected File androidDirData;
+    protected String date;
 
     public File getDir0() {
         return dir0;
@@ -817,8 +818,9 @@ public abstract class TestObjet implements Test, Runnable {
             init();
 
 
+
         z = ZBufferFactory.newInstance(resx, resy);
-        z.setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, Math.max(resx, resy)));
+        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
         z.scene(scene);
         //z.next();
         long timeStart = System.currentTimeMillis();
@@ -835,7 +837,17 @@ public abstract class TestObjet implements Test, Runnable {
         this.biic = new one.empty3.library.ImageContainer();
 
         if (getPublish()) {
-            publishResult();
+            if(str==null) {
+                try {
+                    str = strClass.newInstance();
+                    publishResult();
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
 
         }
 
@@ -1016,10 +1028,20 @@ public abstract class TestObjet implements Test, Runnable {
 
             }
 
-
             if (publish) {
-                one.empty3.library.ImageContainer imageContainer = new ImageContainer();
+                ImageContainer imageContainer = new ImageContainer();
+                StructureMatrix<Image> objectStructureMatrix = new StructureMatrix<>(0, Image.class);// Fix: Added semicolon
+                objectStructureMatrix.setElem(ri);
+                biic.setImage(objectStructureMatrix);
+                imageContainer.setImage(biic.getImage());
+
+                str.setImageContainer(imageContainer);
+
+                str.dessine();
             }
+
+            z.idzpp();
+
 
             z.idzpp();
 
@@ -1272,7 +1294,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());
         }
-        z.minMaxOptimium = new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 1000);
+        z.incrementOptimizer = new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 1000);
     }
 
     public void setName(String name) {

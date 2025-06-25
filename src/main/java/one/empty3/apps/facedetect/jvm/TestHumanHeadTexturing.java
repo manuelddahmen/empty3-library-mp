@@ -55,7 +55,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void ginit() {
         z().texture(new ColorTexture(new Colors().random()));
-        z().setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
+        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
