@@ -47,7 +47,7 @@ public class Balade1 extends TestObjetSub {
         //balade1.setDimension(new Resolution(1920 / 8, 1080 / 8));
         //balade1.setDimension(new Resolution(320, 200));
         //balade1.setDimension(new Resolution(640, 480));
-        balade1.setDimension(new Resolution(640, 480));
+        balade1.setDimension(new Resolution(320, 240));
         balade1.setGenerate(GENERATE_IMAGE | GENERATE_SAVE_IMAGE|GENERATE_MOVIE|GENERATE_LOG|GENERATE_SAVE_ZIP);
         balade1.setPublish(true);
         new Thread(balade1).start();
@@ -82,8 +82,8 @@ public class Balade1 extends TestObjetSub {
                 return 2.0;
             }
         });
-        tube.setIncrU(0.001);
-        tube.setIncrV(0.001);
+        tube.setIncrU(0.01);
+        tube.setIncrV(0.01);
 
 
         tube.texture(sol_sableux);
@@ -104,7 +104,7 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setIncrementOptimizer(
-                new ZBufferImpl.IncrementOptimizer(.05,.1)
+                new ZBufferImpl.IncrementOptimizer(.01,.1)
         );
         /*z().setIncrementOptimizer(
                 new ZBufferImpl.IncrementOptimizer(

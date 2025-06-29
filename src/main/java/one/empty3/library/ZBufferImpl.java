@@ -44,6 +44,7 @@ import one.empty3.pointset.PCont;
 
 import one.empty3.libs.*;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -670,8 +671,17 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
     public Image image() {
         Image bi = new Image(la, ha);
-        bi.setRGB(0, 0, la, ha, ime.color, 0, la);
-        return new Image(bi);
+        for (int i = 0; i < la; i++) {
+            for (int j = 0; j < ha; j++) {
+                int elementCouleur = ime.color[j*la+i];
+                //if (ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i,j)!=idImg()) {
+                //    elementCouleur = texture().getColorAt(1.0 * i / la, 1.0 * j / ha);
+                //}
+                bi.setRgb(i, j, elementCouleur|0xFF000000);
+
+            }
+        }
+        return bi;
     }
     @Override
     public Image imageInvX() {
@@ -681,7 +691,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int elementCouleur = ime.getElementCouleur(i, j);
                 if (ime != null && (ime.getElementPoint(i, j) == null ||
                         ime.getElementPoint(i, j).equals(INFINITY))) {
-                    elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha)&0x00ffffff;
+                    elementCouleur = texture().getColorAt(1.0*i/la, 1.0*j/ha);
                 }
                 bi2.setRgb(la - i - 1, j, elementCouleur);
 
@@ -693,11 +703,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     //??
     public Image image2() {
-        //return image2();
-
-//        Image bi = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
-//        bi.setRgb(0, 0, la, ha, getData(), 0, la);
-//        return new one.empty3.libs.Image(bi);
         return image();
 
     }

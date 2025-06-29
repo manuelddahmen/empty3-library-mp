@@ -19,7 +19,7 @@
  *
  *
  */
-
+/*
 package one.empty3.feature20220726;
 
 import java.io.File;
@@ -73,4 +73,4 @@ public class BrushGradientMaximumColor extends ProcessFile {
         new one.empty3.libs.Image(1,1,1.saveToFile(pixM2.normalize(0, 1).getImage(), "jpg", out);
         return true;
     }
-}
+}*/
