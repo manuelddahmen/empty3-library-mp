@@ -149,29 +149,6 @@ public class ConvexHull {
         fillMaskWithHull();
 
         Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull computed with " + hullPoints.size() + " points.");
-        // Optional: Uncomment the file saving logic if needed
-        /*
-        try {
-            File file = new File(".\\storage\\");
-            if(!file.exists())
-                file.mkdirs(); // Use mkdirs to create parent directories if needed
-            if(file.exists() && file.isDirectory()) { // Check if it's actually a directory
-                File file1 = new File(file, "convexHull.jpg"); // Use File constructor for path building
-                // No need to delete, ImageIO.write overwrites by default
-                if (ImageIO.write(mask.getBufferedImage(), "jpg", file1)) { // Assuming Image has getBufferedImage()
-                    Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull mask saved to " + file1.getAbsolutePath());
-                } else {
-                    Logger.getAnonymousLogger().log(Level.SEVERE, "ConvexHull mask saving FAILED.");
-                }
-            } else {
-                 Logger.getAnonymousLogger().log(Level.SEVERE, "Storage directory cannot be created or is not a directory.");
-            }
-        } catch (IOException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "IOException during ConvexHull mask saving", e);
-        } catch (Exception e) { // Catch potential issues with getBufferedImage() or other errors
-             Logger.getAnonymousLogger().log(Level.SEVERE, "Error during ConvexHull mask saving", e);
-        }
-        */
     }
 
     /**

@@ -44,7 +44,6 @@ import one.empty3.pointset.PCont;
 
 import one.empty3.libs.*;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -670,7 +669,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     }
     public Image image() {
-        BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_ARGB);
+        Image bi = new Image(la, ha);
         bi.setRGB(0, 0, la, ha, ime.color, 0, la);
         return new Image(bi);
     }

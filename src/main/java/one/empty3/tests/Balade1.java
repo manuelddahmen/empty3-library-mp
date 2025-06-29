@@ -33,7 +33,6 @@ import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -56,11 +55,6 @@ public class Balade1 extends TestObjetSub {
         balade1.setPublish(true);
         new Thread(balade1).start();
     }
-    public Image convertJpegToImage(BufferedImage jpgSrc) {
-        BufferedImage jpgDst = new BufferedImage(jpgSrc.getWidth(), jpgSrc.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        jpgDst.getGraphics().drawImage(jpgSrc, 0, 0, null);
-        return new Image(jpgDst);
-    }
 
     @Override
     public void ginit() {
@@ -72,11 +66,7 @@ public class Balade1 extends TestObjetSub {
 
         if(f.exists()) {
             Image i = null;
-            try {
-                i = convertJpegToImage(ImageIO.read(f));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            i = new Image(f);
             sol_sableux = new ImageTexture(i);
         } else {
             throw new RuntimeException("file not exists or can't read");
@@ -117,7 +107,7 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setIncrementOptimizer(
-                new ZBufferImpl.IncrementOptimizer(.1/v,1.0/v)
+                new ZBufferImpl.IncrementOptimizer(.5/v,1.0/v)
         );
         /*z().setIncrementOptimizer(
                 new ZBufferImpl.IncrementOptimizer(
