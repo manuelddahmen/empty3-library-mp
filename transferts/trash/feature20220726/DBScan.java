@@ -24,7 +24,7 @@ package one.empty3.feature20220726;
 
 import java.awt.Color;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 import one.empty3.feature20220726.kmeans.MakeDataset;
 import one.empty3.feature20220726.kmeans.ReadDataset;
 import one.empty3.io.ProcessFile;

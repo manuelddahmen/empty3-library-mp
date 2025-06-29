@@ -29,12 +29,9 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.Tubulaire3refined;
 
-import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Balade1 extends TestObjetSub {
@@ -107,7 +104,7 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setIncrementOptimizer(
-                new ZBufferImpl.IncrementOptimizer(.5/v,1.0/v)
+                new ZBufferImpl.IncrementOptimizer(.05,.1)
         );
         /*z().setIncrementOptimizer(
                 new ZBufferImpl.IncrementOptimizer(

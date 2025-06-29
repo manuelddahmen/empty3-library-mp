@@ -26,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 
 import one.empty3.libs.Image;
-import javaAnd.awt.image.imageio.ImageIO;
+
 import one.empty3.io.ProcessFile;
 
 public class BrushGradientMaximumColor extends ProcessFile {

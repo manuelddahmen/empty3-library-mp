@@ -31,7 +31,7 @@ import one.empty3.*;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.*;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 
 /*
  1 prendre les points entre t=0.0 et t=1.0

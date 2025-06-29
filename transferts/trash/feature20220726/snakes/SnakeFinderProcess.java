@@ -28,7 +28,7 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.Point3D;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 import javaAnd.awt.*;
 
 import java.io.File;

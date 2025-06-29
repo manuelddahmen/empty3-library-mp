@@ -26,7 +26,7 @@ import one.empty3.io.*;
 
 import java.io.File;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 
 public class Draw extends ProcessFile {
     public Draw() {

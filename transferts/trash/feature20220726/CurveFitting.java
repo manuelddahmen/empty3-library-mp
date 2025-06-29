@@ -32,7 +32,7 @@ import one.empty3.library.ColorTexture;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 import javaAnd.awt.*;
 
 import one.empty3.libs.Image;

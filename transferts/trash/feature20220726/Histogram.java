@@ -22,7 +22,7 @@
 
 package one.empty3.feature20220726;
 
-import javaAnd.awt.image.imageio.ImageIO;
+
 import javaAnd.awt.*;
 import one.empty3.libs.Image;
 

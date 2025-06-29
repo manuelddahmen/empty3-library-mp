@@ -1,6 +1,6 @@
 //package one.empty3.feature20220726.jviolajones;
 //
-//import javaAnd.awt.image.imageio.ImageIO;
+//
 //import javax.swing.*;
 //import javaAnd.awt.*;
 //import java.awt.event.WindowAdapter;

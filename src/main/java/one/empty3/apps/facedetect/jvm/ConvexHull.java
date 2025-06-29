@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 // Removed unused File I/O imports unless you plan to uncomment that section
 // import java.io.File;
 // import java.io.IOException;
-// import javax.imageio.ImageIO;
 
 public class ConvexHull {
     private final List<Point3D> originalScaledPoints; // Renamed for clarity
