@@ -1,0 +1,13 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - motion-weaver-render-2
+      - --runtime=java17
+      - --trigger-http
+      - --entry-point=motion-weaver-render
+      - --memory=256MB  # Exemple de paramètre pour la mémoire
+      - --timeout=60s   # Exemple de paramètre pour le délai d'expiration
+      - --region=europe-west1 # Exemple de paramètre pour la région
