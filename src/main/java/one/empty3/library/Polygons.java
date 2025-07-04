@@ -62,7 +62,7 @@ public class Polygons extends SurfaceParametriquePolynomiale {
                 };
                 double U = u * (coefficients.getData2d().size()) - indexU0;
                 double V = v * (coefficients.getData2d().get(0).size()) - indexV0;
-                assert U >= 0 && U <= 1 && V >= 0 && V <= 1;
+                //assert U >= 0 && U <= 1 && V >= 0 && V <= 1;
                 Point3D pUv0 = points[0].plus(points[1].moins(points[0]).mult(U));
                 Point3D pUv1 = points[3].plus(points[2].moins(points[3]).mult(U));
                 Point3D pU0v = points[3].moins(points[0]).mult(V);

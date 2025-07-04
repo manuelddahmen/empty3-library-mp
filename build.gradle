@@ -366,7 +366,7 @@ signing {
 
 dependencies {
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.31'
+    implementation 'one.empty3.libs:partial-desktop:0.0.32'
     implementation 'one.empty3.libs:commons-mp:0.0.11'
     
     // JOGL libraries
@@ -469,7 +469,7 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-def versionName = '2025.6.29'
+def versionName = '2025.6.30'
 publishing {
     publications {
         maven(MavenPublication) {

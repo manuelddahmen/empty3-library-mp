@@ -670,14 +670,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     }
     public Image image() {
-        Image bi = new Image(la, ha);
+        Image bi = new Image(la, ha, ime.color);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
-                int elementCouleur = ime.color[j*la+i];
-                //if (ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i,j)!=idImg()) {
-                //    elementCouleur = texture().getColorAt(1.0 * i / la, 1.0 * j / ha);
-                //}
-                bi.setRgb(i, j, elementCouleur|0xFF000000);
+                if (ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i,j)!=idImg()) {
+                    bi.setRgb(i, j, texture().getColorAt(1.0 * i / la, 1.0 * j / ha));
+                }
+
 
             }
         }
@@ -703,6 +702,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     //??
     public Image image2() {
+        //return image2();
+
+//        Image bi = new one.empty3.libs.Image(la, ha, Image.TYPE_INT_RGB);
+//        bi.setRgb(0, 0, la, ha, getData(), 0, la);
+//        return new one.empty3.libs.Image(bi);
         return image();
 
     }

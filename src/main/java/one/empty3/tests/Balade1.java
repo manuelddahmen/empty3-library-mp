@@ -104,7 +104,7 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setIncrementOptimizer(
-                new ZBufferImpl.IncrementOptimizer(.01,.1)
+                new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, .05)
         );
         /*z().setIncrementOptimizer(
                 new ZBufferImpl.IncrementOptimizer(

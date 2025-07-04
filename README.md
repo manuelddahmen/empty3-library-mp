@@ -1,5 +1,73 @@
 # **Commentaire sur la bibliothèque empty3-library-3d**
+# Générateur de Films MPEG
 
+Cette application permet de générer des fichiers vidéo MPEG à partir d'un fichier texte et de deux images en utilisant Google Cloud Functions.
+
+## Fonctionnalités
+
+- Téléchargement d'un fichier texte et de deux images via une requête HTTP POST
+- Génération d'un fichier vidéo MPEG basé sur ces entrées
+- Téléchargement automatique du fichier généré
+
+## Prérequis
+
+- Java SDK 22
+- Kotlin API 2.1
+- Google Cloud SDK (pour le déploiement)
+- Maven
+
+## Utilisation
+
+### Déploiement local
+
+1. Compilez le projet :
+   ```
+   mvn clean package
+   ```
+
+2. Exécutez la fonction localement :
+   ```
+   mvn function:run
+   ```
+
+3. Envoyez une requête avec les fichiers requis :
+   ```
+   curl -X POST http://localhost:8080 \
+     -F "text=@chemin/vers/votre/fichier.txt" \
+     -F "image1=@chemin/vers/votre/premiere_image.jpg" \
+     -F "image2=@chemin/vers/votre/deuxieme_image.jpg" \
+     --output film_genere.mpeg
+   ```
+
+### Déploiement sur Google Cloud
+
+1. Déployez la fonction :
+   ```
+   gcloud functions deploy movie-generator \
+     --entry-point=one.empty3.apps.facedetect.video.MovieGeneratorHttpFunction \
+     --runtime=java22 \
+     --trigger-http \
+     --memory=512MB
+   ```
+
+2. Utilisez l'URL fournie par Google Cloud pour envoyer vos requêtes.
+
+## Structure du code
+
+- `MovieGenerator.java` : Classe principale qui traite les fichiers d'entrée et génère le fichier MPEG
+- `MovieGeneratorHttpFunction.java` : Implémentation de l'interface HttpFunction qui gère les requêtes HTTP
+
+## Notes d'implémentation
+
+La classe `MovieGenerator` actuelle contient une implémentation de base. Pour une utilisation en production, vous devrez :
+
+1. Implémenter la logique réelle de génération de vidéo dans la méthode `generateMovie()`
+2. Ajouter des validations supplémentaires pour les types de fichiers
+3. Optimiser la gestion de la mémoire pour les fichiers volumineux
+
+## Licence
+
+Ce projet est sous licence Apache 2.0 - voir le fichier LICENSE pour plus de détails.
 **Points forts:**
 
 * **Fonctionnalités riches:** La bibliothèque offre un large éventail de fonctionnalités pour le rendu 3D, y compris la
