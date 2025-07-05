@@ -3,6 +3,7 @@ package one.empty3.apps.facedetect.video;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
+import com.google.logging.type.HttpRequest;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -368,7 +368,8 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.32'
     implementation 'one.empty3.libs:commons-mp:0.0.11'
-    
+    implementation 'com.google.firebase:protolite-well-known-types:18.0.1'
+
     // JOGL libraries
     def jogl = '2.3.2'
     implementation "org.jogamp.jogl:jogl-all:$jogl"
