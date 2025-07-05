@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.UUID;
 
 /**
  * Fonction HTTP qui utilise MovieGenerator pour créer un fichier MPEG à partir
@@ -41,10 +41,10 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
         try {
             // Récupérer les fichiers depuis la requête multipart
-            Map<String, HttpRequest.HttpPart> parts = request.getParts();
+            Map<String, HttpRequest.Part> parts = request.getParts();
 
             // Recherche du fichier texte
-            HttpRequest.HttpPart textPart = parts.get("text");
+            HttpRequest.Part textPart = parts.get("text");
             if (textPart != null && textPart.getFileName().isPresent()) {
                 textFile = new File(tempDir.toFile(), textPart.getFileName().get());
                 try (var outputStream = Files.newOutputStream(textFile.toPath())) {
@@ -54,7 +54,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
 
             // Recherche de la première image
-            HttpRequest.HttpPart image1Part = parts.get("image1");
+            HttpRequest.Part image1Part = parts.get("image1");
             if (image1Part != null && image1Part.getFileName().isPresent()) {
                 image1 = new File(tempDir.toFile(), image1Part.getFileName().get());
                 try (var outputStream = Files.newOutputStream(image1.toPath())) {
@@ -64,7 +64,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
 
             // Recherche de la deuxième image
-            HttpRequest.HttpPart image2Part = parts.get("image2");
+            HttpRequest.Part image2Part = parts.get("image2");
             if (image2Part != null && image2Part.getFileName().isPresent()) {
                 image2 = new File(tempDir.toFile(), image2Part.getFileName().get());
                 try (var outputStream = Files.newOutputStream(image2.toPath())) {

@@ -91,7 +91,7 @@ public class MovieGenerator {
             Thread.sleep(2000);
 
             // Écrire un contenu factice dans le fichier de sortie
-            String fakeContent = "Fichier MPEG généré à partir de " + textFile.getName() +
+            String fakeContent = "Fichier MPEG généré à partir de " + textFile.getName() + 
                                  ", " + image1.getName() + " et " + image2.getName();
             Files.write(outputFile.toPath(), fakeContent.getBytes(StandardCharsets.UTF_8));
 
