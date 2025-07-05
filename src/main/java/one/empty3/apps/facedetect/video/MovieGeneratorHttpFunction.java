@@ -47,6 +47,8 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             return;
         }
 
+        logRequestDetails(request);
+
         Path tempDir = null;
         File textFile = null;
         File image1 = null;
@@ -109,6 +111,58 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         response.setStatusCode(statusCode);
         try (BufferedWriter writer = response.getWriter()) {
             writer.write(message);
+        }
+    }
+
+    /**
+     * Journalise tous les détails de la requête HTTP
+     */
+    private void logRequestDetails(HttpRequest request) {
+        try {
+            StringBuilder logMessage = new StringBuilder("\n======== DÉTAILS DE LA REQUÊTE HTTP ========\n");
+
+            // Méthode HTTP
+            logMessage.append("Méthode: ").append(request.getMethod()).append("\n");
+
+            // URI de la requête
+            logMessage.append("URI: ").append(request.getUri()).append("\n");
+
+            // En-têtes
+            logMessage.append("\n-- EN-TÊTES --\n");
+            request.getHeaders().forEach((name, values) -> {
+                logMessage.append(name).append(": ");
+                logMessage.append(String.join(", ", values)).append("\n");
+            });
+
+            // Paramètres de requête
+            logMessage.append("\n-- PARAMÈTRES DE REQUÊTE --\n");
+            request.getQueryParameters().forEach((name, values) -> {
+                logMessage.append(name).append(": ");
+                logMessage.append(String.join(", ", values)).append("\n");
+            });
+
+            // Détails des parties (fichiers et champs de formulaire)
+            logMessage.append("\n-- PARTIES MULTIPART --\n");
+            Map<String, HttpRequest.HttpPart> parts = request.getParts();
+            if (parts.isEmpty()) {
+                logMessage.append("Aucune partie multipart trouvée\n");
+            } else {
+                parts.forEach((name, part) -> {
+                    logMessage.append("Partie: ").append(name).append("\n");
+                    part.getFileName().ifPresent(fileName ->
+                        logMessage.append("  Nom du fichier: ").append(fileName).append("\n"));
+                    part.getContentType().ifPresent(contentType ->
+                        logMessage.append("  Type de contenu: ").append(contentType).append("\n"));
+                });
+            }
+
+            logMessage.append("\n=======================================\n");
+
+            // Journaliser le message complet
+            logger.info(logMessage.toString());
+
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Erreur lors de la journalisation des détails de la requête", e);
         }
     }
 
