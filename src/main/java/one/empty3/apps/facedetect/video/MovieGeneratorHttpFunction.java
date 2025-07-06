@@ -1,5 +1,6 @@
 package one.empty3.apps.facedetect.video;
 
+import com.google.api.client.http.MultipartContent;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
@@ -10,9 +11,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.google.cloud.functions.HttpRequest.*;
 
 /**
  * Fonction HTTP qui utilise MovieGenerator pour créer un fichier MPEG à partir
@@ -27,7 +31,6 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
     private static final String ALLOWED_ORIGIN = "https://studio--studio-6v2lo.us-central1.hosted.app/";
-    List<File> files = new ArrayList<>();
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
             String origin = request.getFirstHeader("Origin").orElse(null);
@@ -48,28 +51,33 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
         logRequestDetails(request);
 
-        Path tempDir = null;
+        Path tempDir = Files.createTempDirectory("movie-generator-");
         File textFile = null;
         File image1 = null;
         File image2 = null;
         File outputFile = null;
 
+        List<File> files = new ArrayList<>();
         try {
-            tempDir = Files.createTempDirectory("movie-generator-");
-            Map<String, HttpRequest.HttpPart> parts = request.getParts();
+            Map<String, HttpPart> parts = request.getParts();
 
-            parts.forEach(new BiConsumer<String, HttpRequest.HttpPart>() {
+            parts.forEach(new BiConsumer<String, HttpPart>() {
                 @Override
-                public void accept(String s, HttpRequest.HttpPart httpPart) {
-                    files.add(savePartToFile((HttpRequest) httpPart.get(TEXT_PART_NAME), tempDir))
+                public void accept(String s, HttpPart httpPart) {
+                    try {
+                        files.add(savePartToFile((HttpPart) httpPart, tempDir));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
 
-            if (files.size()==0) {
-                sendErrorResponse(response, 400, "Tous les fichiers requis n'ont pas été fournis. " +
-                        "Veuillez fournir un fichier texte (text) et deux images (image1, image2).");
-                return;
+            Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
+            for(Entry<String, HttpPart> part : parts.entrySet()) {
+                Logger.getLogger(getClass().getCanonicalName()).info(part.getKey());
+
             }
+            Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
 
             String outputFileName = UUID.randomUUID() + ".mpeg";
             outputFile = new File(tempDir.toFile(), outputFileName);
@@ -83,7 +91,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             Files.copy(generatedFile.toPath(), response.getOutputStream());
             logger.info("Film envoyé au client avec succès");
 
-        } catch (Exception e) {
+        } catch (RuntimeException | IOException e) {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
             sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + e.getMessage());
         } finally {
@@ -94,15 +102,15 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     /**
      * Enregistre une partie de la requête dans un fichier
      */
-    private File savePartToFile(HttpRequest part, Path tempDir) throws IOException {
-        if (part == null || part.getParts().isEmpty() || part.getParts().get(0).getFileName().isEmpty()) {
+    private File savePartToFile(HttpPart part, Path tempDir) throws IOException {
+        if (part == null || part.getFileName().isEmpty() || part.getFileName().isEmpty()) {
             return null;
         }
-        File file = new File(tempDir.toFile(), part.getParts().get(0).getFileName().get());
+        File file = new File(tempDir.toFile(), part.getFileName().get());
         try (var outputStream = Files.newOutputStream(file.toPath())) {
             part.getInputStream().transferTo(outputStream);
         }
-        logger.info("Fichier reçu : " + file.getName());
+        logger.info("Fichiers reçu : " + file.getName());
         return file;
     }
 
@@ -145,7 +153,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             // Détails des parties (fichiers et champs de formulaire)
             logMessage.append("\n-- PARTIES MULTIPART --\n");
-            Map<String, HttpRequest.HttpPart> parts = request.getParts();
+            Map<String, HttpPart> parts = request.getParts();
             if (parts.isEmpty()) {
                 logMessage.append("Aucune partie multipart trouvée\n");
             } else {
