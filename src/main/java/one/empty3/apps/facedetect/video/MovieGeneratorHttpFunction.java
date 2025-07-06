@@ -9,9 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +27,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
     private static final String ALLOWED_ORIGIN = "https://studio--studio-6v2lo.us-central1.hosted.app/";
-
+    List<File> files = new ArrayList<>();
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
             String origin = request.getFirstHeader("Origin").orElse(null);
@@ -59,11 +58,14 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             tempDir = Files.createTempDirectory("movie-generator-");
             Map<String, HttpRequest.HttpPart> parts = request.getParts();
 
-            textFile = savePartToFile((HttpRequest) parts.get(TEXT_PART_NAME), tempDir);
-            image1 = savePartToFile((HttpRequest) parts.get(IMAGE1_PART_NAME), tempDir);
-            image2 = savePartToFile((HttpRequest) parts.get(IMAGE2_PART_NAME), tempDir);
+            parts.forEach(new BiConsumer<String, HttpRequest.HttpPart>() {
+                @Override
+                public void accept(String s, HttpRequest.HttpPart httpPart) {
+                    files.add(savePartToFile((HttpRequest) httpPart.get(TEXT_PART_NAME), tempDir))
+                }
+            });
 
-            if (textFile == null || image1 == null || image2 == null) {
+            if (files.size()==0) {
                 sendErrorResponse(response, 400, "Tous les fichiers requis n'ont pas été fournis. " +
                         "Veuillez fournir un fichier texte (text) et deux images (image1, image2).");
                 return;
