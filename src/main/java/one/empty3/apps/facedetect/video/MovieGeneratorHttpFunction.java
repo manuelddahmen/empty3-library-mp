@@ -30,7 +30,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String CONTENT_TYPE_MPEG = "video/mpeg";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
-    private static final String ALLOWED_ORIGIN = "https://studio--studio-6v2lo.us-central1.hosted.app/";
+    private static final String ALLOWED_ORIGIN = "https://motion-weaver-render-1077189433049.us-central1.run.app";
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
             String origin = request.getFirstHeader("Origin").orElse(null);
