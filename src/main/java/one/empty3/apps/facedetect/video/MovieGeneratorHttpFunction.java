@@ -35,7 +35,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws IOException {
             String origin = request.getFirstHeader("Origin").orElse(null);
 
-            if (ALLOWED_ORIGIN.equals(origin)) {
+            /**if (ALLOWED_ORIGIN.equals(origin)) {
                 response.appendHeader("Access-Control-Allow-Origin", origin);
             } else {
                 // Optionally, you can return an error or a default response for disallowed origins
@@ -44,7 +44,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 response.getWriter().write(ALLOWED_ORIGIN+"\n");
                 response.getWriter().write(origin+"\n");
                 return;
-            }
+            }*/
         // Vérifier la méthode HTTP
         if (!"POST".equals(request.getMethod())) {
             sendErrorResponse(response, 405, "Méthode non autorisée. Veuillez utiliser POST.");
