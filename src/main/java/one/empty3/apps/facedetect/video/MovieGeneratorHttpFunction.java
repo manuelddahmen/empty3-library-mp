@@ -40,8 +40,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             } else {
                 // Optionally, you can return an error or a default response for disallowed origins
                 response.setStatusCode(403); // Forbidden
-                response.getWriter().write("Access denied");
-                response.getWriter().write(ALLOWED_ORIGIN);
+                response.getWriter().write("Access denied\n");
+                response.getWriter().write(ALLOWED_ORIGIN+"\n");
+                response.getWriter().write(origin+"\n");
                 return;
             }
         // Vérifier la méthode HTTP
