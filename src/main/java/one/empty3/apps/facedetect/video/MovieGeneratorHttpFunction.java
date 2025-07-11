@@ -4,6 +4,7 @@ import com.google.api.client.http.MultipartContent;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
+import one.empty3.apps.testobject.TestCollection;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,10 +24,10 @@ import static com.google.cloud.functions.HttpRequest.*;
  * d'un fichier texte et de deux images.
  */
 public class MovieGeneratorHttpFunction implements HttpFunction {
-    private static final Logger logger = Logger.getLogger(MovieGeneratorHttpFunction.class.getName());
-    private static final String TEXT_PART_NAME = "text";
-    private static final String IMAGE1_PART_NAME = "image1";
-    private static final String IMAGE2_PART_NAME = "image2";
+    private static final Logger logger = Logger.getLogger(MovieGeneratorHttpFunction.class.getCanonicalName());
+    private static final String TEXT_PART_NAME = ".txt";
+    private static final String IMAGE1_PART_NAME = ".jpg";
+    private static final String IMAGE2_PART_NAME = ".png";
     private static final String CONTENT_TYPE_MPEG = "video/mpeg";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
@@ -59,18 +60,40 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         File image2 = null;
         File outputFile = null;
 
-        List<File> files = new ArrayList<>();
+        List<FileType> types = new ArrayList<>();
         try {
             Map<String, HttpPart> parts = request.getParts();
 
-            parts.forEach(new BiConsumer<String, HttpPart>() {
-                @Override
-                public void accept(String s, HttpPart httpPart) {
-                    try {
-                        files.add(savePartToFile((HttpPart) httpPart, tempDir));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+            parts.forEach((s, httpPart) -> {
+                try {
+                    boolean added = false;
+                    String s1 = httpPart.getFileName().get();
+                    String s2 = null;
+                    switch (s1.substring(s1.lastIndexOf('.'))) {
+                        case TEXT_PART_NAME -> {
+                            savePartToFile((HttpPart) httpPart, tempDir);
+                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
+                            s2 = "txt";
+                            added = true;
+                        }
+                        case IMAGE1_PART_NAME -> {
+                            savePartToFile((HttpPart) httpPart, tempDir);
+                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
+                            s2 = "jpg";
+                            added = true;
+                        }
+                        case IMAGE2_PART_NAME -> {
+                            savePartToFile((HttpPart) httpPart, tempDir);
+                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
+                            s2 = "png";
+                            added = true;
+                        }
                     }
+                    if(added) {
+                        types.add(new FileType(s1, s2));
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
 
@@ -84,7 +107,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             String outputFileName = UUID.randomUUID() + ".mpeg";
             outputFile = new File(tempDir.toFile(), outputFileName);
 
-            MovieGenerator generator = new MovieGenerator(textFile, image1, image2, outputFile);
+            MovieGenerator generator = new MovieGenerator(types, outputFile);
             File generatedFile = generator.generateMovie();
 
             response.setContentType(CONTENT_TYPE_MPEG);
