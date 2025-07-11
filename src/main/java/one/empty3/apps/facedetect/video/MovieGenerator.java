@@ -28,4 +28,8 @@ public class MovieGenerator {
             logger.info(outputFile.getName());
         }
     }
+
+    public File generateMovie() {
+        return null;
+    }
 }
