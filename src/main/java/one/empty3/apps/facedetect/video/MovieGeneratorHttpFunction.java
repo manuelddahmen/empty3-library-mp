@@ -64,38 +64,44 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         try {
             Map<String, HttpPart> parts = request.getParts();
 
-            parts.forEach((s, httpPart) -> {
-                try {
-                    boolean added = false;
-                    String s1 = httpPart.getFileName().get();
-                    String s2 = null;
-                    switch (s1.substring(s1.lastIndexOf('.'))) {
-                        case TEXT_PART_NAME -> {
-                            savePartToFile((HttpPart) httpPart, tempDir);
-                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
-                            s2 = "txt";
-                            added = true;
+            for (Entry<String, HttpPart> entry : parts.entrySet()) {
+                String s = entry.getKey();
+                HttpPart httpPart = entry.getValue();
+                if(httpPart!=null) {
+                    try {
+                        boolean added = false;
+                        String s1 = httpPart.getFileName().get();
+                        String s2 = null;
+                        if(s1!=null&&s2!=null) {
+                            switch (s1.substring(s1.lastIndexOf('.'))) {
+                                case TEXT_PART_NAME -> {
+                                    savePartToFile(httpPart, tempDir);
+                                    s1 = savePartToFile(httpPart, tempDir).getName();
+                                    s2 = "txt";
+                                    added = true;
+                                }
+                                case IMAGE1_PART_NAME -> {
+                                    savePartToFile(httpPart, tempDir);
+                                    s1 = savePartToFile(httpPart, tempDir).getName();
+                                    s2 = "jpg";
+                                    added = true;
+                                }
+                                case IMAGE2_PART_NAME -> {
+                                    savePartToFile(httpPart, tempDir);
+                                    s1 = savePartToFile(httpPart, tempDir).getName();
+                                    s2 = "png";
+                                    added = true;
+                                }
+                            }
+                            if (added) {
+                                types.add(new FileType(s1, s2));
+                            }
                         }
-                        case IMAGE1_PART_NAME -> {
-                            savePartToFile((HttpPart) httpPart, tempDir);
-                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
-                            s2 = "jpg";
-                            added = true;
-                        }
-                        case IMAGE2_PART_NAME -> {
-                            savePartToFile((HttpPart) httpPart, tempDir);
-                            s1 = savePartToFile((HttpPart) httpPart, tempDir).getName();
-                            s2 = "png";
-                            added = true;
-                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                    if(added) {
-                        types.add(new FileType(s1, s2));
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-            });
+            }
 
             Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
             for(Entry<String, HttpPart> part : parts.entrySet()) {
