@@ -70,31 +70,33 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 if(httpPart!=null) {
                     try {
                         boolean added = false;
-                        String s1 = httpPart.getFileName().get();
-                        String s2 = null;
-                        if(s1!=null&&s2!=null) {
-                            switch (s1.substring(s1.lastIndexOf('.'))) {
-                                case TEXT_PART_NAME -> {
-                                    savePartToFile(httpPart, tempDir);
-                                    s1 = savePartToFile(httpPart, tempDir).getName();
-                                    s2 = "txt";
-                                    added = true;
+                        if(httpPart.getFileName()!=null&&httpPart.getFileName().isPresent()) {
+                            String s1 = httpPart.getFileName().get();
+                            String s2 = null;
+                            if (s1 != null) {
+                                switch (s1.substring(s1.lastIndexOf('.'))) {
+                                    case TEXT_PART_NAME -> {
+                                        savePartToFile(httpPart, tempDir);
+                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        s2 = "txt";
+                                        added = true;
+                                    }
+                                    case IMAGE1_PART_NAME -> {
+                                        savePartToFile(httpPart, tempDir);
+                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        s2 = "jpg";
+                                        added = true;
+                                    }
+                                    case IMAGE2_PART_NAME -> {
+                                        savePartToFile(httpPart, tempDir);
+                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        s2 = "png";
+                                        added = true;
+                                    }
                                 }
-                                case IMAGE1_PART_NAME -> {
-                                    savePartToFile(httpPart, tempDir);
-                                    s1 = savePartToFile(httpPart, tempDir).getName();
-                                    s2 = "jpg";
-                                    added = true;
+                                if (added) {
+                                    types.add(new FileType(s1, s2));
                                 }
-                                case IMAGE2_PART_NAME -> {
-                                    savePartToFile(httpPart, tempDir);
-                                    s1 = savePartToFile(httpPart, tempDir).getName();
-                                    s2 = "png";
-                                    added = true;
-                                }
-                            }
-                            if (added) {
-                                types.add(new FileType(s1, s2));
                             }
                         }
                     } catch (IOException e) {
