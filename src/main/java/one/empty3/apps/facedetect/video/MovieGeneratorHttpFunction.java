@@ -76,20 +76,26 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                             if (s1 != null) {
                                 switch (s1.substring(s1.lastIndexOf('.'))) {
                                     case TEXT_PART_NAME -> {
-                                        savePartToFile(httpPart, tempDir);
-                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        File f = savePartToFile(httpPart, tempDir);
+                                        if(f==null)
+                                            break;
+                                        s1 = f.getName();
                                         s2 = "txt";
                                         added = true;
                                     }
                                     case IMAGE1_PART_NAME -> {
-                                        savePartToFile(httpPart, tempDir);
-                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        File f = savePartToFile(httpPart, tempDir);
+                                        if(f==null)
+                                            break;
+                                        s1 = f.getName();
                                         s2 = "jpg";
                                         added = true;
                                     }
                                     case IMAGE2_PART_NAME -> {
-                                        savePartToFile(httpPart, tempDir);
-                                        s1 = savePartToFile(httpPart, tempDir).getName();
+                                        File f = savePartToFile(httpPart, tempDir);
+                                        if(f==null)
+                                            break;
+                                        s1 = f.getName();
                                         s2 = "png";
                                         added = true;
                                     }
@@ -113,7 +119,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
 
             String outputFileName = UUID.randomUUID() + ".mpg";
-            outputFile = new File(tempDir.toFile(), outputFileName);
+            outputFile = new File(tempDir.toString(), outputFileName);
 
             MovieGenerator generator = new MovieGenerator(types, outputFile);
 
@@ -144,12 +150,18 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         if (part == null || part.getFileName().isEmpty() || part.getFileName().isEmpty()) {
             return null;
         }
-        File file = new File(tempDir.toFile(), part.getFileName().get());
-        try (var outputStream = Files.newOutputStream(file.toPath())) {
-            part.getInputStream().transferTo(outputStream);
+        String s = part.getFileName().get();
+        if(s!=null && s.length()>0) {
+            File file = new File(tempDir.toFile(), s);
+            if (file != null) {
+                try (var outputStream = Files.newOutputStream(file.toPath())) {
+                    part.getInputStream().transferTo(outputStream);
+                }
+                logger.info("Fichiers reçu : " + file.getName());
+            }
+            return file;
         }
-        logger.info("Fichiers reçu : " + file.getName());
-        return file;
+        return null;
     }
 
     /**
