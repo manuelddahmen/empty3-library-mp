@@ -229,13 +229,15 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     /**
      * Nettoie les fichiers temporaires créés pendant le traitement
      */
-    private void cleanupFiles(Path tempDir, File... files) {
-        for (File file : files) {
-            if (file != null && file.exists()) {
+    private void cleanupFiles(Path tempDir) {
+        File temp = tempDir.toFile();
+        for (File file : Objects.requireNonNull(temp.listFiles())) {
+            if (file != null && file.exists() && (file.isFile() || (file.isDirectory()&& Objects.requireNonNull(file.listFiles()).length==0))) {
                 if (file.delete()) {
                     logger.fine("Fichier supprimé : " + file.getName());
-                } else {
-                    logger.warning("Impossible de supprimer le fichier : " + file.getName());
+                }
+                if(file.isDirectory()&&file.listFiles()!=null && file.listFiles().length>0) {
+                    cleanupFiles(file.toPath() );
                 }
             }
         }
