@@ -139,7 +139,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
             sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + e.getMessage());
         } finally {
-            cleanupFiles(tempDir);
+            cleanupFiles(tempDir.toFile());
         }
     }
 
@@ -229,23 +229,23 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     /**
      * Nettoie les fichiers temporaires créés pendant le traitement
      */
-    private void cleanupFiles(Path tempDir) {
-        File temp = tempDir.toFile();
+    private void cleanupFiles(File tempDir) {
+        File temp = tempDir;
         for (File file : Objects.requireNonNull(temp.listFiles())) {
             if (file != null && file.exists() && (file.isFile() || (file.isDirectory()&& Objects.requireNonNull(file.listFiles()).length==0))) {
                 if (file.delete()) {
                     logger.fine("Fichier supprimé : " + file.getName());
                 }
                 if(file.isDirectory()&&file.listFiles()!=null && file.listFiles().length>0) {
-                    cleanupFiles(file.toPath());
+                    cleanupFiles(file);
                 }
                 if(file.exists()&&file.isDirectory()&&file.listFiles()!=null && file.listFiles().length==0)
                     file.delete();
             }
         }
 
-        if (tempDir.toFile().exists() && tempDir.toFile().isDirectory()) {
-            tempDir.toFile().delete();
+        if (tempDir.exists() && tempDir.isDirectory()) {
+            tempDir.delete();
             logger.info("Nettoyage des fichiers temporaires effectué");
         }
     }
