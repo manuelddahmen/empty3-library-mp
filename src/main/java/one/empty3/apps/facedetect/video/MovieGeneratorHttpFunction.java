@@ -231,22 +231,24 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
      */
     private void cleanupFiles(File tempDir) {
         File temp = tempDir;
-        for (File file : Objects.requireNonNull(temp.listFiles())) {
-            if (file != null && file.exists() && (file.isFile() || (file.isDirectory()&& Objects.requireNonNull(file.listFiles()).length==0))) {
-                if (file.delete()) {
-                    logger.fine("Fichier supprimé : " + file.getName());
+        if(temp!=null&&temp.exists()) {
+            for (File file : Objects.requireNonNull(temp.listFiles())) {
+                if (file != null && file.exists() && (file.isFile() || (file.isDirectory() && Objects.requireNonNull(file.listFiles()).length == 0))) {
+                    if (file.delete()) {
+                        logger.fine("Fichier supprimé : " + file.getName());
+                    }
+                    if (file.isDirectory() && file.listFiles() != null && file.listFiles().length > 0) {
+                        cleanupFiles(file);
+                    }
+                    if (file.exists() && file.isDirectory() && file.listFiles() != null && file.listFiles().length == 0)
+                        file.delete();
                 }
-                if(file.isDirectory()&&file.listFiles()!=null && file.listFiles().length>0) {
-                    cleanupFiles(file);
-                }
-                if(file.exists()&&file.isDirectory()&&file.listFiles()!=null && file.listFiles().length==0)
-                    file.delete();
             }
-        }
 
-        if (tempDir.exists() && tempDir.isDirectory()) {
-            tempDir.delete();
-            logger.info("Nettoyage des fichiers temporaires effectué");
+            if (tempDir.exists() && tempDir.isDirectory()) {
+                tempDir.delete();
+                logger.info("Nettoyage des fichiers temporaires effectué");
+            }
         }
     }
 }
