@@ -231,7 +231,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         try {
             if (tempDir != null && tempDir.exists()) {
                 for (File file : Objects.requireNonNull(tempDir.listFiles())) {
-                    if (!(file != null && !"..".equals(file.getName()) && ".".equals(file.getName()) && file.isDirectory())) {
+                    if (file != null  && !"..".equals(file.getName()) && !".".equals(file.getName())) {
                         if ((file != null && file.exists()) && (!file.isDirectory() || (file.isDirectory() && Objects.requireNonNull(file.listFiles()).length == 0))) {
                             if (file.delete()) {
                                 logger.fine("Fichier supprimé : " + file.getName());
