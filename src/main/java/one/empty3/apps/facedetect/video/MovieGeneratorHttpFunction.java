@@ -26,6 +26,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String TEXT_PART_NAME = ".txt";
     private static final String IMAGE1_PART_NAME = ".jpg";
     private static final String IMAGE2_PART_NAME = ".png";
+    private static final String JSONFILE_EXT = ".json";
     private static final String CONTENT_TYPE_MPEG = "video/mpeg";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
@@ -95,6 +96,14 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                                             break;
                                         s1 = f.getName();
                                         s2 = "png";
+                                        added = true;
+                                    }
+                                    case JSONFILE_EXT -> {
+                                        File f = savePartToFile(httpPart, tempDir);
+                                        if(f==null)
+                                            break;
+                                        s1 = f.getName();
+                                        s2 = "json";
                                         added = true;
                                     }
                                 }

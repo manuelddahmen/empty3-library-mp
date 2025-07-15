@@ -1,0 +1,58 @@
+{
+  "points": [
+    {
+      "id": "p1",
+      "name": "Point A",
+      "x": 0.2,
+      "y": 0.2,
+      "color": "#FF6347",
+      "visible": true
+    },
+    {
+      "id": "p2",
+      "name": "Point B",
+      "x": 0.25,
+      "y": 0.3,
+      "color": "#4682B4",
+      "visible": true
+    },
+    {
+      "id": "p1751645207558",
+      "name": "Point 3",
+      "x": 0.7432071949406925,
+      "y": 0.880879183548461,
+      "color": "hsl(140.0603300180702, 70%, 50%)",
+      "visible": true
+    }
+  ],
+  "groups": [],
+  "transforms": [],
+  "animation": [
+    [
+      {
+        "id": "p1",
+        "name": "Point A",
+        "x": 0.2,
+        "y": 0.2,
+        "color": "#FF6347",
+        "visible": true
+      },
+      {
+        "id": "p2",
+        "name": "Point B",
+        "x": 0.25,
+        "y": 0.3,
+        "color": "#4682B4",
+        "visible": true
+      },
+      {
+        "id": "p1751645207558",
+        "name": "Point 3",
+        "x": 0.7432071949406925,
+        "y": 0.880879183548461,
+        "color": "hsl(140.0603300180702, 70%, 50%)",
+        "visible": true
+      }
+    ]
+  ]
+}
