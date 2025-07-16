@@ -4,6 +4,10 @@ package one.empty3.apps.facedetect.video;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +25,8 @@ import one.empty3.library.Point3D;
 import one.empty3.library.core.tribase.Config;
 import one.empty3.library.core.tribase.PointWire;
 import one.empty3.libs.Image;
+
+import javax.imageio.ImageIO;
 
 /**
  * Classe qui génère un fichier vidéo MPEG à partir d'un fichier texte et de deux images
@@ -97,14 +103,42 @@ public class MovieGenerator {
 
         int frame = 1;
 
+        final Image[] currentImage = {new Image(1000, 1000)};
 
+        Map<String, Image> imageGroups = new HashMap<>();
+        List<Image> framesImage = new ArrayList<>();
+        int frames = 1;
 
+        Map<String, Image> imageIds = new HashMap<>();
 
-        Map<String, String> imageIds = new HashMap<>();
+        configurationJson.getTransforms().stream().filter(new Predicate<Transform>() {
+            @Override
+            public boolean test(Transform transform) {
+                if (transform instanceof TransformAttachImage transformAttachImage) {
+                    try {
+                        imageGroups.put(transformAttachImage.getImageUrl(), new Image(ImageIO.read(new URL(transformAttachImage.getImageUrl()))));
+                        return true;
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                return false;
+            }
+        });
+
         int i2;
-        if (configurationJson != null && configurationJson.getTransforms() != null) {
+
+
+        if (configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
+                currentImage[0] = new Image(1000, 1000);
+                frames = transform.getFrames();
+                boolean b = true;
+                for(int j=0;j<frames||b;j++) {
+                    b = false;
                 if (transform instanceof TransformAttachImage transformAttachImage) {
                     if (transformAttachImage.getTargetType().equals(Transform.TargetType.All)) {
                         configurationJson.getGroups().stream().filter(new Predicate<Group>() {
@@ -116,7 +150,9 @@ public class MovieGenerator {
                             @Override
                             public void accept(Group group) {
                                 group.setImageUrl(transformAttachImage.getImageUrl());
-
+                                if(group.isVisible()) {
+                                    currentImage[0] = new Image(imageIds.get(group.getImageUrl()));
+                                }
                             }
                         });
                     } else {
@@ -134,7 +170,6 @@ public class MovieGenerator {
                         });
 
                     }
-                    frame+=transform.getFrames();
                 } else if (transform instanceof TransformDetachImage transformDetachImage) {
                     if (transformDetachImage.getTargetType().equals(Transform.TargetType.All)) {
                         configurationJson.getGroups().stream().filter(new Predicate<Group>() {
@@ -164,8 +199,6 @@ public class MovieGenerator {
                         });
 
                     }
-                    frame+=transform.getFrames();
-
                 } else if (transform instanceof TransformTranslate transformTranslate) {
                     for (i2 = 0; i2 <  transform.getFrames(); i2++)
                         if (transformTranslate.getTargetType().equals(Transform.TargetType.All)) {
@@ -193,7 +226,6 @@ public class MovieGenerator {
                                 return point;
                             });
                         }
-                    frame = frame+i2;
                 } else if (transform instanceof TransformRotate transformRotate) { // TODO: implement
                     for (i2 = 0; i2 < transform.getFrames(); i2++)
                         if (transformRotate.getTargetType().equals(Transform.TargetType.All)) {
@@ -221,7 +253,6 @@ public class MovieGenerator {
                                 return point;
                             });
                         }
-                    frame = frame+i2;
 
 
                 } else if (transform instanceof TransformSetVisibility transformSetVisibility)  { // TODO: implement
@@ -253,11 +284,12 @@ public class MovieGenerator {
                         });
 
                     }
-                    frame+=transform.getFrames();
 
                 }
 
                 }
+                frame = frame+1;
+            }
 
             }
         }
