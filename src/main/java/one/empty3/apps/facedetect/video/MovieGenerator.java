@@ -27,6 +27,7 @@ import one.empty3.library.core.tribase.Config;
 import one.empty3.library.core.tribase.PointWire;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 
@@ -102,7 +103,7 @@ public class MovieGenerator {
             }
 
         }
-
+        final Image[] image = {null};
         int frame = 1;
 
         final Image[] currentImage = {new Image(1000, 1000)};
@@ -308,7 +309,6 @@ public class MovieGenerator {
 
                     }
 
-                }
                 Graphics graphics = currentImage[0].getGraphics();
 
                 ConfigurationJson finalConfigurationJson3 = configurationJson;
@@ -347,12 +347,14 @@ public class MovieGenerator {
                         } catch (FileNotFoundException e) {
                             throw new RuntimeException(e);
                         }
-                        Image image = runZBuffer.processImage();
+                         image[0] = runZBuffer.processImage();
 
-                        graphics.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+                        graphics.drawImage(image[0], 0, 0, image[0].getWidth(), image[0].getHeight(), null);
                     }
                 });
-                frame = frame + 1;
+                images.add(image[0]);
+                    frame = frame + 1;
+                }
             }
 
         }
