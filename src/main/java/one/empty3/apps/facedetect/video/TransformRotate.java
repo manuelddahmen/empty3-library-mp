@@ -1,7 +1,7 @@
 package one.empty3.apps.facedetect.video;
 
 public class TransformRotate extends Transform {
-    private TransformTranslate.Target target;
+    private TargetType targetType;
     private double cx;
     private double cy;
     private double angle;
@@ -22,11 +22,11 @@ public class TransformRotate extends Transform {
         this.angle = cxangle;
     }
 
-    public TransformTranslate.Target getTarget() {
-        return target;
+    public TargetType getTargetType() {
+        return targetType;
     }
 
-    public void setTarget(TransformTranslate.Target target) {
-        this.target = target;
+    public void setTarget(Transform.TargetType targetType) {
+        this.targetType = targeType;
     }
 }

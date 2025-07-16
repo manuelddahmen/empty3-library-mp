@@ -10,10 +10,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 
-import one.empty3.library.Point;
 import one.empty3.library.Point2D;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.tribase.Config;
@@ -95,26 +97,171 @@ public class MovieGenerator {
 
         int frame = 1;
 
+
+
+
+        Map<String, String> imageIds = new HashMap<>();
+        int i2;
         if (configurationJson != null && configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
-                if (transform.getType().equals(Transform.Types.ATTACH_IMAGE)) {
+                if (transform instanceof TransformAttachImage transformAttachImage) {
+                    if (transformAttachImage.getTargetType().equals(Transform.TargetType.All)) {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return group.getId().equals("default");
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                group.setImageUrl(transformAttachImage.getImageUrl());
 
-                } else if (transform.getType().equals(Transform.Types.DETACH_IMAGE)) {
+                            }
+                        });
+                    } else {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return transformAttachImage.getTargetId().equals(group.getId());
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                group.setImageUrl(transformAttachImage.getImageUrl());
 
-                } else if (transform.getType().equals(Transform.Types.TRANSLATE)) {
+                            }
+                        });
 
-                } else if (transform.getType().equals(Transform.Types.ROTATE)) {
+                    }
+                    frame+=transform.getFrames();
+                } else if (transform instanceof TransformDetachImage transformDetachImage) {
+                    if (transformDetachImage.getTargetType().equals(Transform.TargetType.All)) {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return group.getId().equals("default");
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                group.setImageUrl(null);
 
-                } else if (transform.getType().equals(Transform.Types.VISIBLE)) {
+                            }
+                        });
+                    } else {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return transformDetachImage.getTargetId().equals(group.getId());
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                group.setImageUrl(null);
 
-                } else if (transform.getType().equals(Transform.Types.INVISIBLE)) {
+                            }
+                        });
+
+                    }
+                    frame+=transform.getFrames();
+
+                } else if (transform instanceof TransformTranslate transformTranslate) {
+                    for (i2 = 0; i2 <  transform.getFrames(); i2++)
+                        if (transformTranslate.getTargetType().equals(Transform.TargetType.All)) {
+                            for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
+                                ConfigurationJson finalConfigurationJson1 = configurationJson;
+                                int finalI = i2;
+                                configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
+                                    @Override
+                                    public Point apply(Point point) {
+                                        List<Point> points = finalConfigurationJson1.getAnimation().get(finalI);
+                                        for (int i3 = 0; i3 < points.size(); i3++) {
+                                            if (points.get(i3).getId().equals(point.getId())) {
+                                                return points.get(i3);
+                                            }
+                                        }
+                                        return point;
+                                    }
+                                });
+                            }
+                        } else if (transformTranslate.getTargetType().equals(Transform.TargetType.Group)) {
+                            ConfigurationJson finalConfigurationJson = configurationJson;
+                            int finalFrame1 = frame;
+                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrame1).getId().equals(point.getId()));
+                                return point;
+                            });
+                        }
+                    frame = frame+i2;
+                } else if (transform instanceof TransformRotate transformRotate) { // TODO: implement
+                    for (i2 = 0; i2 < transform.getFrames(); i2++)
+                        if (transformRotate.getTargetType().equals(Transform.TargetType.All)) {
+                            for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
+                                ConfigurationJson finalConfigurationJson1 = configurationJson;
+                                int finalFrame = frame;
+                                configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
+                                    @Override
+                                    public Point apply(Point point) {
+                                        List<Point> points = finalConfigurationJson1.getAnimation().get(finalFrame);
+                                        for (int i3 = 0; i3 < points.size(); i3++) {
+                                            if (points.get(i3).getId().equals(point.getId())) {
+                                                return points.get(i3);
+                                            }
+                                        }
+                                        return point;
+                                    }
+                                });
+                            }
+                        } else if (transformRotate.getTargetType().equals(Transform.TargetType.Group)) {
+                            ConfigurationJson finalConfigurationJson = configurationJson;
+                            int finalFrame2 = frame;
+                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrame2).getId().equals(point.getId()));
+                                return point;
+                            });
+                        }
+                    frame = frame+i2;
+
+
+                } else if (transform instanceof TransformSetVisibility transformSetVisibility)  { // TODO: implement
+                    if (transformSetVisibility.getTargetType().equals(Transform.TargetType.All)) {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return group.getId().equals("default");
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                return;
+
+                            }
+                        });
+                    } else {
+                        configurationJson.getGroups().stream().filter(new Predicate<Group>() {
+                            @Override
+                            public boolean test(Group group) {
+                                return transformSetVisibility.getTargetId().equals(group.getId());
+                            }
+                        }).forEach(new Consumer<Group>() {
+                            @Override
+                            public void accept(Group group) {
+                                return;
+
+                            }
+                        });
+
+                    }
+                    frame+=transform.getFrames();
 
                 }
+
+                }
+
             }
         }
-        frame++;
-    }
+
 
 
     private void drawImage(Image currentImage) {

@@ -1,9 +1,8 @@
 package one.empty3.apps.facedetect.video;
 
 public class TransformTranslate extends Transform {
-        public class Target {
-            public enum Type { All, Group };
-        }
+    private TargetType target;
+    private String targetId;
         private int dx;
         private double dy;
 
@@ -21,5 +20,21 @@ public class TransformTranslate extends Transform {
 
     public void setDy(double dy) {
         this.dy = dy;
+    }
+
+    public TargetType getTargetType() {
+        return target;
+    }
+
+    public void setTarget(TargetType target) {
+        this.target = target;
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
     }
 }

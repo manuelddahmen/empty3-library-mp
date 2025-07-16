@@ -3,13 +3,27 @@ package one.empty3.apps.facedetect.video;
 import java.util.List;
 
 public class Group {
-    private List<String> pointName;
+    private String id;
+    private List<Point> pointsId;
+    private String imageUrl;
 
-    public List<String> getPointName() {
-        return pointName;
+    public String getId() {
+        return id;
     }
 
-    public void setPointName(List<String> pointName) {
-        this.pointName = pointName;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Point> getPointsId() {
+        return pointsId;
+    }
+
+    public void setPointsId(List<Point> pointsId) {
+        this.pointsId = pointsId;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
