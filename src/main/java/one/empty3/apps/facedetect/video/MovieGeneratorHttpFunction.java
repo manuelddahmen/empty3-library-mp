@@ -208,6 +208,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         try (BufferedWriter writer = response.getWriter()) {
             writer.write(message);
         }
+        Logger.getLogger(getClass().getCanonicalName()).severe(message);
     }
 
     /**
