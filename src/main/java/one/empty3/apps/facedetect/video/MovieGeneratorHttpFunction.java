@@ -128,14 +128,26 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             String outputFileName = UUID.randomUUID() + ".mpg";
             outputFile = new File(tempDir.toString(), outputFileName);
 
-            MovieGenerator generator = new MovieGenerator(types, outputFile);
-
-            boolean b = generator.generateMovie();
+            MovieGenerator generator = null;
+            try {
+                generator = new MovieGenerator(types, outputFile);
+            } catch (RuntimeException ex) {
+                exceptionToString(ex);
+                sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
+            }
+            boolean b = false;
+            try {
+                if(generator==null)
+                    b = generator.generateMovie();
+            } catch (RuntimeException ex) {
+                exceptionToString(ex);
+                sendErrorResponse(response, 500, "movieGenerator.generateMovie(): " + exceptionToString(ex));
+            }
 
             response.setContentType(CONTENT_TYPE_MPEG);
             response.getHeaders().put(CONTENT_DISPOSITION_HEADER, Collections.singletonList(CONTENT_DISPOSITION_VALUE));
 
-            if(outputFile.exists() && b) {
+            if(outputFile.exists()) {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
             } else {
                 sendErrorResponse(response, 500, "Erreur lors de la génération du film : pas encore implémenté ou erreur lors du rendu");
