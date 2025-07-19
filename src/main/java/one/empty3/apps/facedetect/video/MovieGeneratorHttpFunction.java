@@ -113,6 +113,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                             }
                         }
                     } catch (IOException e) {
+                        cleanupFiles(tempDir.toFile());
                         throw new RuntimeException(e);
                     }
                 }
@@ -142,6 +143,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "movieGenerator.generateMovie(): " + exceptionToString(ex));
+                return;
+            } finally {
+                cleanupFiles(tempDir.toFile());
             }
 
             response.setContentType(CONTENT_TYPE_MPEG);
@@ -151,6 +155,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
             } else {
                 sendErrorResponse(response, 500, "Erreur lors de la génération du film : pas encore implémenté ou erreur lors du rendu");
+                return;
             }
             logger.info("Film envoyé au client avec succès");
 
