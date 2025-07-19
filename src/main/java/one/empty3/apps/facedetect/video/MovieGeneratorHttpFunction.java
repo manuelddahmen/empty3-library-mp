@@ -27,9 +27,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String IMAGE1_PART_NAME = ".jpg";
     private static final String IMAGE2_PART_NAME = ".png";
     private static final String JSONFILE_EXT = ".json";
-    private static final String CONTENT_TYPE_MPEG = "video/mpeg";
+    private static final String CONTENT_TYPE_MPEG = "video/mp4";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
-    private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mpeg\"";
+    private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mp4\"";
     private static final String ALLOWED_ORIGIN = "https://us-central1-studio-6v2lo.cloudfunctions.net/motion-weaver-render";
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
@@ -114,7 +114,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                         }
                     } catch (IOException e) {
                         cleanupFiles(tempDir.toFile());
-                        throw new RuntimeException(e);
+                        sendErrorResponse(response, 500, "Erreur lors de l'enregistrement du fichier :");
+                        response.setStatusCode(500);
+                        return;
                     }
                 }
             }
@@ -126,7 +128,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
 
-            String outputFileName = UUID.randomUUID() + ".mpg";
+            String outputFileName = UUID.randomUUID() + ".mp4";
             outputFile = new File(tempDir.toString(), outputFileName);
 
             MovieGenerator generator = null;
@@ -135,6 +137,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
+                return;
             }
             boolean b = false;
             try {
@@ -154,7 +157,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             if(outputFile.exists()) {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
             } else {
-                sendErrorResponse(response, 500, "Erreur lors de la génération du film : pas encore implémenté ou erreur lors du rendu");
+                sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé");
                 return;
             }
             logger.info("Film envoyé au client avec succès");
