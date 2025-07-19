@@ -1,6 +1,7 @@
 package one.empty3.apps.facedetect.video;
 
 public class TransformScale  extends Transform {
+    private TargetType targetType;
     private double cx;
     private double cy;
     private double factor;
@@ -27,5 +28,13 @@ public class TransformScale  extends Transform {
 
     public void setFactor(double factor) {
         this.factor = factor;
+    }
+
+    public TargetType getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(TargetType targetType) {
+        this.targetType = targetType;
     }
 }

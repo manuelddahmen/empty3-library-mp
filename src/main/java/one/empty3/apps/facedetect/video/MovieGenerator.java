@@ -35,6 +35,7 @@ import javax.imageio.ImageIO;
  * Classe qui génère un fichier vidéo MPEG à partir d'un fichier texte et de deux images
  */
 public class MovieGenerator {
+    private static final int RES_AVG = 100;
     private final HashMap<String, NamedPoint> mapPoint = new HashMap<>();
 
 
@@ -67,7 +68,7 @@ public class MovieGenerator {
         ConfigurationJson configurationJson = null;
         for (FileType fileType : types) {
             if (fileType.type().equals("txt")) {
-                Image currentImage = new Image(1000, 1000);
+                Image currentImage = new Image(RES_AVG, RES_AVG);
                 try {
                     File f = new File(fileType.filename());
                     String content = Files.readString(f.toPath());
@@ -78,7 +79,7 @@ public class MovieGenerator {
                         logger.info(line);
                         if (content.toLowerCase().equals("next")) {
                             images.add(currentImage);
-                            currentImage = new Image(1000, 1000);
+                            currentImage = new Image(RES_AVG, RES_AVG);
                             drawImage(currentImage);
                             currentGroup = "default";
                             mapPoint.clear();
@@ -106,7 +107,7 @@ public class MovieGenerator {
         final Image[] image = {null};
         int frame = 1;
 
-        final Image[] currentImage = {new Image(1000, 1000)};
+        final Image[] currentImage = {new Image(RES_AVG, RES_AVG)};
 
         Map<String, Image> imageGroups = new HashMap<>();
         List<Image> framesImage = new ArrayList<>();
@@ -137,7 +138,7 @@ public class MovieGenerator {
         if (configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
-                currentImage[0] = new Image(1000, 1000);
+                currentImage[0] = new Image(RES_AVG, RES_AVG);
                 frames = transform.getFrames();
                 boolean b = true;
                 for (int j = 0; j < frames || b; j++) {
@@ -307,8 +308,43 @@ public class MovieGenerator {
 
                         }
 
-                    }
+                    } else if(transform instanceof TransformScale transformScale) {
+                        if (transformScale.getTargetType().equals(Transform.TargetType.All)) {
+                            for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
+                                ConfigurationJson finalConfigurationJson1 = configurationJson;
+                                int finalFrame = frame;
+                                configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
+                                    @Override
+                                    public Point apply(Point point) {
+                                        List<Point> points = finalConfigurationJson1.getAnimation().get(finalFrame);
+                                        for (int i3 = 0; i3 < points.size(); i3++) {
+                                            if (points.get(i3).getId().equals(point.getId())) {
+                                                return points.get(i3);
+                                            }
+                                        }
+                                        return point;
+                                    }
+                                });
+                            }
+                        } else if (transformScale.getTargetType().equals(Transform.TargetType.Group)) {
+                            ConfigurationJson finalConfigurationJson = configurationJson;
+                            int finalFrame2 = frame;
+                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrame2).getId().equals(point.getId()));
+                                return point;
+                            });
+                        }
+                    }  else if(transform instanceof TransformMorph transformMorph) {
+                        Group sourceGroup = transformMorph.getSourceGroup();
+                        Group destinationGroup = transformMorph.getDestinationGroup();
 
+                        ConfigurationJson finalConfigurationJson = configurationJson;
+                        int finalFrame2 = frame;
+                        configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                            finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrame2).getId().equals(point.getId()));
+                            return point;
+                        });
+                    }
                 Graphics graphics = currentImage[0].getGraphics();
 
                 ConfigurationJson finalConfigurationJson3 = configurationJson;

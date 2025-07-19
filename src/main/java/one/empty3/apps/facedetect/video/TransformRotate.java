@@ -26,7 +26,7 @@ public class TransformRotate extends Transform {
         return targetType;
     }
 
-    public void setTarget(Transform.TargetType targetType) {
-        this.targetType = targeType;
+    public void setTarget(TargetType targetType) {
+        this.targetType = targetType;
     }
 }

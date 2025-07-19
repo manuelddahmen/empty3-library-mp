@@ -35,21 +35,10 @@ public class JCodecImageToVideoEncoder {
         try {
             // Assurez-vous d'avoir des images nommées frame-0.png, frame-1.png, etc.
             // dans un dossier 'test_images' à la racine de votre projet.
-            File image1 = new File("test_images/frame-0.png");
-            File image2 = new File("test_images/frame-1.png");
-            File image3 = new File("test_images/frame-2.png");
-
-            Image image1Obj = new Image(image1);
-            Image image2Obj = new Image(image2);
-            Image image3Obj = new Image(image3);
-
-            if(!image1.exists() || !image2.exists() || !image3.exists()) {
-                 System.err.println("Veuillez créer des images de test (ex: test_images/frame-0.png)");
-                 return;
-            }
+            Image imageObj = new Image(new File("resources/img/2018-03-31 11.51_edited.jpg"));
 
             JCodecImageToVideoEncoder encoder = new JCodecImageToVideoEncoder();
-            encoder.encodeImagesToVideo(new File("output.mp4"), image1Obj, image2Obj, image3Obj);
+            encoder.encodeImagesToVideo(new File("output.mp4"), imageObj, imageObj, imageObj);
             
         } catch (IOException e) {
             e.printStackTrace();

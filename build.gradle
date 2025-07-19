@@ -351,7 +351,12 @@ tasks.register('RunClass', JavaExec) {
     dependsOn(jar)
 }
 
-
+tasks.register('one.empty3.apps.facedetect.video.JCodecImageToVideoEncoder', JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = 'one.empty3.apps.facedetect.video.JCodecImageToVideoEncoder'
+    args 'one.empty3.apps.facedetect.video.JCodecImageToVideoEncoder'
+    dependsOn(jar)
+}
 signing {
     try {
         def signingKey = load.get("signing.keyId")

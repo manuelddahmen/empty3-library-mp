@@ -22,8 +22,6 @@ import one.empty3.library.ZBufferImpl.IncrementOptimizer
 import one.empty3.library.objloader.E3Model
 import one.empty3.libs.Color
 import one.empty3.libs.Image
-import org.apache.commons.logging.Log
-import java.io.IOException
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date

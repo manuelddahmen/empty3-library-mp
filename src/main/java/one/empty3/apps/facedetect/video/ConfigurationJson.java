@@ -129,7 +129,7 @@ class ConfigurationJson {
     // Reste de la classe...
     public static void main(String[] args) {
         ConfigurationJson configurationJson = ConfigurationJson.parseJson(
-                new File("res/animate-json/animation-data (4).json"));
+                new File("res/animate-json/animation-data.json"));
         System.out.println(configurationJson);
     }
 }

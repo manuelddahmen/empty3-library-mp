@@ -144,10 +144,19 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
         } catch (RuntimeException | IOException e) {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
-            sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + e.getMessage());
+            sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + exceptionToString(e));
         } finally {
             cleanupFiles(tempDir.toFile());
         }
+    }
+
+    private String exceptionToString(Exception e) {
+        StringBuilder s = new StringBuilder();
+        s.append(e.getMessage()).append("\n");
+        for (int i = 0; i < e.getStackTrace().length; i++) {
+            s.append(e.getStackTrace()[i]).append("\n");
+        }
+        return s.toString();
     }
 
     /**
