@@ -1,6 +1,5 @@
 package one.empty3.apps.facedetect.video
 
-import androidx.annotation.RequiresApi
 import one.empty3.libs.Image
 import java.io.File
 import java.io.FileOutputStream
