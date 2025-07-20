@@ -275,10 +275,34 @@
                     <include>**/*.xml</include>
                 </includes>
             </resource>
+                <resource>
+                    <directory>${basedir}/target/dependency</directory>
+                </resource>
         </resources>
 
         <plugins>
-
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>fully.qualified.MainClass</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -391,7 +415,6 @@
                 </executions>
             </plugin>
         </plugins>
-
 
     </build>
 
