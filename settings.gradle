@@ -64,6 +64,10 @@ dependencyResolutionManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven {
+            url 'https://jitpack.io'
+            name 'jitpack'
+        }
     }
 }
 rootProject.name = 'empty3-library-mp'
