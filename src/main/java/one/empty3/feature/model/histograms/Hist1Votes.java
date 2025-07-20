@@ -1,7 +1,5 @@
 package one.empty3.feature.model.histograms;
 
-import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.util.Objects;
 
@@ -10,7 +8,6 @@ import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 public class Hist1Votes extends ProcessFile {
-    @NonNull
     private Point3D pickedColor = Point3D.O0;
     private int kMax = 3;
     private double fractMax = 0.05;//0.05;

@@ -36,6 +36,8 @@ plugins {
     id("org.jreleaser") version("1.14.0")
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.0-RC")
+    // Ajoutez le plugin Google Cloud Functions
+
 }
 def JAVA_VERSION = 21
 
@@ -408,8 +410,8 @@ dependencies {
     
     // Google APIs
     implementation platform('com.google.cloud:libraries-bom:26.39.0')
-    implementation 'com.google.cloud:google-cloud-vision'
-    implementation 'com.google.cloud:google-cloud-storage'
+    implementation 'com.google.cloud:google-cloud-vision:3.41.0'
+    implementation 'com.google.cloud:google-cloud-storage:2.43.1'
     implementation 'com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0'
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
     implementation 'com.google.guava:guava:32.0.1-android'
@@ -423,7 +425,46 @@ dependencies {
     implementation 'org.danilopianini:gson-extras:0.2.1'
     implementation 'com.google.code.gson:gson-parent:2.13.1'
 
+// Google Cloud Functions Framework - c'est tout ce dont vous avez besoin
+    implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
+
+    // Pour les tests et l'exécution locale
+    testImplementation 'com.google.cloud.functions:functions-framework:1.1.0'
+
+
+    // Pour le développement et les tests locaux
+    runtimeOnly 'com.google.cloud.functions:functions-framework:1.1.0'
+
+    // Google Cloud BOM pour la gestion des versions
+    implementation platform('com.google.cloud:libraries-bom:26.39.0')
+
+    // Vos autres dépendances Google Cloud
+    implementation 'com.google.cloud:google-cloud-vision'
+    implementation 'com.google.cloud:google-cloud-storage'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
 }
+
+// Tâche pour créer un JAR executable pour le déploiement
+task shadowJar(type: Jar) {
+    archiveClassifier = 'all'
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    // Exclure les fichiers de signature pour éviter les conflits
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
@@ -431,9 +472,37 @@ tasks.register('javadocJar', Jar) {
     from javadoc.destinationDir
 }
 
-sourcesJar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+// Tâche pour exécuter la fonction localement (équivalent au plugin Maven)
+tasks.register('runFunction', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+    mainClass = 'com.google.cloud.functions.invoker.runner.Invoker'
+    args = [
+            '--target', 'one.empty3.apps.facedetect.video.MovieGeneratorHttpFunction',
+            '--port', '8080'
+    ]
+    dependsOn 'compileJava'
 }
+
+// Tâche pour créer un JAR pour le déploiement
+tasks.register('buildFunction', Jar) {
+    archiveClassifier = 'function'
+    from sourceSets.main.output
+
+    // Inclure les dépendances si nécessaire
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+}
+
 
 
 tasks.register('copyTask', Copy) {

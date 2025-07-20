@@ -23,7 +23,7 @@
 package one.empty3.apps.testobject;
 
 /*__
- * @author Se7en
+ * @author Manuel Dahmen 2025
  */
 public class Resolution {
     public static final Resolution HD1080RESOLUTION = new Resolution(1920, 1080);
