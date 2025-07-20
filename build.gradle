@@ -431,10 +431,6 @@ dependencies {
     // Pour les tests et l'exécution locale
     testImplementation 'com.google.cloud.functions:functions-framework:1.1.0'
 
-
-    // Pour le développement et les tests locaux
-    runtimeOnly 'com.google.cloud.functions:functions-framework:1.1.0'
-
     // Google Cloud BOM pour la gestion des versions
     implementation platform('com.google.cloud:libraries-bom:26.39.0')
 
