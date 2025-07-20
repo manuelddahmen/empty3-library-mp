@@ -37,7 +37,7 @@ plugins {
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.0-RC")
 }
-def JAVA_VERSION = 22
+def JAVA_VERSION = 21
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -130,7 +130,7 @@ try {
 Properties propertiesReleaseConfig = new Properties()
 try {
     // Other configuration here
-    File propertiesFile = new File('C:\\Users\\manue\\.jreleaser\\config.properties')
+    File propertiesFile = new File('../.jreleaser/config.properties')
     propertiesFile.withInputStream {
         propertiesReleaseConfig.load(it)
     }
@@ -373,6 +373,8 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.32'
     implementation 'one.empty3.libs:commons-mp:0.0.11'
+
+    // Firebase libraries
     implementation 'com.google.firebase:protolite-well-known-types:18.0.1'
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.4'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0' // Vous pouvez vérifier la dernière version
