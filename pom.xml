@@ -300,6 +300,14 @@
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <!-- Ignorer les erreurs d'écriture de fichiers -->                            
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <!-- Exclure les fichiers problématiques -->                            
+                            <excludes>META-INF/license/**,META-INF/LICENSE/**,META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA</excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -409,10 +417,77 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <!-- Gestion des conflits de fichiers -->
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/LICENSE</exclude>
+                                        <exclude>META-INF/license/</exclude>
+                                        <exclude>META-INF/LICENSE/LICENSE.*.txt</exclude>
+                                        <exclude>META-INF/NOTICE</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <filters>
+
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/*.SF</exclude>
+                                    <exclude>META-INF/*.DSA</exclude>
+                                    <exclude>META-INF/*.RSA</exclude>
+                                    <exclude>META-INF/LICENSE</exclude>
+                                    <exclude>META-INF/license</exclude>
+                                    <exclude>META-INF/license/</exclude>
+                                    <exclude>META-INF/LICENSE/LICENSE.aix-netbsd.txt</exclude>
+                                </excludes>
+                            </filter>
+                            </filters>
+                            <resourceTransformers>
+                                <resourceTransformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                    <resource>NOTICE.txt</resource>
+                                    <resource>LICENSE.txt</resource>
+                                    <resource>META-INF/*.SF</resource>
+                                    <resource>META-INF/*.DSA</resource>
+                                    <resource>META-INF/*.RSA</resource>
+                                    <resource>META-INF/LICENSE</resource>
+                                    <resource>META-INF/license</resource>
+                                    <resource>META-INF/license/</resource>
+                                    <resource>META-INF/LICENSE/LICENSE.aix-netbsd.txt</resource>
+                                </resourceTransformer>
+
+                                <!-- Fusionner les fichiers de propriétés -->
+                                <resourceTransformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/services/java.sql.Driver</resource>
+                                </resourceTransformer>
+
+                                <!-- Transformer qui gère les fichiers en conflit en les écrasant -->
+                                <resourceTransformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </resourceTransformers>
+
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Build-Version>${buildversion} (${timestamp})</Build-Version>
+                                        <Main-Class>one.empty3.apps.facedetect.video.MovieGeneratorHttpFunction</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+
+                            <!-- Contrôle supplémentaire des comportements d'écrasement -->
+                            <duplicatesStrategy>first</duplicatesStrategy>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+
                         </configuration>
+
                     </execution>
+
                 </executions>
+
             </plugin>
         </plugins>
 
