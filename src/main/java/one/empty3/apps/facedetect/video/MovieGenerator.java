@@ -47,7 +47,7 @@ public class MovieGenerator {
     /**
      * Constructeur par défaut
      */
-    public MovieGenerator(List<FileType> types, File outputFile) {
+    public MovieGenerator(File tempDir, List<FileType> types, File outputFile) {
         this.outputFile = outputFile;
         this.fileTypes = types;
         try {
@@ -100,7 +100,7 @@ public class MovieGenerator {
                 }
             }
             if (fileType.type().equals("json")) {
-                configurationJson = ConfigurationJson.parseJson(new File(fileType.filename()));
+                configurationJson = ConfigurationJson.parseJson(new File(tempDir.getAbsolutePath()+File.separator+fileType.filename()));
             }
 
         }

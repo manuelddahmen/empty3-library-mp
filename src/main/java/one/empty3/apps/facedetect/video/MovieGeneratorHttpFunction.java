@@ -133,7 +133,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             MovieGenerator generator = null;
             try {
-                generator = new MovieGenerator(types, outputFile);
+                generator = new MovieGenerator(tempDir.toFile(), types, outputFile);
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
@@ -141,7 +141,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             boolean b = false;
             try {
-                if(generator==null)
+                if(generator!=null)
                     b = generator.generateMovie();
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
