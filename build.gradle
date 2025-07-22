@@ -518,11 +518,30 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
-task.register("extractDeps")  {
-    from configurations.dependencies.collect {
-        zipTree(it)
+
+
+tasks.register('extractDeps', Jar) {
+    archiveFileName = 'empty3-library-mp-with-dependencies.jar'
+    destinationDirectory = file('build/libs')
+
+    // Inclure le contenu de toutes les dépendances
+    from {
+        configurations.runtimeClasspath.collect { zipTree(it) }
     }
-    into("build/libs/empty3-library-mp.jar")
+
+    // Inclure vos classes compilées (optionnel)
+    from sourceSets.main.output
+
+    // Exclure les fichiers qui peuvent causer des conflits
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/LICENSE*'
+    exclude 'META-INF/license*'
+    exclude 'META-INF/NOTICE*'
+
+    // Stratégie pour les fichiers dupliqués
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 def versionName = '2025.7.20'
 publishing {
