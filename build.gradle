@@ -522,7 +522,7 @@ task.register("extractDeps")  {
     from configurations.dependencies.collect {
         zipTree(it)
     }
-    into("build/libs/alldeps.jar")
+    into("build/libs/empty3-library-mp.jar")
 }
 def versionName = '2025.7.20'
 publishing {
