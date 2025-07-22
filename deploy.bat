@@ -1,5 +1,5 @@
-gcloud auth login
-gcloud config set project studio-6v2lo
+REM gcloud auth login
+REM gcloud config set project studio-6v2lo
 REM gcloud functions deploy NOM_DE_VOTRE_FONCTION \
 REM   --region=REGION \
 REM   --runtime=RUNTIME \

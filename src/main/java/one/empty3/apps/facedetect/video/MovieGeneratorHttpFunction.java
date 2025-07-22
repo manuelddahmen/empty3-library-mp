@@ -155,7 +155,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             if(outputFile.exists()) {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
             } else {
-                sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé");
+                sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé"+outputFile.getAbsolutePath());
                 return;
             }
             logger.info("Film envoyé au client avec succès");
