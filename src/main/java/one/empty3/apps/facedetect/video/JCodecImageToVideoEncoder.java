@@ -27,7 +27,7 @@ public class JCodecImageToVideoEncoder {
         // Finalise l'écriture du fichier vidéo
         encoder.finish();
         
-        System.out.println("Vidéo sauvegardée dans : " + outputFile.getAbsolutePath());
+        System.out.println("Vidéo sauvegardée dans : " + outputFile.getAbsolutePath()+ " Nombre de frames : "+imageFiles.length);
     }
 
     public static void main(String[] args) {
