@@ -7,7 +7,7 @@
     <groupId>one.empty3</groupId>
     <artifactId>movie-generator-function</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -255,6 +255,7 @@
             <type>jar</type>
 
         </dependency>-->
+
     </dependencies>
 
     <build>
