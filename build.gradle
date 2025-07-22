@@ -518,7 +518,12 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
-
+task.register("extractDeps")  {
+    from configurations.dependencies.collect {
+        zipTree(it)
+    }
+    into("$buildDir/libs/")
+}
 def versionName = '2025.7.20'
 publishing {
     publications {
