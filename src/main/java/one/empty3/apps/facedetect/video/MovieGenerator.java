@@ -47,7 +47,7 @@ public class MovieGenerator {
     /**
      * Constructeur par défaut
      */
-    public MovieGenerator(File tempDir, List<FileType> types, File outputFile) {
+    public MovieGenerator(List<FileType> types, File outputFile) {
         this.outputFile = outputFile;
         this.fileTypes = types;
         try {
@@ -100,10 +100,13 @@ public class MovieGenerator {
                 }
             }
             if (fileType.type().equals("json")) {
-                configurationJson = ConfigurationJson.parseJson(new File(tempDir.getAbsolutePath()+File.separator+fileType.filename()));
+                configurationJson = ConfigurationJson.parseJson(new File(fileType.filename()));
             }
 
         }
+        if (configurationJson == null)
+            return;
+
         final Image[] image = {null};
         int frame = 1;
 
@@ -403,6 +406,7 @@ public class MovieGenerator {
     }
 
     public boolean generateMovie() {
+
         // 1. Générer les images de la vidéo (cette partie dépend de votre logique métier)
         // Supposons que les images sont générées dans un répertoire temporaire
         Path imagesDir;

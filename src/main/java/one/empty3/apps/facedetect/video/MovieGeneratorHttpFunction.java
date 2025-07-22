@@ -72,44 +72,42 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                         if(httpPart.getFileName()!=null&&httpPart.getFileName().isPresent()) {
                             String s1 = httpPart.getFileName().get();
                             String s2 = null;
-                            if (s1 != null) {
-                                switch (s1.substring(s1.lastIndexOf('.'))) {
-                                    case TEXT_PART_NAME -> {
-                                        File f = savePartToFile(httpPart, tempDir);
-                                        if(f==null)
-                                            break;
-                                        s1 = f.getName();
-                                        s2 = "txt";
-                                        added = true;
-                                    }
-                                    case IMAGE1_PART_NAME -> {
-                                        File f = savePartToFile(httpPart, tempDir);
-                                        if(f==null)
-                                            break;
-                                        s1 = f.getName();
-                                        s2 = "jpg";
-                                        added = true;
-                                    }
-                                    case IMAGE2_PART_NAME -> {
-                                        File f = savePartToFile(httpPart, tempDir);
-                                        if(f==null)
-                                            break;
-                                        s1 = f.getName();
-                                        s2 = "png";
-                                        added = true;
-                                    }
-                                    case JSONFILE_EXT -> {
-                                        File f = savePartToFile(httpPart, tempDir);
-                                        if(f==null)
-                                            break;
-                                        s1 = f.getName();
-                                        s2 = "json";
-                                        added = true;
-                                    }
+                            switch (s1.substring(s1.lastIndexOf('.'))) {
+                                case TEXT_PART_NAME -> {
+                                    File f = savePartToFile(httpPart, tempDir);
+                                    if (f == null)
+                                        break;
+                                    s1 = f.getName();
+                                    s2 = "txt";
+                                    added = true;
                                 }
-                                if (added) {
-                                    types.add(new FileType(s1, s2));
+                                case IMAGE1_PART_NAME -> {
+                                    File f = savePartToFile(httpPart, tempDir);
+                                    if (f == null)
+                                        break;
+                                    s1 = f.getName();
+                                    s2 = "jpg";
+                                    added = true;
                                 }
+                                case IMAGE2_PART_NAME -> {
+                                    File f = savePartToFile(httpPart, tempDir);
+                                    if (f == null)
+                                        break;
+                                    s1 = f.getName();
+                                    s2 = "png";
+                                    added = true;
+                                }
+                                case JSONFILE_EXT -> {
+                                    File f = savePartToFile(httpPart, tempDir);
+                                    if (f == null)
+                                        break;
+                                    s1 = f.getName();
+                                    s2 = "json";
+                                    added = true;
+                                }
+                            }
+                            if (added) {
+                                types.add(new FileType(s1, s2));
                             }
                         }
                     } catch (IOException e) {
@@ -133,7 +131,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             MovieGenerator generator = null;
             try {
-                generator = new MovieGenerator(tempDir.toFile(), types, outputFile);
+                generator = new MovieGenerator( types, outputFile);
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
