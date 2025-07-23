@@ -416,10 +416,7 @@ public class MovieGenerator {
             array[i] = images.get(i);
         }
         try {
-            imagesDir = Files.createTempDirectory("movie-images-");
-            // ... Votre logique pour créer les images ici ...
-            // Par exemple: createVideoFrames(imagesDir);
-            new JCodecImageToVideoEncoder().encodeImagesToVideo(outputFile, array);
+              new JCodecImageToVideoEncoder().encodeImagesToVideo(outputFile, array);
         } catch (IOException e) {
             logger.severe("Erreur lors de la création du répertoire d'images: " + e.getMessage());
             return false;
