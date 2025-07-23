@@ -145,9 +145,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "movieGenerator.generateMovie(): " + exceptionToString(ex));
                 return;
-            } finally {
+            } /*finally {
                 cleanupFiles(tempDir.toFile());
-            }
+            }*/
 
             response.setContentType(CONTENT_TYPE_MPEG);
             response.getHeaders().put(CONTENT_DISPOSITION_HEADER, Collections.singletonList(CONTENT_DISPOSITION_VALUE));
@@ -159,10 +159,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 if(generator!=null && generator.images!=null)
                     size = generator.images.size();
                 sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé"+outputFile.getAbsolutePath()+"--- longueur  "+size);
-                return;
             }
             logger.info("Film envoyé au client avec succès");
-
+            cleanupFiles(tempDir.toFile());
         } catch (RuntimeException | IOException e) {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
             sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + exceptionToString(e));
