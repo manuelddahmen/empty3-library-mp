@@ -19,7 +19,7 @@ public class JCodecImageToVideoEncoder {
 
         // Boucle sur chaque fichier image
         for (Image imageFile : imageFiles) {
-            System.out.println("Encodage de l'image : ");
+            //System.out.println("Encodage de l'image : ");
             
             // Charge l'image dans un BufferedImage
             BufferedImage image = imageFile.getBi();

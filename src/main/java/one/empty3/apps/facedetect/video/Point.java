@@ -2,7 +2,7 @@ package one.empty3.apps.facedetect.video;
 
 public class Point {
         private String id;
-        private String namee;
+        private String name;
         private double x;
         private double y;
         private String color;
@@ -33,12 +33,12 @@ public class Point {
                 this.imageUrl = imageUrl;
         }
 
-        public String getNamee() {
-                return namee;
+        public String getName() {
+                return name;
         }
 
-        public void setNamee(String namee) {
-                this.namee = namee;
+        public void setName(String namee) {
+                this.name = name;
         }
 
         public boolean isVisible() {

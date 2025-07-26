@@ -1,16 +1,23 @@
 package one.empty3.apps.facedetect.video;
 
 import com.google.api.client.http.MultipartContent;
+import com.google.auth.ServiceAccountSigner;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.auth.ServiceAccountSigner;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
+import com.google.cloud.storage.*;
 import one.empty3.apps.testobject.TestCollection;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,33 +25,113 @@ import java.util.logging.Logger;
 import static com.google.cloud.functions.HttpRequest.*;
 
 /**
- * Fonction HTTP qui utilise MovieGenerator pour créer un fichier MPEG à partir
+ * Fonction HTTP qui utilise MovieGenerator pour créer un fichier mp4 à partir
  * d'un fichier texte et de deux images.
  */
 public class MovieGeneratorHttpFunction implements HttpFunction {
+    private static final String BUCKET_NAME = "gs://studio-6v2lo.firebasestorage.app";
     private static final Logger logger = Logger.getLogger(MovieGeneratorHttpFunction.class.getCanonicalName());
     private static final String TEXT_PART_NAME = ".txt";
     private static final String IMAGE1_PART_NAME = ".jpg";
     private static final String IMAGE2_PART_NAME = ".png";
     private static final String JSONFILE_EXT = ".json";
-    private static final String CONTENT_TYPE_MPEG = "video/mp4";
+    private static final String CONTENT_TYPE_mp4 = "video/mp4";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mp4\"";
     private static final String ALLOWED_ORIGIN = "https://us-central1-studio-6v2lo.cloudfunctions.net/motion-weaver-render";
+
+
+    private String uploadToCloudStorage(File outputFile) throws IOException {
+        if (outputFile == null || !outputFile.exists() || outputFile.length() == 0) {
+            logger.severe("Le fichier à uploader est invalide ou vide");
+            throw new IOException("Le fichier vidéo est invalide ou vide");
+        }
+
+        try {
+            // Initialiser le client Storage
+            com.google.cloud.storage.Storage storage = StorageOptions.newBuilder()
+                    .setProjectId("studio-6v2lo")
+                    .build()
+                    .getService();
+
+            // Générer un nom unique pour le fichier
+            String fileName = "generated-movies/" + System.currentTimeMillis() + "-" + outputFile.getName();
+
+            // Créer les informations du blob avec le bon Content-Type
+            BlobId blobId = BlobId.of(BUCKET_NAME.replace("gs://", ""), fileName);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                    .setContentType("video/mp4")
+                    .build();
+
+            // Upload le fichier
+            logger.info("Upload du fichier vers GCS: " + fileName + " (taille: " + outputFile.length() + " octets)");
+            Blob blob = storage.createFrom(blobInfo, outputFile.toPath());
+
+            // Générer une URL signée valide pendant 7 jours
+            URL signedUrl;
+
+            try {
+                // Essayer d'abord avec les identifiants par défaut
+                signedUrl = blob.signUrl(7, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature());
+            } catch (Exception e) {
+                logger.warning("Impossible de générer l'URL signée avec les identifiants par défaut: " + e.getMessage());
+
+                // Chemin vers le fichier JSON de compte de service
+                String credentialPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+                if (credentialPath == null || credentialPath.isEmpty()) {
+                    logger.info("Variable GOOGLE_APPLICATION_CREDENTIALS non définie, utilisation du chemin par défaut");
+                    // Utiliser un chemin par défaut si la variable n'est pas définie
+                    credentialPath = "/path/to/your/service-account-key.json";
+                }
+
+                try {
+                    // Charger les identifiants du compte de service à partir du fichier JSON
+                    InputStream credentialsStream = new FileInputStream(credentialPath);
+                    GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream);
+
+                    // Vérifier que les identifiants implémentent ServiceAccountSigner
+                    if (credentials instanceof ServiceAccountSigner) {
+                        ServiceAccountSigner signer = (ServiceAccountSigner) credentials;
+                        signedUrl = blob.signUrl(7, TimeUnit.DAYS, 
+                                Storage.SignUrlOption.signWith(signer),
+                                Storage.SignUrlOption.withV4Signature());
+                    } else {
+                        throw new IllegalArgumentException("Les identifiants ne supportent pas la signature");
+                    }
+                } catch (Exception ex) {
+                    logger.severe("Erreur lors de la génération de l'URL signée avec les identifiants personnalisés: " + ex.getMessage());
+                    // Fallback à l'URL non signée si tout échoue
+                    signedUrl = new URL(String.format("https://storage.googleapis.com/%s/%s", 
+                            BUCKET_NAME.replace("gs://", ""), fileName));
+                }
+            }
+            logger.info("Fichier uploadé avec succès. URL: " + signedUrl.toString());
+            return signedUrl.toString();
+
+        } catch (Exception e) {
+            logger.severe("Erreur lors de l'upload vers GCS: " + e.getMessage());
+            for (StackTraceElement element : e.getStackTrace()) {
+                logger.severe(element.toString());
+            }
+            throw new IOException("Erreur lors de l'upload vers Google Cloud Storage: " + e.getMessage(), e);
+        }
+    }
+
+
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
-            String origin = request.getFirstHeader("Origin").orElse(null);
+        // Configurer les en-têtes CORS pour toutes les requêtes
+        response.appendHeader("Access-Control-Allow-Origin", "*");
+        response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.appendHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Origin");
+        response.appendHeader("Access-Control-Max-Age", "3600");
 
-            /**if (ALLOWED_ORIGIN.equals(origin)) {
-                response.appendHeader("Access-Control-Allow-Origin", origin);
-            } else {
-                // Optionally, you can return an error or a default response for disallowed origins
-                response.setStatusCode(403); // Forbidden
-                response.getWriter().write("Access denied\n");
-                response.getWriter().write(ALLOWED_ORIGIN+"\n");
-                response.getWriter().write(origin+"\n");
-                return;
-            }*/
+        // Traiter la méthode OPTIONS pour les requêtes préliminaires CORS
+        if ("OPTIONS".equals(request.getMethod())) {
+            response.setStatusCode(204); // No Content
+            return;
+        }
+
         // Vérifier la méthode HTTP
         if (!"POST".equals(request.getMethod())) {
             sendErrorResponse(response, 405, "Méthode non autorisée. Veuillez utiliser POST.");
@@ -149,8 +236,25 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 cleanupFiles(tempDir.toFile());
             }*/
 
-            response.setContentType(CONTENT_TYPE_MPEG);
-            response.getHeaders().put(CONTENT_DISPOSITION_HEADER, Collections.singletonList(CONTENT_DISPOSITION_VALUE));
+            response.setContentType("video/mp4");
+            // Définir les en-têtes CORS si nécessaire
+            response.appendHeader("Access-Control-Allow-Origin", "*");
+            response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
+
+            String uploadToCloudStorage = uploadToCloudStorage(outputFile);
+//            response.getWriter().write(uploadToCloudStorage);
+
+            // Optionnel: définir le nom du fichier pour le téléchargement
+            response.appendHeader("Content-Disposition", "attachment; filename=\"generated-movie.mpg\"");
+
+// Encoder le fichier en Base64 et le retourner dans une réponse JSON
+            byte[] fileContent = Files.readAllBytes(outputFile.toPath());
+            String base64Content = Base64.getEncoder().encodeToString(fileContent);
+
+            response.setContentType("application/json");
+            response.getWriter().write("{\"video\":\"" + base64Content
+                    + "\",\"mimeType\":\"video/mp4\", \"url:\":\""+uploadToCloudStorage+"\"}");
 
             if(outputFile.exists()) {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
@@ -161,6 +265,8 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé"+outputFile.getAbsolutePath()+"--- longueur  "+size);
             }
             logger.info("Film envoyé au client avec succès");
+
+
             cleanupFiles(tempDir.toFile());
         } catch (RuntimeException | IOException e) {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
@@ -201,14 +307,14 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     }
 
     /**
-     * Envoie une réponse d'erreur au client
+     * Envoie une réponse d'erreur au client au format JSON
      */
     private void sendErrorResponse(HttpResponse response, int statusCode, String message) throws IOException {
-        response.setStatusCode(statusCode);
-        try (BufferedWriter writer = response.getWriter()) {
-            writer.write(message);
-        }
-        Logger.getLogger(getClass().getCanonicalName()).severe(message);
+        StringBuilder sb = new StringBuilder("\nERROR 500");
+        // Échapper les guillemets pour éviter les problèmes dans le JSON
+        String escapedMessage = message.replace("\"", "\\\"");
+        sb.append("{\"error\":true,\"code\":" + statusCode + ",\"message\":\"" + escapedMessage + "\"}");
+        Logger.getLogger(getClass().getCanonicalName()).severe(sb.toString());
     }
 
     /**

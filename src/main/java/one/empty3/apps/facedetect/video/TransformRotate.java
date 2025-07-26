@@ -14,6 +14,14 @@ public class TransformRotate extends Transform {
         this.cx = cx;
     }
 
+    public double getCy() {
+        return cy;
+    }
+
+    public void setCy(double cy) {
+        this.cy = cy;
+    }
+
     public double getAngle() {
         return angle;
     }

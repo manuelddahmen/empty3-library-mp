@@ -412,6 +412,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-storage:2.43.1'
     implementation 'com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0'
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
+    implementation 'com.google.auth:google-auth-library-credentials:1.23.0'
     implementation 'com.google.guava:guava:32.0.1-android'
     implementation 'com.google.http-client:google-http-client-jackson2:1.44.2'
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
@@ -435,9 +436,9 @@ dependencies {
 
     // Vos autres dépendances Google Cloud
     implementation 'com.google.cloud:google-cloud-vision'
-    implementation 'com.google.cloud:google-cloud-storage'
+    implementation 'com.google.cloud:google-cloud-storage:2.43.1'  // Assurer une version cohérente
     implementation 'com.google.code.gson:gson:2.10.1'
-
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 // Tâche pour créer un JAR executable pour le déploiement
@@ -523,6 +524,9 @@ tasks.register("publishAll") {
 tasks.register('extractDeps', Jar) {
     archiveFileName = 'empty3-library-mp-with-dependencies.jar'
     destinationDirectory = file('build/libs')
+
+    // Activer Zip64 pour gérer plus de 65535 entrées
+    zip64 = true
 
     // Inclure le contenu de toutes les dépendances
     from {
