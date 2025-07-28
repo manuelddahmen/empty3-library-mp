@@ -1,9 +1,9 @@
+/*
 package one.empty3.apps.facedetect.video;
 
 import one.empty3.libs.Image;
 
 public class TransformDetachImage extends Transform{
-        private TargetType targetType;
         private String targetId;
         public Image fetchImage() {
             return null;
@@ -17,12 +17,6 @@ public class TransformDetachImage extends Transform{
         this.targetId = targetId;
     }
 
-    public TargetType getTargetType() {
-        return targetType;
-    }
-
-    public void setTargetType(TargetType targetType) {
-        this.targetType = targetType;
-    }
 }
 
+*/

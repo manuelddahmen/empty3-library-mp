@@ -1,35 +1,26 @@
 package one.empty3.apps.facedetect.video;
 
-
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
-import one.empty3.library.Point2D;
-import one.empty3.library.Point3D;
-import one.empty3.library.core.tribase.Config;
-import one.empty3.library.core.tribase.PointWire;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 
@@ -50,7 +41,7 @@ public class MovieGenerator {
     /**
      * Constructeur par défaut
      */
-    public MovieGenerator(List<FileType> types, File outputFile) {
+    public MovieGenerator(List<FileType> types, File outputFile, ConfigurationJson configurationJson, Path tempDir) {
         this.outputFile = outputFile;
         this.fileTypes = types;
         try {
@@ -62,18 +53,20 @@ public class MovieGenerator {
         if (outputFile.exists()) {
             for (FileType type : types) {
                 logger.info("Type : " + type.type());
-                logger.info(type.filename());
+                logger.info(type.file().getAbsolutePath());
                 logger.info(outputFile.getName());
 
 
             }
         }
-        ConfigurationJson configurationJson = null;
+
+        Image currentImage = new Image(RES_AVG, RES_AVG);
+
+
         for (FileType fileType : types) {
-            if (fileType.type().equals("txt")) {
-                Image currentImage = new Image(RES_AVG, RES_AVG);
+            if (fileType.file().getAbsolutePath().endsWith("txt")) {
                 try {
-                    File f = new File(fileType.filename());
+                    File f = fileType.file();
                     String content = Files.readString(f.toPath());
                     String[] split = content.split("\n");
                     String currentGroup = "default";
@@ -90,26 +83,30 @@ public class MovieGenerator {
                         } else if (content.toLowerCase().startsWith("group ")) {
                             currentGroup = line.substring("group ".length());
 
-                        } else {
-                            NamedPoint namedPoint = readPoint(List.of(split), lineNumber);
+                        } else if (content.toLowerCase().startsWith("point ")) {
+                            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+                            NamedPoint namedPoint = readPoint(List.of(split), lineNumber, atomicBoolean);
                             if (namedPoint != null) {
                                 mapPoint.put(currentGroup, namedPoint);
                                 lineNumber += 3;
+                                if (atomicBoolean.get()) {
+                                    currentGroup = null;
+                                }
                             }
+                        } else if (content.toLowerCase().startsWith("endofgroup")) {
+                            currentGroup = null;
                         }
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (fileType.type().equals("json")) {
-                configurationJson = ConfigurationJson.parseJson(new File(fileType.filename()));
-            }
 
         }
-        if(configurationJson!=null ) {
+
+        if (configurationJson != null) {
             logger.info(configurationJson.toString());
-            logger.info(""+images.size());
+            logger.info("" + images.size());
         }
         if (configurationJson == null) {
             logger.info("configurationJson is null");
@@ -119,7 +116,6 @@ public class MovieGenerator {
         final Image[] image = {null};
         int frame = 1;
 
-        final Image[] currentImage = {new Image(RES_AVG, RES_AVG)};
 
         Map<String, Image> imageGroups = new HashMap<>();
         List<Image> framesImage = new ArrayList<>();
@@ -157,7 +153,8 @@ public class MovieGenerator {
         if (configurationJson != null && configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
-                currentImage[0] = new Image(RES_AVG, RES_AVG);
+                logger.info("Traitement de la transformation " + transform.getClass().getSimpleName());
+                currentImage = new Image(RES_AVG, RES_AVG);
 
                 // Récupérer le nombre de frames pour cette transformation
                 int transformFrames = transform.getFrames();
@@ -169,66 +166,66 @@ public class MovieGenerator {
                 for (int j = 0; j < transformFrames; j++) {
                     // Calculer le pourcentage de progression de cette transformation
                     double transformProgress = (double) j / Math.max(1, transformFrames - 1);
-                    logger.info("Transformation " + transform.getClass().getSimpleName() + " - frame " + j + "/" + transformFrames + 
-                              " (" + Math.round(transformProgress * 100) + "%)");
+                    logger.info("Transformation " + transform.getClass().getSimpleName() + " - frame " + j + "/" + transformFrames +
+                            " (" + Math.round(transformProgress * 100) + "%)");
 
                     // Déterminer le type de transformation et appliquer l'effet approprié
                     if (transform instanceof TransformAttachImage transformAttachImage) {
-                            processAttachImageTransform(transformAttachImage, configurationJson, imageIds, copyAttachedTimeCordinates);
+                        processAttachImageTransform(transformAttachImage, configurationJson, imageIds, copyAttachedTimeCordinates);
                     } else if (transform instanceof TransformDetachImage transformDetachImage) {
-                            processDetachImageTransform(transformDetachImage, configurationJson);
+                        processDetachImageTransform(transformDetachImage, configurationJson);
                     } else if (transform instanceof TransformTranslate transformTranslate) {
-                            if (transformTranslate.getTargetType().equals(Transform.TargetType.All)) {
-                                for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
-                                    ConfigurationJson finalConfigurationJson1 = configurationJson;
-                                    int finalI = currentFrameIndex;
-                                    configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
-                                        @Override
-                                        public Point apply(Point point) {
-                                            List<Point> points = finalConfigurationJson1.getAnimation().get(finalI);
-                                            for (int i3 = 0; i3 < points.size(); i3++) {
-                                                if (points.get(i3).getId().equals(point.getId())) {
-                                                    return points.get(i3);
-                                                }
+                        if (transformTranslate.getTargetType().equals(Transform.TargetType.All)) {
+                            for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
+                                ConfigurationJson finalConfigurationJson1 = configurationJson;
+                                int finalI = currentFrameIndex;
+                                configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
+                                    @Override
+                                    public Point apply(Point point) {
+                                        List<Point> points = finalConfigurationJson1.getAnimation().get(finalI);
+                                        for (int i3 = 0; i3 < points.size(); i3++) {
+                                            if (points.get(i3).getId().equals(point.getId())) {
+                                                return points.get(i3);
                                             }
-                                            return point;
                                         }
-                                    });
-                                }
-                            } else if (transformTranslate.getTargetType().equals(Transform.TargetType.Group)) {
-                                ConfigurationJson finalConfigurationJson = configurationJson;
-                                int finalFrameIndex = currentFrameIndex;
-                                configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
-                                    finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrameIndex).getId().equals(point.getId()));
-                                    return point;
+                                        return point;
+                                    }
                                 });
                             }
+                        } else if (transformTranslate.getTargetType().equals(Transform.TargetType.Group)) {
+                            ConfigurationJson finalConfigurationJson = configurationJson;
+                            int finalFrameIndex = currentFrameIndex;
+                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrameIndex).getId().equals(point.getId()));
+                                return point;
+                            });
+                        }
                     } else if (transform instanceof TransformRotate transformRotate) { // TODO: implement
-                            if (transformRotate.getTargetType().equals(Transform.TargetType.All)) {
-                                for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
-                                    ConfigurationJson finalConfigurationJson1 = configurationJson;
-                                    int finalFrameIndex = currentFrameIndex;
-                                    configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
-                                        @Override
-                                        public Point apply(Point point) {
-                                            List<Point> points = finalConfigurationJson1.getAnimation().get(finalFrameIndex);
-                                            for (int i3 = 0; i3 < points.size(); i3++) {
-                                                if (points.get(i3).getId().equals(point.getId())) {
-                                                    return points.get(i3);
-                                                }
-                                            }
-                                            return point;
-                                        }
-                                    });
-                                }
-                            } else if (transformRotate.getTargetType().equals(Transform.TargetType.Group)) {
-                                ConfigurationJson finalConfigurationJson = configurationJson;
+                        if (transformRotate.getTargetType().equals(Transform.TargetType.All)) {
+                            for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
+                                ConfigurationJson finalConfigurationJson1 = configurationJson;
                                 int finalFrameIndex = currentFrameIndex;
-                                configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
-                                    finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrameIndex).getId().equals(point.getId()));
-                                    return point;
+                                configurationJson.getPoints().replaceAll(new UnaryOperator<Point>() {
+                                    @Override
+                                    public Point apply(Point point) {
+                                        List<Point> points = finalConfigurationJson1.getAnimation().get(finalFrameIndex);
+                                        for (int i3 = 0; i3 < points.size(); i3++) {
+                                            if (points.get(i3).getId().equals(point.getId())) {
+                                                return points.get(i3);
+                                            }
+                                        }
+                                        return point;
+                                    }
                                 });
                             }
+                        } else if (transformRotate.getTargetType().equals(Transform.TargetType.Group)) {
+                            ConfigurationJson finalConfigurationJson = configurationJson;
+                            int finalFrameIndex = currentFrameIndex;
+                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
+                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrameIndex).getId().equals(point.getId()));
+                                return point;
+                            });
+                        }
                     } else if (transform instanceof TransformSetVisibility transformSetVisibility) { // TODO: implement
                         if (transformSetVisibility.getTargetType().equals(Transform.TargetType.All)) {
                             configurationJson.getGroups().stream().filter(new Predicate<Group>() {
@@ -259,7 +256,7 @@ public class MovieGenerator {
 
                         }
 
-                    } else if(transform instanceof TransformScale transformScale) {
+                    } else if (transform instanceof TransformScale transformScale) {
                         if (transformScale.getTargetType().equals(Transform.TargetType.All)) {
                             for (int i1 = 0; i1 < configurationJson.getPoints().size(); i1++) {
                                 ConfigurationJson finalConfigurationJson1 = configurationJson;
@@ -285,9 +282,13 @@ public class MovieGenerator {
                                 return point;
                             });
                         }
-                    }  else if(transform instanceof TransformMorph transformMorph) {
-                        Group sourceGroup = transformMorph.getSourceGroup();
-                        Group destinationGroup = transformMorph.getDestinationGroup();
+                    } else if (transform instanceof TransformMorph transformMorph) {
+                        Group sourceGroup = configurationJson.getGroups().stream().filter(
+                                group ->  group.getId().equals(transformMorph.getSourceGroupId())
+                        ).findFirst().get();
+                        Group destinationGroup = configurationJson.getGroups().stream().filter(
+                                group -> group.getId().equals(transformMorph.getTargetGroupId())
+                        ).findFirst().get();
 
                         ConfigurationJson finalConfigurationJson = configurationJson;
                         int finalFrame2 = frame;
@@ -296,108 +297,118 @@ public class MovieGenerator {
                             return point;
                         });
                     }
-                Graphics graphics = currentImage[0].getBi().getGraphics();
+                    Graphics graphics = currentImage.getBi().getGraphics();
 
-                ConfigurationJson finalConfigurationJson3 = configurationJson;
-                copyAttachedTimeCordinates.forEach(new BiConsumer<String, List<Point>>() {
-                    @Override
-                    public void accept(String groupId, List<Point> points) {
-                        logger.info("Traitement du groupe " + groupId + " avec " + points.size() + " points");
+                    ConfigurationJson finalConfigurationJson3 = configurationJson;
+                    Image finalCurrentImage = currentImage;
+                    copyAttachedTimeCordinates.forEach(new BiConsumer<String, List<Point>>() {
+                        @Override
+                        public void accept(String groupId, List<Point> points) {
+                            logger.info("Traitement du groupe " + groupId + " avec " + points.size() + " points");
 
-                        // Récupérer le groupe correspondant
-                        List<Group> matchingGroups = finalConfigurationJson3.getGroups().stream()
-                            .filter(group -> group.getId().equals(groupId))
-                            .toList();
+                            // Récupérer le groupe correspondant
+                            List<Group> matchingGroups = finalConfigurationJson3.getGroups().stream()
+                                    .filter(group -> group.getId().equals(groupId))
+                                    .toList();
 
-                        if (matchingGroups.isEmpty()) {
-                            logger.warning("Groupe " + groupId + " non trouvé dans la configuration");
-                            return;
-                        }
-
-                        Group currentGroup = matchingGroups.get(0);
-                        String imageUrl = currentGroup.getImageUrl();
-
-                        // Vérifier si une URL d'image est définie pour ce groupe
-                        if (imageUrl == null || imageUrl.isEmpty()) {
-                            logger.warning("Aucune URL d'image définie pour le groupe " + groupId);
-                            return;
-                        }
-
-                        // Charger l'image associée au groupe
-                        final Image[] groupImage = {null};
-                        try {
-                            // Vérifier d'abord si l'image est déjà dans imageIds
-                            if (imageIds.containsKey(imageUrl)) {
-                                logger.info("Utilisation de l'image en cache pour " + imageUrl);
-                                groupImage[0] = imageIds.get(imageUrl);
-                            } else {
-                                // Sinon, essayer de la charger depuis l'URL
-                                logger.info("Chargement de l'image depuis l'URL: " + imageUrl);
-                                groupImage[0] = new Image(ImageIO.read(new URL(imageUrl)));
-                                // Mettre en cache l'image pour une utilisation future
-                                imageIds.put(imageUrl, groupImage[0]);
+                            if (matchingGroups.isEmpty()) {
+                                logger.warning("Groupe " + groupId + " non trouvé dans la configuration");
+                                return;
                             }
 
-                            if (groupImage[0] != null) {
-                                logger.info("Image chargée pour le groupe " + groupId + ": " + 
-                                          groupImage[0].getWidth() + "x" + groupImage[0].getHeight());
+                            Group currentGroup = matchingGroups.get(0);
+                            String imageUrl = currentGroup.getImageId();
+
+                            // Vérifier si une URL d'image est définie pour ce groupe
+                            if (imageUrl == null || imageUrl.isEmpty()) {
+                                logger.warning("Aucune URL d'image définie pour le groupe " + groupId);
+                                return;
                             }
-                        } catch (IOException e) {
-                            logger.severe("Erreur lors du chargement de l'image " + imageUrl + ": " + e.getMessage());
-                            e.printStackTrace();
-                            return;
-                        }
 
-                        RunZBuffer runZBuffer = null;
-                        try {
-                            List<Point> points31 = new ArrayList<>();
-                            for(int a = 0; a < points31.size(); a++)
-                                points31.add((Point) points31.get(a));
-                            runZBuffer = new RunZBuffer(image[0],new E3Model(new BufferedReader(new FileReader(new File("resources/models/plane blender2.obj"))), true, "resources/models/plane blender2.obj"), currentImage[0]  , list2string(points31), list2string(points31),  list2string(points), true, 6, true, true, new HashMap<>());
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                         image[0] = runZBuffer.processImage();
+                            // Charger l'image associée au groupe
+                            final Image[] groupImage = {null};
+                            try {
+                                // Vérifier d'abord si l'image est déjà dans imageIds
+                                if (imageIds.containsKey(imageUrl)) {
+                                    logger.info("Utilisation de l'image en cache pour " + imageUrl);
+                                    groupImage[0] = imageIds.get(imageUrl);
+                                } else {
+                                    // Sinon, essayer de la charger depuis l'URL
+                                    logger.info("Chargement de l'image depuis l'URL: " + imageUrl);
+                                    groupImage[0] = new Image(ImageIO.read(new URL(imageUrl)));
+                                    // Mettre en cache l'image pour une utilisation future
+                                    imageIds.put(imageUrl, groupImage[0]);
+                                }
 
-                        graphics.drawImage(image[0], 0, 0, image[0].getWidth(), image[0].getHeight(), null);
+                                if (groupImage[0] != null) {
+                                    logger.info("Image chargée pour le groupe " + groupId + ": " +
+                                            groupImage[0].getWidth() + "x" + groupImage[0].getHeight());
+                                }
+                            } catch (IOException e) {
+                                logger.severe("Erreur lors du chargement de l'image " + imageUrl + ": " + e.getMessage());
+                                e.printStackTrace();
+                                return;
+                            }
+
+                            RunZBuffer runZBuffer = null;
+                            try {
+                                List<Point> points31 = new ArrayList<>();
+                                for (int a = 0; a < points31.size(); a++)
+                                    points31.add((Point) points31.get(a));
+                                URL resource = URI.create("https://empty3.one/apps/plane blender2.obj").toURL();
+                                String contentStr = resource.getContent().toString();
+                                logger.info("URL CONTENT :\n"+contentStr);
+                                File file = new File(tempDir.toFile(), "model-plane.obj");
+                                runZBuffer = new RunZBuffer(image[0], new E3Model(new BufferedReader(new FileReader(file)), true, file.getAbsolutePath()), finalCurrentImage, list2string(points31), list2string(points31), list2string(points), true, 6, true, true, new HashMap<>());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            image[0] = runZBuffer.processImage();
+
+                            graphics.drawImage(image[0], 0, 0, image[0].getWidth(), image[0].getHeight(), null);
+                        }
+                    });
+                    // Ajouter l'image traitée à la liste des frames
+                    if (image[0] == null) {
+                        if(currentImage!=null) {
+                            image[0] = currentImage;
+                        } else {
+                            logger.warning("Frame " + frame + " non ajoutée car l'image est null");
+                            // Ajouter une image vide pour maintenir la continuité
+                            Image emptyImage = new Image(RES_AVG, RES_AVG);
+                            Graphics g = emptyImage.getBi().getGraphics();
+                            g.setColor(Color.WHITE);
+                            g.fillRect(0, 0, RES_AVG, RES_AVG);
+                            g.setColor(Color.RED);
+                            g.drawString("Erreur frame " + frame, 10, RES_AVG / 2);
+                            images.add(emptyImage);
+                        }
                     }
-                });
-                                    // Ajouter l'image traitée à la liste des frames
-                                    if (image[0] != null) {
-                    images.add(image[0]);
-                    logger.info("Frame " + frame + " ajoutée: " + 
-                              (image[0] != null ? image[0].getWidth() + "x" + image[0].getHeight() : "null"));
+                    if (image[0] != null) {
+                        images.add(image[0]);
+                        logger.info("Frame " + frame + " ajoutée: " +
+                                (image[0] != null ? image[0].getWidth() + "x" + image[0].getHeight() : "null"));
 
-                    // Optionnel: enregistrer chaque frame pour débogage
-                    if (logger.isLoggable(java.util.logging.Level.FINE)) {
-                        try {
-                            File debugDir = new File("debug_frames");
-                            if (!debugDir.exists()) {
-                                debugDir.mkdirs();
+                        // Optionnel: enregistrer chaque frame pour débogage
+                        if (logger.isLoggable(java.util.logging.Level.FINE)) {
+                            try {
+                                File debugDir = new File("debug_frames");
+                                if (!debugDir.exists()) {
+                                    debugDir.mkdirs();
+                                }
+
+                                File frameFile = new File(debugDir, "frame_" + frame + ".png");
+                                ImageIO.write(image[0].getBi(), "png", frameFile);
+                                logger.fine("Frame " + frame + " enregistrée pour débogage: " + frameFile.getAbsolutePath());
+                            } catch (Exception e) {
+                                logger.warning("Impossible d'enregistrer la frame pour débogage: " + e.getMessage());
                             }
-
-                            File frameFile = new File(debugDir, "frame_" + frame + ".png");
-                            ImageIO.write(image[0].getBi(), "png", frameFile);
-                            logger.fine("Frame " + frame + " enregistrée pour débogage: " + frameFile.getAbsolutePath());
-                        } catch (Exception e) {
-                            logger.warning("Impossible d'enregistrer la frame pour débogage: " + e.getMessage());
                         }
                     }
-                                    } else {
-                    logger.warning("Frame " + frame + " non ajoutée car l'image est null");
-                    // Ajouter une image vide pour maintenir la continuité
-                    Image emptyImage = new Image(RES_AVG, RES_AVG);
-                    Graphics g = emptyImage.getBi().getGraphics();
-                    g.setColor(Color.WHITE);
-                    g.fillRect(0, 0, RES_AVG, RES_AVG);
-                    g.setColor(Color.RED);
-                    g.drawString("Erreur frame " + frame, 10, RES_AVG/2);
-                    images.add(emptyImage);
-                                    }
 
-                                    // Passer à la frame suivante
-                                    frame = frame + 1;
-                                    currentFrameIndex = frame - 1; // Mettre à jour l'index de frame courant
+                    // Passer à la frame suivante
+                    frame = frame + 1;
+                    currentFrameIndex = frame - 1; // Mettre à jour l'index de frame courant
                 }
             }
 
@@ -407,8 +418,8 @@ public class MovieGenerator {
 
     /**
      * Dessine une image avec les éléments visuels (points, groupes) configurés
-     * 
-     * @param currentImage L'image sur laquelle dessiner
+     *
+     * @param currentImage      L'image sur laquelle dessiner
      * @param configurationJson La configuration contenant les points et groupes à dessiner
      */
     private void drawImage(Image currentImage, ConfigurationJson configurationJson) {
@@ -435,8 +446,8 @@ public class MovieGenerator {
 
                 // Définir la couleur du point (utiliser une couleur par défaut si non spécifiée)
                 try {
-                    if (point.getColor() != null && !point.getColor().isEmpty()) {
-                        g2d.setColor(Color.decode(point.getColor()));
+                    if (point.getColor() != null ) {
+                        g2d.setColor(point.getColor());
                     } else {
                         g2d.setColor(Color.RED);
                     }
@@ -446,7 +457,7 @@ public class MovieGenerator {
 
                 // Dessiner le point
                 int pointSize = 5;
-                g2d.fillOval(x - pointSize/2, y - pointSize/2, pointSize, pointSize);
+                g2d.fillOval(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize);
 
                 // Ajouter le nom du point s'il existe
                 if (point.getName() != null && !point.getName().isEmpty()) {
@@ -458,19 +469,24 @@ public class MovieGenerator {
 
         // Dessiner les connexions entre les points des groupes
         for (Group group : configurationJson.getGroups()) {
-            if (group.isVisible() && group.getPointsId() != null && group.getPointsId().size() > 1) {
+            if (group.isVisible() && group.getPointIds() != null && group.getPointIds().size() > 1) {
                 // Utiliser une couleur distincte pour chaque groupe
                 g2d.setColor(new Color(group.getId().hashCode() & 0x00FFFFFF | 0xFF000000));
                 g2d.setStroke(new BasicStroke(2));
 
                 // Trouver les points du groupe
                 List<Point> groupPoints = new ArrayList<>();
-                for (Point pointRef : group.getPointsId()) {
+                for (String pointRefStr : group.getPointIds()) {
+                    Point pointRef = null;
                     for (Point point : configurationJson.getPoints()) {
-                        if (point.getId().equals(pointRef.getId())) {
+                        if (point.getId().equals(pointRefStr)) {
+                            pointRef = point;
                             groupPoints.add(point);
                             break;
                         }
+                    }
+                    if (pointRef == null) {
+                        logger.warning("Point non trouvé dans la configuration: " + pointRefStr);
                     }
                 }
 
@@ -494,7 +510,7 @@ public class MovieGenerator {
 
     /**
      * Génère un fichier vidéo à partir des images créées
-     * 
+     *
      * @return true si la génération a réussi, false sinon
      */
     public boolean generateMovie() {
@@ -547,8 +563,8 @@ public class MovieGenerator {
             new JCodecImageToVideoEncoder().encodeImagesToVideo(outputFile, imagesArray);
 
             if (outputFile.exists() && outputFile.length() > 0) {
-                logger.info("La génération de la vidéo est terminée avec succès: " + 
-                          outputFile.getAbsolutePath() + " (" + outputFile.length() + " octets)");
+                logger.info("La génération de la vidéo est terminée avec succès: " +
+                        outputFile.getAbsolutePath() + " (" + outputFile.length() + " octets)");
                 return true;
             } else {
                 logger.severe("Le fichier vidéo n'a pas été créé ou est vide");
@@ -571,12 +587,12 @@ public class MovieGenerator {
 
     /**
      * Lit un point nommé à partir d'un ensemble de lignes de texte
-     * 
-     * @param lines Liste des lignes de texte
+     *
+     * @param lines      Liste des lignes de texte
      * @param lineNumber Numéro de ligne où commence la définition du point
      * @return Le point nommé ou null si le format est invalide
      */
-    public NamedPoint readPoint(List<String> lines, int lineNumber) {
+    public NamedPoint readPoint(List<String> lines, int lineNumber, AtomicBoolean endOfGroup) {
         // Vérifier que nous avons assez de lignes pour lire un point complet
         if (lines == null || lineNumber < 0 || lineNumber + 3 >= lines.size()) {
             logger.fine("Pas assez de lignes pour lire un point à la ligne " + lineNumber);
@@ -592,9 +608,9 @@ public class MovieGenerator {
 
         // Vérifier que la ligne commence par une lettre et n'est pas un mot-clé réservé
         String lowerCaseLine = currentLine.toLowerCase();
-        if (!Character.isAlphabetic(lowerCaseLine.charAt(0)) || 
-            lowerCaseLine.startsWith("group ") || 
-            lowerCaseLine.startsWith("next")) {
+        if (!Character.isAlphabetic(lowerCaseLine.charAt(0)) ||
+                lowerCaseLine.startsWith("group ") ||
+                lowerCaseLine.startsWith("next")) {
             logger.fine("Ligne " + lineNumber + " n'est pas un début de point: " + currentLine);
             return null;
         }
@@ -628,6 +644,12 @@ public class MovieGenerator {
                 logger.fine("Point " + namedPoint.getName() + " lu avec succès: (" + x + ", " + y + ")");
                 return namedPoint;
             } else {
+                if (separatorLine.toLowerCase().equals("endofgroup")) {
+                    namedPoint.setX(x);
+                    namedPoint.setY(y);
+                    endOfGroup.set(true);
+                    return namedPoint;
+                }
                 logger.warning("Format incorrect: la ligne séparatrice après les coordonnées n'est pas vide: " + separatorLine);
                 return null;
             }
@@ -646,7 +668,7 @@ public class MovieGenerator {
 
     /**
      * Convertit une liste de points en format texte utilisable par RunZBuffer
-     * 
+     *
      * @param points Liste de points à convertir
      * @return Représentation textuelle des points
      */
@@ -678,7 +700,7 @@ public class MovieGenerator {
 
     /**
      * Redimensionne une image pour qu'elle remplisse tout l'écran
-     * 
+     *
      * @param originalImage L'image originale à redimensionner
      * @return Une nouvelle image redimensionnée
      */
@@ -723,8 +745,8 @@ public class MovieGenerator {
             g2d.drawImage(originalImage.getBi(), x, y, newWidth, newHeight, null);
             g2d.dispose();
 
-            logger.info("Image redimensionnée à " + screenWidth + "x" + screenHeight + 
-                      " (scale=" + scale + ", dimensions réelles=" + newWidth + "x" + newHeight + ")");
+            logger.info("Image redimensionnée à " + screenWidth + "x" + screenHeight +
+                    " (scale=" + scale + ", dimensions réelles=" + newWidth + "x" + newHeight + ")");
 
             return resizedImage;
         } catch (Exception e) {
@@ -736,12 +758,12 @@ public class MovieGenerator {
 
     /**
      * Crée des points aux quatre coins de l'écran pour afficher une image en plein écran
-     * 
+     *
      * @return Liste de points positionnés aux coins de l'écran
      */
     /**
      * Crée des points aux quatre coins de l'écran pour afficher une image en plein écran
-     * 
+     *
      * @return Liste de points positionnés aux coins de l'écran
      */
     private List<Point> createFullScreenCornerPoints() {
@@ -784,10 +806,10 @@ public class MovieGenerator {
 
     /**
      * Transforme des points en fonction du type de transformation et de la progression
-     * 
-     * @param points Points d'origine à transformer
+     *
+     * @param points    Points d'origine à transformer
      * @param transform Type de transformation à appliquer
-     * @param progress Progression de la transformation (0.0 à 1.0)
+     * @param progress  Progression de la transformation (0.0 à 1.0)
      * @return Nouveaux points transformés
      */
     private List<Point> transformPointsBasedOnProgress(List<Point> points, Transform transform, double progress) {
@@ -804,7 +826,6 @@ public class MovieGenerator {
             newPoint.setX(original.getX());
             newPoint.setY(original.getY());
             newPoint.setVisible(original.isVisible());
-            newPoint.setImageUrl(original.getImageUrl());
             if (original.getName() != null) {
                 newPoint.setName(original.getName());
             }
@@ -825,8 +846,7 @@ public class MovieGenerator {
                 point.setY(point.getY() + dy);
             }
             logger.fine("Translation appliquée: dx=" + dx + ", dy=" + dy);
-        } 
-        else if (transform instanceof TransformRotate) {
+        } else if (transform instanceof TransformRotate) {
             TransformRotate rotateTransform = (TransformRotate) transform;
             double angle = rotateTransform.getAngle() * progress;
 
@@ -859,8 +879,7 @@ public class MovieGenerator {
                 point.setY(newY);
             }
             logger.fine("Rotation appliquée: angle=" + angle + "° autour de (" + centerX + "," + centerY + ")");
-        } 
-        else if (transform instanceof TransformScale) {
+        } else if (transform instanceof TransformScale) {
             TransformScale scaleTransform = (TransformScale) transform;
             double scaleX = 1.0 + (scaleTransform.getCx() - 1.0) * progress;
             double scaleY = 1.0 + (scaleTransform.getCy() - 1.0) * progress;
@@ -890,9 +909,9 @@ public class MovieGenerator {
 
     /**
      * Vérifie et journalise l'état des images associées aux groupes
-     * 
+     *
      * @param configurationJson Configuration contenant les groupes
-     * @param imageIds Map des images identifiées par URL
+     * @param imageIds          Map des images identifiées par URL
      * @return Nombre d'images valides trouvées
      */
     private int verifyGroupImages(ConfigurationJson configurationJson, Map<String, Image> imageIds) {
@@ -906,7 +925,7 @@ public class MovieGenerator {
         logger.info("=== Vérification des images associées aux groupes ===");
 
         for (Group group : configurationJson.getGroups()) {
-            String imageUrl = group.getImageUrl();
+            String imageUrl = group.getImageId();
             if (imageUrl == null || imageUrl.isEmpty()) {
                 logger.info("Groupe " + group.getId() + ": aucune image associée");
                 continue;
@@ -916,8 +935,8 @@ public class MovieGenerator {
                 Image image = imageIds.get(imageUrl);
                 if (image != null) {
                     validImages++;
-                    logger.info("Groupe " + group.getId() + ": image valide trouvée (" + 
-                              image.getWidth() + "x" + image.getHeight() + ")");
+                    logger.info("Groupe " + group.getId() + ": image valide trouvée (" +
+                            image.getWidth() + "x" + image.getHeight() + ")");
                 } else {
                     logger.warning("Groupe " + group.getId() + ": référence d'image null pour l'URL " + imageUrl);
                 }
@@ -930,11 +949,11 @@ public class MovieGenerator {
                     Image newImage = new Image(ImageIO.read(url));
                     imageIds.put(imageUrl, newImage);
                     validImages++;
-                    logger.info("Groupe " + group.getId() + ": image chargée avec succès: " + 
-                              newImage.getWidth() + "x" + newImage.getHeight());
+                    logger.info("Groupe " + group.getId() + ": image chargée avec succès: " +
+                            newImage.getWidth() + "x" + newImage.getHeight());
                 } catch (Exception e) {
-                    logger.severe("Impossible de charger l'image pour le groupe " + 
-                               group.getId() + ": " + e.getMessage());
+                    logger.severe("Impossible de charger l'image pour le groupe " +
+                            group.getId() + ": " + e.getMessage());
                 }
             }
         }
@@ -945,36 +964,36 @@ public class MovieGenerator {
 
     /**
      * Traite une transformation de type TransformDetachImage
-     * 
+     *
      * @param transformDetachImage La transformation à appliquer
-     * @param configurationJson La configuration JSON contenant les groupes et points
+     * @param configurationJson    La configuration JSON contenant les groupes et points
      */
-    private void processDetachImageTransform(TransformDetachImage transformDetachImage, 
-                                              ConfigurationJson configurationJson) {
+    private void processDetachImageTransform(TransformDetachImage transformDetachImage,
+                                             ConfigurationJson configurationJson) {
         if (transformDetachImage.getTargetType().equals(Transform.TargetType.All)) {
             // Détacher l'image de tous les groupes par défaut
             configurationJson.getGroups().stream()
-                .filter(group -> group.getId().equals("default"))
-                .forEach(group -> group.setImageUrl(null));
+                    .filter(group -> group.getId().equals("default"))
+                    .forEach(group -> group.setImageId(null));
         } else {
             // Détacher l'image uniquement du groupe cible spécifié
             configurationJson.getGroups().stream()
-                .filter(group -> transformDetachImage.getTargetId().equals(group.getId()))
-                .forEach(group -> group.setImageUrl(null));
+                    .filter(group -> transformDetachImage.getTargetId().equals(group.getId()))
+                    .forEach(group -> group.setImageId(null));
         }
     }
 
     /**
      * Traite une transformation de type TransformAttachImage
-     * Associe une image téléchargée à un groupe, la fait remplir tout l'écran initialement, 
+     * Associe une image téléchargée à un groupe, la fait remplir tout l'écran initialement,
      * et prépare les points correspondants pour les transformations ultérieures
-     * 
-     * @param transformAttachImage La transformation à appliquer
-     * @param configurationJson La configuration JSON contenant les groupes et points
-     * @param imageIds Map des images identifiées par URL
+     *
+     * @param transformAttachImage       La transformation à appliquer
+     * @param configurationJson          La configuration JSON contenant les groupes et points
+     * @param imageIds                   Map des images identifiées par URL
      * @param copyAttachedTimeCordinates Map pour stocker les coordonnées temporelles attachées
      */
-    private void processAttachImageTransform(TransformAttachImage transformAttachImage, 
+    private void processAttachImageTransform(TransformAttachImage transformAttachImage,
                                              ConfigurationJson configurationJson,
                                              Map<String, Image> imageIds,
                                              Map<String, List<Point>> copyAttachedTimeCordinates) {
@@ -1012,9 +1031,9 @@ public class MovieGenerator {
                 imageIds.put(imageUrl + "_original", originalImage);
 
                 imageAvailable = true;
-                logger.info("Image " + imageUrl + " chargée et redimensionnée: " + 
-                           resizedImage.getWidth() + "x" + resizedImage.getHeight() + 
-                           " (originale: " + originalImage.getWidth() + "x" + originalImage.getHeight() + ")");
+                logger.info("Image " + imageUrl + " chargée et redimensionnée: " +
+                        resizedImage.getWidth() + "x" + resizedImage.getHeight() +
+                        " (originale: " + originalImage.getWidth() + "x" + originalImage.getHeight() + ")");
             } catch (Exception e) {
                 logger.severe("Impossible de charger l'image " + imageUrl + ": " + e.getMessage());
                 e.printStackTrace();
@@ -1028,17 +1047,18 @@ public class MovieGenerator {
                 imageIds.put(imageUrl + "_original", originalImage);
                 Image resizedImage = resizeImageToFillScreen(originalImage);
                 imageIds.put(imageUrl, resizedImage);
-                logger.info("Image " + imageUrl + " redimensionnée: " + 
-                           resizedImage.getWidth() + "x" + resizedImage.getHeight());
+                logger.info("Image " + imageUrl + " redimensionnée: " +
+                        resizedImage.getWidth() + "x" + resizedImage.getHeight());
             }
         }
 
         // Traiter les groupes selon le type de cible
-        if (transformAttachImage.getTargetType().equals(Transform.TargetType.All)) {
+        if (transformAttachImage.getTargetType() == null
+                || transformAttachImage.getTargetType().equals(Transform.TargetType.All)) {
             // Appliquer la transformation à tous les groupes par défaut
             List<Group> defaultGroups = configurationJson.getGroups().stream()
-                .filter(group -> group.getId().equals("default"))
-                .toList();
+                    .filter(group -> group.getId().equals("default"))
+                    .toList();
 
             if (defaultGroups.isEmpty()) {
                 logger.warning("Aucun groupe 'default' trouvé pour la transformation AttachImage");
@@ -1046,13 +1066,21 @@ public class MovieGenerator {
                 Group newDefaultGroup = new Group();
                 newDefaultGroup.setId("default");
                 newDefaultGroup.setVisible(true);
-                newDefaultGroup.setImageUrl(imageUrl);
+                newDefaultGroup.setImageId(imageUrl);
 
                 // Créer des points aux 4 coins pour couvrir tout l'écran
                 List<Point> cornerPoints = createFullScreenCornerPoints();
-                newDefaultGroup.setPointsId(cornerPoints);
+                List<String> pointIds = new ArrayList<>();
 
-                // Ajouter le groupe à la configuration
+                for (Point point : cornerPoints) {
+                    pointIds.add(point.getId());
+                }
+                newDefaultGroup.setPointIds(pointIds);
+
+                for (Point point : cornerPoints) {
+                    configurationJson.getPoints().add(point);
+
+                }
                 configurationJson.getGroups().add(newDefaultGroup);
                 defaultGroups = List.of(newDefaultGroup);
 
@@ -1061,16 +1089,22 @@ public class MovieGenerator {
 
             for (Group group : defaultGroups) {
                 // Sauvegarder l'ancienne URL pour journalisation
-                String oldUrl = group.getImageUrl();
+                String oldUrl = group.getImageId();
 
                 // Mettre à jour l'URL de l'image du groupe
-                group.setImageUrl(imageUrl);
-                logger.info("Groupe " + group.getId() + ": URL d'image modifiée de " + 
-                          (oldUrl != null ? oldUrl : "<aucune>") + " à " + imageUrl);
+                group.setImageId(imageUrl);
+                logger.info("Groupe " + group.getId() + ": URL d'image modifiée de " +
+                        (oldUrl != null ? oldUrl : "<aucune>") + " à " + imageUrl);
 
                 // Si le groupe n'a pas de points, ajouter des points aux coins pour couvrir tout l'écran
-                if (group.getPointsId() == null || group.getPointsId().isEmpty()) {
-                    group.setPointsId(createFullScreenCornerPoints());
+                if (group.getPointIds() == null || group.getPointIds().isEmpty()) {
+                    List<Point> fullScreenCornerPoints = createFullScreenCornerPoints();
+                    configurationJson.getPoints().addAll(createFullScreenCornerPoints());
+                    List<String > pointsIds = new ArrayList<>();
+                    for (int i = 0; i < fullScreenCornerPoints.size(); i++) {
+                        pointsIds.add(fullScreenCornerPoints.get(i).getId());
+                    }
+                    group.getPointIds().addAll(pointsIds);
                     logger.info("Ajout de points aux coins pour le groupe " + group.getId());
                 }
 
@@ -1078,15 +1112,22 @@ public class MovieGenerator {
                 List<Point> groupPoints = new ArrayList<>();
 
                 // Vérifier que le groupe a des points
-                if (group.getPointsId() == null || group.getPointsId().isEmpty()) {
+                if (group.getPointIds() == null || group.getPointIds().isEmpty()) {
                     logger.warning("Le groupe " + group.getId() + " n'a pas de points définis");
                     continue;
                 }
 
-                logger.info("Traitement de " + group.getPointsId().size() + " points pour le groupe " + group.getId());
+                logger.info("Traitement de " + group.getPointIds().size() + " points pour le groupe " + group.getId());
 
                 // Pour chaque point ID dans le groupe
-                for (Point pointId : group.getPointsId()) {
+                for (String pointIdStr : group.getPointIds()) {
+                    Point pointId = null;
+                    for (Point point : configurationJson.getPoints()) {
+                        if (point.getId().equals(pointIdStr)) {
+                            pointId = point;
+                            break;
+                        }
+                    }
                     if (pointId == null || pointId.getId() == null) {
                         logger.warning("Point ID null détecté dans le groupe " + group.getId());
                         continue;
@@ -1102,15 +1143,14 @@ public class MovieGenerator {
                     }
 
                     if (matchingConfigPoint == null) {
-                        logger.warning("Point " + pointId.getId() + " référencé dans le groupe " + 
-                                     group.getId() + " non trouvé dans la configuration");
+                        logger.warning("Point " + pointId.getId() + " référencé dans le groupe " +
+                                group.getId() + " non trouvé dans la configuration");
                         continue;
                     }
 
                     // Créer un nouveau point avec les propriétés du groupe et les coordonnées du point de configuration
                     Point newPoint = new Point();
                     newPoint.setId(group.getId() + "_" + pointId.getId()); // ID unique
-                    newPoint.setImageUrl(imageUrl);
                     newPoint.setVisible(group.isVisible() && matchingConfigPoint.isVisible());
                     newPoint.setX(pointId.getX() != 0 ? pointId.getX() : matchingConfigPoint.getX());
                     newPoint.setY(pointId.getY() != 0 ? pointId.getY() : matchingConfigPoint.getY());
@@ -1135,7 +1175,7 @@ public class MovieGenerator {
                     logger.warning("Aucun point valide trouvé pour le groupe " + group.getId());
                 }
             }
-        } else if (transformAttachImage.getTargetType().equals(Transform.TargetType.Group)) {
+        } else if (transformAttachImage.getTargetType() != null && transformAttachImage.getTargetType().equals(Transform.TargetType.Group)) {
             // Appliquer la transformation uniquement au groupe cible spécifié
             String targetGroupId = transformAttachImage.getTargetId();
             if (targetGroupId == null || targetGroupId.isEmpty()) {
@@ -1144,8 +1184,8 @@ public class MovieGenerator {
             }
 
             List<Group> targetGroups = configurationJson.getGroups().stream()
-                .filter(group -> targetGroupId.equals(group.getId()))
-                .toList();
+                    .filter(group -> targetGroupId.equals(group.getId()))
+                    .toList();
 
             if (targetGroups.isEmpty()) {
                 logger.warning("Groupe cible '" + targetGroupId + "' non trouvé pour la transformation AttachImage");
@@ -1153,47 +1193,51 @@ public class MovieGenerator {
             }
 
             for (Group group : targetGroups) {
-                String oldUrl = group.getImageUrl();
-                group.setImageUrl(imageUrl);
-                logger.info("Groupe cible " + group.getId() + ": URL d'image modifiée de " + 
-                          (oldUrl != null ? oldUrl : "<aucune>") + " à " + imageUrl);
+                String oldUrl = group.getImageId();
+                group.setImageId(imageUrl);
+                logger.info("Groupe cible " + group.getId() + ": URL d'image modifiée de " +
+                        (oldUrl != null ? oldUrl : "<aucune>") + " à " + imageUrl);
 
                 // Même traitement des points que pour le cas All, mais uniquement pour ce groupe cible
                 List<Point> groupPoints = new ArrayList<>();
 
-                if (group.getPointsId() != null && !group.getPointsId().isEmpty()) {
-                    for (Point pointId : group.getPointsId()) {
-                        if (pointId != null && pointId.getId() != null) {
-                            for (Point configPoint : configurationJson.getPoints()) {
-                                if (configPoint.getId().equals(pointId.getId())) {
-                                    Point newPoint = new Point();
-                                    newPoint.setId(group.getId() + "_" + pointId.getId());
-                                    newPoint.setImageUrl(imageUrl);
-                                    newPoint.setVisible(group.isVisible() && configPoint.isVisible());
-                                    newPoint.setX(pointId.getX() != 0 ? pointId.getX() : configPoint.getX());
-                                    newPoint.setY(pointId.getY() != 0 ? pointId.getY() : configPoint.getY());
+                if (group.getPointIds() != null && !group.getPointIds().isEmpty()) {
+                    for (String pointIdStr : group.getPointIds()) {
+                        Point pointId = null;
+                        for (Point configPoint : configurationJson.getPoints()) {
+                            if (configPoint.getId().equals(pointIdStr)) {
+                                pointId = configPoint;
+                                break;
+                            }
+                            if (pointId != null && pointId.getId() != null) {
+                                for (Point configPoint1 : configurationJson.getPoints()) {
+                                    if (configPoint1.getId().equals(pointId.getId())) {
+                                        Point newPoint = new Point();
+                                        newPoint.setId(group.getId() + "_" + pointId.getId());
+                                        newPoint.setVisible(group.isVisible() && configPoint1.isVisible());
+                                        newPoint.setX(pointId.getX() != 0 ? pointId.getX() : configPoint.getX());
+                                        newPoint.setY(pointId.getY() != 0 ? pointId.getY() : configPoint.getY());
 
-                                    if (configPoint.getName() != null) {
-                                        newPoint.setName(configPoint.getName());
-                                    }
-                                    if (configPoint.getColor() != null) {
-                                        newPoint.setColor(configPoint.getColor());
-                                    }
+                                        if (configPoint1.getName() != null) {
+                                            newPoint.setName(configPoint1.getName());
+                                        }
+                                        if (configPoint1.getColor() != null) {
+                                            newPoint.setColor(configPoint1.getColor());
+                                        }
 
-                                    groupPoints.add(newPoint);
+                                        groupPoints.add(newPoint);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (!groupPoints.isEmpty()) {
-                        copyAttachedTimeCordinates.put(group.getId(), groupPoints);
-                        logger.info(group.getId() + ": " + groupPoints.size() + " points associés à l'image " + imageUrl);
+                        if (!groupPoints.isEmpty()) {
+                            copyAttachedTimeCordinates.put(group.getId(), groupPoints);
+                            logger.info(group.getId() + ": " + groupPoints.size() + " points associés à l'image " + imageUrl);
+                        }
                     }
                 }
             }
-        } else {
-            logger.warning("Type de cible non pris en charge: " + transformAttachImage.getTargetType());
         }
     }
 }

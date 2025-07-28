@@ -10,6 +10,7 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.cloud.storage.*;
 import one.empty3.apps.testobject.TestCollection;
+import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 import java.io.*;
 import java.net.URL;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.cloud.functions.HttpRequest.*;
+import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 /**
  * Fonction HTTP qui utilise MovieGenerator pour créer un fichier mp4 à partir
@@ -92,7 +94,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     // Vérifier que les identifiants implémentent ServiceAccountSigner
                     if (credentials instanceof ServiceAccountSigner) {
                         ServiceAccountSigner signer = (ServiceAccountSigner) credentials;
-                        signedUrl = blob.signUrl(7, TimeUnit.DAYS, 
+                        signedUrl = blob.signUrl(7, TimeUnit.DAYS,
                                 Storage.SignUrlOption.signWith(signer),
                                 Storage.SignUrlOption.withV4Signature());
                     } else {
@@ -101,7 +103,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 } catch (Exception ex) {
                     logger.severe("Erreur lors de la génération de l'URL signée avec les identifiants personnalisés: " + ex.getMessage());
                     // Fallback à l'URL non signée si tout échoue
-                    signedUrl = new URL(String.format("https://storage.googleapis.com/%s/%s", 
+                    signedUrl = new URL(String.format("https://storage.googleapis.com/%s/%s",
                             BUCKET_NAME.replace("gs://", ""), fileName));
                 }
             }
@@ -150,75 +152,105 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         try {
             Map<String, HttpPart> parts = request.getParts();
 
-            for (Entry<String, HttpPart> entry : parts.entrySet()) {
-                String s = entry.getKey();
-                HttpPart httpPart = entry.getValue();
-                if(httpPart!=null) {
-                    try {
-                        boolean added = false;
-                        if(httpPart.getFileName()!=null&&httpPart.getFileName().isPresent()) {
-                            String s1 = httpPart.getFileName().get();
-                            String s2 = null;
-                            switch (s1.substring(s1.lastIndexOf('.'))) {
-                                case TEXT_PART_NAME -> {
-                                    File f = savePartToFile(httpPart, tempDir);
-                                    if (f == null)
-                                        break;
-                                    s1 = f.getName();
+            ConfigurationJson configurationJson = null;
+
+            try {
+                for (String key : parts.keySet()) {
+                    HttpPart httpPart = parts.get(key);
+                    if (httpPart != null) {
+                        logger.info("Partie " + key + " : " + httpPart.getFileName().orElse("null"));
+                        try {
+                            boolean added = false;
+                            if (httpPart.getFileName() != null && httpPart.getFileName().isPresent()) {
+                                String s1 = httpPart.getFileName().get();
+                                String s2 = null;
+                                if (s1.equals("animation.txt")) {
+                                    File f = savePartToFileTxt(httpPart, tempDir);
+                                    s1 = f.getAbsolutePath();
                                     s2 = "txt";
                                     added = true;
-                                }
-                                case IMAGE1_PART_NAME -> {
+                                } else if (s1.endsWith("jpg") || s1.endsWith("png")) {
                                     File f = savePartToFile(httpPart, tempDir);
-                                    if (f == null)
-                                        break;
-                                    s1 = f.getName();
-                                    s2 = "jpg";
+                                    s1 = f.getAbsolutePath();
+                                    s2 = s1.substring(s1.lastIndexOf('.') + 1);
                                     added = true;
-                                }
-                                case IMAGE2_PART_NAME -> {
-                                    File f = savePartToFile(httpPart, tempDir);
-                                    if (f == null)
-                                        break;
-                                    s1 = f.getName();
-                                    s2 = "png";
-                                    added = true;
-                                }
-                                case JSONFILE_EXT -> {
-                                    File f = savePartToFile(httpPart, tempDir);
-                                    if (f == null)
-                                        break;
-                                    s1 = f.getName();
+                                } else if (s1.equals("project.json")) {
+                                    File f = savePartToFileTxt(httpPart, tempDir);
+                                    configurationJson = ConfigurationJson.parseJson(f);
+                                    s1 = f.getAbsolutePath();
                                     s2 = "json";
                                     added = true;
                                 }
+                                if (added) {
+                                    types.add(new FileType(new File(s1), s2));
+                                    if(!new File(s1).exists()) {
+                                        long length = new File(s1).length();
+                                        logger.info("ERREUR Fichier non enregistré "+s1+" --- "+length);
+                                    } else {
+                                        logger.info("Fichier enregistré "+s1+" -- " );
+                                    }
+                                } else {
+                                    logger.info("ERREUR Fichier non enregistré "+s1);
+                                }
+
                             }
-                            if (added) {
-                                types.add(new FileType(s1, s2));
-                            }
+
+                        } catch (IOException e) {
+                            cleanupFiles(tempDir.toFile());
+                            sendErrorResponse(response, 500, "Erreur lors de l'enregistrement du fichier :");
+                            response.setStatusCode(500);
+                            return;
                         }
-                    } catch (IOException e) {
-                        cleanupFiles(tempDir.toFile());
-                        sendErrorResponse(response, 500, "Erreur lors de l'enregistrement du fichier :");
-                        response.setStatusCode(500);
-                        return;
                     }
+                }
+            } catch (IOException e) {
+                sendErrorResponse(response, 500, "Erreur lors de la lecture des parties du message HTTP : " + exceptionToString(e));
+                throw new RuntimeException(e);
+            }
+            Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
+            /*
+            for (Entry<String, HttpPart> part : parts.entrySet()) {
+                Logger.getLogger(getClass().getCanonicalName()).info(part.getKey());
+                if(part.getKey().endsWith(".json") && part.getValue().getFileName().isPresent()) {
+                    configurationJson = ConfigurationJson.parseJson(part.getValue().getFileName().get());
+                }
+            }
+*/
+
+            for ( FileType fp : types) {
+                Logger.getLogger(getClass().getCanonicalName()).info(fp.file().getAbsolutePath());
+                if(fp.file().getAbsolutePath().endsWith(".json") && fp.file().exists()) {
+                    Scanner scanner = new Scanner(fp.file());
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        stringBuilder.append(line).append("\n");
+                        logger.info(line);
+                    }
+                    configurationJson = ConfigurationJson.parseJson(stringBuilder.toString());
                 }
             }
 
-            Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
-            for(Entry<String, HttpPart> part : parts.entrySet()) {
-                Logger.getLogger(getClass().getCanonicalName()).info(part.getKey());
 
+    // After processing all parts, validate that the configuration was found.
+// This is a robust check that works even if assertions are disabled.
+            if (configurationJson == null) {
+                logger.severe("Le fichier de configuration 'project.json' est manquant dans la requête.");
+                // Clean up any files that might have been created before failing.
+                cleanupFiles(tempDir.toFile());
+                sendErrorResponse(response, 400, "Bad Request: Le fichier de configuration 'project.json' est manquant.");
+                return; // Stop execution immediately
             }
+
             Logger.getLogger(getClass().getCanonicalName()).info("Main code in function");
 
             String outputFileName = UUID.randomUUID() + ".mp4";
             outputFile = new File(tempDir.toString(), outputFileName);
 
+
             MovieGenerator generator = null;
             try {
-                generator = new MovieGenerator( types, outputFile);
+                generator = new MovieGenerator(types, outputFile, configurationJson, tempDir);
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
@@ -226,7 +258,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             boolean b = false;
             try {
-                if(generator!=null)
+                if (generator != null)
                     b = generator.generateMovie();
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
@@ -254,15 +286,15 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             response.setContentType("application/json");
             response.getWriter().write("{\"video\":\"" + base64Content
-                    + "\",\"mimeType\":\"video/mp4\", \"url:\":\""+uploadToCloudStorage+"\"}");
+                    + "\",\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage + "\"}");
 
-            if(outputFile.exists()) {
+            if (outputFile.exists()) {
                 Files.copy(outputFile.toPath(), response.getOutputStream());
             } else {
                 int size = -1;
-                if(generator!=null && generator.images!=null)
+                if (generator != null && generator.images != null)
                     size = generator.images.size();
-                sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé"+outputFile.getAbsolutePath()+"--- longueur  "+size);
+                sendErrorResponse(response, 500, "Erreur lors de la génération du film : le fichier mp4 n'a pas été trouvé" + outputFile.getAbsolutePath() + "--- longueur  " + size);
             }
             logger.info("Film envoyé au client avec succès");
 
@@ -275,6 +307,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             cleanupFiles(tempDir.toFile());
         }
     }
+
 
     private String exceptionToString(Exception e) {
         StringBuilder s = new StringBuilder();
@@ -290,22 +323,37 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
      */
     private File savePartToFile(HttpPart part, Path tempDir) throws IOException {
         if (part == null || part.getFileName().isEmpty() || part.getFileName().isEmpty()) {
-            return null;
+            throw new RuntimeException("Le nom du fichier est invalide");
         }
         String s = part.getFileName().get();
-        if(s!=null && s.length()>0) {
+        if (!s.isEmpty()) {
             File file = new File(tempDir.toFile(), s);
-            if (file != null) {
-                try (var outputStream = Files.newOutputStream(file.toPath())) {
-                    part.getInputStream().transferTo(outputStream);
-                }
-                logger.info("Fichiers reçu : " + file.getName());
+            try (var outputStream = Files.newOutputStream(file.toPath())) {
+                part.getInputStream().transferTo(outputStream);
             }
+            logger.info("Fichiers reçu : " + file.getName());
             return file;
         }
-        return null;
+        throw new RuntimeException("Le nom du fichier est invalide");
     }
 
+    private File savePartToFileTxt(HttpPart httpPart, Path tempDir) {
+        // Lit le contenu
+        String txt;
+        File file = null;
+        try (InputStream inputStream = httpPart.getInputStream()) {
+            txt = new String(inputStream.readAllBytes(), "UTF-8");
+            file = new File(tempDir.toFile(), httpPart.getFileName().get());
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.print(txt);
+            printWriter.close();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file!=null?file:null;
+    }
     /**
      * Envoie une réponse d'erreur au client au format JSON
      */
@@ -353,9 +401,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 parts.forEach((name, part) -> {
                     logMessage.append("Partie: ").append(name).append("\n");
                     part.getFileName().ifPresent(fileName ->
-                        logMessage.append("  Nom du fichier: ").append(fileName).append("\n"));
+                            logMessage.append("  Nom du fichier: ").append(fileName).append("\n"));
                     part.getContentType().ifPresent(contentType ->
-                        logMessage.append("  Type de contenu: ").append(contentType).append("\n"));
+                            logMessage.append("  Type de contenu: ").append(contentType).append("\n"));
                 });
             }
 
@@ -376,7 +424,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         try {
             if (tempDir != null && tempDir.exists()) {
                 for (File file : Objects.requireNonNull(tempDir.listFiles())) {
-                    if (file != null  && !"..".equals(file.getName()) && !".".equals(file.getName())) {
+                    if (file != null && !"..".equals(file.getName()) && !".".equals(file.getName())) {
                         if ((file != null && file.exists()) && (!file.isDirectory() || (file.isDirectory() && Objects.requireNonNull(file.listFiles()).length == 0))) {
                             if (file.delete()) {
                                 logger.fine("Fichier supprimé : " + file.getName());

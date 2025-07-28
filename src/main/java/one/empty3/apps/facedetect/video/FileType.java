@@ -1,4 +1,6 @@
 package one.empty3.apps.facedetect.video;
 
-public record FileType(String filename, String type) {
+import java.io.File;
+
+public record FileType(File file, String type) {
 }
