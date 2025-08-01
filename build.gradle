@@ -439,6 +439,8 @@ dependencies {
     implementation 'org.danilopianini:gson-extras:0.2.1'
     implementation 'com.google.code.gson:gson-parent:2.13.1'
     implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    implementation 'com.google.cloud:google-cloud-pubsub:1.125.0' // Use the latest version
 }
 
 // Tâche pour créer un JAR executable pour le déploiement

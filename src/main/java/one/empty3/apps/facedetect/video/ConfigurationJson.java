@@ -645,7 +645,7 @@ abstract class Transform {
     private boolean visible;
     private String targetId;
     private TargetType targetType;
-        private int frames ;
+    private int frames ;
 
     public String getTargetId() {
         return targetId;

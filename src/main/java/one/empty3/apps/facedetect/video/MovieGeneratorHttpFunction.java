@@ -25,6 +25,16 @@ import java.util.logging.Logger;
 
 import static com.google.cloud.functions.HttpRequest.*;
 import one.empty3.apps.facedetect.video.ConfigurationJson.*;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.pubsub.v1.Publisher;
+import com.google.protobuf.ByteString;
+import com.google.pubsub.v1.PubsubMessage;
+import com.google.pubsub.v1.TopicName;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+
 
 /**
  * Fonction HTTP qui utilise MovieGenerator pour créer un fichier mp4 à partir
@@ -100,6 +110,8 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     } else {
                         throw new IllegalArgumentException("Les identifiants ne supportent pas la signature");
                     }
+
+
                 } catch (Exception ex) {
                     logger.severe("Erreur lors de la génération de l'URL signée avec les identifiants personnalisés: " + ex.getMessage());
                     // Fallback à l'URL non signée si tout échoue
@@ -139,6 +151,20 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             sendErrorResponse(response, 405, "Méthode non autorisée. Veuillez utiliser POST.");
             return;
         }
+
+
+        String jobId = request.getFirstQueryParameter("jobId")
+                .orElse(generateJobId());
+
+        logger.info("Job ID reçu/généré: " + jobId);
+
+        // Ou depuis les headers HTTP
+        String jobIdFromHeader = request.getHeaders()
+                .getOrDefault("X-Job-ID", Collections.emptyList())
+                .stream()
+                .findFirst()
+                .orElse(generateJobId());
+
 
         logRequestDetails(request);
 
@@ -298,6 +324,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             logger.info("Film envoyé au client avec succès");
 
+//            handleRenderRequest(jobId);
 
             cleanupFiles(tempDir.toFile());
         } catch (RuntimeException | IOException e) {
@@ -306,6 +333,21 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         } finally {
             cleanupFiles(tempDir.toFile());
         }
+    }
+
+    /**
+     * Génère un identifiant unique pour le job
+     */
+    private String generateJobId() {
+        // Option 1: UUID simple
+        return UUID.randomUUID().toString();
+
+        // Option 2: UUID avec timestamp
+        // return System.currentTimeMillis() + "-" + UUID.randomUUID().toString().substring(0, 8);
+
+        // Option 3: Format personnalisé
+        // return "job-" + System.currentTimeMillis() + "-" +
+        //        Integer.toHexString(new Random().nextInt(0xFFFF));
     }
 
 
@@ -448,4 +490,58 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             ex.printStackTrace();
         }
     }
+
+    /**
+     * Publishes a message to a Pub/Sub topic.
+     *
+     * @param projectId The ID of your Google Cloud project (e.g., "studio-6v2lo").
+     * @param topicId The ID of your Pub/Sub topic (e.g., "render-completed").
+     * @param jobId The Job ID of the completed render task.
+     */
+    public void publishJobCompletion(String projectId, String topicId, String jobId)
+            throws IOException, ExecutionException, InterruptedException {
+/*
+
+        TopicName topicName = TopicName.of(projectId, topicId);
+        Publisher publisher = null;
+        try {
+            // Create a publisher instance.
+            publisher = Publisher.newBuilder(topicName).build();
+
+            // The message payload should be the jobId.
+            // You can also use JSON for more complex data.
+            ByteString data = ByteString.copyFromUtf8(jobId);
+            PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data).build();
+
+            // Once published, returns a server-assigned message id (unique within the topic)
+            ApiFuture<String> messageIdFuture = publisher.publish(pubsubMessage);
+            String messageId = messageIdFuture.get();
+
+            System.out.println("Published message ID: " + messageId + " for job ID: " + jobId);
+
+        } finally {
+            if (publisher != null) {
+                // When finished with the publisher, shutdown to free up resources.
+                publisher.shutdown();
+                publisher.awaitTermination(1, TimeUnit.MINUTES);
+            }
+        }*/
+    }
+/*
+    // Example of how to call this method from your function
+    public void handleRenderRequest(String jobId) {
+        // ... your existing video rendering logic ...
+
+        // ---- WHEN RENDERING IS COMPLETE ----
+        try {
+            // Call the publisher method
+            String projectId = "studio-6v2lo";
+            String topicId = "render-completed";
+            publishJobCompletion(projectId, topicId, jobId);
+            System.out.println("Successfully published completion for job: " + jobId);
+        } catch (Exception e) {
+            System.err.println("Error publishing Pub/Sub message for job " + jobId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }*/
 }
