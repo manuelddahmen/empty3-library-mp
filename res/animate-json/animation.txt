@@ -1,0 +1,3237 @@
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP
+
+NEXT
+
+GROUP Default
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+ENDGROUP
+
+GROUP Group 2
+topLeft
+0.1000
+0.1000
+
+topRight
+0.9000
+0.1000
+
+bottomRight
+0.9000
+0.9000
+
+bottomLeft
+0.1000
+0.9000
+
+Point 5
+0.5908
+0.8717
+
+Point 6
+0.6051
+0.9197
+
+Point 7
+0.6754
+0.8381
+
+Point 8
+0.5155
+0.7654
+ENDGROUP

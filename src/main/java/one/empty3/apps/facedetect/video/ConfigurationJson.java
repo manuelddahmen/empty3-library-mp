@@ -616,7 +616,7 @@ class Point {
 class Group {
     private String id;
     private List<String> pointIds = new ArrayList<>();
-    private boolean visible;
+    private boolean visible = true;
     private String imageId;
     public boolean isVisible() {
         return visible;

@@ -34,8 +34,6 @@ plugins {
     id("org.jreleaser") version("1.14.0")
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.0-RC")
-    // Ajoutez le plugin Google Cloud Functions
-
 }
 def JAVA_VERSION = 21
 
@@ -423,7 +421,7 @@ dependencies {
 
     // Google Cloud Functions Framework - c'est tout ce dont vous avez besoin
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.4'
-    implementation 'dev.openfunction.functions:functions-framework-invoker:1.2.0'
+    //implementation 'dev.openfunction.functions:functions-framework-invoker:1.2.0'
     // Pour les tests et l'exécution locale
     //testImplementation 'com.google.cloud.functions:functions-framework:1.1.0'
 
@@ -439,6 +437,8 @@ dependencies {
     implementation 'org.danilopianini:gson-extras:0.2.1'
     implementation 'com.google.code.gson:gson-parent:2.13.1'
     implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    implementation 'com.google.cloud.functions.invoker:java-function-invoker:1.3.0'
 
     implementation 'com.google.cloud:google-cloud-pubsub:1.125.0' // Use the latest version
 }

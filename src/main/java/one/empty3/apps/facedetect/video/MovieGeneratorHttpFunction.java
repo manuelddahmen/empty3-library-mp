@@ -1,5 +1,9 @@
 package one.empty3.apps.facedetect.video;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.http.MultipartContent;
 import com.google.auth.ServiceAccountSigner;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -14,6 +18,7 @@ import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -53,11 +58,17 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String ALLOWED_ORIGIN = "https://us-central1-studio-6v2lo.cloudfunctions.net/motion-weaver-render";
 
 
-    private String uploadToCloudStorage(File outputFile) throws IOException {
+    private String uploadToCloudStorage(File outputFile, String userId) throws IOException {
         if (outputFile == null || !outputFile.exists() || outputFile.length() == 0) {
             logger.severe("Le fichier à uploader est invalide ou vide");
             throw new IOException("Le fichier vidéo est invalide ou vide");
         }
+        if (userId == null || userId.trim().isEmpty()) {
+            logger.severe("L'identifiant utilisateur (userId) est manquant pour l'upload.");
+            throw new IllegalArgumentException("L'identifiant utilisateur (userId) ne peut pas être vide pour l'upload.");
+        }
+
+
 
         try {
             // Initialiser le client Storage
@@ -66,8 +77,8 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     .build()
                     .getService();
 
-            // Générer un nom unique pour le fichier
-            String fileName = "generated-movies/" + System.currentTimeMillis() + "-" + outputFile.getName();
+            // Générer un nom unique pour le fichier dans le dossier de l'utilisateur
+            String fileName = "users/" + userId + "/generated_video/" + System.currentTimeMillis() + "-" + outputFile.getName();
 
             // Créer les informations du blob avec le bon Content-Type
             BlobId blobId = BlobId.of(BUCKET_NAME.replace("gs://", ""), fileName);
@@ -93,7 +104,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 if (credentialPath == null || credentialPath.isEmpty()) {
                     logger.info("Variable GOOGLE_APPLICATION_CREDENTIALS non définie, utilisation du chemin par défaut");
                     // Utiliser un chemin par défaut si la variable n'est pas définie
-                    credentialPath = "/path/to/your/service-account-key.json";
+                    credentialPath = "c:\\Users\\manue\\AppData\\Local\\gcloud\\application_default_credentials.json";
                 }
 
                 try {
@@ -146,12 +157,24 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             return;
         }
 
+        // Première étape : vérifier l'identité de l'appelant
+        String callerEmail = getCallerIdentity(request);
+        if (callerEmail == null) {
+            // Si l'identité ne peut pas être vérifiée et que vous exigez une authentification
+            sendErrorResponse(response, 401, "Unauthorized: Jeton d'authentification invalide ou manquant.");
+            return;
+        }
+        logger.info("Requête reçue de l'appelant authentifié : " + callerEmail);
+
         // Vérifier la méthode HTTP
         if (!"POST".equals(request.getMethod())) {
             sendErrorResponse(response, 405, "Méthode non autorisée. Veuillez utiliser POST.");
             return;
         }
-
+        // Extraire l'identifiant utilisateur de la requête. C'est le {hash}.
+        String userId = request.getFirstQueryParameter("userId").orElse(null);
+        if (userId == null || userId.trim().isEmpty()) {
+        }
 
         String jobId = request.getFirstQueryParameter("jobId")
                 .orElse(generateJobId());
@@ -164,6 +187,13 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                 .stream()
                 .findFirst()
                 .orElse(generateJobId());
+
+        // Extraire l'identifiant utilisateur de la requête. C'est le {hash}.
+        userId = request.getFirstQueryParameter("userId").orElse(null);
+        if (userId == null || userId.trim().isEmpty()) {
+            sendErrorResponse(response, 400, "Bad Request: Le paramètre de requête 'userId' est manquant ou vide.");
+            return;
+        }
 
 
         logRequestDetails(request);
@@ -274,9 +304,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             outputFile = new File(tempDir.toString(), outputFileName);
 
 
-            MovieGenerator generator = null;
+            MovieGenerator2 generator = null;
             try {
-                generator = new MovieGenerator(types, outputFile, configurationJson, tempDir);
+                generator = new MovieGenerator2(types, outputFile, configurationJson, tempDir);
             } catch (RuntimeException ex) {
                 exceptionToString(ex);
                 sendErrorResponse(response, 500, "new MovieGenerator(): " + exceptionToString(ex));
@@ -300,7 +330,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
 
-            String uploadToCloudStorage = uploadToCloudStorage(outputFile);
+            String uploadToCloudStorage = uploadToCloudStorage(outputFile, userId);
 //            response.getWriter().write(uploadToCloudStorage);
 
             // Optionnel: définir le nom du fichier pour le téléchargement
@@ -310,12 +340,14 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             byte[] fileContent = Files.readAllBytes(outputFile.toPath());
             String base64Content = Base64.getEncoder().encodeToString(fileContent);
 
+            OutputStream o = response.getOutputStream();
+
             response.setContentType("application/json");
-            response.getWriter().write("{\"video\":\"" + base64Content
-                    + "\",\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage + "\"}");
+            o.write(("{"+/*"\"video\":\"" + base64Content
+                    + "\","+*/"\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage + "\"}").getBytes(StandardCharsets.UTF_8));
 
             if (outputFile.exists()) {
-                Files.copy(outputFile.toPath(), response.getOutputStream());
+                Files.copy(outputFile.toPath(), o);
             } else {
                 int size = -1;
                 if (generator != null && generator.images != null)
@@ -324,9 +356,10 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             logger.info("Film envoyé au client avec succès");
 
-//            handleRenderRequest(jobId);
 
             cleanupFiles(tempDir.toFile());
+
+
         } catch (RuntimeException | IOException e) {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
             sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + exceptionToString(e));
@@ -456,6 +489,47 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
         } catch (Exception e) {
             logger.log(Level.WARNING, "Erreur lors de la journalisation des détails de la requête", e);
+        }
+    }
+
+    /**
+     * Vérifie le jeton d'identification (ID Token) de la requête pour identifier l'appelant.
+     *
+     * @param request La requête HTTP entrante.
+     * @return L'adresse e-mail du compte de service ou de l'utilisateur appelant,
+     *         ou null si la vérification échoue ou si le jeton est absent.
+     */
+    private String getCallerIdentity(HttpRequest request) {
+        // L'identité est dans l'en-tête "Authorization: Bearer <ID_TOKEN>"
+        Optional<String> authHeader = request.getFirstHeader("Authorization");
+        if (authHeader.isEmpty() || !authHeader.get().startsWith("Bearer ")) {
+            logger.info("Aucun en-tête d'autorisation Bearer trouvé. L'appelant est peut-être anonyme.");
+            // Retourner null pour indiquer un échec d'authentification.
+            // Si votre fonction autorise les appels non authentifiés, vous pourriez retourner une valeur par défaut.
+            return null;
+        }
+
+        String idTokenString = authHeader.get().substring(7); // Enlever "Bearer "
+
+        // L'audience doit correspondre à l'URL de votre fonction.
+        // C'est une mesure de sécurité cruciale pour éviter les attaques de type "confused deputy".
+        String audience = request.getUri();
+
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+                .setAudience(Collections.singletonList(audience))
+                .build();
+
+        try {
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            if (idToken != null) {
+                return idToken.getPayload().getEmail();
+            } else {
+                logger.warning("Jeton d'identification invalide. La vérification a échoué.");
+                return null;
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Erreur lors de la vérification du jeton d'identification", e);
+            return null;
         }
     }
 
