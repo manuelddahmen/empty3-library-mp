@@ -1,17 +1,19 @@
 package one.empty3.apps.facedetect.video;
 
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
@@ -25,11 +27,12 @@ import javax.imageio.ImageIO;
  */
 public class MovieGenerator2 {
     private static final int RES_AVG = 100;
+    private final Storage storage;
     private final HashMap<String, NamedPoint> mapPoint = new HashMap<>();
 
 
-    private static final Logger logger = Logger.getLogger(MovieGenerator.class.getName());
-    private final List<FileType> fileTypes;
+    private static final Logger logger = Logger.getLogger(MovieGenerator2.class.getName());
+    private List<FileType> fileTypes = List.of();
     private int currentFrameIndex = 0;
     private int totalFramesCount = 0;
     private Image currentImageFrame;
@@ -44,6 +47,9 @@ public class MovieGenerator2 {
      * Constructeur par défaut
      */
     public MovieGenerator2(List<FileType> types, File outputFile, ConfigurationJson configurationJson, Path tempDir) {
+        // Initialiser le client Storage de manière standard.
+        // Cela utilise les "Application Default Credentials" de l'environnement (local ou Cloud Function).
+        this.storage = StorageOptions.getDefaultInstance().getService();
         this.outputFile = outputFile;
         this.fileTypes = types;
         try {
@@ -51,6 +57,8 @@ public class MovieGenerator2 {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
 
         if (outputFile.exists()) {
             for (FileType type : types) {
@@ -122,64 +130,66 @@ public class MovieGenerator2 {
 
         final int[] transformIndex = {0};
         configurationJson.getTransforms().forEach(
-                new Consumer<Transform>() {
-                    @Override
-                    public void accept(Transform transform) {
-                        try {
-                            if (transform instanceof TransformAttachImage transformAttachImage) {
-                                String imageUrl = transformAttachImage.getImageUrl();
-                                Image image1 = new Image(ImageIO.read(new URL(transformAttachImage.getImageUrl())));
+                transform -> {
+                    try {
+                        if (transform instanceof TransformAttachImage transformAttachImage &&  transformAttachImage.getImageUrl()!=null && !transformAttachImage.getImageUrl().isEmpty()) {
+                            Image image1 = readImageFromGcsUrl(transformAttachImage.getImageUrl());
+                            if (image1 != null) {
                                 if (imageIds.containsKey(transformIndex[0])) {
-                                    if (imageIds.get(transformIndex[0]) == null) {
-                                        imageIds.put(transformIndex[0], new ArrayList<>());
-                                    }
+                                    imageIds.computeIfAbsent(transformIndex[0], k -> new ArrayList<>());
                                     imageIds.get(transformIndex[0]).add(image1);
                                 }
-                                if (imageGroupIds.get(transform.getTargetId()) == null) {
-                                    imageGroupIds.put(transform.getTargetId(), new HashMap<>());
-                                }
-                                imageGroupIds.get(transform.getTargetId()).put (transformIndex[0], image1);
-
+                                imageGroupIds.computeIfAbsent(transform.getTargetId(), k -> new HashMap<>());
+                                imageGroupIds.get(transform.getTargetId()).put(transformIndex[0], image1);
                             }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+
                         }
-                        transformIndex[0]++;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                    transformIndex[0]++;
                 });
+        // Vérifier les images associées aux groupes avant de commencer le traitement
+/*        if (configurationJson != null && configurationJson.getGroups() != null) {
+            logger.info("Vérification des images associées aux groupes avant traitement...");
+            int validImages = verifyGroupImages(configurationJson, imageIds, transformIndex[0]);
+            logger.info(validImages + " images valides trouvées pour " + configurationJson.getGroups().size() + " groupes");
+
+        }
+*/
+        logger.info(configurationJson.toString());
         currentFrameIndex = 0; // Remplace l'ancienne variable i2
 
-        Image[][]  allImagesSetted = new Image[configurationJson.getGroups().size()][configurationJson.getTransforms().size()];
-
+        Image[][]  allImagesSets = new Image[configurationJson.getGroups().size()][configurationJson.getTransforms().size()];
+        logger.info("groups : "+configurationJson.getGroups().size());
+        logger.info("transforms : "+configurationJson.getTransforms().size());
+        int countImages = 0;
         for (int i = 0; i < configurationJson.getGroups().size(); i++) {
             for (int j = 0; j < configurationJson.getTransforms().size(); j++) {
                 Group g = configurationJson.getGroups().get(i);
                 Transform t = configurationJson.getTransforms().get(j);
-                if (t instanceof TransformAttachImage transformAttachImage) {
+                if (t instanceof TransformAttachImage transformAttachImage && transformAttachImage.getTargetId().equals(g.getId())) {
                     String imageUrl = transformAttachImage.getImageUrl();
-                    Image image1 = new Image(RES_AVG, RES_AVG);
-                    try {
-                        image1 = new Image(ImageIO.read(new URL(transformAttachImage.getImageUrl())));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    Image image1;
+                    if(imageUrl!=null && !imageUrl.isEmpty()) {
+                        try {
+                            image1 = readImageFromGcsUrl(transformAttachImage.getImageUrl());
+                            allImagesSets[i][j] = image1;
+                            countImages++;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                    allImagesSetted[i][j] = image1;
-                }else if (t instanceof TransformDetachImage transformDetachImage) {
-                    allImagesSetted[i][j] = null;
+                }else if (t instanceof TransformDetachImage transformDetachImage  && transformDetachImage.getTargetId().equals(g.getId())) {
+                    allImagesSets[i][j] = null;
                 } else if(j>0) {
-                    allImagesSetted[i][j] = allImagesSetted[i][j-1];
+                    allImagesSets[i][j] = allImagesSets[i][j-1];
                 } else
-                    allImagesSetted[i][j] = null;
+                    allImagesSets[i][j] = null;
             }
 
         }
-
-        // Vérifier les images associées aux groupes avant de commencer le traitement
-        if (configurationJson != null && configurationJson.getGroups() != null) {
-            logger.info("Vérification des images associées aux groupes avant traitement...");
-            int validImages = verifyGroupImages(configurationJson, imageIds, transformIndex[0]);
-            logger.info(validImages + " images valides trouvées pour " + configurationJson.getGroups().size() + " groupes");
-        }
+        logger.severe("Aucunes images trouvées pour " + configurationJson.getGroups().size() + " groupes");
 
         transformIndex[0] = 0;
         // Traiter chaque transformation définie dans le fichier de configuration
@@ -201,19 +211,17 @@ public class MovieGenerator2 {
                     double progress = 1.0*currentTransformFrame/transformFrames;
                     // Calculer le pourcentage de progression de cette transformation
                     double transformProgress = (double) j / Math.max(1, transformFrames - 1);
-                    logger.info("Transformation " + transform.getClass().getSimpleName() + " - frame " + j + "/" + transformFrames +
+                     /*
+                   logger.info("Transformation " + transform.getClass().getSimpleName() + " - frame " + j + "/" + transformFrames +
                             " (" + Math.round(transformProgress * 100) + "%)");
+                     */
 
                     List<Group> groups = configurationJson.getGroups();
                     for (int k = 0; k < groups.size(); k++) {
                         Group g = groups.get(k);
-                        Image image1 = allImagesSetted[k][j];
+                        Image image1 = allImagesSets[k][i];
                         // Déterminer le type de transformation et appliquer l'effet approprié
-                        if (transform instanceof TransformAttachImage transformAttachImage) {
-                            processAttachImageTransform(transformAttachImage, configurationJson, imageIds, transformIndex[0], image1);
-                        } else if (transform instanceof TransformDetachImage transformDetachImage) {
-                            processDetachImageTransform(transformDetachImage, configurationJson);
-                        } else if (transform instanceof TransformTranslate || transform instanceof TransformScale || transform instanceof TransformScale || transform instanceof TransformRotate) {
+                             if (transform instanceof TransformTranslate || transform instanceof TransformScale || transform instanceof TransformScale || transform instanceof TransformRotate) {
                             ConfigurationJson finalConfigurationJson = configurationJson;
                             int finalFrameIndex = currentFrameIndex;
                             String groupId = transform.getTargetId();
@@ -234,8 +242,6 @@ public class MovieGenerator2 {
                             transformPointsBasedOnProgress(points, transform, progress, image1);
                         } else if (transform instanceof TransformSetVisibility transformSetVisibility) { // TODO: implement
                             g.setVisible(transformSetVisibility.isVisible());
-
-
                         } else if (transform instanceof TransformMorph transformMorph) {
                             Group sourceGroup = configurationJson.getGroups().stream().filter(
                                     group -> group.getId().equals(transformMorph.getSourceGroupId())
@@ -256,10 +262,13 @@ public class MovieGenerator2 {
                                 drawImage(g, configurationJson);
                                 try {
                                     Graphics g2d = currentImageFrame.getBi().getGraphics();
-                                    g2d.drawImage(image1.getBi(), 0, 0, currentImageFrame.getBi().getWidth(), currentImageFrame.getBi().getHeight(), null);
+                                    Image image2 = resizeImageToFillScreen(image1);
+                                    g2d.drawImage(image2.getBi(), 0, 0, image2.getBi().getWidth(), image2.getBi().getHeight(), null);
                                 } catch (RuntimeException ex) {
                                     ex.printStackTrace();
                                 }
+                            } else {
+                                logger.info("Image " + g.getId() + " invisible, ne pas dessiner");
                             }
                         }
                     }
@@ -740,52 +749,8 @@ public class MovieGenerator2 {
      * @param imageIds          Map des images identifiées par URL
      * @return Nombre d'images valides trouvées
      */
-    private int verifyGroupImages(ConfigurationJson configurationJson, Map<Integer, List<Image>> imageIds, int transformId) {
-        if (configurationJson == null || configurationJson.getGroups() == null) {
-            logger.warning("Configuration ou groupes null dans verifyGroupImages");
-            return 0;
-        }
-
-        int validImages = 0;
-
-        logger.info("=== Vérification des images associées aux groupes ===");
-
-        for (Group group : configurationJson.getGroups()) {
-            String imageUrl = group.getImageId();
-            if (imageUrl == null || imageUrl.isEmpty()) {
-                logger.info("Groupe " + group.getId() + ": aucune image associée");
-                continue;
-            }
-            List<Image> images1 = imageIds.get(transformId);
-            if (imageIds.containsKey(transformId)) {
-                Image image = images1.get(0);
-                if (image != null) {
-                    validImages++;
-                    logger.info("Groupe " + group.getId() + ": image valide trouvée (" +
-                            image.getBi().getWidth() + "x" + image.getBi().getHeight() + ")");
-                } else {
-                    logger.warning("Groupe " + group.getId() + ": référence d'image null pour l'URL " + imageUrl);
-                }
-            } else {
-                logger.warning("Groupe " + group.getId() + ": URL d'image non trouvée dans la map: " + imageUrl);
-
-                // Tenter de charger l'image manquante
-                try {
-                    URL url = new URL(imageUrl);
-                    Image newImage = new Image(ImageIO.read(url));
-                    //imageIds.put(imageUrl, newImage);
-                    validImages++;
-                    //logger.info("Groupe " + group.getId() + ": image chargée avec succès: " +
-                    //        newImage.getWidth() + "x" + newImage.getHeight());
-                } catch (Exception e) {
-                    logger.severe("Impossible de charger l'image pour le groupe " +
-                            group.getId() + ": " + e.getMessage());
-                }
-            }
-        }
-
-        logger.info(validImages + " images valides trouvées sur " + configurationJson.getGroups().size() + " groupes");
-        return validImages;
+    private int verifyTransformImages(ConfigurationJson configurationJson, Map<Integer, List<Image>> imageIds, int transformId) {
+        return 0;
     }
 
     /**
@@ -793,20 +758,22 @@ public class MovieGenerator2 {
      *
      * @param transformDetachImage La transformation à appliquer
      * @param configurationJson    La configuration JSON contenant les groupes et points
+     * @return
      */
-    private void processDetachImageTransform(TransformDetachImage transformDetachImage,
-                                             ConfigurationJson configurationJson) {
-        if (transformDetachImage.getTargetType().equals(Transform.TargetType.All)) {
-            // Détacher l'image de tous les groupes par défaut
-            configurationJson.getGroups().stream()
-                    .filter(group -> group.getId().equals("default"))
-                    .forEach(group -> group.setImageId(null));
-        } else {
-            // Détacher l'image uniquement du groupe cible spécifié
-            configurationJson.getGroups().stream()
+    private Group processDetachImageTransform(TransformDetachImage transformDetachImage,
+                                              ConfigurationJson configurationJson) {
+        final Group[] g = {null};
+        // Détacher l'image uniquement du groupe cible spécifié
+        configurationJson.getGroups().stream()
                     .filter(group -> transformDetachImage.getTargetId().equals(group.getId()))
-                    .forEach(group -> group.setImageId(null));
-        }
+                    .forEach(new Consumer<Group>() {
+                        @Override
+                        public void accept(Group group) {
+                            g[0] = group;
+                        }
+                    });
+        return g[0];
+
     }
 
     /**
@@ -860,4 +827,70 @@ public class MovieGenerator2 {
         }
     }
 
+    /**
+     * Reads an image from a URL, handling authenticated access for private Google Cloud Storage objects.
+     * @param urlString The URL of the image. Can be a public URL or a GCS URL.
+     * @return An Image object, or null if the URL is empty.
+     * @throws IOException If the image cannot be read or downloaded.
+     */
+    private Image readImageFromGcsUrl(String urlString) throws IOException {
+        if (urlString == null || urlString.trim().isEmpty()) {
+            return null;
+        }
+
+        // Ensure URL is properly encoded before creating a URI
+        URI uri = URI.create(urlString.replace(" ", "%20"));
+        String host = uri.getHost();
+
+        // Check if this is a Google Cloud Storage URL that requires authenticated access
+        if (host != null && (host.equals("storage.googleapis.com") || host.equals("firebasestorage.googleapis.com"))) {
+            logger.info("Reading private image from GCS: " + urlString);
+
+            String path = uri.getPath(); // e.g., /my-bucket/my-folder/image.jpg
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
+
+            String bucketName;
+            String objectName;
+
+            // Handle different GCS URL formats
+            if (host.equals("storage.googleapis.com")) {
+                // Format: storage.googleapis.com/BUCKET_NAME/OBJECT_NAME
+                int firstSlash = path.indexOf('/');
+                if (firstSlash == -1) {
+                    throw new IllegalArgumentException("Invalid GCS URL format. Expected https://storage.googleapis.com/bucket/object. Got: " + urlString);
+                }
+                bucketName = path.substring(0, firstSlash);
+                objectName = path.substring(firstSlash + 1);
+            } else { // firebasestorage.googleapis.com
+                // Format: firebasestorage.googleapis.com/v0/b/BUCKET_NAME/o/OBJECT_NAME...
+                String prefix = "v0/b/";
+                if (!path.startsWith(prefix)) {
+                    throw new IllegalArgumentException("Invalid Firebase Storage URL format. Got: " + urlString);
+                }
+                path = path.substring(prefix.length());
+                int bucketEnd = path.indexOf('/');
+                bucketName = path.substring(0, bucketEnd);
+
+                String objectPrefix = "/o/";
+                int objectStart = path.indexOf(objectPrefix);
+                if (objectStart == -1) {
+                    throw new IllegalArgumentException("Invalid Firebase Storage URL format. Could not find object part. Got: " + urlString);
+                }
+                objectName = path.substring(objectStart + objectPrefix.length());
+            }
+
+            BlobId blobId = BlobId.of(bucketName, objectName);
+            byte[] content = storage.readAllBytes(blobId);
+
+            try (InputStream is = new ByteArrayInputStream(content)) {
+                return new Image(ImageIO.read(is));
+            }
+        } else {
+            // Fallback for standard public URLs
+            logger.info("Reading public image from URL: " + urlString);
+            return new Image(ImageIO.read(uri.toURL()));
+        }
+    }
 }

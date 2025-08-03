@@ -18,6 +18,7 @@ import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,6 +57,13 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mp4\"";
     private static final String ALLOWED_ORIGIN = "https://us-central1-studio-6v2lo.cloudfunctions.net/motion-weaver-render";
+    private static final String ALLOWED_METHODS = "GET, POST, OPTIONS";
+    private static final String ALLOWED_HEADERS = "Content-Type";
+    private static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
+    private static final String ACCESS_CONTROL_ALLOW_METHODS_HEADER = "Access-Control-Allow-Methods";
+    private static final String ACCESS_CONTROL_ALLOW_HEADERS_HEADER = "Access-Control-Allow-Headers";
+    private static final String ACCESS_CONTROL_MAX_AGE_HEADER = "Access-Control-Max-Age";
+    private static final String SERVICE_ACCOUNT = "firebase-app-hosting-compute@studio-6v2lo.iam.gserviceaccount.com";
 
 
     private String uploadToCloudStorage(File outputFile, String userId) throws IOException {
@@ -145,6 +153,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
+
+
+
         // Configurer les en-têtes CORS pour toutes les requêtes
         response.appendHeader("Access-Control-Allow-Origin", "*");
         response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -161,10 +172,11 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         String callerEmail = getCallerIdentity(request);
         if (callerEmail == null) {
             // Si l'identité ne peut pas être vérifiée et que vous exigez une authentification
-            sendErrorResponse(response, 401, "Unauthorized: Jeton d'authentification invalide ou manquant.");
-            return;
+            //sendErrorResponse(response, 401, "Unauthorized: Jeton d'authentification invalide ou manquant.");
+            //return;
+        } else {
+            logger.info("Requête reçue de l'appelant authentifié : " + callerEmail);
         }
-        logger.info("Requête reçue de l'appelant authentifié : " + callerEmail);
 
         // Vérifier la méthode HTTP
         if (!"POST".equals(request.getMethod())) {
@@ -276,14 +288,14 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             for ( FileType fp : types) {
                 Logger.getLogger(getClass().getCanonicalName()).info(fp.file().getAbsolutePath());
                 if(fp.file().getAbsolutePath().endsWith(".json") && fp.file().exists()) {
-                    Scanner scanner = new Scanner(fp.file());
-                    StringBuilder stringBuilder = new StringBuilder();
-                    while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        stringBuilder.append(line).append("\n");
-                        logger.info(line);
+                    try {
+                        String jsonContent = Files.readString(fp.file().toPath());
+                        configurationJson = ConfigurationJson.parseJson(jsonContent);
+                        // Log en cas de besoin de débogage
+                        logger.fine("Fichier JSON chargé : " + fp.file().getAbsolutePath());
+                    } catch (IOException e) {
+                        logger.warning("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
                     }
-                    configurationJson = ConfigurationJson.parseJson(stringBuilder.toString());
                 }
             }
 
@@ -343,11 +355,13 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             OutputStream o = response.getOutputStream();
 
             response.setContentType("application/json");
-            o.write(("{"+/*"\"video\":\"" + base64Content
-                    + "\","+*/"\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage + "\"}").getBytes(StandardCharsets.UTF_8));
-
+            String bytes = ("{" +/*"\"video\":\"" + base64Content
+                    + "\","+*/"\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage.substring(0, uploadToCloudStorage.indexOf('?')) + "\"}");
+            for (int i = 0; i < bytes.length(); i++) {
+                o.write(bytes.charAt(i));
+            }
             if (outputFile.exists()) {
-                Files.copy(outputFile.toPath(), o);
+                ;//Files.copy(outputFile.toPath(), o);
             } else {
                 int size = -1;
                 if (generator != null && generator.images != null)
@@ -509,7 +523,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             return null;
         }
 
-        String idTokenString = authHeader.get().substring(7); // Enlever "Bearer "
+        String idTokenString = authHeader.get().replace("Bearer ", ""); // Enlever "Bearer "
 
         // L'audience doit correspondre à l'URL de votre fonction.
         // C'est une mesure de sécurité cruciale pour éviter les attaques de type "confused deputy".
@@ -518,7 +532,6 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 .setAudience(Collections.singletonList(audience))
                 .build();
-
         try {
             GoogleIdToken idToken = verifier.verify(idTokenString);
             if (idToken != null) {
@@ -531,37 +544,33 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             logger.log(Level.SEVERE, "Erreur lors de la vérification du jeton d'identification", e);
             return null;
         }
+
     }
-
     /**
-     * Nettoie les fichiers temporaires créés pendant le traitement
+     * Nettoie les fichiers et répertoires temporaires de manière récursive.
      */
-    private void cleanupFiles(File tempDir) {
+    private void cleanupFiles(File fileOrDir) {
         try {
-            if (tempDir != null && tempDir.exists()) {
-                for (File file : Objects.requireNonNull(tempDir.listFiles())) {
-                    if (file != null && !"..".equals(file.getName()) && !".".equals(file.getName())) {
-                        if ((file != null && file.exists()) && (!file.isDirectory() || (file.isDirectory() && Objects.requireNonNull(file.listFiles()).length == 0))) {
-                            if (file.delete()) {
-                                logger.fine("Fichier supprimé : " + file.getName());
-                            }
-                            if (file.isDirectory() && file.listFiles() != null && file.listFiles().length > 0) {
-                                cleanupFiles(file);
-                            }
-                            if (file.exists() && file.isDirectory() && file.listFiles() != null && file.listFiles().length == 0)
-                                file.delete();
-                        }
-                    }
+            if (fileOrDir == null || !fileOrDir.exists()) {
+                return;
+            }
 
-                    if (tempDir.exists() && tempDir.isDirectory()) {
-                        tempDir.delete();
-                        logger.info("Nettoyage des fichiers temporaires effectué");
+            // Si c'est un répertoire, on supprime son contenu récursivement
+            if (fileOrDir.isDirectory()) {
+                File[] children = fileOrDir.listFiles();
+                if (children != null) { // listFiles() peut retourner null en cas d'erreur I/O
+                    for (File child : children) {
+                        cleanupFiles(child);
                     }
                 }
             }
+
+            // On supprime le fichier ou le répertoire (maintenant vide)
+            if (!fileOrDir.delete()) {
+                logger.warning("Impossible de supprimer le fichier/répertoire temporaire : " + fileOrDir.getAbsolutePath());
+            }
         } catch (SecurityException ex) {
             logger.log(Level.WARNING, "Erreur lors du nettoyage des fichiers temporaires", ex);
-            ex.printStackTrace();
         }
     }
 

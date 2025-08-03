@@ -432,8 +432,7 @@ dependencies {
     // Vos autres dépendances Google Cloud
     implementation 'com.google.cloud:google-cloud-vision:3.50.0'
     implementation 'com.google.cloud:google-cloud-storage:2.43.1'  // Assurer une version cohérente
-
-    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.danilopianini:gson-extras:0.2.1'
     implementation 'com.google.code.gson:gson-parent:2.13.1'
     implementation 'com.google.firebase:firebase-admin:9.2.0'
