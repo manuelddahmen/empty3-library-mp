@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import one.empty3.libs.Image;
 
@@ -226,11 +228,12 @@ public class MovieGenerator2 {
                             int finalFrameIndex = currentFrameIndex;
                             String groupId = transform.getTargetId();
 
-                            List<Point> points = finalConfigurationJson.getAnimation().get(finalFrameIndex);
-                            if (points != null && points.size() > 0) {
+                                 AnimationFrame animationFrame = finalConfigurationJson.getAnimation().get(finalFrameIndex);
+                                 List<Point> points = animationFrame.getPoints();
+                                 if (points != null && points.size() > 0) {
                                 for (int p = 0; p < configurationJson.getPoints().size(); p++) {
                                     Point pointPoint = configurationJson.getPoints().get(p);
-                                    if (configurationJson.getAnimation().get(finalFrameIndex).get(p).getId() == pointPoint.getId()) {
+                                    if (configurationJson.getAnimation().get(currentTransformFrame).getPoints().get(p).getId().equals(pointPoint.getId())) {
                                         pointPoint.setX(points.get(p).getX());
                                         pointPoint.setY(points.get(p).getY());
                                     }
@@ -253,8 +256,15 @@ public class MovieGenerator2 {
                             ConfigurationJson finalConfigurationJson = configurationJson;
                             int finalFrame2 = frame;
                             configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
-                                finalConfigurationJson.getAnimation().stream().filter(points -> points.get(finalFrame2).getId().equals(point.getId()));
-                                return point;
+
+                                Stream<Point> pointStream = finalConfigurationJson.getAnimation().stream().filter(animationFrame -> animationFrame.getPoints().get(transformFrames).getId().equals(point.getId())).map(new Function<AnimationFrame, Point>() {
+                                    @Override
+                                    public Point apply(AnimationFrame animationFrame) {
+                                        return animationFrame.getPoints().get(transformFrames);
+                                    }
+                                });
+                                return pointStream.findFirst().get();
+
                             });
                         }
                         if (image1 != null && image1.getBi()!=null) {

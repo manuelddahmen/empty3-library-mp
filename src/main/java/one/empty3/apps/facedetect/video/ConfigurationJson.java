@@ -14,7 +14,7 @@ class ConfigurationJson {
     private List<Point> points = new ArrayList<>();
     private List<Group> groups = new ArrayList<>();
     private List<Transform> transforms = new ArrayList<>();
-    private List<List<Point>> animation = new ArrayList<>();
+    private List<AnimationFrame> animation = new ArrayList<>();
 
     /**
      * A single, reusable Gson instance configured with all necessary TypeAdapters.
@@ -27,11 +27,11 @@ class ConfigurationJson {
 
     // Getters and setters...
 
-    public List<List<Point>> getAnimation() {
+    public List<AnimationFrame> getAnimation() {
         return animation;
     }
 
-    public void setAnimation(List<List<Point>> animation) {
+    public void setAnimation(List<AnimationFrame> animation) {
         this.animation = animation;
     }
 
@@ -66,7 +66,6 @@ class ConfigurationJson {
         return GSON.fromJson(jsonString, ConfigurationJson.class);
     }
 
-
     /**
      * Parse un fichier JSON et crée un objet ConfigurationJson.
      */
@@ -86,11 +85,40 @@ class ConfigurationJson {
         return GSON.toJson(this);
     }
 
-
     public static void main(String[] args) {
         ConfigurationJson configurationJson = ConfigurationJson.parseJson(
                 new File("res/animate-json/animation-data.json"));
         System.out.println(configurationJson);
+    }
+}
+
+// Nouvelle classe pour représenter une frame d'animation
+class AnimationFrame {
+    private List<Point> points = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
+
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    @Override
+    public String toString() {
+        return "AnimationFrame{" +
+                "points=" + points.size() + " points" +
+                ", groups=" + groups.size() + " groups" +
+                '}';
     }
 }
 
@@ -101,6 +129,8 @@ class Point {
     private String id;
     private Color color;
     private boolean visible;
+    private String imageUrl; // Ajouté pour supporter les images dans les points d'animation
+
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
     public double getY() { return y; }
@@ -131,6 +161,25 @@ class Point {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", visible=" + visible +
+                '}';
+    }
 }
 
 class Group {
@@ -138,10 +187,10 @@ class Group {
     private String name;
     private List<String> pointIds = new ArrayList<>();
     private boolean visible = true;
+
     public boolean isVisible() {
         return visible;
     }
-
 
     public void setVisible(boolean visible) {
         this.visible = visible;
@@ -149,8 +198,18 @@ class Group {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
     public List<String> getPointIds() { return pointIds; }
     public void setPointIds(List<String> pointIds) { this.pointIds = pointIds; }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\''
+                ;
+    }
 }
 
 abstract class Transform {

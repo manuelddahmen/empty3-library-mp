@@ -25,9 +25,11 @@ public class TransformDeserializer implements JsonDeserializer<Transform> {
         // Fait correspondre la valeur du type à la classe Java concrète
         Class<? extends Transform> transformClass;
         switch (type.toLowerCase()) {
+            case "attachimage":
             case "attach_image":
                 transformClass = TransformAttachImage.class;
                 break;
+            case "detachimage":
             case "detach_image":
                 transformClass = TransformDetachImage.class;
                 break;
@@ -37,6 +39,7 @@ public class TransformDeserializer implements JsonDeserializer<Transform> {
             case "rotate":
                 transformClass = TransformRotate.class;
                 break;
+            case "setvisibility":
             case "set_visibility":
                 transformClass = TransformSetVisibility.class;
                 break;
