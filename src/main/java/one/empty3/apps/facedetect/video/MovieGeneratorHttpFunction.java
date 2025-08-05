@@ -356,7 +356,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             response.setContentType("application/json");
             String bytes = ("{" +/*"\"video\":\"" + base64Content
-                    + "\","+*/"\"mimeType\":\"video/mp4\", \"url:\":\"" + uploadToCloudStorage.substring(0, uploadToCloudStorage.indexOf('?')) + "\"}");
+                    + "\","+*/"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\"" + uploadToCloudStorage.substring(0, uploadToCloudStorage.indexOf('?')) + "\"}");
             for (int i = 0; i < bytes.length(); i++) {
                 o.write(bytes.charAt(i));
             }
