@@ -205,26 +205,29 @@ public class MovieGenerator2 {
             }
 
         }
-        logger.severe("Aucunes images trouvées pour " + configurationJson.getGroups().size() + " groupes");
-
+        if(countImages==0) {
+            logger.severe("Aucunes image trouvée pour " + configurationJson.getGroups().size() + " groupes");
+        } else {
+            logger.info(countImages + " images trouvées pour " + configurationJson.getGroups().size() + " groupes");
+        }
         transformIndex[0] = 0;
         // Traiter chaque transformation définie dans le fichier de configuration
         if (configurationJson != null && configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
-
+                int relativeFrameIndex = 0;
                 logger.info("Traitement de la transformation " + transform.getClass().getSimpleName());
 
                 // Récupérer le nombre de frames pour cette transformation
                 int transformFrames = transform.getFrames();
-                int currentTransformFrame = 0;
+                int currentFrameInCurrentTransform = 0;
                 // Stocker la transformation actuelle pour référence dans les autres méthodes
                 currentTransform = transform;
 
                 // Traiter chaque frame de la transformation
                 for (int j = 0; j < transformFrames; j++) {
                     currentImageFrame = new Image(RES_AVG, RES_AVG);
-                    double progress = 1.0 * currentTransformFrame / transformFrames;
+                    double progress = 1.0 * currentFrameInCurrentTransform / transformFrames;
                     // Calculer le pourcentage de progression de cette transformation
                     double transformProgress = (double) j / Math.max(1, transformFrames - 1);
                      /*
@@ -242,14 +245,21 @@ public class MovieGenerator2 {
                             int finalFrameIndex = currentFrameIndex;
                             String groupId = transform.getTargetId();
 
-                            AnimationFrame animationFrame = finalConfigurationJson.getAnimation().get(finalFrameIndex);
-                            List<Point> points = animationFrame.getPoints();
+                            List<Point> animationFrame = finalConfigurationJson.getAnimation().get(currentFrameInCurrentTransform);
+                            List<Point> points = animationFrame;
                             if (points != null && points.size() > 0) {
                                 for (int p = 0; p < configurationJson.getPoints().size(); p++) {
                                     Point pointPoint = configurationJson.getPoints().get(p);
-                                    if (configurationJson.getAnimation().get(currentTransformFrame).getPoints().get(p).getId().equals(pointPoint.getId())) {
-                                        pointPoint.setX(points.get(p).getX());
-                                        pointPoint.setY(points.get(p).getY());
+                                    List<Point> points1 = configurationJson.getAnimation().get(currentFrameInCurrentTransform);
+                                    for (int q = 0; q < points1.size(); q++) {
+                                        Point pointPoint1 = points1.get(q);
+                                        if (pointPoint1.getId().equals(pointPoint.getId())) {
+                                            pointPoint.setX(points.get(p).getX());
+                                            pointPoint.setY(points.get(p).getY());
+                                            pointPoint.setColor(points.get(p).getColor());
+                                            pointPoint.setName(points.get(p).getName());
+                                            pointPoint.setVisible(points.get(p).isVisible());
+                                        }
                                     }
                                 }
                             }
@@ -268,18 +278,6 @@ public class MovieGenerator2 {
                             ).findFirst().get();
 
                             ConfigurationJson finalConfigurationJson = configurationJson;
-                            int finalFrame2 = frame;
-                            configurationJson.getPoints().replaceAll((UnaryOperator<Point>) point -> {
-
-                                Stream<Point> pointStream = finalConfigurationJson.getAnimation().stream().filter(animationFrame -> animationFrame.getPoints().get(transformFrames).getId().equals(point.getId())).map(new Function<AnimationFrame, Point>() {
-                                    @Override
-                                    public Point apply(AnimationFrame animationFrame) {
-                                        return animationFrame.getPoints().get(transformFrames);
-                                    }
-                                });
-                                return pointStream.findFirst().get();
-
-                            });
                         }
                         if (image1 != null && image1.getBi() != null) {
                             if (g.isVisible()) {
@@ -296,6 +294,7 @@ public class MovieGenerator2 {
                             }
                         }
                     }
+                    currentFrameInCurrentTransform++;
                     // Passer à la frame suivante
                     frame = frame + 1;
                     totalFramesCount++;
@@ -316,7 +315,7 @@ public class MovieGenerator2 {
      * @return
      */
     private Image drawImage(Group g, ConfigurationJson configurationJson, Image image1) {
-        if (currentImageFrame == null) {
+        if (currentImageFrame == null || image1==null || isBlank(image1)) {
             return image1;
         }
 
@@ -384,9 +383,7 @@ public class MovieGenerator2 {
             c.calculerMatrice(Point3D.Y.mult(-1));
             zBuffer.texture(new ImageTexture(currentImageFrame));
 
-        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(
-                    ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, RES_AVG*4
-            ));
+        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1.0/4/RES_AVG,0.001 ));
         if (hasAllCornerPoints(g, allPoints)) {
             zBuffer.tracerQuad(new Point3D(allPoints.get(0).getX(), allPoints.get(0).getY(), 0.0),
                     new Point3D(allPoints.get(1).getX(), allPoints.get(1).getY(), 0.0),
@@ -398,6 +395,33 @@ public class MovieGenerator2 {
             g2d.drawImage(image1.getBi(), 0, 0, currentImageFrame.getBi().getWidth(), currentImageFrame.getBi().getHeight(), null);
         }
         return currentImageFrame;
+    }
+
+    private boolean isBlank(Image image1) {
+        if (image1 == null) {
+            return true;
+        }
+        if (image1.getBi() == null) {
+            return true;
+        }
+        if (image1.getBi().getWidth() == 0) {
+            return true;
+        }
+        if (image1.getBi().getHeight() == 0) {
+            return true;
+        }
+        int refColor = 0;
+        for (int i = 0; i < image1.getBi().getWidth(); i++) {
+            for (int j = 0; j < image1.getBi().getHeight(); j++) {
+                if(refColor==0) {
+                    refColor = image1.getBi().getRGB(i, j);
+                }
+                if(image1.getBi().getRGB(i, j) != refColor) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

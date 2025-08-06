@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +37,6 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -47,6 +46,8 @@ import java.util.concurrent.TimeUnit;
  * d'un fichier texte et de deux images.
  */
 public class MovieGeneratorHttpFunction implements HttpFunction {
+    private static final int MAX_PROCESSING_TIME_MS = 600000; // 9 minutes
+    private static final int HEARTBEAT_INTERVAL_MS = 5000; // 30 secondes
     private static final String BUCKET_NAME = "gs://studio-6v2lo.firebasestorage.app";
     private static final Logger logger = Logger.getLogger(MovieGeneratorHttpFunction.class.getCanonicalName());
     private static final String TEXT_PART_NAME = ".txt";
@@ -104,6 +105,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             try {
                 // Essayer d'abord avec les identifiants par défaut
                 signedUrl = blob.signUrl(7, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature());
+                return signedUrl.toString();
             } catch (Exception e) {
                 logger.warning("Impossible de générer l'URL signée avec les identifiants par défaut: " + e.getMessage());
 
@@ -126,6 +128,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                         signedUrl = blob.signUrl(7, TimeUnit.DAYS,
                                 Storage.SignUrlOption.signWith(signer),
                                 Storage.SignUrlOption.withV4Signature());
+                        return signedUrl.toString();
                     } else {
                         throw new IllegalArgumentException("Les identifiants ne supportent pas la signature");
                     }
@@ -148,6 +151,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             }
             throw new IOException("Erreur lors de l'upload vers Google Cloud Storage: " + e.getMessage(), e);
         }
+
     }
 
 
@@ -215,8 +219,10 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         File image1 = null;
         File image2 = null;
         File outputFile = null;
+        ScheduledExecutorService heartbeatExecutor = null;
+        Future<?> heartbeatTask = null;
 
-        List<FileType> types = new ArrayList<>();
+                    List<FileType> types = new ArrayList<>();
         try {
             Map<String, HttpPart> parts = request.getParts();
 
@@ -316,6 +322,21 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             outputFile = new File(tempDir.toString(), outputFileName);
 
 
+            // Envoyer un heartbeat périodique pour maintenir la connexion
+            heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
+            heartbeatTask = heartbeatExecutor.scheduleAtFixedRate(() -> {
+                try {
+//                    if (!response.isCommitted()) {
+                        response.getOutputStream().write(' '); // Caractère invisible
+//                        response.getOutputStream().flush();
+                    //}
+                } catch (IOException e) {
+                    logger.warning("Heartbeat failed: " + e.getMessage());
+                }
+            }, HEARTBEAT_INTERVAL_MS, HEARTBEAT_INTERVAL_MS, TimeUnit.MILLISECONDS);
+
+
+
             MovieGenerator2 generator = null;
             try {
                 generator = new MovieGenerator2(types, outputFile, configurationJson, tempDir);
@@ -355,11 +376,11 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             OutputStream o = response.getOutputStream();
 
             response.setContentType("application/json");
+            PrintWriter printWriter = new PrintWriter(o);
+            int i1 = uploadToCloudStorage.indexOf('?');
             String bytes = ("{" +/*"\"video\":\"" + base64Content
-                    + "\","+*/"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\"" + uploadToCloudStorage.substring(0, uploadToCloudStorage.indexOf('?')) + "\"}");
-            for (int i = 0; i < bytes.length(); i++) {
-                o.write(bytes.charAt(i));
-            }
+                    + "\","+*/"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\"" + uploadToCloudStorage.substring(0, i1==-1?uploadToCloudStorage.length():i1) + "\"}");
+            printWriter.print(bytes);
             if (outputFile.exists()) {
                 ;//Files.copy(outputFile.toPath(), o);
             } else {
@@ -378,6 +399,11 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             logger.log(Level.SEVERE, "Erreur lors de la génération du film", e);
             sendErrorResponse(response, 500, "Erreur lors de la génération du film : " + exceptionToString(e));
         } finally {
+            if(heartbeatTask!=null&&heartbeatExecutor!=null) {
+                heartbeatTask.cancel(true);
+                heartbeatExecutor.shutdown();
+            }
+
             cleanupFiles(tempDir.toFile());
         }
     }
