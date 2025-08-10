@@ -9,15 +9,11 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import one.empty3.library.*;
 import one.empty3.libs.Image;
@@ -76,38 +72,37 @@ public class MovieGenerator2 {
 
         for (FileType fileType : types) {
             if (fileType.file().getAbsolutePath().endsWith("txt")) {
-                try {
+                try {/*
                     File f = fileType.file();
                     String content = Files.readString(f.toPath());
                     String[] split = content.split("\n");
                     String currentGroup = "default";
                     for (int lineNumber = 0; lineNumber < split.length; lineNumber++) {
                         String line = split[lineNumber];
+                        if (line == null || line.equals(""))
+                            continue;
                         logger.info(line);
-                        if (content.toLowerCase().equals("next")) {
+                        if (line.equalsIgnoreCase("next")) {
                             images.add(currentImageFrame);
                             currentImageFrame = new Image(RES_AVG, RES_AVG);
                             currentGroup = "default";
                             mapPoint.clear();
 
-                        } else if (content.toLowerCase().startsWith("group ")) {
+                        } else if (line.toLowerCase().length() >= "group ".length() && line.toLowerCase().startsWith("group ")) {
                             currentGroup = line.substring("group ".length());
 
-                        } else if (content.toLowerCase().startsWith("point ")) {
-                            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-                            NamedPoint namedPoint = readPoint(List.of(split), lineNumber, atomicBoolean);
-                            if (namedPoint != null) {
-                                mapPoint.put(currentGroup, namedPoint);
-                                lineNumber += 3;
-                                if (atomicBoolean.get()) {
-                                    currentGroup = null;
-                                }
-                            }
-                        } else if (content.toLowerCase().startsWith("endofgroup")) {
+                        } else if (line.toLowerCase().length() >= "endofgroup".length() && line.toLowerCase().startsWith("endofgroup")) {
                             currentGroup = null;
+                        } else if (line.toLowerCase().length() > 1) {
+                            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+                            NamedPoint namedPoint = new NamedPoint();
+                            lineNumber = readPoint(namedPoint, List.of(split), lineNumber, atomicBoolean);
+                            if (atomicBoolean.get()) {
+                                currentGroup = null;
+                            }
                         }
-                    }
-                } catch (IOException e) {
+                    }*/
+                } catch (RuntimeException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -172,6 +167,7 @@ public class MovieGenerator2 {
         Image[][] allImagesSets = new Image[configurationJson.getGroups().size()][configurationJson.getTransforms().size()];
         logger.info("groups : " + configurationJson.getGroups().size());
         logger.info("transforms : " + configurationJson.getTransforms().size());
+        logger.info("animation total : " + configurationJson.getAnimation().size());
         int countImages = 0;
         for (int i = 0; i < configurationJson.getGroups().size(); i++) {
             for (int j = 0; j < configurationJson.getTransforms().size(); j++) {
@@ -205,7 +201,7 @@ public class MovieGenerator2 {
             }
 
         }
-        if(countImages==0) {
+        if (countImages == 0) {
             logger.severe("Aucunes image trouvée pour " + configurationJson.getGroups().size() + " groupes");
         } else {
             logger.info(countImages + " images trouvées pour " + configurationJson.getGroups().size() + " groupes");
@@ -225,9 +221,12 @@ public class MovieGenerator2 {
                 currentTransform = transform;
 
                 // Traiter chaque frame de la transformation
+
                 for (int j = 0; j < transformFrames; j++) {
+                    if (configurationJson.getAnimationFrameCount() < j)
+                        continue;
                     currentImageFrame = new Image(RES_AVG, RES_AVG);
-                    double progress = 1.0 * currentFrameInCurrentTransform / transformFrames;
+                    double progress = 1.0 * j / transformFrames;
                     // Calculer le pourcentage de progression de cette transformation
                     double transformProgress = (double) j / Math.max(1, transformFrames - 1);
                      /*
@@ -241,24 +240,27 @@ public class MovieGenerator2 {
                         Image image1 = allImagesSets[k][i];
                         // Déterminer le type de transformation et appliquer l'effet approprié
                         if (transform instanceof TransformTranslate || transform instanceof TransformScale || transform instanceof TransformScale || transform instanceof TransformRotate) {
-                            ConfigurationJson finalConfigurationJson = configurationJson;
                             int finalFrameIndex = currentFrameIndex;
                             String groupId = transform.getTargetId();
 
-                            List<Point> animationFrame = finalConfigurationJson.getAnimation().get(currentFrameInCurrentTransform);
-                            List<Point> points = animationFrame;
-                            if (points != null && points.size() > 0) {
-                                for (int p = 0; p < configurationJson.getPoints().size(); p++) {
-                                    Point pointPoint = configurationJson.getPoints().get(p);
-                                    List<Point> points1 = configurationJson.getAnimation().get(currentFrameInCurrentTransform);
-                                    for (int q = 0; q < points1.size(); q++) {
-                                        Point pointPoint1 = points1.get(q);
-                                        if (pointPoint1.getId().equals(pointPoint.getId())) {
-                                            pointPoint.setX(points.get(p).getX());
-                                            pointPoint.setY(points.get(p).getY());
-                                            pointPoint.setColor(points.get(p).getColor());
-                                            pointPoint.setName(points.get(p).getName());
-                                            pointPoint.setVisible(points.get(p).isVisible());
+                            Frame animation = configurationJson.getAnimationFrame(j);
+                            if (animation == null) {
+                                logger.severe("AnimationFrame null for frame " + j + " of " + transform.getClass().getSimpleName());
+                            } else  {
+                                List<Point> points = animation.getPoints();
+                                if (points != null) {
+                                    for (int p = 0; p < configurationJson.getPoints().size(); p++) {
+                                        Point pointPoint = configurationJson.getPoints().get(p);
+                                        List<Point> points1 = configurationJson.getAnimationPoints(j);
+                                        for (int q = 0; q < points.size(); q++) {
+                                            Point pointPoint1 = points.get(q);
+                                            if (pointPoint1.getId().equals(pointPoint.getId())) {
+                                                pointPoint.setX(pointPoint1.getX());
+                                                pointPoint.setY(pointPoint1.getY());
+                                                //pointPoint.setColor(points.get(p).getColor());
+                                                //pointPoint.setName(points.get(p).getName());
+                                                //pointPoint.setVisible(points.get(p).isVisible());
+                                            }
                                         }
                                     }
                                 }
@@ -266,7 +268,7 @@ public class MovieGenerator2 {
                             for (Point point : configurationJson.getPoints()) {
 
                             }
-                            transformPointsBasedOnProgress(points, transform, progress, image1);
+                            //transformPointsBasedOnProgress(points, transform, progress, image1);
                         } else if (transform instanceof TransformSetVisibility transformSetVisibility) { // TODO: implement
                             g.setVisible(transformSetVisibility.isVisible());
                         } else if (transform instanceof TransformMorph transformMorph) {
@@ -281,20 +283,20 @@ public class MovieGenerator2 {
                         }
                         if (image1 != null && image1.getBi() != null) {
                             if (g.isVisible()) {
-                                drawImage(g, configurationJson, image1);
-                                /*try {
+                                try {
                                     Graphics g2d = currentImageFrame.getBi().getGraphics();
                                     Image image2 = resizeImageToFillScreen(image1);
                                     g2d.drawImage(image2.getBi(), 0, 0, image2.getBi().getWidth(), image2.getBi().getHeight(), null);
+                                    drawImage(g, configurationJson, image2);
                                 } catch (RuntimeException ex) {
                                     ex.printStackTrace();
-                                }*/
+                                }
                             } else {
                                 logger.info("Image " + g.getId() + " invisible, ne pas dessiner");
                             }
                         }
                     }
-                    currentFrameInCurrentTransform++;
+                    j++;
                     // Passer à la frame suivante
                     frame = frame + 1;
                     totalFramesCount++;
@@ -315,7 +317,7 @@ public class MovieGenerator2 {
      * @return
      */
     private Image drawImage(Group g, ConfigurationJson configurationJson, Image image1) {
-        if (currentImageFrame == null || image1==null || isBlank(image1)) {
+        if (currentImageFrame == null || image1 == null || isBlank(image1)) {
             return image1;
         }
 
@@ -356,7 +358,7 @@ public class MovieGenerator2 {
 
                         // Ajouter le nom du point s'il existe
                         if (point.getName() != null && !point.getName().isEmpty()) {
-                            g2d.setColor(Color.BLACK);
+                            g2d.setColor(Color.WHITE);
                             g2d.drawString(point.getName(), x + pointSize, y);
                         }
 
@@ -371,19 +373,19 @@ public class MovieGenerator2 {
             int finalI = i;
             configurationJson.getPoints().stream().filter(point -> point.getId().equals(g.getPointIds().get(finalI))).forEach(allPoints::add);
         }
-            ZBufferImpl zBuffer = new ZBufferImpl(RES_AVG, RES_AVG);
-            zBuffer.idzpp();
-            Camera c = new Camera(new Point3D(0.5, 0.5, .5),
-                    new Point3D(0.5, 0.5, 0.0));
-            zBuffer.scene(new Scene());
-            zBuffer.camera(c);
+        ZBufferImpl zBuffer = new ZBufferImpl(RES_AVG, RES_AVG);
+        zBuffer.idzpp();
+        Camera c = new Camera(new Point3D(0.5, 0.5, -.5),
+                new Point3D(0.5, 0.5, 0.0));
+        zBuffer.scene(new Scene());
+        zBuffer.camera(c);
 
-            c.setAngleX(Math.PI / 4);
-            c.setAngleY(Math.PI / 4);
-            c.calculerMatrice(Point3D.Y.mult(-1));
-            zBuffer.texture(new ImageTexture(currentImageFrame));
+        c.setAngleX(Math.PI / 4);
+        c.setAngleY(Math.PI / 4);
+        c.calculerMatrice(Point3D.Y.mult(-1));
+        zBuffer.texture(new ImageTexture(currentImageFrame));
 
-        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1.0/4/RES_AVG,0.001 ));
+        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.001, 1.0 / 4 / RES_AVG ));
         if (hasAllCornerPoints(g, allPoints)) {
             zBuffer.tracerQuad(new Point3D(allPoints.get(0).getX(), allPoints.get(0).getY(), 0.0),
                     new Point3D(allPoints.get(1).getX(), allPoints.get(1).getY(), 0.0),
@@ -413,10 +415,10 @@ public class MovieGenerator2 {
         int refColor = 0;
         for (int i = 0; i < image1.getBi().getWidth(); i++) {
             for (int j = 0; j < image1.getBi().getHeight(); j++) {
-                if(refColor==0) {
+                if (refColor == 0) {
                     refColor = image1.getBi().getRGB(i, j);
                 }
-                if(image1.getBi().getRGB(i, j) != refColor) {
+                if (image1.getBi().getRGB(i, j) != refColor) {
                     return false;
                 }
             }
@@ -508,18 +510,20 @@ public class MovieGenerator2 {
      * @param lineNumber Numéro de ligne où commence la définition du point
      * @return Le point nommé ou null si le format est invalide
      */
-    public NamedPoint readPoint(List<String> lines, int lineNumber, AtomicBoolean endOfGroup) {
+    public int readPoint(NamedPoint namedPoint, List<String> lines, int lineNumber, AtomicBoolean endOfGroup) {
         // Vérifier que nous avons assez de lignes pour lire un point complet
-        if (lines == null || lineNumber < 0 || lineNumber + 3 >= lines.size()) {
+        if (lines == null || lineNumber < 0) {
             logger.fine("Pas assez de lignes pour lire un point à la ligne " + lineNumber);
-            return null;
+            return lineNumber;
         }
+        if (lineNumber + 3 >= lines.size())
+            return lines.size();
 
         // Vérifier que la ligne actuelle n'est pas vide
         String currentLine = lines.get(lineNumber);
         if (currentLine == null || currentLine.isEmpty()) {
             logger.fine("Ligne vide à " + lineNumber);
-            return null;
+            return lineNumber + 1;
         }
 
         // Vérifier que la ligne commence par une lettre et n'est pas un mot-clé réservé
@@ -528,19 +532,21 @@ public class MovieGenerator2 {
                 lowerCaseLine.startsWith("group ") ||
                 lowerCaseLine.startsWith("next")) {
             logger.fine("Ligne " + lineNumber + " n'est pas un début de point: " + currentLine);
-            return null;
+            return -1;
+        } else if (lowerCaseLine.startsWith("endofgroup")) {
+            endOfGroup.set(true);
+            return lineNumber + 1;
         }
 
         try {
             // Lire le nom du point et ses coordonnées
-            NamedPoint namedPoint = new NamedPoint();
             namedPoint.setName(currentLine.trim());
 
             // Coordonnée X
             String xLine = lines.get(lineNumber + 1);
             if (xLine == null || xLine.isEmpty()) {
                 logger.warning("Coordonnée X manquante pour le point " + currentLine + " à la ligne " + (lineNumber + 1));
-                return null;
+                return lineNumber + 2;
             }
             double x = Double.parseDouble(xLine);
 
@@ -548,7 +554,7 @@ public class MovieGenerator2 {
             String yLine = lines.get(lineNumber + 2);
             if (yLine == null || yLine.isEmpty()) {
                 logger.warning("Coordonnée Y manquante pour le point " + currentLine + " à la ligne " + (lineNumber + 2));
-                return null;
+                return lineNumber + 1;
             }
             double y = Double.parseDouble(yLine);
 
@@ -558,23 +564,24 @@ public class MovieGenerator2 {
                 namedPoint.setX(x);
                 namedPoint.setY(y);
                 logger.fine("Point " + namedPoint.getName() + " lu avec succès: (" + x + ", " + y + ")");
-                return namedPoint;
+                return lineNumber + 4;
             } else {
-                if (separatorLine.toLowerCase().equals("endofgroup")) {
-                    namedPoint.setX(x);
-                    namedPoint.setY(y);
+                namedPoint.setX(x);
+                namedPoint.setY(y);
+                if (!separatorLine.isBlank() && !separatorLine.equalsIgnoreCase("endofgroup")) {
                     endOfGroup.set(true);
-                    return namedPoint;
+                    return lineNumber + 4;
                 }
                 logger.warning("Format incorrect: la ligne séparatrice après les coordonnées n'est pas vide: " + separatorLine);
-                return null;
+                return lineNumber + 3;
             }
+
         } catch (NumberFormatException ex) {
             logger.warning("Erreur de format des coordonnées pour le point à la ligne " + lineNumber + ": " + ex.getMessage());
-            return null;
+            return lineNumber + 1;
         } catch (RuntimeException ex) {
             logger.warning("Erreur lors de la lecture du point à la ligne " + lineNumber + ": " + ex.getMessage());
-            return null;
+            return lineNumber + 1;
         }
     }
 

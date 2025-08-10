@@ -1,0 +1,46 @@
+
+rules_version = '2';
+
+service firebase.storage {
+match /b/{bucket}/o {
+
+// Helper function to check ownership
+function isOwner(userId) {
+return request.auth != null && request.auth.uid == userId;
+}
+
+// Rule for the main project file
+match /users/{userId}/motion-weaver-project.json {
+allow read, write: if isOwner(userId);
+}
+
+// Rule for user-uploaded images
+match /users/{userId}/images/** {
+allow read, write: if isOwner(userId);
+}
+// Rule for user-uploaded images
+match /users/{userId}/images/** {
+allow read, write,list: if isOwner(userId);
+}
+
+// Rules for generated videos and their metadata
+match /users/{userId}/generated_videos/{videoId}/metadata {
+// Allow reading individual metadata files
+allow read: if isOwner(userId);
+}
+
+match /users/{userId}/generated_videos/{videoId} {
+// Allow reading individual video files
+allow read: if isOwner(userId);
+}
+match /users/{userId}/generated_videos/** {
+// Allow reading individual video files
+allow read,write,list: if isOwner(userId);
+}
+
+match /users/{userId}/generated_videos/metadata/** {
+// Allow listing the contents of the metadata folder
+allow list: if isOwner(userId);
+}
+}
+}
