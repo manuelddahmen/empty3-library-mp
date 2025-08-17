@@ -68,7 +68,6 @@ public class Camera extends CameraBox {
         return verticale.getElem();
     }
 
-    @Deprecated
     public Camera(Point3D eye, Point3D lookat) {
         this(eye, lookat, null);
         scale.setElem(1.0);
@@ -134,7 +133,6 @@ public class Camera extends CameraBox {
         this.matrice.setElem(m.tild());
     }
 
-    @Deprecated
     public void calculerMatrice(Point3D vertical) {
         if (!imposerMatrice.getElem()) {
             if (vertical == null) {

@@ -301,7 +301,6 @@ public class StructureMatrix<T> implements Serializable, Serialisable {
         return result;
     }
 
-    @Deprecated
     public int getDim() {
         return dim;
     }

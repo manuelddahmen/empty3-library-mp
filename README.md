@@ -1,6 +1,20 @@
-# **Commentaire sur la bibliothèque empty3-library-3d**
-# Générateur de Films MPEG
 
+# **Utilisation principale**
+
+## 3D rendering
+## 3D modeling
+## Data visualization
+## 3D game development
+## Visual design
+## 3D animation
+
+### Exemple
+`./gradlew FaceDetect`
+Lancement de l'application Morph de Empty3
+
+# Commentaire sur la bibliothèque empty3-library-3d
+# Générateur de Films MPEG
+(ce chapitre contient un détail de la bibliothèque empty3-library-mp, voir plus haut pour l'essentiel)
 Cette application permet de générer des fichiers vidéo MPEG à partir d'un fichier texte et de deux images en utilisant Google Cloud Functions.
 
 ## Fonctionnalités
@@ -243,4 +257,3 @@ une application Android : image feature editor
 ![image](https://github.com/manuelddahmen/empty3_miror/assets/38113629/6a27f5db-e0c4-44ed-9731-23799b72fe10)
 
 ![Screenshot_20230701_095233](https://github.com/manuelddahmen/empty3_miror/assets/38113629/827310f3-3823-4577-a3e9-784a50934e78)
-

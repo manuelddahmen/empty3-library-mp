@@ -4,33 +4,24 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.http.MultipartContent;
 import com.google.auth.ServiceAccountSigner;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.google.auth.ServiceAccountSigner;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.cloud.storage.*;
-import one.empty3.apps.testobject.TestCollection;
-import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.concurrent.*;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.cloud.functions.HttpRequest.*;
-import one.empty3.apps.facedetect.video.ConfigurationJson.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +44,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String CONTENT_TYPE_mp4 = "video/mp4";
     private static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
     private static final String CONTENT_DISPOSITION_VALUE = "attachment; filename=\"generated-movie.mp4\"";
-    private static final String ALLOWED_ORIGIN = "https://us-central1-studio-6v2lo.cloudfunctions.net/motion-weaver-render";
+    private static final String ALLOWED_ORIGIN = "https://studio--studio-6v2lo.us-central1.hosted.app/motion-weaver-render";
     private static final String ALLOWED_METHODS = "GET, POST, OPTIONS";
     private static final String ALLOWED_HEADERS = "Content-Type";
     private static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
@@ -63,7 +54,17 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private static final String SERVICE_ACCOUNT = "firebase-app-hosting-compute@studio-6v2lo.iam.gserviceaccount.com";
 
 
-    private String uploadToCloudStorage(File outputFile, String userId) throws IOException {
+    /**
+     * Uploads a given video file to Google Cloud Storage under a specific user's directory.
+     * Generates a signed URL for accessing the uploaded file, valid for 7 days.
+     *
+     * @param outputFile The video file to be uploaded. Must not be null, empty, or non-existent.
+     * @param userId The user's unique identifier. Must not be null or empty.
+     * @return A signed URL of the uploaded video, allowing access for 7 days.
+     * @throws IOException If there is an error during the upload process or file handling.
+     * @throws IllegalArgumentException If the userId is null or empty.
+     */
+    private String uploadToCloudStorageVideoFile(File outputFile, String userId) throws IOException {
         if (outputFile == null || !outputFile.exists() || outputFile.length() == 0) {
             logger.severe("Le fichier à uploader est invalide ou vide");
             throw new IOException("Le fichier vidéo est invalide ou vide");
@@ -83,8 +84,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     .getService();
 
             // Générer un nom unique pour le fichier dans le dossier de l'utilisateur
-            String fileName = "users/" + userId + "/generated_video/" + System.currentTimeMillis() + "-" + outputFile.getName();
-
+            String fileName = "users/" + userId + "/generated_video/videos/" + System.currentTimeMillis() + "-" + outputFile.getName();
             // Créer les informations du blob avec le bon Content-Type
             BlobId blobId = BlobId.of(BUCKET_NAME.replace("gs://", ""), fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
@@ -101,6 +101,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             try {
                 // Essayer d'abord avec les identifiants par défaut
                 signedUrl = blob.signUrl(7, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature());
+                logger.info("URL correctly signed first attempts");
                 return signedUrl.toString();
             } catch (Exception e) {
                 logger.warning("Impossible de générer l'URL signée avec les identifiants par défaut: " + e.getMessage());
@@ -119,11 +120,11 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream);
 
                     // Vérifier que les identifiants implémentent ServiceAccountSigner
-                    if (credentials instanceof ServiceAccountSigner) {
-                        ServiceAccountSigner signer = (ServiceAccountSigner) credentials;
+                    if (credentials instanceof ServiceAccountSigner signer) {
                         signedUrl = blob.signUrl(7, TimeUnit.DAYS,
                                 Storage.SignUrlOption.signWith(signer),
                                 Storage.SignUrlOption.withV4Signature());
+                        logger.info("URL correctly signed 2 attempts");
                         return signedUrl.toString();
                     } else {
                         throw new IllegalArgumentException("Les identifiants ne supportent pas la signature");
@@ -149,7 +150,6 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         }
 
     }
-
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
@@ -194,12 +194,13 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         logger.info("Job ID reçu/généré: " + jobId);
 
         // Ou depuis les headers HTTP
+        if(jobId!=null && !jobId.trim().isEmpty()) {
         String jobIdFromHeader = request.getHeaders()
                 .getOrDefault("X-Job-ID", Collections.emptyList())
                 .stream()
                 .findFirst()
                 .orElse(generateJobId());
-
+        }
         // Extraire l'identifiant utilisateur de la requête. C'est le {hash}.
         userId = request.getFirstQueryParameter("userId").orElse(null);
         if (userId == null || userId.trim().isEmpty()) {
@@ -359,7 +360,8 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
 
-            String uploadToCloudStorage = uploadToCloudStorage(outputFile, userId);
+            String uploadToCloudStorageVideoFile = uploadToCloudStorageVideoFile(outputFile, userId);
+            String uploadToCloudStorageMetadata = VideoMetadataFunction.uploadToCloudStorageMetadata(outputFile, userId);
 //            response.getWriter().write(uploadToCloudStorage);
 
             // Optionnel: définir le nom du fichier pour le téléchargement
@@ -373,9 +375,12 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
 
             response.setContentType("application/json");
             PrintWriter printWriter = new PrintWriter(o);
-            int i1 = uploadToCloudStorage.indexOf('?');
-            String bytes = ("{" +/*"\"video\":\"" + base64Content
-                    + "\","+*/"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\"" + uploadToCloudStorage.substring(0, i1==-1?uploadToCloudStorage.length():i1) + "\"}");
+            int i1 = uploadToCloudStorageVideoFile.indexOf('?');
+            int j1 = uploadToCloudStorageMetadata.indexOf('?');
+            String bytes = ("{" +"\"video\":\"" + base64Content
+                    + "\","+"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\""
+                    + uploadToCloudStorageVideoFile.substring(0, i1==-1?uploadToCloudStorageVideoFile.length():i1)
+                    + "\", \"metadata\":\""+uploadToCloudStorageMetadata+"\", \"jobId=\":\"" + jobId + "\", \"userId\":\"" + userId + "\"}");
             printWriter.print(bytes);
             if (outputFile.exists()) {
                 ;//Files.copy(outputFile.toPath(), o);
@@ -538,7 +543,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
     private String getCallerIdentity(HttpRequest request) {
         // L'identité est dans l'en-tête "Authorization: Bearer <ID_TOKEN>"
         Optional<String> authHeader = request.getFirstHeader("Authorization");
-        if (authHeader.isEmpty() || !authHeader.get().startsWith("Bearer ")) {
+        if (authHeader.isEmpty() || !authHeader.get().equalsIgnoreCase("Bearer ")) {
             logger.info("Aucun en-tête d'autorisation Bearer trouvé. L'appelant est peut-être anonyme.");
             // Retourner null pour indiquer un échec d'authentification.
             // Si votre fonction autorise les appels non authentifiés, vous pourriez retourner une valeur par défaut.
