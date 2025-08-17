@@ -64,7 +64,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
      * @throws IOException If there is an error during the upload process or file handling.
      * @throws IllegalArgumentException If the userId is null or empty.
      */
-    private String uploadToCloudStorageVideoFile(File outputFile, String userId) throws IOException {
+    private String uploadToCloudStorageVideoFile(File outputFile, String userId, String date) throws IOException {
         if (outputFile == null || !outputFile.exists() || outputFile.length() == 0) {
             logger.severe("Le fichier à uploader est invalide ou vide");
             throw new IOException("Le fichier vidéo est invalide ou vide");
@@ -84,7 +84,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     .getService();
 
             // Générer un nom unique pour le fichier dans le dossier de l'utilisateur
-            String fileName = "users/" + userId + "/generated_video/videos/" + System.currentTimeMillis() + "-" + outputFile.getName();
+            String fileName = "users/" + userId + "/generated_video/videos/" + date+ "-" + outputFile.getName();
             // Créer les informations du blob avec le bon Content-Type
             BlobId blobId = BlobId.of(BUCKET_NAME.replace("gs://", ""), fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
@@ -360,8 +360,9 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
 
-            String uploadToCloudStorageVideoFile = uploadToCloudStorageVideoFile(outputFile, userId);
-            String uploadToCloudStorageMetadata = VideoMetadataFunction.uploadToCloudStorageMetadata(outputFile, userId);
+            String date = ""+ System.currentTimeMillis();
+            String uploadToCloudStorageVideoFile = uploadToCloudStorageVideoFile(outputFile, userId, date);
+            String uploadToCloudStorageMetadata = VideoMetadataFunction.uploadToCloudStorageMetadata(outputFile, userId, date);
 //            response.getWriter().write(uploadToCloudStorage);
 
             // Optionnel: définir le nom du fichier pour le téléchargement
@@ -380,7 +381,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             String bytes = ("{" +"\"video\":\"" + base64Content
                     + "\","+"\"mimeType\":\"video/mp4\",\"completed\":\"true\", \"url:\":\""
                     + uploadToCloudStorageVideoFile.substring(0, i1==-1?uploadToCloudStorageVideoFile.length():i1)
-                    + "\", \"metadata\":\""+uploadToCloudStorageMetadata+"\", \"jobId=\":\"" + jobId + "\", \"userId\":\"" + userId + "\"}");
+                    + "\", \"metadata\":\""+uploadToCloudStorageMetadata.substring(0, i1==-1?uploadToCloudStorageVideoFile.length():i1)+"\", \"jobId=\":\"" + jobId + "\", \"userId\":\"" + userId + "\"}");
             printWriter.print(bytes);
             if (outputFile.exists()) {
                 ;//Files.copy(outputFile.toPath(), o);

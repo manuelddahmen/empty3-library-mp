@@ -1,5 +1,9 @@
 package one.empty3.apps.facedetect.video;
 
+import com.google.auth.ServiceAccountSigner;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -11,6 +15,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -915,74 +920,103 @@ public class MovieGenerator2 {
             throw new IOException("Impossible de télécharger le fichier depuis " + urlString, e);
         }
     }
-
     /**
-     * Reads an image from a URL, handling authenticated access for private Google Cloud Storage objects.
+     * Lit une image à partir d'une URL GCS, en supportant les URL signées.
+     * Utilise une approche similaire à uploadToCloudStorageVideoFile pour la gestion des identifiants.
      *
-     * @param urlString The URL of the image. Can be a public URL or a GCS URL.
-     * @return An Image object, or null if the URL is empty.
-     * @throws IOException If the image cannot be read or downloaded.
+     * @param urlString L'URL de l'image stockée dans Google Cloud Storage (signée ou non)
+     * @return L'image lue depuis l'URL
+     * @throws IOException Si l'image ne peut pas être lue
      */
     private Image readImageFromGcsUrl(String urlString) throws IOException {
-        if (urlString == null || urlString.trim().isEmpty()) {
-            return null;
+        Logger logger = Logger.getLogger(getClass().getCanonicalName());
+
+        // Première tentative - lecture directe depuis l'URL fournie
+        try {
+            URL url = new URL(urlString);
+            Image image = new Image(ImageIO.read(url));
+            if (image != null) {
+                logger.info("Image lue avec succès depuis l'URL directe: " + urlString);
+                return image;
+            }
+        } catch (IOException e) {
+            logger.warning("Impossible de lire l'image directement depuis l'URL: " + e.getMessage());
         }
 
-        // Ensure URL is properly encoded before creating a URI
-        URI uri = URI.create(urlString.replace(" ", "%20"));
-        String host = uri.getHost();
+        // Deuxième tentative - si l'URL est un chemin GCS, créer une URL signée
+        if (urlString.startsWith("gs://")) {
+            try {
+                // Initialiser le client Storage
+                Storage storage = StorageOptions.newBuilder()
+                        .setProjectId("studio-6v2lo")
+                        .build()
+                        .getService();
 
-        // Check if this is a Google Cloud Storage URL that requires authenticated access
-        if (host != null && (host.equals("storage.googleapis.com") || host.equals("firebasestorage.googleapis.com"))) {
-            logger.info("Reading private image from GCS: " + urlString);
+                // Extraire le nom du bucket et le chemin du fichier
+                String bucketName = urlString.substring(5, urlString.indexOf("/", 5));
+                String objectName = urlString.substring(urlString.indexOf("/", 5) + 1);
 
-            String path = uri.getPath(); // e.g., /my-bucket/my-folder/image.jpg
-            if (path.startsWith("/")) {
-                path = path.substring(1);
-            }
+                // Obtenir le Blob
+                BlobId blobId = BlobId.of(bucketName, objectName);
+                Blob blob = storage.get(blobId);
 
-            String bucketName;
-            String objectName;
-
-            // Handle different GCS URL formats
-            if (host.equals("storage.googleapis.com")) {
-                // Format: storage.googleapis.com/BUCKET_NAME/OBJECT_NAME
-                int firstSlash = path.indexOf('/');
-                if (firstSlash == -1) {
-                    throw new IllegalArgumentException("Invalid GCS URL format. Expected https://storage.googleapis.com/bucket/object. Got: " + urlString);
+                if (blob == null) {
+                    throw new IOException("Le fichier n'existe pas dans GCS: " + urlString);
                 }
-                bucketName = path.substring(0, firstSlash);
-                objectName = path.substring(firstSlash + 1);
-            } else { // firebasestorage.googleapis.com
-                // Format: firebasestorage.googleapis.com/v0/b/BUCKET_NAME/o/OBJECT_NAME...
-                String prefix = "v0/b/";
-                if (!path.startsWith(prefix)) {
-                    throw new IllegalArgumentException("Invalid Firebase Storage URL format. Got: " + urlString);
+
+                // Générer une URL signée valide pendant 1 heure
+                URL signedUrl;
+                try {
+                    // Essayer d'abord avec les identifiants par défaut
+                    signedUrl = blob.signUrl(1, TimeUnit.HOURS, Storage.SignUrlOption.withV4Signature());
+                    logger.info("URL correctement signée pour la lecture de l'image: " + signedUrl);
+                } catch (Exception ex) {
+                    logger.warning("Impossible de générer l'URL signée avec les identifiants par défaut: " + ex.getMessage());
+
+                    // Chemin vers le fichier JSON de compte de service
+                    String credentialPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+                    if (credentialPath == null || credentialPath.isEmpty()) {
+                        logger.info("Variable GOOGLE_APPLICATION_CREDENTIALS non définie, utilisation du chemin par défaut");
+                        // Utiliser un chemin par défaut si la variable n'est pas définie
+                        credentialPath = "c:\\Users\\manue\\AppData\\Local\\gcloud\\application_default_credentials.json";
+                    }
+
+                    // Charger les identifiants du compte de service à partir du fichier JSON
+                    InputStream credentialsStream = new FileInputStream(credentialPath);
+                    GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream);
+
+                    // Vérifier que les identifiants implémentent ServiceAccountSigner
+                    if (credentials instanceof ServiceAccountSigner signer) {
+                        signedUrl = blob.signUrl(1, TimeUnit.HOURS,
+                                Storage.SignUrlOption.signWith(signer),
+                                Storage.SignUrlOption.withV4Signature());
+                        logger.info("URL correctement signée (2ème tentative) pour la lecture de l'image: " + signedUrl);
+                    } else {
+                        throw new IllegalArgumentException("Les identifiants ne supportent pas la signature");
+                    }
                 }
-                path = path.substring(prefix.length());
-                int bucketEnd = path.indexOf('/');
-                bucketName = path.substring(0, bucketEnd);
 
-                String objectPrefix = "/o/";
-                int objectStart = path.indexOf(objectPrefix);
-                if (objectStart == -1) {
-                    throw new IllegalArgumentException("Invalid Firebase Storage URL format. Could not find object part. Got: " + urlString);
+                // Lire l'image depuis l'URL signée
+                Image image = new Image(ImageIO.read(signedUrl));
+                if (image != null) {
+                    logger.info("Image lue avec succès depuis l'URL signée");
+                    return image;
+                } else {
+                    throw new IOException("Impossible de lire l'image depuis l'URL signée: " + signedUrl);
                 }
-                objectName = path.substring(objectStart + objectPrefix.length());
+            } catch (Exception e) {
+                logger.severe("Erreur lors de la génération/utilisation de l'URL signée: " + e.getMessage());
+                for (StackTraceElement element : e.getStackTrace()) {
+                    logger.severe(element.toString());
+                }
+                throw new IOException("Erreur lors de la lecture de l'image depuis GCS: " + e.getMessage(), e);
             }
-
-            BlobId blobId = BlobId.of(bucketName, objectName);
-            byte[] content = storage.readAllBytes(blobId);
-
-            try (InputStream is = new ByteArrayInputStream(content)) {
-                return new Image(ImageIO.read(is));
-            }
-        } else {
-            // Fallback for standard public URLs
-            logger.info("Reading public image from URL: " + urlString);
-            return new Image(ImageIO.read(uri.toURL()));
         }
+
+        // Si aucune des tentatives n'a fonctionné, lancer une exception
+        throw new IOException("Impossible de lire l'image depuis l'URL: " + urlString);
     }
+
 
 
     /**

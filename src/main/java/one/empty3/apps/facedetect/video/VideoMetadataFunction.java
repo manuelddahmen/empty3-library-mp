@@ -56,7 +56,7 @@ public class VideoMetadataFunction {
     private static final String ACCESS_CONTROL_MAX_AGE_HEADER = "Access-Control-Max-Age";
     private static final String SERVICE_ACCOUNT = "firebase-app-hosting-compute@studio-6v2lo.iam.gserviceaccount.com";
 
-    public static String uploadToCloudStorageMetadata(File outputFile, String userId) throws IOException {
+    public static String uploadToCloudStorageMetadata(File outputFile, String userId, String date) throws IOException {
         if (outputFile == null || !outputFile.exists() || outputFile.length() == 0) {
             logger.severe("Le fichier à uploader est invalide ou vide");
             throw new IOException("Le fichier vidéo est invalide ou vide");
@@ -76,7 +76,7 @@ public class VideoMetadataFunction {
                     .getService();
 
             // Générer un nom unique pour le fichier dans le dossier de l'utilisateur
-            String fileName = "users/" + userId + "/generated_video/metadata/" + System.currentTimeMillis() + "-" + outputFile.getName();
+            String fileName = "users/" + userId + "/generated_video/metadata/" + date + "-" + outputFile.getName().replace(".mp4", ".json");
             // Créer les informations du blob avec le bon Content-Type
             BlobId blobId = BlobId.of(BUCKET_NAME.replace("gs://", ""), fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
@@ -84,6 +84,10 @@ public class VideoMetadataFunction {
                     .build();
 
             Map<String, Object> stringObjectMap = extractVideoMetadata(outputFile);
+            stringObjectMap.put("date", Long.valueOf(date));
+            stringObjectMap.put("createdAt", Long.valueOf(date));
+            stringObjectMap.put("name", fileName.replace(".mp4", ""));
+            stringObjectMap.put("userId", userId);
             String json = new Gson().toJson(stringObjectMap);
             logger.info("JSON: " + json);
 
