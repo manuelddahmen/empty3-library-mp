@@ -252,19 +252,19 @@ public class MovieGenerator2 {
                             if (animation == null) {
                                 logger.severe("AnimationFrame null for frame " + j + " of " + transform.getClass().getSimpleName());
                             } else  {
-                                List<Point> points = animation.getPoints();
-                                if (points != null) {
+                                List<Point> animationPoints = animation.getPoints();
+                                if (animationPoints != null) {
                                     for (int p = 0; p < configurationJson.getPoints().size(); p++) {
                                         Point pointPoint = configurationJson.getPoints().get(p);
                                         List<Point> points1 = configurationJson.getAnimationPoints(j);
-                                        for (int q = 0; q < points.size(); q++) {
-                                            Point pointPoint1 = points.get(q);
+                                        for (int q = 0; q < animationPoints.size(); q++) {
+                                            Point pointPoint1 = animationPoints.get(q);
                                             if (pointPoint1.getId().equals(pointPoint.getId())) {
                                                 pointPoint.setX(pointPoint1.getX());
                                                 pointPoint.setY(pointPoint1.getY());
-                                                //pointPoint.setColor(points.get(p).getColor());
-                                                //pointPoint.setName(points.get(p).getName());
-                                                //pointPoint.setVisible(points.get(p).isVisible());
+                                                pointPoint.setColor(pointPoint1.getColor());
+                                                pointPoint.setName(pointPoint1.getName());
+                                                pointPoint.setVisible(pointPoint1.isVisible());
                                             }
                                         }
                                     }
@@ -305,7 +305,7 @@ public class MovieGenerator2 {
                     // Passer à la frame suivante
                     frame = frame + 1;
                     totalFramesCount++;
-                    currentFrameIndex = frame - 1; // Mettre à jour l'index de frame courant
+                    currentFrameIndex = frame; // Mettre à jour l'index de frame courant
                     images.add(currentImageFrame);
                 }
                 transformIndex[0]++;
@@ -364,7 +364,7 @@ public class MovieGenerator2 {
                         // Ajouter le nom du point s'il existe
                         if (point.getName() != null && !point.getName().isEmpty()) {
                             g2d.setColor(Color.WHITE);
-                            g2d.drawString(point.getName(), x + pointSize, y);
+                            //g2d.drawString(point.getName(), x + pointSize, y);
                         }
 
                     }
@@ -390,15 +390,35 @@ public class MovieGenerator2 {
         c.calculerMatrice(Point3D.Y.mult(-1));
         zBuffer.texture(new ImageTexture(currentImageFrame));
 
-        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.001, 1.0 / 4 / RES_AVG ));
+        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.001, 1.0 / 4 / RES_AVG));
+
         if (hasAllCornerPoints(g, allPoints)) {
-            zBuffer.tracerQuad(new Point3D(allPoints.get(0).getX(), allPoints.get(0).getY(), 0.0),
-                    new Point3D(allPoints.get(1).getX(), allPoints.get(1).getY(), 0.0),
-                    new Point3D(allPoints.get(2).getX(), allPoints.get(2).getY(), 0.0),
-                    new Point3D(allPoints.get(3).getX(), allPoints.get(3).getY(), 0.0),
-                    new ImageTexture(image1), 0.0, 1.0, 0.1, 1.0, null);
+            // Récupérer les points nommés pour s'assurer que nous utilisons le bon ordre
+            Map<String, Point> cornerPoints = getNamedCornerPoints(g, allPoints);
+
+            // Extraire les points par leur nom
+            Point topLeft = cornerPoints.get("topLeft");
+            Point topRight = cornerPoints.get("topRight");
+            Point bottomLeft = cornerPoints.get("bottomLeft");
+            Point bottomRight = cornerPoints.get("bottomRight");
+
+            logger.info("Affichage de l'image avec tracerQuad en utilisant les points nommés");
+            logger.info("topLeft: (" + topLeft.getX() + ", " + topLeft.getY() + ")");
+            logger.info("topRight: (" + topRight.getX() + ", " + topRight.getY() + ")");
+            logger.info("bottomLeft: (" + bottomLeft.getX() + ", " + bottomLeft.getY() + ")");
+            logger.info("bottomRight: (" + bottomRight.getX() + ", " + bottomRight.getY() + ")");
+
+            // Utiliser tracerQuad avec les points nommés dans le bon ordre
+            zBuffer.tracerQuad(
+                    new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
+                    new Point3D(topRight.getX(), topRight.getY(), 0.0),
+                    new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0),
+                    new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
+                    new ImageTexture(image1), 0.0, 1.0, 0.0, 1.0, null);
+
             return zBuffer.image();
         } else {
+            logger.info("Le groupe ne contient pas tous les points de coin nommés, affichage simple de l'image");
             g2d.drawImage(image1.getBi(), 0, 0, currentImageFrame.getBi().getWidth(), currentImageFrame.getBi().getHeight(), null);
         }
         return currentImageFrame;
@@ -1073,5 +1093,47 @@ public class MovieGenerator2 {
                 corners.containsKey("topRight") &&
                 corners.containsKey("bottomLeft") &&
                 corners.containsKey("bottomRight");
+    }
+
+    /**
+     * Récupère les points de coin par leur nom précis (topLeft, topRight, bottomLeft, bottomRight)
+     * Cette méthode garantit l'association correcte des noms aux points
+     * 
+     * @param group Groupe contenant les identifiants de points
+     * @param allPoints Liste complète des points disponibles
+     * @return Map associant chaque nom de coin à son point correspondant
+     */
+    public static Map<String, Point> getNamedCornerPoints(Group group, List<Point> allPoints) {
+        Map<String, Point> cornerPoints = new HashMap<>();
+
+        // Trouver les points du groupe
+        List<Point> groupPoints = getPointsFromGroup(group, allPoints);
+
+        // Parcourir les points et les ajouter à la map par leur nom
+        for (Point point : groupPoints) {
+            if (point.getName() != null) {
+                String name = point.getName();
+                // Vérifier si le nom correspond à un des coins
+                if (name.equals("topLeft") || name.equals("topRight") || 
+                    name.equals("bottomLeft") || name.equals("bottomRight")) {
+                    cornerPoints.put(name, point);
+                }
+            }
+        }
+
+        // Si certains points sont manquants, essayer de les trouver par ID
+        for (String pointId : group.getPointIds()) {
+            Point point = findPointById(pointId, allPoints);
+            if (point != null && point.getName() != null) {
+                String name = point.getName();
+                if ((name.equals("topLeft") || name.equals("topRight") || 
+                    name.equals("bottomLeft") || name.equals("bottomRight")) && 
+                    !cornerPoints.containsKey(name)) {
+                    cornerPoints.put(name, point);
+                }
+            }
+        }
+
+        return cornerPoints;
     }
 }
