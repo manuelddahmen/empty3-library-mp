@@ -244,36 +244,106 @@ public class MovieGenerator2 {
                         Group g = groups.get(k);
                         Image image1 = allImagesSets[k][i];
                         // Déterminer le type de transformation et appliquer l'effet approprié
-                        if (transform instanceof TransformTranslate || transform instanceof TransformScale || transform instanceof TransformScale || transform instanceof TransformRotate) {
-                            int finalFrameIndex = currentFrameIndex;
-                            String groupId = transform.getTargetId();
+                            if (transform instanceof TransformTranslate || transform instanceof TransformScale || transform instanceof TransformRotate) {
+                                String groupId = transform.getTargetId();
+                                logger.info("Application de la transformation " + transform.getClass().getSimpleName() + 
+                                            " pour le groupe " + groupId + " à la frame " + j);
 
-                            Frame animation = configurationJson.getAnimationFrame(j);
-                            if (animation == null) {
-                                logger.severe("AnimationFrame null for frame " + j + " of " + transform.getClass().getSimpleName());
-                            } else  {
-                                List<Point> animationPoints = animation.getPoints();
-                                if (animationPoints != null) {
-                                    for (int p = 0; p < configurationJson.getPoints().size(); p++) {
-                                        Point pointPoint = configurationJson.getPoints().get(p);
-                                        List<Point> points1 = configurationJson.getAnimationPoints(j);
-                                        for (int q = 0; q < animationPoints.size(); q++) {
-                                            Point pointPoint1 = animationPoints.get(q);
-                                            if (pointPoint1.getId().equals(pointPoint.getId())) {
-                                                pointPoint.setX(pointPoint1.getX());
-                                                pointPoint.setY(pointPoint1.getY());
-                                                pointPoint.setColor(pointPoint1.getColor());
-                                                pointPoint.setName(pointPoint1.getName());
-                                                pointPoint.setVisible(pointPoint1.isVisible());
+                                // Récupérer les données d'animation pour cette frame
+                                Frame animation = configurationJson.getAnimationFrame(j);
+
+                                if (animation == null) {
+                                    logger.severe("AnimationFrame null pour la frame " + j + " de " + transform.getClass().getSimpleName());
+                                } else {
+                                    List<Point> animationPoints = animation.getPoints();
+
+                                    if (animationPoints != null && !animationPoints.isEmpty()) {
+                                        // Créer une map des points d'animation pour accès rapide par ID
+                                        Map<String, Point> animationPointsMap = new HashMap<>();
+                                        for (Point animPoint : animationPoints) {
+                                            if (animPoint.getId() != null) {
+                                                animationPointsMap.put(animPoint.getId(), animPoint);
                                             }
+                                        }
+
+                                        // Mettre à jour les points de configuration
+                                        int updatedCount = 0;
+                                        for (Point configPoint : configurationJson.getPoints()) {
+                                            String pointId = configPoint.getId();
+                                            if (pointId != null && animationPointsMap.containsKey(pointId)) {
+                                                Point animPoint = animationPointsMap.get(pointId);
+
+                                                // Sauvegarder les valeurs originales pour le log
+                                                double oldX = configPoint.getX();
+                                                double oldY = configPoint.getY();
+                                                boolean oldVisibility = configPoint.isVisible();
+
+                                                // Appliquer les nouvelles valeurs
+                                                configPoint.setX(animPoint.getX());
+                                                configPoint.setY(animPoint.getY());
+
+                                                if (animPoint.getColor() != null) {
+                                                    configPoint.setColor(animPoint.getColor());
+                                                }
+
+                                                if (animPoint.getName() != null) {
+                                                    configPoint.setName(animPoint.getName());
+                                                }
+
+                                                configPoint.setVisible(animPoint.isVisible());
+
+                                                updatedCount++;
+
+                                                // Journaliser les changements significatifs
+                                                if (Math.abs(oldX - configPoint.getX()) > 0.001 || 
+                                                    Math.abs(oldY - configPoint.getY()) > 0.001 ||
+                                                    oldVisibility != configPoint.isVisible()) {
+                                                    logger.fine("Point " + pointId + " mis à jour: (" + 
+                                                                oldX + "," + oldY + ") -> (" + 
+                                                                configPoint.getX() + "," + configPoint.getY() + "), " +
+                                                                "visible: " + configPoint.isVisible());
+                                                }
+                                            }
+                                        }
+
+                                        logger.info("Mise à jour de " + updatedCount + " points sur " + 
+                                                    configurationJson.getPoints().size() + " pour la frame " + j);
+                                    } else {
+                                        logger.warning("Aucun point d'animation défini pour la frame " + j);
+                                    }
+                                }
+
+                                // Si nécessaire, appliquer des transformations supplémentaires basées sur le type
+                                if (groupId != null) {
+                                    // Récupérer les points spécifiques au groupe cible
+                                    List<Point> groupPoints = new ArrayList<>();
+                                    Group targetGroup = null;
+
+                                    // Trouver le groupe cible
+                                    for (Group g1 : configurationJson.getGroups()) {
+                                        if (g1.getId() != null && g1.getId().equals(groupId)) {
+                                            targetGroup = g;
+                                            break;
+                                        }
+                                    }
+
+                                    if (targetGroup != null) {
+                                        // Collecter les points du groupe
+                                        for (String pointId : targetGroup.getPointIds()) {
+                                            for (Point p : configurationJson.getPoints()) {
+                                                if (p.getId() != null && p.getId().equals(pointId)) {
+                                                    groupPoints.add(p);
+                                                }
+                                            }
+                                        }
+
+                                        // Appliquer la transformation spécifique au type
+                                        if (!groupPoints.isEmpty()) {
+                                            double progress1 = 1.0 * j / transformFrames;
+                                            transformPointsBasedOnProgress(groupPoints, transform, progress1, image1);
                                         }
                                     }
                                 }
-                            }
-                            for (Point point : configurationJson.getPoints()) {
-
-                            }
-                            //transformPointsBasedOnProgress(points, transform, progress, image1);
                         } else if (transform instanceof TransformSetVisibility transformSetVisibility) { // TODO: implement
                             g.setVisible(transformSetVisibility.isVisible());
                         } else if (transform instanceof TransformMorph transformMorph) {
@@ -761,40 +831,44 @@ public class MovieGenerator2 {
      * @param image1
      * @return Nouveaux points transformés
      */
-    private List<Point> transformPointsBasedOnProgress(List<Point> points, Transform transform, double progress, Image image1) {
+        /**
+         * Transforme des points en fonction du type de transformation et de la progression.
+         * Cette version modifie directement les points passés en paramètre au lieu de créer une nouvelle liste.
+         *
+         * @param points    Points à transformer (modifiés directement)
+         * @param transform Type de transformation à appliquer
+         * @param progress  Progression de la transformation (0.0 à 1.0)
+         * @param image1    Image associée (pour référence si nécessaire)
+         * @return La liste des points transformés (même référence que l'entrée)
+         */
+        private List<Point> transformPointsBasedOnProgress(List<Point> points, Transform transform, double progress, Image image1) {
         if (points == null || points.isEmpty()) {
-            return new ArrayList<>();
+            logger.warning("Aucun point à transformer");
+            return points;
         }
 
-        List<Point> transformedPoints = new ArrayList<>();
+        logger.info("Application de la transformation " + transform.getClass().getSimpleName() + 
+                    " avec progression " + String.format("%.2f", progress) + 
+                    " sur " + points.size() + " points");
 
-        // Copier d'abord tous les points
-        for (Point original : points) {
-            Point newPoint = new Point();
-            newPoint.setId(original.getId());
-            newPoint.setX(original.getX());
-            newPoint.setY(original.getY());
-            newPoint.setVisible(original.isVisible());
-            if (original.getName() != null) {
-                newPoint.setName(original.getName());
-            }
-            if (original.getColor() != null) {
-                newPoint.setColor(original.getColor());
-            }
-            transformedPoints.add(newPoint);
-        }
-
-        // Puis appliquer les transformations en fonction du type
+        // Appliquer les transformations en fonction du type, directement sur les points d'entrée
         if (transform instanceof TransformTranslate) {
             TransformTranslate translateTransform = (TransformTranslate) transform;
             double dx = translateTransform.getDx() * progress;
             double dy = translateTransform.getDy() * progress;
 
-            for (Point point : transformedPoints) {
-                point.setX(point.getX() + dx);
-                point.setY(point.getY() + dy);
+            for (Point point : points) {
+                double oldX = point.getX();
+                double oldY = point.getY();
+
+                point.setX(oldX + dx);
+                point.setY(oldY + dy);
+
+                logger.fine("Point " + point.getId() + " déplacé: (" + 
+                            String.format("%.3f", oldX) + "," + String.format("%.3f", oldY) + ") -> (" + 
+                            String.format("%.3f", point.getX()) + "," + String.format("%.3f", point.getY()) + ")");
             }
-            logger.fine("Translation appliquée: dx=" + dx + ", dy=" + dy);
+            logger.info("Translation appliquée: dx=" + String.format("%.3f", dx) + ", dy=" + String.format("%.3f", dy));
         } else if (transform instanceof TransformRotate) {
             TransformRotate rotateTransform = (TransformRotate) transform;
             double angle = rotateTransform.getAngle() * progress;
@@ -815,10 +889,13 @@ public class MovieGenerator2 {
             double sin = Math.sin(angleRad);
 
             // Appliquer la rotation à chaque point
-            for (Point point : transformedPoints) {
+            for (Point point : points) {
+                double oldX = point.getX();
+                double oldY = point.getY();
+
                 // Translater au centre
-                double x = point.getX() - centerX;
-                double y = point.getY() - centerY;
+                double x = oldX - centerX;
+                double y = oldY - centerY;
 
                 // Appliquer la rotation
                 double newX = x * cos - y * sin + centerX;
@@ -826,22 +903,36 @@ public class MovieGenerator2 {
 
                 point.setX(newX);
                 point.setY(newY);
+
+                logger.fine("Point " + point.getId() + " tourné: (" + 
+                            String.format("%.3f", oldX) + "," + String.format("%.3f", oldY) + ") -> (" + 
+                            String.format("%.3f", newX) + "," + String.format("%.3f", newY) + ")");
             }
-            logger.fine("Rotation appliquée: angle=" + angle + "° autour de (" + centerX + "," + centerY + ")");
+            logger.info("Rotation appliquée: angle=" + String.format("%.2f", angle) + "° autour de (" + 
+                       String.format("%.2f", centerX) + "," + String.format("%.2f", centerY) + ")");
         } else if (transform instanceof TransformScale) {
             TransformScale scaleTransform = (TransformScale) transform;
-            double scaleX = 1.0 + (scaleTransform.getCx() - 1.0) * progress;
-            double scaleY = 1.0 + (scaleTransform.getCy() - 1.0) * progress;
+            double scaleX = 1.0 + (scaleTransform.getScaleX() - 1.0) * progress;
+            double scaleY = 1.0 + (scaleTransform.getScaleY() - 1.0) * progress;
 
             // Calculer le centre de mise à l'échelle (généralement le centre de l'image)
             double centerX = 0.5;
             double centerY = 0.5;
 
+            // Utiliser le centre spécifié si disponible
+            if (scaleTransform.getCx() != 0 || scaleTransform.getCy() != 0) {
+                centerX = scaleTransform.getCx();
+                centerY = scaleTransform.getCy();
+            }
+
             // Appliquer la mise à l'échelle à chaque point
-            for (Point point : transformedPoints) {
+            for (Point point : points) {
+                double oldX = point.getX();
+                double oldY = point.getY();
+
                 // Calculer la distance par rapport au centre
-                double dx = point.getX() - centerX;
-                double dy = point.getY() - centerY;
+                double dx = oldX - centerX;
+                double dy = oldY - centerY;
 
                 // Appliquer la mise à l'échelle
                 double newX = centerX + dx * scaleX;
@@ -849,11 +940,17 @@ public class MovieGenerator2 {
 
                 point.setX(newX);
                 point.setY(newY);
+
+                logger.fine("Point " + point.getId() + " redimensionné: (" + 
+                            String.format("%.3f", oldX) + "," + String.format("%.3f", oldY) + ") -> (" + 
+                            String.format("%.3f", newX) + "," + String.format("%.3f", newY) + ")");
             }
-            logger.fine("Mise à l'échelle appliquée: scaleX=" + scaleX + ", scaleY=" + scaleY);
+            logger.info("Mise à l'échelle appliquée: scaleX=" + String.format("%.3f", scaleX) + 
+                       ", scaleY=" + String.format("%.3f", scaleY) + 
+                       " autour de (" + String.format("%.2f", centerX) + "," + String.format("%.2f", centerY) + ")");
         }
 
-        return transformedPoints;
+        return points;
     }
 
     /**
