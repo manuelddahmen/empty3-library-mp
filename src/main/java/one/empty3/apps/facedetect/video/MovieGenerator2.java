@@ -393,6 +393,11 @@ public class MovieGenerator2 {
             zBuffer.camera(c);
             zBuffer.setAngles(Math.PI/3, Math.PI/3);
             c.calculerMatrice(Point3D.X.mult(-1));
+            Matrix33 tild = c.getMatrix().tild();
+            for(int i=0; i<3; i++) {
+                tild.set(0, i, tild.get(0, i) * -1);
+            }
+            c.setMatrix(tild);
             zBuffer.texture(new ImageTexture(currentImageFrame));
 
             zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.005, 0.05));
@@ -427,13 +432,14 @@ public class MovieGenerator2 {
                 surfaceParametriquePolynomialeBezier.texture(new ImageTexture(image1));
                 // Utiliser tracerQuad avec les points nommés dans le bon ordre
                 zBuffer.draw(surfaceParametriquePolynomialeBezier);
-                zBuffer.tracerQuad(
+                /*zBuffer.tracerQuad(
                         new Point3D(topRight.getX(), topRight.getY(), 0.0),
                         new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
                         new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
                         new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0),
                         new ImageTexture(image1),
                         0, 1, 0, 1, surfaceParametriquePolynomialeBezier);
+                */
                 currentImageFrame = zBuffer.image();
 
             } else {
