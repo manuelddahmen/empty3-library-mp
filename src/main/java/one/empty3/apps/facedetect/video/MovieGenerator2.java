@@ -393,6 +393,7 @@ public class MovieGenerator2 {
             zBuffer.camera(c);
             zBuffer.setAngles(0.8, 0.8);
             c.calculerMatrice(Point3D.X.mult(-1));
+            c.setMatrix(new Matrix33(Point3D.X.mult(-1), Point3D.Y.mult(-1), Point3D.Z.mult(-1)));
             zBuffer.texture(new ImageTexture(currentImageFrame));
 
             zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.005, 0.05));
