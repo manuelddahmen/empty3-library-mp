@@ -1294,7 +1294,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());
         }
-        z.incrementOptimizer = new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 1000);
+        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 1000));
     }
 
     public void setName(String name) {

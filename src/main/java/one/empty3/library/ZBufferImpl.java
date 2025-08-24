@@ -39,12 +39,11 @@ import one.empty3.library.core.nurbs.*;
 import one.empty3.library.core.tribase.Precomputable;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.library1.shader.Vec;
-import one.empty3.libs.commons.IImageMp;
 import one.empty3.pointset.PCont;
 
 import one.empty3.libs.*;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +57,8 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
+    public static boolean NEW_VERSION_ALPHA = false;
+
     public static class IncrementOptimizer {
         public enum Strategy {
             /**
@@ -114,6 +115,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             this.valueB = maxIncrement;
         }
 
+        /**
+         * Constructs an instance of IncrementOptimizer with the default strategy.
+         *
+         * The default strategy is set to {@code Strategy.NONE}.
+         * This constructor initializes the optimizer with no specific strategy for increment/**
+         ing *.
+         Default */
+        public IncrementOptimizer() {
+            this.strategy = Strategy.NONE;
+            this.valueA = MIN_INCR;
+            this.valueB = MIN_INCR;
+        }
         /**
          * Calcule la taille de l'incrément à utiliser en fonction de la taille projetée d'une primitive.
          * @param projectedPrimitiveSize La taille approximative (en pixels) de la primitive sur l'écran.
@@ -186,7 +199,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     ZBufferImpl that;
     private boolean isCheckedOccupied = false;
     private Representable toDrawR;
-    public  IncrementOptimizer incrementOptimizer;
+    @NotNull
+    protected   IncrementOptimizer incrementOptimizer;
 
     static {
         Logger.getAnonymousLogger().log(Level.INFO, "ZBufferImpl");
@@ -198,6 +212,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         that = this;
         scene = new Scene();
         texture(new ColorTexture(Color.newCol(0,0,0)));
+        setIncrementOptimizer(new IncrementOptimizer());
     }
 
     public ZBufferImpl(int l, int h) {
@@ -218,10 +233,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         dimy = ha;
         Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
-    }
-
-    public IncrementOptimizer getIncrementOptimizer() {
-        return incrementOptimizer;
     }
 
     public void setIncrementOptimizer(IncrementOptimizer IncrementOptimizer) {
@@ -384,9 +395,46 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 tracerTriangle(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1), polygon.getPoints().getElem(2),
                         polygon.texture(), f.getU1(), f.getV1(), f.getU2(), f.getV2());
             }
-        } else if (r instanceof ParametricSurface) {
-            ParametricSurface n = (ParametricSurface) r;
+        } else if (r instanceof ParametricSurface n) {
             setCurrentRepresentable(r);
+            if(NEW_VERSION_ALPHA) {
+            if(camera()==null)
+                throw new RuntimeException("Camera is null ZBufferImpl draw ParametricSurface") ;
+            Point incrU0 = camera().coordinatesPoint2D(n.calculerPoint3D(0.0, 0.0), this);
+            Point incrU1 = camera().coordinatesPoint2D(n.calculerPoint3D(0.0, 1.0), this);
+            Point incrV0 = camera().coordinatesPoint2D(n.calculerPoint3D(1.0, 0.0), this);
+            Point incrV1  = camera().coordinatesPoint2D(n.calculerPoint3D(1.0, 1.0), this);
+            double v1 =1.0;
+            if(incrU0==null || incrU1==null || incrV0==null || incrV1==null) {
+                Point p1 = incrU0 != null ? incrU0 : (incrU1 != null ? incrU1 : (incrV0 != null ? incrV0 : incrV1));
+                if (p1 == null) {
+                    return;
+                }
+                Point p2 = incrU1 != null ? incrU1 : (incrV0 != null ? incrV0 : incrV1);
+                if (p2 == null) {
+                    return;
+                }
+                Point p3 = incrV0 != null ? incrV0 : incrV1;
+                if (p3 == null) {
+                    v1 = maxDistance(p1, p2);
+                } else {
+                    Point p4 = incrV1;
+                    if (p4 == null) {
+                        v1 = maxDistance(p1, p2, p3);
+                    } else {
+                        v1 = maxDistance(p1, p2, p3, p4);
+
+                    }
+
+                }
+            }else {
+                    v1 = maxDistance(incrU0, incrU1, incrV0, incrV1);
+                }
+
+
+                n.setIncrU(Math.max(0.00001, 1 / v1));
+                n.setIncrV(Math.max(0.00001, 1 / v1));
+            }
             if (n.getIncrU() > 0 && n.getIncrV() > 0) {
                 for (double u = n.getStartU(); u + n.getIncrU() <= n.getEndU(); u += n.getIncrU()) {
                     // Logger.getAnonymousLogger().log(Level.INFO, "(u,v) = ("+u+","+")");
@@ -500,7 +548,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             // OBJETS
             if (r instanceof TRIObject) {
                 TRIObject o = (TRIObject) r;
-                Logger.getAnonymousLogger().log(Level.INFO, "Objets triangle n°" + ((TRIObject) r).getTriangles().size());
+                //Logger.getAnonymousLogger().log(Level.INFO, "Objets triangle n°" + ((TRIObject) r).getTriangles().size());
                 for (TRI t : o.getTriangles()) {
 
                     draw(t);

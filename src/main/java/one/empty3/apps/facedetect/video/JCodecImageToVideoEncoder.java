@@ -14,7 +14,7 @@ public class JCodecImageToVideoEncoder {
         AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(outputFile, 25);
 
         for (int i = 0; i < 25; i++) {
-            encoder.encodeImage(new Image(100, 100).getBi());
+           // encoder.encodeImage(new Image(100, 100).getBi());
         }
 
         // Boucle sur chaque fichier image
