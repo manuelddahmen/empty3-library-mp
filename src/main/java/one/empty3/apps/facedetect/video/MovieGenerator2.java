@@ -387,13 +387,12 @@ public class MovieGenerator2 {
             ZBufferImpl zBuffer = new ZBufferImpl(RES_AVG, RES_AVG);
             zBuffer.idzpp();
             zBuffer.setDisplayType(DISPLAY_ALL);
-            Camera c = new Camera(new Point3D(0.5, 0.5, -1.3),
+            Camera c = new Camera(new Point3D(0.5, 0.5, -Math.sqrt(3)/2.0),
                     new Point3D(0.5, 0.5, 0.0));
             zBuffer.scene(new Scene());
             zBuffer.camera(c);
-            zBuffer.setAngles(0.8, 0.8);
+            zBuffer.setAngles(Math.PI/3, Math.PI/3);
             c.calculerMatrice(Point3D.X.mult(-1));
-            c.setMatrix(new Matrix33(Point3D.X.mult(-1), Point3D.Y.mult(-1), Point3D.Z.mult(-1)));
             zBuffer.texture(new ImageTexture(currentImageFrame));
 
             zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.005, 0.05));
