@@ -219,9 +219,10 @@ public class MovieGenerator2 {
                                             });
                                 });
                         if(transform.getTargetType().equals(Transform.TargetType.Group)&&transform.getTargetId().equals(g.getId())) {
-                            groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
-                            if(!groupPoints.isEmpty()) {
+                            if(groupPoints.isEmpty()) {
                                 groupPoints = updatePointsFromGroup1(groupPoints, configurationJson, g);
+                            } else {
+                                groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
                             }
                             List<Point> finalGroupPoints1 = groupPoints;
                             configurationJson.getPoints().forEach(point1 -> finalGroupPoints1.forEach(point2 -> {
