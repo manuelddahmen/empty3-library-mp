@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import one.empty3.library.*;
@@ -201,30 +202,30 @@ public class MovieGenerator2 {
                     double progress = 1.0  / transformFrames;
 
                     List<Group> groups = configurationJson.getGroups();
-                    List<Point> groupPoints = new ArrayList<>();
                     for (int k = 0; k < groups.size(); k++) {
+                        List<Point> groupPoints = new ArrayList<>();
                         int finalFrameIndex = currentFrameIndex;
                         String groupId = transform.getTargetId();
                         Group g = groups.get(k);
                         List<Point> finalGroupPoints = groupPoints;
-                        configurationJson.getPoints().forEach(new Consumer<Point>() {
-                            @Override
-                            public void accept(Point point) {
-                                g.getPointIds().forEach(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String s) {
-                                        if(point.getId().equals(s)) {
-                                            finalGroupPoints.add(point);
-                                        }
-                                    }
+                        configurationJson.getPoints().forEach(
+                                point -> {
+                                    g.getPointIds().forEach(
+                                            s -> {
+                                                if (point.getId().equals(s) &&
+                                                        !finalGroupPoints.contains(point)) {
+                                                    finalGroupPoints.add(point);
+                                                }
+                                            });
                                 });
+                        if(transform.getTargetType().equals(Transform.TargetType.Group)&&transform.getTargetId().equals(g.getId())) {
+                            groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
+                            if(!groupPoints.isEmpty()) {
+                                groupPoints = updatePointsFromGroup1(groupPoints, configurationJson, g);
                             }
-                        });
-                        groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
-                        if (g != null) {
                             List<Point> finalGroupPoints1 = groupPoints;
                             configurationJson.getPoints().forEach(point1 -> finalGroupPoints1.forEach(point2 -> {
-                                if(point1.getId().equals(point2.getId())) {
+                                if (point1.getId().equals(point2.getId())) {
                                     point1.setX(point2.getX());
                                     point1.setY(point2.getY());
                                     point1.setColor(point2.getColor());
@@ -261,31 +262,22 @@ public class MovieGenerator2 {
         }
     }
 
-    public void updatePointsFromGroup1(List<Point> gp, ConfigurationJson configurationJson, int j) {
-
-        Frame animation = configurationJson.getAnimationFrame(j);
-        if (animation == null) {
-            logger.severe("AnimationFrame null for frame " + j + " of ");
-        } else {
-            List<Point> animationPoints = animation.getPoints();
-            if (animationPoints != null) {
-                for (int p = 0; p < animationPoints.size(); p++) {
-                    Point pointPoint = configurationJson.getPoints().get(p);
-                    List<Point> points1 = configurationJson.getAnimationPoints(j);
-                    for (int q = 0; q < gp.size(); q++) {
-                        Point pointPoint1 = gp.get(q);
-                        if (pointPoint1.getId().equals(pointPoint.getId())) {
-                            pointPoint.setX(pointPoint1.getX());
-                            pointPoint.setY(pointPoint1.getY());
-                            pointPoint.setColor(pointPoint1.getColor());
-                            pointPoint.setName(pointPoint1.getName());
-                            pointPoint.setVisible(pointPoint1.isVisible());
-                        }
+    public List<Point> updatePointsFromGroup1(List<Point> gp, ConfigurationJson configurationJson, Group g) {
+        List<Point> groupPoints = new ArrayList<>();
+        for (int p = 0; p < g.getPointIds().size(); p++) {
+            int finalP = p;
+            boolean anymatch = configurationJson.getPoints().stream().anyMatch(new Predicate<Point>() {
+                @Override
+                public boolean test(Point point) {
+                    if(g.getPointIds().get(finalP).equals(point.getId())) {
+                        gp.add(point);
+                        return true;
                     }
+                    return false;
                 }
-            }
+            });
         }
-
+        return groupPoints;
     }
 
     /**
