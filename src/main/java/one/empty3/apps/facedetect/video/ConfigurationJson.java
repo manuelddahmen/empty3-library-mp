@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -296,6 +297,23 @@ class ConfigurationJson {
         ConfigurationJson configurationJson = ConfigurationJson.parseJson(
                 new File("res/animate-json/animation-data.json"));
         System.out.println(configurationJson.toJson());
+    }
+
+    public void updatePoints(List<Point> groupPoints) {
+        getPoints().replaceAll(point -> {
+            if (point != null && groupPoints != null) {
+                for (Point groupPoint : groupPoints) {
+                    if (groupPoint!=null && point.getId().equals(groupPoint.getId())) {
+                        point.setName(groupPoint.getName());
+                        point.setColor(groupPoint.getColor());
+                        point.setVisible(groupPoint.isVisible());
+                        point.setImageUrl(groupPoint.getImageUrl());
+                        return point;
+                    }
+                }
+            }
+            return null;
+        });
     }
 }
 

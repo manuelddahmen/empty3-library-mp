@@ -160,7 +160,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
         response.appendHeader("Access-Control-Allow-Origin", "*");
         response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.appendHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Origin");
-        response.appendHeader("Access-Control-Max-Age", "3600");
+        //response.appendHeader("Access-Control-Max-Age", "3600");
 
         // Traiter la méthode OPTIONS pour les requêtes préliminaires CORS
         if ("OPTIONS".equals(request.getMethod())) {
@@ -318,7 +318,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
             String outputFileName = UUID.randomUUID() + ".mp4";
             outputFile = new File(tempDir.toString(), outputFileName);
 
-
+/*
             // Envoyer un heartbeat périodique pour maintenir la connexion
             heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
             heartbeatTask = heartbeatExecutor.scheduleAtFixedRate(() -> {
@@ -331,7 +331,7 @@ public class MovieGeneratorHttpFunction implements HttpFunction {
                     logger.warning("Heartbeat failed: " + e.getMessage());
                 }
             }, HEARTBEAT_INTERVAL_MS, HEARTBEAT_INTERVAL_MS, TimeUnit.MILLISECONDS);
-
+*/
 
 
             MovieGenerator2 generator = null;

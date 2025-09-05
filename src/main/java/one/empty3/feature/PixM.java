@@ -28,6 +28,7 @@
  */
 
 package one.empty3.feature;
+
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import one.empty3.library.ITexture;
@@ -36,6 +37,8 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.image.BufferedImage;
 
 public class PixM extends M {
     public static final int COMP_RED = 0;
@@ -57,7 +60,7 @@ public class PixM extends M {
                 int c = 3;
                 for (int i1 = 0; i1 < c; i1++) {
                     setCompNo(i1);
-                    set(i, j,doubles[i1] );
+                    set(i, j, doubles[i1]);
                 }
             }
         }
@@ -70,6 +73,18 @@ public class PixM extends M {
             for (int j = 0; j < getLines(); j++)
                 set(i, j, distances[i][j]);
     }
+
+    public PixM(BufferedImage image) {
+        super(image.getWidth(), image.getHeight());
+        if (image instanceof Image)
+            image = ((Image) image).getBi();
+        for (int i = 0; i < image.getWidth(); i++) {
+            for (int j = 0; j < image.getHeight(); j++) {
+                set(index(i, j), image.getRGB(i, j));
+            }
+        }
+    }
+
     public Point3D getRgb(int i, int j) {
         if (i < 0 || i >= getColumns() || j < 0 || j >= getLines()) {
             return Point3D.O0;
@@ -81,6 +96,14 @@ public class PixM extends M {
         setCompNo(2);
         double db = get(i, j);
         return new Point3D(dr, dg, db);
+    }
+
+    public static PixM getPixM(BufferedImage image, double maxRes) {
+        if (image instanceof Image) {
+            return getPixM((Image) image, maxRes);
+        } else {
+            return getPixM(new Image(image), maxRes);
+        }
     }
 
     public static PixM getPixM(Image image, double maxRes) {
@@ -112,6 +135,7 @@ public class PixM extends M {
 
 
     }
+
 
     public PixM applyFilter(FilterPixM filter) {
         PixM c = new PixM(columns, lines);
@@ -176,7 +200,7 @@ public class PixM extends M {
             Point3D p = curve.calculerPoint3D(t);
             for (int c = 0; c < 3; c++) {
                 setCompNo(c);
-                set((int) (double) p.getX(), (int) (double) p.getY(), rgba[c]*256);
+                set((int) (double) p.getX(), (int) (double) p.getY(), rgba[c] * 256);
             }
         }
 
@@ -524,7 +548,7 @@ public class PixM extends M {
                     setCompNo(c);
                     p2.setCompNo(c);
                     double v = get(i, j);
-                    set(i - x, j - y, v);
+                    p2.set(i - x, j - y, v);
                 }
         return p2;
     }
@@ -632,13 +656,9 @@ public class PixM extends M {
     public void pasteSubImage(PixM copySubImage, int i, int j, int w, int h) {
         for (int x = i; x < i + w; x++) {
             for (int y = j; y < j + h; y++) {
-                for (int c = 0; c < 3; c++) {
-                    int x0 = (int) (1.0 * (x - i) / w * copySubImage.getColumns());
-                    int y0 = (int) (1.0 * (y - j) / h * copySubImage.getLines());
-                    setCompNo(c);
-                    copySubImage.setCompNo(c);
-                    set(x, y, copySubImage.get(x0, y0));
-                }
+                int x0 = (int) (1.0 * (x - i) / w * copySubImage.getColumns());
+                int y0 = (int) (1.0 * (y - j) / h * copySubImage.getLines());
+                set(index(x, y), copySubImage.getInt(x0, y0));
             }
 
         }

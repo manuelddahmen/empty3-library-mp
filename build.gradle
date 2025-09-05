@@ -369,8 +369,8 @@ signing {
 
 dependencies {
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.32'
-    implementation 'one.empty3.libs:commons-mp:0.0.11'
+    implementation 'one.empty3.libs:partial-desktop:0.0.33'
+    implementation 'one.empty3.libs:commons-mp:0.0.12'
 
     // Firebase libraries
     implementation 'com.google.firebase:protolite-well-known-types:18.0.1'
@@ -502,6 +502,12 @@ tasks.named("processResources") {
 tasks.withType(Jar).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+tasks.register('TestPixM', JavaExec) {
+    group = "test"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass ='TestPixM'
+}
 
 
 kotlin {
@@ -548,7 +554,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.8.20-1'
+def versionName = '2025.9.5-1'
 publishing {
     publications {
         maven(MavenPublication) {

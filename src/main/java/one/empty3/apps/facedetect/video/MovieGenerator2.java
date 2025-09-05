@@ -32,7 +32,7 @@ import static one.empty3.library.ZBufferImpl.DISPLAY_ALL;
  * Classe qui génère un fichier vidéo MPEG à partir d'un fichier texte et de deux images
  */
 public class MovieGenerator2 {
-    private static final int RES_AVG = 200;
+    private static final int RES_AVG = 150;
     private final Storage storage;
     private final HashMap<String, NamedPoint> mapPoint = new HashMap<>();
 
@@ -149,30 +149,31 @@ public class MovieGenerator2 {
         logger.info("transforms : " + configurationJson.getTransforms().size());
         logger.info("animation total : " + configurationJson.getAnimation().size());
         int countImages = 0;
-        for (int indexG = 0; indexG < configurationJson.getGroups().size(); indexG++) {
-            for (int indexT = 0; indexT < configurationJson.getTransforms().size(); indexT++) {
+        for (int indexT = 0; indexT < configurationJson.getTransforms().size(); indexT++) {
+            for (int indexG = 0; indexG < configurationJson.getGroups().size(); indexG++) {
                 Group g = configurationJson.getGroups().get(indexG);
                 Transform transform = configurationJson.getTransforms().get(indexT);
                 if (transform instanceof TransformAttachImage transformAttachImage) {
                     String imageUrl = transformAttachImage.getImageUrl();
                     Image image1;
-                    if(g.getId().equals(transformAttachImage.getTargetId())) {
+                    if (g.getId().equals(transformAttachImage.getTargetId())) {
                         if (imageUrl != null && !imageUrl.isEmpty()) {
                             try {
                                 image1 = readImageFromGcsUrl(transformAttachImage.getImageUrl());
-                                allImagesSets[indexT][indexT] = image1;
+                                allImagesSets[indexG][indexT] = image1;
                                 countImages++;
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
                     }
-                } else if (transform instanceof TransformDetachImage transformDetachImage && g.getId().equals(transformDetachImage.getTargetId())) {
+                }
+                if (transform instanceof TransformDetachImage transformDetachImage && g.getId().equals(transformDetachImage.getTargetId())) {
                     allImagesSets[indexG][indexT] = null;
-                } else if (indexT > 0) {
+                }
+                if (indexT > 0 && allImagesSets[indexG][indexT - 1] != null
+                    &&!(transform instanceof TransformAttachImage) && !(transform instanceof TransformDetachImage))  {
                     allImagesSets[indexG][indexT] = allImagesSets[indexG][indexT - 1];
-                } else if(indexT==0) {
-                    allImagesSets[indexG][indexT] = null;
                 }
             }
 
@@ -183,7 +184,7 @@ public class MovieGenerator2 {
             logger.info(countImages + " images trouvées pour " + configurationJson.getGroups().size() + " groupes");
         }
         // Traiter chaque transformation définie dans le fichier de configuration
-        if (configurationJson != null && configurationJson.getTransforms() != null) {
+        if (configurationJson.getTransforms() != null) {
             for (int i = 0; i < configurationJson.getTransforms().size(); i++) {
                 Transform transform = configurationJson.getTransforms().get(i);
                 int relativeFrameIndex = 0;
@@ -199,60 +200,33 @@ public class MovieGenerator2 {
 
                 for (int j = 0; j < transformFrames; j++) {
                     currentImageFrame = new Image(RES_AVG, RES_AVG);
-                    double progress = 1.0  / transformFrames;
+                    double progress = 1.0 / transformFrames;
 
                     List<Group> groups = configurationJson.getGroups();
-                    for (int k = 0; k < groups.size(); k++) {
-                        List<Point> groupPoints = new ArrayList<>();
-                        int finalFrameIndex = currentFrameIndex;
-                        String groupId = transform.getTargetId();
-                        Group g = groups.get(k);
-                        List<Point> finalGroupPoints = groupPoints;
-                        configurationJson.getPoints().forEach(
-                                point -> {
-                                    g.getPointIds().forEach(
-                                            s -> {
-                                                if (point.getId().equals(s) &&
-                                                        !finalGroupPoints.contains(point)) {
-                                                    finalGroupPoints.add(point);
-                                                }
-                                            });
-                                });
-                        if(transform.getTargetType().equals(Transform.TargetType.Group)&&transform.getTargetId().equals(g.getId())) {
-                            if(groupPoints.isEmpty()) {
-                                groupPoints = updatePointsFromGroup1(groupPoints, configurationJson, g);
-                            } else {
-                                groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
-                            }
-                            List<Point> finalGroupPoints1 = groupPoints;
-                            configurationJson.getPoints().forEach(point1 -> finalGroupPoints1.forEach(point2 -> {
-                                if (point1.getId().equals(point2.getId())) {
-                                    point1.setX(point2.getX());
-                                    point1.setY(point2.getY());
-                                    point1.setColor(point2.getColor());
-                                    point1.setName(point2.getName());
-                                    point1.setVisible(point2.isVisible());
-
-                                }
-                            }));
+                    for (Group g : groups) {
+                        List<Point> groupPoints = getPointsFromGroup(g, configurationJson.getPoints());
+                        if (transform.getTargetId().equals(g.getId())
+                                && !(transform instanceof TransformAttachImage) && !(transform instanceof TransformDetachImage )) {
+                            groupPoints = transformPointsBasedOnProgress(groupPoints, transform, progress);
+                            configurationJson.updatePoints(groupPoints);
                         }
-                        Image image1 = null;
-                        if(allImagesSets[k][i]!=null ) {
+                        if (transform instanceof TransformSetVisibility transformSetVisibility) {
+                            g.setVisible(transformSetVisibility.isVisible());
+                        }
+                        drawImageInFrame1(getPointsFromGroup(groups.get(i),
+                                configurationJson.getPoints()), currentImageFrame, g);
+                    }
+                    Image image1 = null;
+                    for (int k = 0; k < groups.size(); k++) {
+                        if (allImagesSets[k][i] != null) {
                             image1 = new Image(RES_AVG, RES_AVG);
                             Graphics graphics = image1.getBi().getGraphics();
                             graphics.drawImage(allImagesSets[k][i].getBi(), 0, 0, image1.getBi().getWidth(), image1.getBi().getHeight(), null);
-                        } else {
-
+                            drawImageInFrame2(getPointsFromGroup(groups.get(k), configurationJson.getPoints()),
+                                    configurationJson, image1, groups.get(k));
                         }
-                        // TRANSFORMS SPECIFICS
-                        if (transform instanceof TransformSetVisibility transformSetVisibility) {
-                            assert g != null;
-                            g.setVisible(transformSetVisibility.isVisible());
-                        }
-
-                        drawImageInFrame(groupPoints,  configurationJson, image1, g);
                     }
-                    j++;
+
                     // Passer à la frame suivante
                     frame = frame + 1;
                     totalFramesCount++;
@@ -270,7 +244,7 @@ public class MovieGenerator2 {
             boolean anymatch = configurationJson.getPoints().stream().anyMatch(new Predicate<Point>() {
                 @Override
                 public boolean test(Point point) {
-                    if(g.getPointIds().get(finalP).equals(point.getId())) {
+                    if (g.getPointIds().get(finalP).equals(point.getId())) {
                         gp.add(point);
                         return true;
                     }
@@ -285,13 +259,12 @@ public class MovieGenerator2 {
      * Dessine une image avec les éléments visuels (points, groupes) configurés
      *
      * @param g                 La groupe à dessiner
-     * @param configurationJson La configuration contenant les points et groupes à dessiner
      * @param gp
      * @return
      */
-    private Image drawImageInFrame(List<Point> g, ConfigurationJson configurationJson, Image image1, Group gp) {
+    private void drawImageInFrame1(List<Point> g, Image image1, Group gp) {
         if (currentImageFrame == null || image1 == null) {
-            return image1;
+            return;
         }
 
         Graphics2D g2d = (Graphics2D) currentImageFrame.getBi().getGraphics();
@@ -306,100 +279,108 @@ public class MovieGenerator2 {
 
         // Dessiner tous les points visibles
         for (Point point : g) {
-                    if (point.isVisible()) {
-                        // Convertir les coordonnées normalisées (0-1) en pixels
-                        int x = (int) (point.getX() * currentImageFrame.getBi().getWidth());
-                        int y = (int) (point.getY() * currentImageFrame.getBi().getHeight());
+            if (point.isVisible()) {
+                // Convertir les coordonnées normalisées (0-1) en pixels
+                int x = (int) (point.getX() * currentImageFrame.getBi().getWidth());
+                int y = (int) (point.getY() * currentImageFrame.getBi().getHeight());
 
-                        // Définir la couleur du point (utiliser une couleur par défaut si non spécifiée)
-                        try {
-                            if (point.getColor() != null) {
-                                g2d.setColor(point.getColor());
-                            } else {
-                                g2d.setColor(Color.RED);
-                            }
-                        } catch (Exception e) {
-                            g2d.setColor(Color.RED); // Couleur par défaut en cas d'erreur
-                        }
-
-                        // Dessiner le point
-                        int pointSize = 5;
-                        g2d.fillOval(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize);
-
-                        // Ajouter le nom du point s'il existe
-                        if (point.getName() != null && !point.getName().isEmpty()) {
-                            g2d.setColor(Color.WHITE);
-                            //g2d.drawString(point.getName(), x + pointSize, y);
-                        }
-
+                // Définir la couleur du point (utiliser une couleur par défaut si non spécifiée)
+                try {
+                    if (point.getColor() != null) {
+                        g2d.setColor(point.getColor());
+                    } else {
+                        g2d.setColor(Color.RED);
                     }
+                } catch (Exception e) {
+                    g2d.setColor(Color.RED); // Couleur par défaut en cas d'erreur
+                }
+
+                // Dessiner le point
+                int pointSize = 5;
+                g2d.fillOval(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize);
+
+                // Ajouter le nom du point s'il existe
+                if (point.getName() != null && !point.getName().isEmpty()) {
+                    g2d.setColor(Color.WHITE);
+                    //g2d.drawString(point.getName(), x + pointSize, y);
+                }
+
+            }
 
         }
-        if(image1!=null) {
-            ZBufferImpl zBuffer = new ZBufferImpl(RES_AVG, RES_AVG);
-            zBuffer.idzpp();
-            zBuffer.setDisplayType(DISPLAY_ALL);
-            Camera c = new Camera(new Point3D(0.5, 0.5, -Math.sqrt(3)/2.0),
-                    new Point3D(0.5, 0.5, 0.0));
-            zBuffer.scene(new Scene());
-            zBuffer.camera(c);
-            zBuffer.setAngles(Math.PI/3, Math.PI/3);
-            c.calculerMatrice(Point3D.X.mult(-1));
-            Matrix33 tild = c.getMatrix().tild();
-            for(int i=0; i<3; i++) {
-                tild.set(0, i, tild.get(0, i) * -1);
-            }
-            c.setMatrix(tild);
-            zBuffer.texture(new ImageTexture(currentImageFrame));
 
-            zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.005, 0.05));
-
-            if (hasAllCornerPoints(gp,g)) {
-                // Récupérer les points nommés pour s'assurer que nous utilisons le bon ordre
-                Map<String, Point> cornerPoints = getNamedCornerPoints(gp, g);
-
-                // Extraire les points par leur nom
-                Point topLeft = cornerPoints.get("topLeft");
-                Point topRight = cornerPoints.get("topRight");
-                Point bottomLeft = cornerPoints.get("bottomLeft");
-                Point bottomRight = cornerPoints.get("bottomRight");
-
-                logger.info("Affichage de l'image avec tracerQuad en utilisant les points nommés");
-                logger.info("topLeft: (" + topLeft.getX() + ", " + topLeft.getY() + ")");
-                logger.info("topRight: (" + topRight.getX() + ", " + topRight.getY() + ")");
-                logger.info("bottomLeft: (" + bottomLeft.getX() + ", " + bottomLeft.getY() + ")");
-                logger.info("bottomRight: (" + bottomRight.getX() + ", " + bottomRight.getY() + ")");
-
-                SurfaceParametriquePolynomialeBezier surfaceParametriquePolynomialeBezier = new SurfaceParametriquePolynomialeBezier(
-                        new Point3D[][]{
-                                {
-                                        new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
-                                        new Point3D(topRight.getX(), topRight.getY(), 0.0)
-                                },
-                                {
-                                        new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
-                                        new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0)
-                                }
-                        });
-                surfaceParametriquePolynomialeBezier.texture(new ImageTexture(image1));
-                // Utiliser tracerQuad avec les points nommés dans le bon ordre
-                zBuffer.draw(surfaceParametriquePolynomialeBezier);
-                /*zBuffer.tracerQuad(
-                        new Point3D(topRight.getX(), topRight.getY(), 0.0),
-                        new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
-                        new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
-                        new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0),
-                        new ImageTexture(image1),
-                        0, 1, 0, 1, surfaceParametriquePolynomialeBezier);
-                */
-                currentImageFrame = zBuffer.image();
-
-            } else {
-                logger.info("Le groupe ne contient pas tous les points de coin nommés, affichage simple de l'image");
-                g2d.drawImage(image1.getBi(), 0, 0, currentImageFrame.getBi().getWidth(), currentImageFrame.getBi().getHeight(), null);
-            }
+    }
+    /**
+     * Dessine une image avec les &eacute;l&eacute;ments visuels (points, groupes) configur&eacute;s
+     *
+     * @param pointList                 La groupe &agrave; dessiner
+     * @param configurationJson La configuration contenant les points et groupes &agrave; dessiner
+     * @param gp
+     */
+    private void drawImageInFrame2(List<Point> pointList, ConfigurationJson configurationJson, Image image1, Group gp) {
+        if(image1 == null || image1.getBi() == null || image1.getBi().getWidth() == 0 || image1.getBi().getHeight() == 0) {
+            return;
         }
-        return currentImageFrame;
+        ZBufferImpl zBuffer = new ZBufferImpl(RES_AVG, RES_AVG);
+        zBuffer.idzpp();
+        zBuffer.setDisplayType(DISPLAY_ALL);
+        Camera c = new Camera(new Point3D(0.5, 0.5, -Math.sqrt(3) / 2.0),
+                new Point3D(0.5, 0.5, 0.0));
+        zBuffer.scene(new Scene());
+        zBuffer.camera(c);
+        zBuffer.setAngles(60.0 / 360.0 * 2 * Math.PI, Math.PI / 3);
+        c.calculerMatrice(Point3D.X.mult(-1));
+        Matrix33 tild = c.getMatrix().tild();
+        for (int i = 0; i < 3; i++) {
+            tild.set(0, i, tild.get(0, i) * -1);
+        }
+        c.setMatrix(tild);
+        zBuffer.texture(new ImageTexture(currentImageFrame));
+        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(0.005, 0.05));
+
+        if (hasAllCornerPoints(gp, pointList)) {
+            // Récupérer les points nommés pour s'assurer que nous utilisons le bon ordre
+            Map<String, Point> cornerPoints = getNamedCornerPoints(gp, pointList);
+
+            // Extraire les points par leur nom
+            Point topLeft = cornerPoints.get("topLeft");
+            Point topRight = cornerPoints.get("topRight");
+            Point bottomLeft = cornerPoints.get("bottomLeft");
+            Point bottomRight = cornerPoints.get("bottomRight");
+
+            logger.info("Affichage de l'image avec tracerQuad en utilisant les points nommés");
+            logger.info("topLeft: (" + topLeft.getX() + ", " + topLeft.getY() + ")");
+            logger.info("topRight: (" + topRight.getX() + ", " + topRight.getY() + ")");
+            logger.info("bottomLeft: (" + bottomLeft.getX() + ", " + bottomLeft.getY() + ")");
+            logger.info("bottomRight: (" + bottomRight.getX() + ", " + bottomRight.getY() + ")");
+
+            SurfaceParametriquePolynomialeBezier surfaceParametriquePolynomialeBezier = new SurfaceParametriquePolynomialeBezier(
+                    new Point3D[][]{
+                            {
+                                    new Point3D(topRight.getX(), topRight.getY(), 0.0),
+                                    new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0)
+                            },
+                            {
+                                    new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
+                                    new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
+                            }
+                    });
+            surfaceParametriquePolynomialeBezier.texture(new ImageTexture(image1));
+            // Utiliser tracerQuad avec les points nommés dans le bon ordre
+            zBuffer.draw(surfaceParametriquePolynomialeBezier);
+            /*zBuffer.tracerQuad(
+                    new Point3D(topRight.getX(), topRight.getY(), 0.0),
+                    new Point3D(topLeft.getX(), topLeft.getY(), 0.0),
+                    new Point3D(bottomLeft.getX(), bottomLeft.getY(), 0.0),
+                    new Point3D(bottomRight.getX(), bottomRight.getY(), 0.0),
+                    new ImageTexture(image1),
+                    0, 1, 0, 1, surfaceParametriquePolynomialeBezier);
+            */
+            currentImageFrame = zBuffer.image();
+
+        } else {
+            logger.info("Le groupe ne contient pas tous les points de coin nommés, n'affiche pas l'image");
+        }
     }
 
     private boolean isBlank(Image image1) {
@@ -767,12 +748,12 @@ public class MovieGenerator2 {
             double dy = translateTransform.getDy();
 
             for (Point point : transformedPoints) {
-                point.setX(point.getX() + dx*progress);
-                point.setY(point.getY() + dy*progress);
+                point.setX(point.getX() + dx * progress);
+                point.setY(point.getY() + dy * progress);
             }
             logger.info("Translation appliquée: dx=" + dx + ", dy=" + dy);
         } else if (transform instanceof TransformRotate rotateTransform) {
-            double angle = rotateTransform.getAngle()*progress;
+            double angle = rotateTransform.getAngle() * progress;
 
             // Calculer le centre de rotation (moyenne des coordonnées)
             double centerX = 0.5; // Centre de l'écran par défaut
@@ -817,8 +798,8 @@ public class MovieGenerator2 {
                 double dy = point.getY() - centerY;
 
                 // Appliquer la mise à l'échelle
-                double newX = centerX + dx * scaleX*progress;
-                double newY = centerY + dy * scaleY*progress;
+                double newX = centerX + dx * scaleX * progress;
+                double newY = centerY + dy * scaleY * progress;
 
                 point.setX(newX);
                 point.setY(newY);
@@ -1033,7 +1014,7 @@ public class MovieGenerator2 {
      */
     private static Point findPointById(String id, List<Point> points) {
         return points.stream()
-                .filter(point -> id.equals(point.getId()))
+                .filter(point -> point!=null&&id.equals(point.getId()))
                 .findFirst()
                 .orElse(null);
     }
