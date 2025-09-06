@@ -54,14 +54,9 @@ public class PixM extends M {
 
     public PixM(@NotNull Image image) {
         super(image.getWidth(), image.getHeight());
-        for (int i = 0; i < image.getWidth(); i++) {
-            for (int j = 0; j < image.getHeight(); j++) {
-                double[] doubles = Lumiere.getDoubles(image.getRgb(i, j));
-                int c = 3;
-                for (int i1 = 0; i1 < c; i1++) {
-                    setCompNo(i1);
-                    set(i, j, doubles[i1]);
-                }
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < lines; j++) {
+                set(index(i, j), image.getRgb(i, j));
             }
         }
     }
@@ -616,14 +611,6 @@ public class PixM extends M {
         return l;
     }
 
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getLines() {
-        return lines;
-    }
-
     public void paintAll(double[] doubles) {
         for (int i = 0; i < getColumns(); i++)
             for (int j = 0; j < getLines(); j++)
@@ -689,18 +676,18 @@ public class PixM extends M {
         Image b = new one.empty3.libs.Image(columns, lines);
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
-                b.setRgb(i, j, getInt(i, j));
+                b.setRGB(i, j, getInt(i, j));
             }
         }
         return b;
     }
 
     public Image getImage() {
-        Image image = new one.empty3.libs.Image(columns, lines);
-        for (int i = 0; i < image.getWidth(); i++) {
-            for (int j = 0; j < image.getHeight(); j++) {
+        Image image = new one.empty3.libs.Image(columns, lines, BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < lines; j++) {
                 //double[] values = getValues(i, j);
-                image.setRgb(i, j, getInt(i, j));//Lumiere.getInt(values));
+                image.getBi().setRGB(i, j, getInt(i, j)|0xFF000000);//Lumiere.getInt(values));
             }
         }
         return image;
