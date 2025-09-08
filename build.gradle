@@ -419,8 +419,6 @@ dependencies {
     implementation 'org.bytedeco:javacv-platform:1.5.10'
 
 
-    // Google Cloud Functions Framework - c'est tout ce dont vous avez besoin
-    implementation 'com.google.cloud.functions:functions-framework-api:1.1.4'
     //implementation 'dev.openfunction.functions:functions-framework-invoker:1.2.0'
     // Pour les tests et l'exécution locale
     //testImplementation 'com.google.cloud.functions:functions-framework:1.1.0'
@@ -554,7 +552,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.9.5-2'
+def versionName = '2025.9.6-1'
 publishing {
     publications {
         maven(MavenPublication) {
