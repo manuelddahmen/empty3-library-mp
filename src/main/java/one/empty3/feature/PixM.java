@@ -539,24 +539,29 @@ public class PixM extends M {
         PixM p2 = new PixM(w, h);
         for (int i = x; i < x + w; i++)
             for (int j = y; j < y + h; j++)
-                for (int c = 0; c < getCompCount(); c++) {
-                    setCompNo(c);
-                    p2.setCompNo(c);
-                    double v = get(i, j);
-                    p2.set(i - x, j - y, v);
-                }
+                p2.set(i - x, j - y, getInt(i, j));
         return p2;
     }
 
+    public PixM resize(int newW, int newH) {
+        PixM pixM2 = new PixM(newW, newH);
+        for (int i = 0; i < newW; i++)
+            for (int j =0; j< newH; j++) {
+                int index0w = (int) (1.0*this.getColumns()/newW*i);
+                int index0h = (int) (1.0*this.getLines()/newH*j);
+                pixM2.set(pixM2.index(i, j), this.getInt(index0w, index0h));
+            }
+        return pixM2;
+    }
     public PixM copySubImage(int x, int y, int w, int h) {
         PixM p2 = new PixM(w, h);
-        for (int i = x; i <= x + w; i++)
-            for (int j = y; j <= y + h; j++)
-                for (int c = 0; c < getCompCount(); c++) {
-                    setCompNo(c);
-                    p2.setCompNo(c);
-                    p2.set(i - x, j - y, get(i, j));
-                }
+        for (int i = x; i < x + w; i++)
+            for (int j = y; j < y + h; j++) {
+                int index0w = i-x;
+                int index0h = j-y;
+                p2.set(p2.index(index0w, index0h), getInt(i, j));
+
+            }
         return p2;
     }
 
@@ -640,15 +645,16 @@ public class PixM extends M {
         return this;
     }
 
-    public void pasteSubImage(PixM copySubImage, int i, int j, int w, int h) {
+    public PixM pasteSubImage(PixM copiedImage, int i, int j, int w, int h) {
         for (int x = i; x < i + w; x++) {
             for (int y = j; y < j + h; y++) {
-                int x0 = (int) (1.0 * (x - i) / w * copySubImage.getColumns());
-                int y0 = (int) (1.0 * (y - j) / h * copySubImage.getLines());
-                set(index(x, y), copySubImage.getInt(x0, y0));
+                int x0 = (int) (1.0  * (x - i) / w * copiedImage.getColumns());
+                int y0 = (int) (1.0  * (y - j) / h * copiedImage.getLines());
+                set(index(x, y), copiedImage.getInt(x0, y0));
             }
 
         }
+        return this;
     }
 
     public double difference(PixM other, double precision) {
