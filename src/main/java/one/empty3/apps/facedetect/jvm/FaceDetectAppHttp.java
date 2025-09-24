@@ -18,7 +18,7 @@ import java.util.*;
 
 public class FaceDetectAppHttp {
     private static final String APPLICATION_NAME = "MeshMask";
-    private static final int MAX_RESULTS = 10;
+    private static final int MAX_RESULTS = 100;
     private final Vision vision;
     private final Gson gson = new Gson();
     private String[][][] landmarks;
