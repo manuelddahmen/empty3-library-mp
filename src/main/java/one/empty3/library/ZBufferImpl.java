@@ -2307,6 +2307,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
+            return false;
         }
 
 
@@ -2369,17 +2370,17 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return false;
         }
 
+    }
 
-        public void setCheckedOccupied(boolean checkedOccupied) {
-            isCheckedOccupied = checkedOccupied;
-        }
+    public void setCheckedOccupied(boolean checkedOccupied) {
+        isCheckedOccupied = checkedOccupied;
+    }
 
-        public Representable getCurrentRepresentable() {
-            return toDrawR;
-        }
+    public Representable getCurrentRepresentable() {
+        return toDrawR;
+    }
 
-        public PointInfo getInfosAt() {
-            return new PointInfo();
-        }
+    public PointInfo getInfosAt() {
+        return new PointInfo();
     }
 }
