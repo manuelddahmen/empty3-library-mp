@@ -261,10 +261,12 @@ public class TextureMorphMove extends ITexture {
                         distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear44.class)) {
                     distanceAB = new DistanceProxLinear44(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid, editPanel.imageFileRight);
+                            bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
                     distanceAB.setJpgRight(editPanel.imageFileRight);
                     ((DistanceProxLinear44) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
+                    if (editPanel.imageFileRight != null)
+                        distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
                     distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
