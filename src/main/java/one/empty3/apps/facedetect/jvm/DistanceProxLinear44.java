@@ -61,8 +61,8 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         List<Point3D> newB = new ArrayList<>();
         List<Point3D> newC = new ArrayList<>();
         double eps = 1. / Math.min(aDimReal.getWidth(), aDimReal.getHeight());
-        checkedListB = new boolean[(int) bDimReal.getWidth()][(int) bDimReal.getHeight()];
         checkedListA = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
+        checkedListB = new boolean[(int) bDimReal.getWidth()][(int) bDimReal.getHeight()];
         checkedListC = new boolean[(int) cDimReal.getWidth()][(int) cDimReal.getHeight()];
        /* if(jpgRight!=null) {
             checkedListRight = new boolean[(int) jpgRight.getWidth()][(int) jpgRight.getHeight()];
@@ -117,12 +117,20 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
                     int i2_0 = (int) (pointsA.get(i).getY() * aDimReal.getHeight());
                     int k1_0 = (int) (pointsC.get(i).getX() * cDimReal.getWidth());
                     int k2_0 = (int) (pointsC.get(i).getY() * cDimReal.getHeight());
+                    i1_0 = Math.max(0 , Math.min(i1_0, pointAddedA.length-1));
+                    i2_0 = Math.max(0 , Math.min(i2_0, pointAddedA[i1_0].length-1));
+                    k1_0 = Math.max(0 , Math.min(k1_0, pointAddedC.length-1));
+                    k2_0 = Math.max(0 , Math.min(k2_0, pointAddedC[k1_0].length-1));
+
                     gen[i1_0][i2_0] = iteration;
                     pointAddedA[i1_0][i2_0] = pointsA.get(i);
                     pointAddedC[k1_0][k2_0] = pointsC.get(i);
                     checkedListA[i1_0][i2_0] = true;
                     int j1 = (int) (pointsB.get(i).getX() * bDimReal.getWidth());
                     int j2 = (int) (pointsB.get(i).getY() * bDimReal.getHeight());
+                    j1 = Math.max(0, Math.min(j1, imageAB.length-1));
+                    j2 = Math.max(0, Math.min(j2, imageAB[j1].length-1));
+
                     imageAB[j1][j2] = pointsA.get(i);
                     imageCB[j1][j2] = pointsC.get(i);
                     newA.add(pointsA.get(i));
@@ -178,6 +186,18 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
                     int j2 = (int) (pB.getY() * bDimReal.getHeight());
                     int k1 = (int) (pC.getX() * cDimReal.getWidth());
                     int k2 = (int) (pC.getY() * cDimReal.getHeight());
+
+                    i1 = Math.max(0, Math.min(i1, pointAddedA.length-1));
+                    i2 = Math.max(0, Math.min(i2, pointAddedA[i1].length-1));
+                    i1 = Math.min(0, Math.min(i1, checkedListA.length-1));
+                    i2 = Math.max(0, Math.min(i2, checkedListA[i1].length-1));
+                    j1 = Math.max(0, Math.min(i1, checkedListB.length-1));
+                    j2 = Math.max(0, Math.min(i2, checkedListB[j1].length-1));
+                    k1 = Math.min(0, Math.min(i1, pointAddedC.length-1));
+                    k2 = Math.max(0, Math.min(i2, pointAddedC[k1].length-1));
+                    k1 = Math.max(0, Math.min(i1, checkedListC.length-1));
+                    k2 = Math.max(0, Math.min(i2, checkedListC[k1].length-1));
+
 
                     if (!checkedListB[j1][j2]) {
                         checkedListA[i1][i2] = true;
