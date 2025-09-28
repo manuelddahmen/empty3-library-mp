@@ -5,6 +5,7 @@ import one.empty3.library.Point3D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class DistanceProxLinear44 extends DistanceBezier2 {
     private Point3D[][] imageCB;
@@ -14,10 +15,9 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     private List<Point3D> pointsB;
     private List<Point3D> pointsA;
     boolean[][] checkedListA;
-    private static final int MAX_SUB_ITERE_X = 10;
     private List<Point3D> pointsC;
     boolean[][] checkedListC;
-    private double computeTimeMax = 1000*10e9d;
+    private double computeTimeMax = 3600*1000;
     boolean[][] checkedListB;
     private float[][][] imageAB2;
     private float[][][] imageCB2;
@@ -110,10 +110,14 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
             int sizeC = pointsB.size();
             for (int i = 0; i < sizeA; i++) {
                 if (iteration == 0) {
-                    gen[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()] = iteration;
-                    pointAddedA[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()] = pointsA.get(i);
-                    pointAddedC[(int) pointsC.get(i).getX()][(int) pointsC.get(i).getY()] = pointsC.get(i);
-                    checkedListA[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()] = true;
+                    int i1_0 = (int) (pointsA.get(i).getX() * aDimReal.getWidth());
+                    int i2_0 = (int) (pointsA.get(i).getY() * aDimReal.getHeight());
+                    int k1_0 = (int) (pointsC.get(i).getX() * cDimReal.getWidth());
+                    int k2_0 = (int) (pointsC.get(i).getY() * cDimReal.getHeight());
+                    gen[i1_0][i2_0] = iteration;
+                    pointAddedA[i1_0][i2_0] = pointsA.get(i);
+                    pointAddedC[k1_0][k2_0] = pointsC.get(i);
+                    checkedListA[i1_0][i2_0] = true;
                     int j1 = (int) (pointsB.get(i).getX() * bDimReal.getWidth());
                     int j2 = (int) (pointsB.get(i).getY() * bDimReal.getHeight());
                     imageAB[j1][j2] = pointsA.get(i);
@@ -133,6 +137,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
                     timeElapsed =  System.currentTimeMillis()-timeStart;
                     if(timeElapsed> computeTimeMax) { // 1 min max.
                         ended = true;
+                        Logger.getAnonymousLogger().severe("End of time DistanceProxLinear44");
                         break;
                     }
                     if (k == i)
@@ -182,9 +187,9 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
                         newC.add(pC);
                         imageAB[j1][j2] = pA;
                         imageCB[j1][j2] = pC;
-                        gen[i1][i2] = iteration;
-                        pointAddedA[i1][i2] = pA;
-                        pointAddedC[i1][i2] = pA;
+                        gen[i1][i2] = iteration; // i1, i2 are correct here
+                        pointAddedA[i1][i2] = pA; // i1, i2 are correct here
+                        pointAddedC[k1][k2] = pC; // Use k1, k2 for pointAddedC
                         checked++;
                     }
                     m++;
@@ -222,7 +227,13 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
 
 
         }
+        if(occ==oldoccc) {
+            System.out.println("occ==occMax Terminaison naturelle.");
+        }
+        if(ended) {
+            System.out.println("realComputeTime>theorComputeTime Terminaison au temps.");
 
+        }
         System.out.println("Compute texturing ended 1/2");
         System.out.println("Next: fills arrays avoiding blanks ");
 
