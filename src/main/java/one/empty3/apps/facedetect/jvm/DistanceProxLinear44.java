@@ -1,6 +1,7 @@
 package one.empty3.apps.facedetect.jvm;
 
 import one.empty3.library.Point3D;
+import one.empty3.libs.Image;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,12 +33,14 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
      * @param optimizeGrid
      */
     public DistanceProxLinear44(List<Point3D> A, List<Point3D> B, List<Point3D> C, Dimension aDimReal, Dimension bDimReal, Dimension cDimReal,
-                                boolean opt1, boolean optimizeGrid) {
+                                boolean opt1, boolean optimizeGrid, Image jpgRight) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         this.C  = C;
         this.cDimReal = cDimReal;
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         imageCB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
+        setJpgRight(jpgRight);
+        cDimReal = new Dimension(jpgRight.getWidth(), jpgRight.getHeight());
         if(cDimReal!=null && !C.isEmpty())
             init_1();
     }

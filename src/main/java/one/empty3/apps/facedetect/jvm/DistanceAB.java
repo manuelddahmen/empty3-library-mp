@@ -46,6 +46,7 @@ public abstract class DistanceAB {
     public FinishInitListener finishInitListener;
 
     public void setJpgRight(Image jpgFileRight) {
+
         this.jpgRight = jpgFileRight;
     }
 
