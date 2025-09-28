@@ -38,7 +38,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         this.cDimReal = cDimReal;
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         imageCB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
-        if(cDimReal!=null && C.size()>0)
+        if(cDimReal!=null && !C.isEmpty())
             init_1();
     }
 
