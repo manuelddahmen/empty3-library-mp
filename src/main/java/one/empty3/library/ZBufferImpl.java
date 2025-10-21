@@ -388,6 +388,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 //System.out.print("Triangle");
             }
         } else if (r instanceof E3Model.FaceWithUv f) {
+            toDrawR = r;
             if (f.getPolygon().getPoints().getData1d().size() == 4) {
                 tracerQuadRefined((E3Model.FaceWithUv) r);
             } else if (f.getPolygon().getPoints().getData1d().size() == 3) {
@@ -397,6 +398,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         polygon.texture(), f.getU1(), f.getV1(), f.getU2(), f.getV2());
             }
         } else if (r instanceof ParametricSurface n) {
+            toDrawR = r;
             setCurrentRepresentable(r);
             if (NEW_VERSION_ALPHA) {
                 if (camera() == null)
@@ -625,6 +627,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
 
             } else if (r instanceof Polygon) {
+                toDrawR = r;
                 setCurrentRepresentable(r);
                 Polygon p = (Polygon) r;
                 List<Point3D> points = p.getPoints().getData1d();

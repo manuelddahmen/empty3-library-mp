@@ -31,11 +31,11 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("org.jreleaser") version("1.14.0")
+    id("org.jreleaser") version("1.20.0")
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.10")
 }
-def JAVA_VERSION = 21
+def JAVA_VERSION = 24
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -92,7 +92,7 @@ sourceSets {
             srcDirs = ["src/test/resources", "src/test/configs", "src/test/java"]
         }
         kotlin {
-            srcDirs = ['src/test/kotlin', 'src/main/java']
+            srcDirs = ["src/test/kotlin", "src/main/java"]
         }
     }
 }
@@ -552,7 +552,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.9.28-5'
+def versionName = '2025.10.20'
 publishing {
     publications {
         maven(MavenPublication) {

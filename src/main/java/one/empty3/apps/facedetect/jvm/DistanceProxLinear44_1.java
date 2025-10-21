@@ -18,7 +18,7 @@ public class DistanceProxLinear44_1 extends DistanceBezier2 {
     boolean[][] checkedListA;
     private List<Point3D> pointsC;
     boolean[][] checkedListC;
-    private double computeTimeMax = 3600*1000;
+    double computeTimeMax = 3600*1000;
     boolean[][] checkedListB;
     private float[][][] imageAB2;
     private float[][][] imageCB2;
@@ -54,6 +54,9 @@ public class DistanceProxLinear44_1 extends DistanceBezier2 {
 
     public void init_1() {
 
+        //realSize(A);
+        //realSize(B);
+        //realSize(C);
         pointsA = A.subList(0, A.size() - 1);
         pointsB = B.subList(0, B.size() - 1);
         pointsC = C.subList(0, C.size() - 1);
@@ -187,14 +190,12 @@ public class DistanceProxLinear44_1 extends DistanceBezier2 {
                     int k1 = (int) (pC.getX() * cDimReal.getWidth());
                     int k2 = (int) (pC.getY() * cDimReal.getHeight());
 
-                    i1 = Math.max(0, Math.min(i1, pointAddedA.length-1));
-                    i2 = Math.max(0, Math.min(i2, pointAddedA[i1].length-1));
-                    i1 = Math.min(0, Math.min(i1, checkedListA.length-1));
-                    i2 = Math.max(0, Math.min(i2, checkedListA[i1].length-1));
-                    j1 = Math.max(0, Math.min(j1, checkedListB.length-1));
-                    j2 = Math.max(0, Math.min(j2, checkedListB[j1].length-1));
-                    k1 = Math.max(0, Math.min(k1, checkedListC.length-1));
-                    k2 = Math.max(0, Math.min(k2, checkedListC[k1].length-1));
+                    i1 = (int) Math.max(0, Math.min(i1, aDimReal.getWidth()-1));
+                    i2 = (int) Math.max(0, Math.min(i2, aDimReal.getHeight()-1));
+                    j1 = (int) Math.max(0, Math.min(j1, bDimReal.getWidth()-1));
+                    j2 = (int) Math.max(0, Math.min(j2, bDimReal.getHeight()-1));
+                    k1 = (int) Math.max(0, Math.min(k1, cDimReal.getWidth()-1));
+                    k2 = (int) Math.max(0, Math.min(k2, cDimReal.getHeight()-1));
 
 
                     if (!checkedListB[j1][j2]) {
@@ -261,6 +262,12 @@ public class DistanceProxLinear44_1 extends DistanceBezier2 {
         imageAB2 = fillArray(imageAB);
         imageCB2 = fillArray(imageCB);
         System.out.println("Compute texturing ended 2/2") ;
+    }
+
+    private void realSize(List<Point3D> x) {
+        for (int i = 0; i < x.size(); i++) {
+            x.set(i, x.get(i).multDot(new Point3D(aDimReal.getWidth()-1, aDimReal.getHeight()-1, 0.0)));
+        }
     }
 
     public float[][][] fillArray(Point3D[][] image) {

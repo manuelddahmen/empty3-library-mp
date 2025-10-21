@@ -17,7 +17,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     private static final int MAX_SUB_ITERE_X = 10;
     private List<Point3D> pointsC;
     boolean[][] checkedListC;
-    private double computeTimeMax = 1000*10e9d;
+    double computeTimeMax = 1000*10e9d;
     boolean[][] checkedListB;
     private float[][][] imageAB2;
     private float[][][] imageCB2;
