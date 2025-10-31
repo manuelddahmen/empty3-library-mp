@@ -1053,12 +1053,11 @@ public abstract class TestObjet implements Test, Runnable {
 
 
         if (img() == null) {
-            double sqrt = Math.sqrt(resx * resx + resy * resy);
             ri = new Image(getResx(), getResy());
-            for (int i = 0; i < sqrt; i++) {
-                int x = (int) (i * sqrt / resx);
-                int y = (int) (i * sqrt / resy);
-                ri.setRgb(x, y, 0x00ff0000);
+            for (int x = 0; x < getResx(); x++) {
+                for (int y = 0; y < getResy(); y++) {
+                    ri.setRgb(x, y, 0x00ff0000);
+                }
             }
 
         } else {

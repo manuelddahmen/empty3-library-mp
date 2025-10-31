@@ -35,13 +35,11 @@ plugins {
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.2.10")
 }
-def JAVA_VERSION = 21
+def JAVA_VERSION = 25
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = JAVA_VERSION
-targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
@@ -369,8 +367,8 @@ signing {
 
 dependencies {
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.34'
-    implementation 'one.empty3.libs:commons-mp:0.0.13'
+    implementation 'one.empty3.libs:partial-desktop:0.0.35'
+    implementation 'one.empty3.libs:commons-mp:0.0.15'
 
     // Firebase libraries
     implementation 'com.google.firebase:protolite-well-known-types:18.0.1'
@@ -511,8 +509,6 @@ tasks.register('TestPixM', JavaExec) {
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = JAVA_VERSION
-targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
@@ -552,7 +548,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.10.21'
+def versionName = '2025.10.27'
 publishing {
     publications {
         maven(MavenPublication) {
