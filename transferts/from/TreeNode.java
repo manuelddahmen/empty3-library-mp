@@ -57,7 +57,7 @@ package one.empty3.library1.tree;
 import one.empty3.library.Point2D;
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 
@@ -595,7 +595,7 @@ public class TreeNode {
     }
 
 
-    @NotNull
+    
     public String toString() {
         String s = "TreeNode " + this.getClass().getSimpleName() + "\nExpression string: " + expressionString + (type == null ? "Type null" : "Type: " + type.getClass() + "\n " + type.toString()) + "\nChildren: " + getChildren().size() + "\n";
         int i = 0;

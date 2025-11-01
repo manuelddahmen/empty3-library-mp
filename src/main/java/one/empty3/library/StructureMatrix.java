@@ -31,7 +31,7 @@ package one.empty3.library;
 
 
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -79,7 +79,7 @@ public class StructureMatrix<T> implements Serializable, Serialisable {
         this.classType = classType;
     }
 
-    public StructureMatrix<T> setElem(@NotNull T value) {
+    public StructureMatrix<T> setElem( T value) {
         this.data0d = value;
         this.classType = value.getClass();
         listenersPropertyChanged(null, value, 0, 0, 0);

@@ -31,7 +31,7 @@ package one.empty3.library1.shader;
 
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Objects;
 
@@ -99,7 +99,7 @@ public class Vec {
 
     }
 
-    @NotNull
+    
     public String toString() {
         StringBuilder s = new StringBuilder("vec (" + getDims() + ") " +
                 "(");

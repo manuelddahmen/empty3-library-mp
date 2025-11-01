@@ -37,7 +37,7 @@ package one.empty3.library;
 
 import one.empty3.libs.Image;
 import one.empty3.libs.Color;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.File;
 
@@ -48,7 +48,7 @@ public class ImageTexture extends ITexture {
     private final StructureMatrix<Image> image = new StructureMatrix<>(0, Image.class);
 
 
-    public ImageTexture(@NotNull Image imageE) {
+    public ImageTexture( Image imageE) {
         image.setElem(imageE);
         if(image.getElem()==null || image.getElem().getWidth()==0 || image.getElem().getHeight()==0)
             throw new RuntimeException("Image null");
@@ -126,7 +126,7 @@ public class ImageTexture extends ITexture {
         return image.getElem();
     }
 
-    public void setImage(@NotNull Image bi) {
+    public void setImage( Image bi) {
         image.setElem(bi);
     }
 

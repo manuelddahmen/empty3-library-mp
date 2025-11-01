@@ -29,10 +29,6 @@
 
 package one.empty3.growth.graphics;
 
-//import com.badlogic.gdx.math.Matrix4;
-//import com.badlogic.gdx.math.Vector3;
-
-import com.jogamp.opengl.math.Matrix4;
 import one.empty3.library.Matrix33;
 import one.empty3.library.Point3D;
 

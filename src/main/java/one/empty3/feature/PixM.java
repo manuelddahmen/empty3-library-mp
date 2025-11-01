@@ -36,7 +36,7 @@ import one.empty3.library.LineSegment;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.awt.image.BufferedImage;
 
@@ -52,7 +52,7 @@ public class PixM extends M {
         super(l, c);
     }
 
-    public PixM(@NotNull Image image) {
+    public PixM( Image image) {
         super(image.getWidth(), image.getHeight());
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {

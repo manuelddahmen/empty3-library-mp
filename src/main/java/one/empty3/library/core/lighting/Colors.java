@@ -36,7 +36,7 @@ package one.empty3.library.core.lighting;
 
 import one.empty3.library.Lumiere;
 import one.empty3.libs.*;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Random;
 
@@ -58,7 +58,7 @@ public class Colors {
 
 
         @Override
-        public int compareTo(@NotNull ColorDist o) {
+        public int compareTo( ColorDist o) {
             if (o instanceof ColorDist) {
                 ColorDist cd = (ColorDist) o;
                 return dist<cd.dist?-1:(dist==cd.dist?0:1);

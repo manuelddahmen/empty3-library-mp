@@ -29,7 +29,6 @@ import one.empty3.library.core.nurbs.SurfaceParametriquePolynomiale;
 import one.empty3.library.core.nurbs.SurfaceParametriquePolynomialeBezier;
 
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +43,8 @@ public abstract class DistanceBezier2 extends DistanceAB {
         return new Point3D(model.uMin+(uvScaled.getX()*(model.uMax-model.uMin)),
                 model.vMin+(uvScaled.getX()*(model.vMax-model.vMin)),0.0);
     }
-    public DistanceBezier2(@Nonnull List<Point3D> A, @Nonnull List<Point3D> B,
-                           @Nonnull Dimension aDimReal, @Nonnull Dimension bDimReal, boolean opt1, boolean optimizeGrid) {
+    public DistanceBezier2(List<Point3D> A, List<Point3D> B,
+                           Dimension aDimReal, Dimension bDimReal, boolean opt1, boolean optimizeGrid) {
         super();
         this.opt1 = opt1;
         this.optimizeGrid = optimizeGrid;

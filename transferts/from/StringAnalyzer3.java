@@ -23,8 +23,8 @@
 package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -52,7 +52,7 @@ public class StringAnalyzer3 {
      *
      * @return the Construct object
      */
-    @NotNull
+    
     protected Construct getConstruct() {
         if (construct == null && !constructs.isEmpty())
             construct = constructs.get(constructs.size() - 1);
@@ -1535,7 +1535,7 @@ public class StringAnalyzer3 {
             return null;
         }
 
-        @NotNull
+        
         public InstructionBlock getCurrentInstructions() {
             if (currentInstructions == null) {
                 currentInstructions = new ArrayList<>();
@@ -1655,7 +1655,7 @@ public class StringAnalyzer3 {
 
     private Construct construct = new Construct();
 
-    public int parse(@NotNull String input) {
+    public int parse( String input) {
         /*new Thread() {
             @Override
             public void run() {
@@ -1678,7 +1678,7 @@ public class StringAnalyzer3 {
         return position1;
     }
 
-    public int parse(@NotNull Token token1, @Nullable String input) {
+    public int parse( Token token1,  String input) {
         int position1 = 0;
         position1 = token1.parse(input, position1);
         return position1;

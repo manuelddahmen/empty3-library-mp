@@ -33,9 +33,9 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.20.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.2.10")
+    id("org.jetbrains.kotlin.jvm") version("2.2.20")
 }
-def JAVA_VERSION = 25
+def JAVA_VERSION = 21
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -353,6 +353,15 @@ tasks.register('one.empty3.apps.facedetect.video.JCodecImageToVideoEncoder', Jav
     args 'one.empty3.apps.facedetect.video.JCodecImageToVideoEncoder'
     dependsOn(jar)
 }
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = JAVA_VERSION
+    options.compilerArgs.addAll([
+            '--add-reads', 'empty3_library_mp=ALL-UNNAMED'
+    ])
+}
+
+
 signing {
     try {
         def signingKey = load.get("signing.keyId")
@@ -548,7 +557,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.10.27'
+def versionName = '2025.11.1'
 publishing {
     publications {
         maven(MavenPublication) {

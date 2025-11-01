@@ -33,7 +33,7 @@ import one.empty3.library.StructureMatrix;
 import one.empty3.library1.tree.AlgebraicFormulaSyntaxException;
 import one.empty3.library1.tree.AlgebraicTree;
 import one.empty3.library1.tree.TreeNodeEvalException;
-import org.jetbrains.annotations.NotNull;
+
 
 /*__
  * Created by manue on 28-05-19.
@@ -49,7 +49,7 @@ public class FctXY extends Fct1D_1D {
 
     }
 
-    public @NotNull FctXY setFormulaX(String formulaX) {
+    public  FctXY setFormulaX(String formulaX) {
         this.formulaX.setElem(formulaX);
 
         try {

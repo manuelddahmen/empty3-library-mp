@@ -22,7 +22,7 @@
 
 package one.empty3.library1.tree;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,7 +98,7 @@ public class ListInstructions {
         this.assignations = assignations;
     }
 
-    public void addInstructions(@NotNull String toString) {
+    public void addInstructions( String toString) {
 
         if (toString != null && !toString.isEmpty()) {
             assignations = new ArrayList<>();

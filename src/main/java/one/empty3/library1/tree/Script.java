@@ -30,7 +30,7 @@
 package one.empty3.library1.tree;
 
 
-import org.jetbrains.annotations.NotNull;
+
 
 public class Script {
     AlgebraicTree tree;
@@ -38,7 +38,7 @@ public class Script {
     String text;
 
     public Script(AlgebraicTree tree, ListInstructions listInstructions,
-                  @NotNull String text) {
+                   String text) {
         this.tree = tree;
         if (tree == null) {
             tree = new AlgebraicTree(text);

@@ -32,7 +32,7 @@ package one.empty3.library;
 
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
-import org.jetbrains.annotations.NotNull;
+
 
 import one.empty3.libs.*;
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ public class Point3D extends Representable {
      *
      * @param p0 The Point3D object to be copied
      */
-    public Point3D(@NotNull one.empty3.library.Point3D p0) {
+    public Point3D( one.empty3.library.Point3D p0) {
         super();
         for (int i = 0; i < 3; i++)
             set(i, p0.get(i));

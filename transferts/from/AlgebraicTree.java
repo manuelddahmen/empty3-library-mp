@@ -61,7 +61,7 @@ import java.util.Map;
 
 import one.empty3.library.StructureMatrix;
 
-import org.jetbrains.annotations.NotNull;
+
 
 
 /**
@@ -1202,7 +1202,7 @@ public class AlgebraicTree extends Tree {
         return root.eval();
     }
 
-    @NotNull
+    
     public String toString() {
         String s = "Arbre algébrique\n";
         if (root != null) {

@@ -23,7 +23,7 @@
 package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class StringAnalyzer2 {
     private HashMap<String, Class> classes;
     private int index = 0;
 
-    @NotNull
+    
     protected Construct getConstruct() {
         return construct;
     }

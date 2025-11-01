@@ -13,7 +13,13 @@ module empty3_library_mp {
     requires org.apache.commons.net;
     requires org.checkerframework.checker.qual;
     requires partial.desktop;
+//    requires jcodec.javase;
+//    requires google.cloud.storage;
+    // JOGL libraries - commented out as they are not modular
+    // requires gluegen.rt;
+    // requires jogl.all;
 
+// Extras as gradle reads=ALL_UNNANED
     exports one.empty3.library;
     exports one.empty3.apps.facedetect.jvm;
     exports one.empty3.apps.testobject;

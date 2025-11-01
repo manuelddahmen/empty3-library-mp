@@ -22,12 +22,12 @@
 
 package one.empty3.library1.tree;
 
-import org.jetbrains.annotations.Nullable;
+
 
 public class Instruction extends InstructionBlock {
-    @Nullable
+    
     private String type;
-    @Nullable
+    
     private String name;
     protected ListInstructions.Instruction expression;
 

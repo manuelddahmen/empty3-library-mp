@@ -42,7 +42,7 @@ import one.empty3.library1.shader.Vec;
 import one.empty3.pointset.PCont;
 
 import one.empty3.libs.*;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -200,7 +200,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     ZBufferImpl that;
     private boolean isCheckedOccupied = false;
     private Representable toDrawR;
-    @NotNull
+    
     protected IncrementOptimizer incrementOptimizer;
 
     static {

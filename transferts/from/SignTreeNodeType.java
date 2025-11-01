@@ -58,7 +58,7 @@ package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
 import one.empty3.library1.tree.TreeNodeType;
-import org.jetbrains.annotations.NotNull;
+
 
 /*__
  * Created by manuel on 16-12-16.
@@ -85,7 +85,7 @@ public class SignTreeNodeType extends TreeNodeType {
         return new StructureMatrix<Double>(0, Double.class).setElem(sign);
     }
 
-    @NotNull
+    
     public String toString() {
         String string = super.toString();
         string += "\nSign sign : " + sign;
