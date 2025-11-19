@@ -1,5 +1,6 @@
+package one.empty3;
+
 import one.empty3.feature.PixM;
-import one.empty3.library.Lumiere;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;

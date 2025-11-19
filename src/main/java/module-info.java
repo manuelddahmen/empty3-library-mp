@@ -13,6 +13,7 @@ module empty3_library_mp {
     requires org.apache.commons.net;
     requires org.checkerframework.checker.qual;
     requires partial.desktop;
+    requires  org.junit.jupiter.api;
 //    requires jcodec.javase;
 //    requires google.cloud.storage;
     // JOGL libraries - commented out as they are not modular
