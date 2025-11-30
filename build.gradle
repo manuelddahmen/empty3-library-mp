@@ -234,6 +234,12 @@ tasks.register('runtest', JavaExec) {
     dependsOn(jar)
 }
 
+tasks.register("GenerateObjJpg", JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = "one.empty3.tests.GenerateObjJpg"
+    dependsOn(jar)
+}
+
 
 tasks.register('Balade1', JavaExec) {
     classpath sourceSets.main.runtimeClasspath
@@ -375,6 +381,9 @@ signing {
 
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.35'
     implementation 'one.empty3.libs:commons-mp:0.0.15'
