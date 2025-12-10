@@ -35,8 +35,6 @@ import one.empty3.libs.Image;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.tribase.Plan3D;
 
-import one.empty3.libs.Image;
-
 /***
  * Created by manue on 17-03-19.
  * Update 2021.
@@ -74,7 +72,25 @@ public abstract class HeightMapSurface extends ParametricSurface {
 
         return surface.getElem().calculerPoint3D(u, v).plus(
                 surface.getElem().calculerTangenteU(u, v).prodVect(surface.getElem().calculerTangenteV(u, v)
-                ).norme1().mult(elem.getRgb(i, j)));
+                ).norme1().mult(heightDouble(u, v)));
+    }
+
+
+    public double heightDouble(double u, double v) {
+
+        Image elem = image.getElem().getImage().getElem();
+
+        int i = (int) (u * (image.getElem().getImage().getElem().getWidth()));
+        int j = (int) (v * (image.getElem().getImage().getElem().getHeight()));
+        if (i < 0) i = 0;
+        if (j < 0) j = 0;
+        if (i >= image.getElem().getImage().getElem().getWidth())
+            i = image.getElem().getImage().getElem().getWidth() - 1;
+        if (j >= image.getElem().getImage().getElem().getHeight())
+            j = image.getElem().getImage().getElem().getHeight() - 1;
+
+
+        return elem.getRgb(i, j)/256.;
     }
 
     @Override

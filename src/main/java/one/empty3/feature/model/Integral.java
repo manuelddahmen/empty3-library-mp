@@ -42,18 +42,17 @@ public class Integral extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             PixM imageP = PixM.getPixM(new Image(in), maxRes);
-            Image image = imageP.getImage();
-            Image imageOut = new Image(imageP.getColumns(), imageP.getLines());
-            int[] colors = new int[image.getheight()];
-            for (int i = 0; i < image.getHeight(); i++) {
-                for (int j = 0; j < image.getWidth(); j++) {
+            PixM image = new PixM(imageP.getColumns(), imageP.getLines());
+            int[] colors = new int[image.getLines()];
+            for (int j = 0; j < image.getLines(); j++) {
+                for (int i = 0; i < image.getColumns(); i++) {
                     int color = colors[j];
                     Color colorO = new Color(color);
                     double[] doubles = Lumiere.getDoubles(color);
-                    double[] doublesPoint = Lumiere.getDoubles(image.getRgb(j, i));
+                    double[] doublesPoint = Lumiere.getDoubles(image.getInt(i, j));
 
-                    double[] dFinal;
-                    for (int k = 0; k < 3; k++) {
+                    double[] dFinal = new double[] {0,0,0, 0};
+                    for (int k = 0; k < 4; k++) {
                         dFinal[k] = doublesPoint[k] + doubles[k];
 
                     }
@@ -62,14 +61,16 @@ public class Integral extends ProcessFile {
 
                     colors[j] = cFinale;
 
-                    imageOut.setRgb(j, i, cFinale);
+                    image.set(image.index(i, j), cFinale);
                 }
 
             }
-            imageOut.saveTo(out);
+            image.normalize(0, 1).getImage().saveFile(out);
 
-        } catch (RuntimeException ex) {
             return true;
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
+        return false;
     }
 }

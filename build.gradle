@@ -33,7 +33,7 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.20.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.2.20")
+    id("org.jetbrains.kotlin.jvm") version("2.2.21")
 }
 def JAVA_VERSION = 21
 
@@ -79,7 +79,7 @@ sourceSets {
             srcDirs = ["src/main/resources", "src/main/configs", "src/main/java"]
         }
         kotlin {
-            srcDirs = ['src/main/kotlin', 'src/main/java']
+            srcDirs = ["src/main/kotlin", "src/main/java"]
         }
     }
     test {
@@ -385,7 +385,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.35'
+    implementation 'one.empty3.libs:partial-desktop:0.0.36'
     implementation 'one.empty3.libs:commons-mp:0.0.15'
 
     // Firebase libraries
@@ -575,7 +575,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.11.1'
+def versionName = '2025.11.30'
 publishing {
     publications {
         maven(MavenPublication) {
