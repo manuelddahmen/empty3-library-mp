@@ -90,7 +90,7 @@ public abstract class HeightMapSurface extends ParametricSurface {
             j = image.getElem().getImage().getElem().getHeight() - 1;
 
 
-        return elem.getRgb(i, j)/256.;
+        return (elem.getRgb(i, j)&0xff)/256.;
     }
 
     @Override

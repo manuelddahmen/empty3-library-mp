@@ -47,7 +47,7 @@ public class T3D extends Tubulaire3 {
     /***
      * @serialField surfaceUV
      */
-    private StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
+    protected StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
 
     /***
      * Constructor by default.
@@ -92,4 +92,11 @@ public class T3D extends Tubulaire3 {
                     ));
     }
 
+    public StructureMatrix<HeightMapSurface> getSurfaceUV() {
+        return surfaceUV;
+    }
+
+    public void setSurfaceUV(StructureMatrix<HeightMapSurface> surfaceUV) {
+        this.surfaceUV = surfaceUV;
+    }
 }
