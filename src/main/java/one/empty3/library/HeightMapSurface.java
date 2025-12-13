@@ -94,6 +94,12 @@ public abstract class HeightMapSurface extends ParametricSurface {
     }
 
     @Override
+    public Point3D calculerPoint3D(double u, double v) {
+        //return super.calculerPoint3D(u, v);
+        return new Point3D(1., 1., heightDouble(u, v));
+    }
+
+    @Override
     public void declareProperties() {
         super.declareProperties();
         getDeclaredDataStructure().put("image/Level map", image);
@@ -115,4 +121,5 @@ public abstract class HeightMapSurface extends ParametricSurface {
     public void setSurface(StructureMatrix<ParametricSurface> surface) {
         this.surface = surface;
     }
+
 }

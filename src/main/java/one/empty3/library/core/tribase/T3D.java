@@ -27,13 +27,14 @@
  *
  */
 
-package one.empty3.library.core.tribase;
+package one.empty3.apps.sculpt;
 
 import one.empty3.library.HeightMapSurface;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;
 import one.empty3.library.core.nurbs.ParametricCurve;
+import one.empty3.library.core.tribase.Tubulaire3;
 import one.empty3.libs.Image;
 
 /***
@@ -70,7 +71,7 @@ public class T3D extends Tubulaire3 {
         if (level == 0 && quad_not_computed > 0) {
             super.calculerPoint3D(v, u);
         }
-        Point3D[] vectPerp = vectPerp(u, v);
+        Point3D[] vectPerp = vectPerp(v, u);
       /*  if(v==0) {
             vectPerp1 = vectPerp(u, v);
             vectPerp = vectPerp(u, v);
@@ -86,10 +87,10 @@ public class T3D extends Tubulaire3 {
         return soulCurve.getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
-                    )).plus(
+                )).plus(
                 vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
-                    ));
+                ));
     }
 
     public StructureMatrix<HeightMapSurface> getSurfaceUV() {

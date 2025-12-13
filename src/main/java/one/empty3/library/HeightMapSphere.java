@@ -30,7 +30,6 @@
 package one.empty3.library;
 
 import one.empty3.libs.Image;
-import one.empty3.libs.Image;
 
 /*__
  * Created by manue on 22-06-19.
