@@ -29,10 +29,7 @@
 
 package one.empty3.apps.sculpt;
 
-import one.empty3.library.HeightMapSurface;
-import one.empty3.library.LineSegment;
-import one.empty3.library.Point3D;
-import one.empty3.library.StructureMatrix;
+import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.tribase.Tubulaire3;
 import one.empty3.libs.Image;
@@ -49,6 +46,7 @@ public class T3D extends Tubulaire3 {
      * @serialField surfaceUV
      */
     protected StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
+    private ITexture texture2;
 
     /***
      * Constructor by default.
@@ -92,7 +90,28 @@ public class T3D extends Tubulaire3 {
                         surfaceUV.getElem().heightDouble(u, v)
                 ));
     }
+    /*
+        @Override
+        public void texture(ITexture tc) {
+            super.texture(tc);
+            this.texture2 = new ITexture() {
+                @Override
+                public int getColorAt(double u, double v) {
+                    return texture.getColorAt(v , u);
+                }
+                @Override
+                public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {
+                    return null;
+                }
+            };
+            return;
+        }
 
+        @Override
+        public ITexture texture() {
+            return texture2;
+        }
+    */
     public StructureMatrix<HeightMapSurface> getSurfaceUV() {
         return surfaceUV;
     }

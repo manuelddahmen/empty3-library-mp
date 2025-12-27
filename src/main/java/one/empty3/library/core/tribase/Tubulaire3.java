@@ -39,9 +39,7 @@
  */
 package one.empty3.library.core.tribase;
 
-import one.empty3.library.Matrix33;
-import one.empty3.library.Point3D;
-import one.empty3.library.StructureMatrix;
+import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricCurve;
@@ -59,6 +57,7 @@ public class Tubulaire3 extends ParametricSurface {
     protected Point3D lastNorm;
     protected Point3D lastTan = Point3D.Z;
     Point3D[][] vecteurs = new Point3D[3][3];
+    private ITexture texture2;
 
     {
         for (int i = 0; i < 3; i++)
@@ -231,5 +230,28 @@ public class Tubulaire3 extends ParametricSurface {
 
     public StructureMatrix<FctXY> getDiameterFunction() {
         return diameterFunction;
+    }
+
+
+
+    @Override
+    public void texture(ITexture tc) {
+        super.texture(tc);
+        this.texture2 = new ITexture() {
+            @Override
+            public int getColorAt(double u, double v) {
+                return texture.getColorAt(v , u);
+            }
+            @Override
+            public MatrixPropertiesObject copy() throws CopyRepresentableError, IllegalAccessException, InstantiationException {
+                return texture2.copy();
+            }
+        };
+        return;
+    }
+
+    @Override
+    public ITexture texture() {
+        return texture2;
     }
 }
