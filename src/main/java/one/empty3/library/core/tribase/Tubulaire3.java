@@ -213,6 +213,9 @@ public class Tubulaire3 extends ParametricSurface {
                 vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)));
     }
 
+    /**
+     * Declares properties; registers curve and diameter function
+     */
     @Override
     public void declareProperties() {
         super.declareProperties();
