@@ -76,15 +76,6 @@ public class Tubulaire3 extends ParametricSurface {
         this.quad_not_computed = 0;//QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
     }
 
-    public Tubulaire3(ParametricCurve lineSegment, double rayonMembres) {
-        this();
-        this.soulCurve.getElem().getCoefficients().setElem(lineSegment.calculerPoint3D(0.0), 0);
-        this.soulCurve.getElem().getCoefficients().setElem(lineSegment.calculerPoint3D(1.0), 1);
-        FctXY fctXY = new FctXY();
-        fctXY.setFormulaX("" + rayonMembres);
-        this.diameterFunction.setElem(fctXY);
-        this.quad_not_computed = QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
-    }
 
     public Point3D calculerNormale(double t) {
         return calculerTangente(t + NORM_FCT_INCR).moins(calculerTangente(t)).mult(1.0 / NORM_FCT_INCR);
