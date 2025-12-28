@@ -45,6 +45,7 @@ import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 
+import javax.xml.transform.SourceLocator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +53,7 @@ public class Tubulaire3 extends ParametricSurface {
     public double TAN_FCT_INCR = 0.000001;
     public double NORM_FCT_INCR = 0.000001;
 
-    protected StructureMatrix<CourbeParametriquePolynomialeBezier> soulCurve = new StructureMatrix<>(0, CourbeParametriquePolynomialeBezier.class);
+    protected StructureMatrix<ParametricCurve> soulCurve = new StructureMatrix<>(0, ParametricCurve.class);
     protected StructureMatrix<FctXY> diameterFunction = new StructureMatrix<>(0, FctXY.class);
     protected Point3D lastNorm;
     protected Point3D lastTan = Point3D.Z;
@@ -76,6 +77,19 @@ public class Tubulaire3 extends ParametricSurface {
         this.quad_not_computed = 0;//QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
     }
 
+    public Tubulaire3(ParametricCurve lineSegment, double rayonMembres) {
+        this();
+        this.soulCurve.setElem(lineSegment);
+        FctXY fctXY = new FctXY() {
+            @Override
+            public double result(double u) {
+                return rayonMembres;
+            }
+        };
+        fctXY.setFormulaX("" + rayonMembres);
+        this.diameterFunction.setElem(fctXY);
+        this.quad_not_computed = QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
+    }
 
     public Point3D calculerNormale(double t) {
         return calculerTangente(t + NORM_FCT_INCR).moins(calculerTangente(t)).mult(1.0 / NORM_FCT_INCR);
@@ -217,7 +231,7 @@ public class Tubulaire3 extends ParametricSurface {
 
     }
 
-    public StructureMatrix<CourbeParametriquePolynomialeBezier> getSoulCurve() {
+    public StructureMatrix<ParametricCurve> getSoulCurve() {
         return soulCurve;
     }
 
