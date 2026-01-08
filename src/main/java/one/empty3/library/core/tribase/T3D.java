@@ -42,9 +42,6 @@ import one.empty3.libs.Image;
  * Tube (cylindre à âme courbe et sculptée par une image en niveauc de gris (0-255)
  */
 public class T3D extends Tubulaire3 {
-    /***
-     * @serialField surfaceUV
-     */
     protected StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
     private ITexture texture2;
 
@@ -64,24 +61,17 @@ public class T3D extends Tubulaire3 {
         });
     }
 
+    /**
+     * Calculates 3D point using curve, diameter, and surface
+     */
     @Override
-    public Point3D calculerPoint3D(double v, double u) {
+    public Point3D calculerPoint3D(double u, double v) {
         if (level == 0 && quad_not_computed > 0) {
             super.calculerPoint3D(v, u);
         }
         Point3D[] vectPerp = vectPerp(v, u);
-      /*  if(v==0) {
-            vectPerp1 = vectPerp(u, v);
-            vectPerp = vectPerp(u, v);
-        } else {
-            vectPerp1 = vectPerp(u, v);
-            Matrix33 matrix33 = new Matrix33(vectPerp);
-            double angle = Math.acos(vectPerp[0].prodScalaire(vectPerp1[0])/(vectPerp[0].norme()*vectPerp1[0].norme()));
-            Matrix33 mult = matrix33.mult(new Matrix33(new Point3D[]{Point3D.X, Point3D.Y, vectPerp[0]}));
 
-            vectPerp = mult.getColVectors();
-        }
-        */
+        // Computes point offset by cosine scaled by height
         return soulCurve.getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)

@@ -201,19 +201,8 @@ public class Tubulaire3 extends ParametricSurface {
             super.calculerPoint3D(v, u);
         }
         Point3D[] vectPerp = vectPerp(u, v);
-      /*  if(v==0) {
-            vectPerp1 = vectPerp(u, v);
-            vectPerp = vectPerp(u, v);
-        } else {
-            vectPerp1 = vectPerp(u, v);
-            Matrix33 matrix33 = new Matrix33(vectPerp);
-            double angle = Math.acos(vectPerp[0].prodScalaire(vectPerp1[0])/(vectPerp[0].norme()*vectPerp1[0].norme()));
-            Matrix33 mult = matrix33.mult(new Matrix33(new Point3D[]{Point3D.X, Point3D.Y, vectPerp[0]}));
-
-            vectPerp = mult.getColVectors();
-        }
-        */
-        return soulCurve.getElem().calculerPoint3D(u).plus(
+      // Offsets point by cosine of scaled diameter
+      return soulCurve.getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v))).plus(
                 vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)));
     }
@@ -227,7 +216,7 @@ public class Tubulaire3 extends ParametricSurface {
         soulCurve.getElem().declareProperties();
         diameterFunction.getElem().declareProperties();
         getDeclaredDataStructure().put("soulCurve/ame de la courbe", soulCurve);
-        getDeclaredDataStructure().put("diameterFunction/ fonction de la longueur du diamètre", diameterFunction);
+        getDeclaredDataStructure().put("diameterFunction/fonction de la longueur du diamètre", diameterFunction);
 
     }
 

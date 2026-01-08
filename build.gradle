@@ -33,9 +33,9 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.20.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.2.21")
+    id("org.jetbrains.kotlin.jvm") version("2.3.0")
 }
-def JAVA_VERSION = 21
+def JAVA_VERSION = 25
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -385,8 +385,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.36'
-    implementation 'one.empty3.libs:commons-mp:0.0.15'
+    implementation 'one.empty3.libs:partial-desktop:0.0.37-25'
+    implementation 'one.empty3.libs:commons-mp:0.0.16-25'
 
     // Firebase libraries
     implementation 'com.google.firebase:protolite-well-known-types:18.0.1'
@@ -457,7 +457,7 @@ dependencies {
 }
 
 // Tâche pour créer un JAR executable pour le déploiement
-task shadowJar(type: Jar) {
+tasks.register('shadowJar', Jar) {
     archiveClassifier = 'all'
     from sourceSets.main.output
 
@@ -575,7 +575,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = '2025.12.28-1'
+def versionName = "2026.1.7"
 publishing {
     publications {
         maven(MavenPublication) {
