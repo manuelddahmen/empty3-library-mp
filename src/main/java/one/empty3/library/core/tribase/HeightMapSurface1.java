@@ -80,6 +80,6 @@ public class HeightMapSurface1 extends HeightMapSurface {
 
     @Override
     public Point3D calculerPoint3D(double u, double v) {
-        return search(u, v);
+        return transformVec(search(u, v));
     }
 }

@@ -32,6 +32,9 @@ package one.empty3.library1.tree
 import one.empty3.library1.tree.StringAnalyzerJava2.TokenExpression2
 
 class TokenExpression2toString {
+    /**
+     * Converts string to tokenized string representation
+     */
     public fun toString(s: String): String {
         val sb: StringBuilder = StringBuilder(s)
         val stringAnalyzerJava2: StringAnalyzerJava2 = StringAnalyzerJava2()
@@ -41,6 +44,7 @@ class TokenExpression2toString {
         while (hasNextToken) {
             var tokenExpression2: StringAnalyzerJava2.TokenExpression2 = stringAnalyzerJava2.TokenExpression2()
             var premier = true
+            // Parses tokens; appends to string builder
             while (pos < s.length - 1 && result) {
                 if (!premier)
                     sb.append(" ")
@@ -48,6 +52,7 @@ class TokenExpression2toString {
                 pos = tokenExpression2.parse(s, pos)
                 result = tokenExpression2.isSuccessful
 
+                // Extracts token string; replaces semicolons with newline
                 val tokenString = if (tokenExpression2.toString().length > 0) {
                     val temp = tokenExpression2.toString().substring(1)
                     if (temp.length >= 1 && temp.contains(';')) {
@@ -72,6 +77,7 @@ class TokenExpression2toString {
         var hasNextToken = true
         val sb = StringBuilder()
         while (hasNextToken) {
+            // Extracts token string, handling semicolon replacement
             val tokenString = if (expression2.toString().length > 0) {
                 val temp = expression2.toString().substring(1)
                 if (temp.length >= 1 && temp.contains(';')) {

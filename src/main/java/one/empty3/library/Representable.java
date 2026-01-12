@@ -792,6 +792,10 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
 
     }
 
+    public Point3D transformVec(Point3D p0) {
+        return getOrig().plus(getVectX().mult(p0.getX())).plus(getVectY().mult(p0.getY())).plus(getVectZ().mult(p0.getZ()));
+    }
+
     public Point3D getOrig() {
         Point3D elem = vectors.getElem(3);
         return elem == null ? Point3D.O0 : elem;

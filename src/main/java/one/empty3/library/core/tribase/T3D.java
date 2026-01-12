@@ -27,7 +27,7 @@
  *
  */
 
-package one.empty3.apps.sculpt;
+package one.empty3.library.core.tribase;
 
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricCurve;
@@ -72,13 +72,13 @@ public class T3D extends Tubulaire3 {
         Point3D[] vectPerp = vectPerp(v, u);
 
         // Computes point offset by cosine scaled by height
-        return soulCurve.getElem().calculerPoint3D(u).plus(
+        return transformVec(soulCurve.getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
                 )).plus(
                 vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
-                ));
+                )));
     }
     /*
         @Override
