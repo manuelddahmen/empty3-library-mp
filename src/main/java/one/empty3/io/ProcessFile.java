@@ -47,13 +47,19 @@ public abstract class ProcessFile extends ProcessNFiles {
     public static boolean shouldOverwrite = false;
 
     protected static boolean isImage(File in) {
-        if (in != null && (in.getAbsolutePath().toLowerCase().endsWith(".jpg")
-                || in.getAbsolutePath().toLowerCase().endsWith(".png")))
-            return true;
+        try {
+            // Checks if filename has image extension
+            if (in != null && (in.getAbsolutePath().toLowerCase().endsWith(".jpg")
+                    || in.getAbsolutePath().toLowerCase().endsWith(".png")))
+                return true;
 
-        Image read =(Image) new one.empty3.libs.Image(1,1).getFromFile(in);
-        if (read != null) return true;
-        return false;
+            assert in != null;
+            Image read = new Image(in);
+            return true;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public ProcessFile() {

@@ -566,7 +566,7 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-def versionName = "2026.1.12"
+def versionName = "2026.1.25"
 publishing {
     publications {
         maven(MavenPublication) {
