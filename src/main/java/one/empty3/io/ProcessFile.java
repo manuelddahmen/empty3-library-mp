@@ -49,13 +49,15 @@ public abstract class ProcessFile extends ProcessNFiles {
     protected static boolean isImage(File in) {
         try {
             // Checks if filename has image extension
-            if (in != null && (in.getAbsolutePath().toLowerCase().endsWith(".jpg")
+            if (in != null && in.exists()&&(in.getAbsolutePath().toLowerCase().endsWith(".jpg")
                     || in.getAbsolutePath().toLowerCase().endsWith(".png")))
                 return true;
 
-            assert in != null;
-            Image read = new Image(in);
-            return true;
+            if(in!=null&&in.exists()) {
+                Image read = new Image(in);
+                return true;
+            } else
+                return false;
         } catch (RuntimeException e) {
             e.printStackTrace();
             return false;
@@ -66,6 +68,9 @@ public abstract class ProcessFile extends ProcessNFiles {
         super();
     }
 
+    /**
+     * Initializes properties; adds self to a parent list
+     */
     public void initProperties(ProcessNFiles processFile) {
         super.initProperties(processFile);
         if (properties == null) {
