@@ -45,7 +45,6 @@ import com.google.common.collect.ImmutableList;
 import one.empty3.library.Point3D;
 
 
-import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import java.io.*;
@@ -76,6 +75,18 @@ public class FaceDetectApp {
 
     public FaceDetectApp(Vision visionService) {
         this.vision = visionService;
+    }
+
+
+    public FaceDetectApp() {
+
+        try {
+            this.vision = getVisionService();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -153,12 +164,10 @@ public class FaceDetectApp {
                 .build();
     }
 
-    /**
-     * Gets up to {@code maxResults} faces for an image stored at {@code path}.
-     */
-    public List<FaceAnnotation> detectFaces(Path path, int maxResults) throws IOException {
-        byte[] data = Files.readAllBytes(path);
-
+    public List<FaceAnnotation> detectFaces(Image image, int maxResults) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.toOutputStream(byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
         AnnotateImageRequest request =
                 new AnnotateImageRequest()
                         .setImage(new com.google.api.services.vision.v1.model.Image().encodeContent(data))
@@ -183,6 +192,13 @@ public class FaceDetectApp {
         }
         return response.getFaceAnnotations();
     }
+    /**
+     * Gets up to {@code maxResults} faces for an image stored at {@code path}.
+     */
+    public List<FaceAnnotation> detectFaces(Path path, int maxResults) throws IOException {
+        byte[] data = Files.readAllBytes(path);
+        return detectFaces((Image) Image.getFromInputStream(new ByteArrayInputStream(data)), maxResults);
+    }
 
 
     /**
@@ -194,6 +210,7 @@ public class FaceDetectApp {
         BoundingPoly boundingPoly = face.getBoundingPoly();
         for (int i = 0; i < boundingPoly.getVertices().size(); i++) {
             Vertex current = boundingPoly.getVertices().get(i);
+            // Populates polygons with valid bounding vertices coordinates
             if (current.getX() != null && current.getY() != null) {
                 poly1.getPoints().setElem(new Point3D((double) current.getX(), (double) current.getY(), 0.0), i);
                 polygonDraw.getPoints().getData1d().add(new Point3D((double)current.getX(), (double)current.getY(), 0.0));
@@ -319,7 +336,36 @@ public class FaceDetectApp {
 
         ///uploadFile(imageOut);
     }
+    public String loadTextFormImage(Image image) throws IOException, GeneralSecurityException {
 
+
+
+        FaceDetectApp app = new FaceDetectApp(getVisionService());
+        List<FaceAnnotation> faces = app.detectFaces(image, MAX_RESULTS);
+        System.out.printf("Found %d face%s\n", faces.size(), faces.size() == 1 ? "" : "s");
+
+
+        StringWriter stringWriter = new StringWriter();
+        app.dataWriter = new PrintWriter(stringWriter);
+
+        faces.forEach(faceAnnotation -> {
+            app.initStructurePolygons();
+            //app.frontal(img, faceAnnotation);
+            //app.annotateWithFaces(img, faceAnnotation);
+            //app.annotateWithFaces2(img, faceAnnotation);
+            //app.writePolygonsDataPoly(img, faceAnnotation);
+            //app.writePolygonsData(img, faceAnnotation);
+            app.writeFaceData(image, faceAnnotation);
+        });
+
+        app.dataWriter.close();
+
+        ///uploadFile(annotationData);
+
+        ///uploadFile(imageOut);
+
+        return stringWriter.toString();
+    }
     private void writeFaceData(Image img, FaceAnnotation faceAnnotation) {
 
         for (int i = 0; i < landmarks.length; i++) {
@@ -359,4 +405,49 @@ public class FaceDetectApp {
         storage.createFrom(blobInfo, Paths.get(filename.getAbsolutePath()));
         Logger.getAnonymousLogger().log(Level.INFO, "File " + filename.getAbsolutePath() + " uploaded to bucket " + OUTPUT_BUCKET_NAME + " as " + filename);
     }
+
+    public HashMap<String, Point3D> loadTxt(Image image, String selectedFile) {
+        HashMap<String, Point3D> pointsInImage = new HashMap<String, Point3D>();
+        if (image != null ) {
+            try {
+                Scanner bufferedReader = new Scanner(new StringReader(selectedFile));
+                String line = "";
+                while (bufferedReader.hasNextLine()) {
+                    line = bufferedReader.nextLine().trim();
+                    Point3D point = new Point3D();
+                    String landmarkType;
+                    double x;
+                    double y;
+                    if (!line.isEmpty()) {
+                        landmarkType = line;
+                        // X
+                        line = bufferedReader.nextLine().trim();
+                        x = Double.parseDouble(line);
+                        // Y
+                        line = bufferedReader.nextLine().trim();
+                        y = Double.parseDouble(line);
+                        // Blank line
+                        line = bufferedReader.nextLine().trim();
+
+                        pointsInImage.put(landmarkType, new Point3D(x, y, 0.0));
+                    }
+                }
+                Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInImage.size());
+                bufferedReader.close();
+
+                // Initialize surface bezier
+                Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in model view", pointsInImage.size());
+
+            } catch ( RuntimeException ex) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
+                throw new RuntimeException(ex);
+            }
+        } else {
+            Logger.getAnonymousLogger().log(Level.INFO, "Loaded image first before points", pointsInImage.size());
+        }
+
+
+        return pointsInImage;
+    }
+
 }

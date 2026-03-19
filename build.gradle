@@ -33,10 +33,10 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.20.0")
     id("signing")
-    //id("org.jetbrains.kotlin.jvm") version("2.3.10")
+//    id("org.jetbrains.kotlin.jvm") version("2.3.10")
 }
-def JAVA_VERSION = 21
-def versionName = "2026.3.10-21"
+def JAVA_VERSION = 25
+def versionName = "2026.3.15-25"
 /*
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -77,12 +77,13 @@ sourceSets {
             srcDirs = ['src/main/java']
         }
         resources {
-            srcDirs = ["src/main/resources", "src/main/configs", "src/main/java"]
+            srcDirs = ['src/main/resources', 'src/main/configs', 'src/main/java']
         }
+        /*
         kotlin {
-            srcDirs = ["src/main/kotlin", "src/main/java"]
+            srcDirs = ['src/main/kotlin', 'src/main/java']
         }
-
+*/
     }
 
     test {
@@ -90,11 +91,14 @@ sourceSets {
             srcDirs = ['src/test/java', 'src/main/java']
         }
         resources {
-            srcDirs = ["src/test/resources", "src/test/configs", "src/test/java"]
+            srcDirs = ['src/test/resources', 'src/test/configs', 'src/test/java']
         }
+        /*
         kotlin {
-            srcDirs = ["src/test/kotlin", "src/main/java"]
+            srcDirs = ['src/test/kotlin', 'src/main/java']
         }
+        */
+
     }
 }
 
@@ -384,6 +388,12 @@ signing {
 
 
 dependencies {
+    // Netty constraints to force version
+    constraints {
+        implementation('io.netty:netty-codec-http:4.2.8.Final')
+        implementation('com.fasterxml.jackson.core:jackson-core:2.21.1')
+    }
+
     // https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
@@ -437,7 +447,7 @@ dependencies {
 
 
     // Google Cloud BOM pour la gestion des versions
-    implementation platform('com.google.cloud:libraries-bom:26.39.0')
+    implementation platform('com.google.cloud:libraries-bom:26.38.0')
 
     // Vos autres dépendances Google Cloud
     implementation 'com.google.cloud:google-cloud-vision:3.50.0'
@@ -445,8 +455,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.danilopianini:gson-extras:0.2.1'
     implementation 'com.google.code.gson:gson-parent:2.13.1'
-    implementation 'com.google.firebase:firebase-admin:9.2.0'
-
+    implementation 'com.google.firebase:firebase-admin:9.1.0'
     implementation 'com.google.cloud.functions.invoker:java-function-invoker:1.3.0'
 
     implementation 'com.google.cloud:google-cloud-pubsub:1.117.0' // Use the latest version

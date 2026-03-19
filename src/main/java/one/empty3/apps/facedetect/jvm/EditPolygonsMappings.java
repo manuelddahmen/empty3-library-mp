@@ -431,6 +431,7 @@ public class EditPolygonsMappings implements Runnable {
         hasChangedAorB = true;
     }
 
+    @Deprecated
     public void loadTxt(byte[] selectedFile) {
         inTxtType = SINGLE;
         if (image != null && model != null) {
