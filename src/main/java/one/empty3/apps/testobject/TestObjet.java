@@ -403,11 +403,17 @@ public abstract class TestObjet implements Test, Runnable {
         return resx;
     }
 
+    void initZ() {
+        z = ZBufferFactory.instance(resx, resy, D3);
+        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
+        z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+    }
+
     @Deprecated
     public void setResx(int resx) {
         this.resx = resx;
         dimension = new Resolution(resx, resy);
-        z = ZBufferFactory.instance(resx, resy, D3);
+        initZ();
     }
 
     public int getResy() {
@@ -418,7 +424,7 @@ public abstract class TestObjet implements Test, Runnable {
     public void setResy(int resy) {
         this.resy = resy;
         dimension = new Resolution(resx, resy);
-        z = ZBufferFactory.instance(resx, resy, D3);
+        initZ();
     }
 
     public abstract void ginit();
@@ -829,9 +835,7 @@ public abstract class TestObjet implements Test, Runnable {
             init();
 
 
-
-        z = ZBufferFactory.newInstance(resx, resy);
-        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
+        initZ();
         //z.next();
         long timeStart = System.currentTimeMillis();
 
@@ -1097,55 +1101,57 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private void endMovie() {
-        Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Encodage ffmpeg. ffmpeg must be in PATH");
-        Process chperm;
+        Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Encoding with ffmpeg...");
         try {
             File f = new File(subDir, "frames.mp4");
+            if (frames.isEmpty()) return;
 
-            String collect = frames.stream().collect(Collectors.joining(" "));
             String s = frames.get(0);
             int i = s.lastIndexOf(File.separator) + 1;
-            s = s.substring(0, i);
+            String directoryPath = s.substring(0, i);
+            String inputPattern = directoryPath + "frame_%08d.png";
 
+            ProcessBuilder pb;
             if (isAndroid) {
-                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Android platform cmdline");
-
-                chperm = Runtime.getRuntime().exec("su");
-                DataOutputStream os =
-                        new DataOutputStream(chperm.getOutputStream());
-
-
-                os.writeBytes("ffmpeg -f image2 -i " + s + "frame_%09d.png" + f.getAbsolutePath() + "\n");
-
-
-                os.flush();
-
-                chperm.waitFor();
+                // Fix for Android su shell
+                pb = new ProcessBuilder("su");
+                Process process = pb.start();
+                try (DataOutputStream os = new DataOutputStream(process.getOutputStream())) {
+                    // Ensure spaces between arguments
+                    os.writeBytes("ffmpeg -y -f image2 -start_number 1 -i " + inputPattern + " " + f.getAbsolutePath() + "\n");
+                    os.flush();
+                }
+                process.waitFor();
             } else {
-                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "JVM platform system shell");
-                chperm = Runtime.getRuntime().exec(new String[]{"ffmpeg", "-f", "image2", "-i", s + "frame_%09d.png", f.getAbsolutePath(), "\n"});
+                // Fix for JVM Platform: Remove "\n", add "-y", and "-start_number 1"
+                pb = new ProcessBuilder(
+                        "ffmpeg", "-y",
+                        "-f", "image2", "-i", inputPattern, "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+                        "-start_number", "1",
 
+                        f.getAbsolutePath()
+                );
 
-                chperm.waitFor();
+                // Redirect error stream to stdout or inherit to see why it fails
+                pb.inheritIO();
 
+                Process process = pb.start();
+                process.waitFor();
             }
 
-            if (f.exists()) {
-                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job done : " + f.getAbsolutePath());
+            if (f.exists() && f.length() > 0) {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job done: " + f.getAbsolutePath());
             } else {
-                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job failed : " + f.getAbsolutePath());
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job failed: File is missing or empty.");
             }
-
 
         } catch (IOException | InterruptedException e) {
-            if (e.getMessage().contains("Cannot run program \"ffmpeg\"")) {
-                System.out.println("choco install ffmpeg");
+            if (e.getMessage() != null && e.getMessage().contains("Cannot run program \"ffmpeg\"")) {
+                System.err.println("ffmpeg not found in PATH. Install via: choco install ffmpeg");
             }
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
 
     private void addFrame(String ri) {
         frames.add(ri);
