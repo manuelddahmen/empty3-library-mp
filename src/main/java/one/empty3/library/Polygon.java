@@ -344,5 +344,10 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
 
         return pixM;
     }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        points.getData1d().forEach(p -> p.setOrig(orig));
+    }
 }
 

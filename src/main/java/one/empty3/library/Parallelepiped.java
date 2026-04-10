@@ -153,4 +153,9 @@ public class Parallelepiped extends RepresentableConteneur {
     Point3D p(Point3D p0, double a, Point3D p1) {
         return p0.plus(p1.moins(p0).mult(a));
     }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        getListRepresentable().forEach(r -> r.setOrig(orig));
+    }
 }

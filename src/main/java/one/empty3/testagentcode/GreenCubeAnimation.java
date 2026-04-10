@@ -40,9 +40,6 @@ public class GreenCubeAnimation extends TestObjetSub {
 
     @Override
     public void ginit() {
-//        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(
-//                ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(getResx(), getResy())));
-//        z().setDisplayType(ZBufferImpl.DISPLAY_ALL
         // Initialisation de la scène
         scene = new Scene();
 
