@@ -36,7 +36,7 @@ plugins {
 //    id("org.jetbrains.kotlin.jvm") version("2.3.10")
 }
 def JAVA_VERSION = 25
-def versionName = "2026.3.15-25"
+def versionName = "2026.4.10-25"
 /*
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -701,6 +701,13 @@ test {
     onlyIf {
         project.hasProperty('runTests')
     }
+
+    // Exclude xmlsec from test classpath: it's a named module that requires
+    // jakarta.xml.bind at boot layer init but is not used in any test code
+    classpath = classpath.filter { !it.name.contains('xmlsec') }
+
+    // Allow JUnit to instantiate test classes in one.empty3 package via reflection
+    jvmArgs '--add-opens=empty3_library_mp/one.empty3=org.junit.platform.commons'
 
     testLogging {
         events "passed", "skipped", "failed"

@@ -789,7 +789,7 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
     }
 
     public void setOrig(Point3D orig) {
-
+        this.vectors.setElem(orig, 3);
     }
 
     public Point3D transformVec(Point3D p0) {

@@ -102,20 +102,22 @@ public class DataModel implements PropertyChangeListener {
             for (int i = 0; i < element.getChildElements().size(); i++) {
                 Element element1 = element.getChildElements().get(i);
                 String name = element1.getAttributeValue("name");
-                /*if (name != null) {
+                if (name != null) {
                     if (name.contains("/"))
                         name = name.split("/")[0];
                 StructureMatrix declaredProperty = representable.getDeclaredProperty(name);
                 if (declaredProperty == null)
                     System.err.println("Element: " + element.toString() + "Element class: " + element.getAttributeValue("class") + "\nStructureMatrix : null \nelement1: name=" + name + "\nElement1= " + element1.toString());
                 else
-                    browser(element1, declaredProperty);
-                //}
-                */
+                    browser(element1, (StructureMatrix) declaredProperty);
+                }
+
             }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (ClassesNotEqualException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -314,7 +316,8 @@ public class DataModel implements PropertyChangeListener {
             StringBuilder stringBuilder = new StringBuilder();
             scene.xmlRepresentation(getDirectory(false), stringBuilder, (Representable) scene);
 
-            File out = new File(getDefaultFilename() + ".xml");
+            File out = new File((fileModel != null ? fileModel : getDefaultFilename()));
+            System.out.println(out.getAbsolutePath());
             String xml = stringBuilder.toString();
             PrintWriter pw = new PrintWriter(out);
             pw.print(xml);
