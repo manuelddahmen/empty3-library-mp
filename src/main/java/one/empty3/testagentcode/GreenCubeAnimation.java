@@ -35,7 +35,7 @@ import one.empty3.libs.Color;
 
 public class GreenCubeAnimation extends TestObjetSub {
 
-    private Box cube;
+    private Representable cube;
     private double cubeSize = 0.5; // Correspond au quart d'une hauteur d'écran de 2.0 unités
 
     @Override
@@ -44,14 +44,14 @@ public class GreenCubeAnimation extends TestObjetSub {
         scene = new Scene();
 
         // Création du cube vert
-        cube = new Box(cubeSize, cubeSize, cubeSize);
+        cube = new Cube(cubeSize, Point3D.O0);
         cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
 
         // Ajout du cube à la scène
-        scene.add(cube);
+        scene().add(cube);
 
         // Positionnement de la caméra (vue de face)
-        Camera camera = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0);
+        Camera camera = new Camera(new Point3D(0d, 0d, -5d), Point3D.O0);
         scene.cameraActive(camera);
     }
 
@@ -73,7 +73,6 @@ public class GreenCubeAnimation extends TestObjetSub {
     public static void main(String[] args) {
         GreenCubeAnimation animation = new GreenCubeAnimation();
         // Configuration de la résolution et du nombre d'images
-        animation.setGenerate(GENERATE_IMAGE);
         animation.setResolution(800, 600);
         animation.setMaxFrames(100);
 

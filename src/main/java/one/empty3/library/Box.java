@@ -39,6 +39,6 @@ public class Box extends Parallelepiped {
     }
 
     public Box(double cubeSize, double cubeSize1, double cubeSize2) {
-        this(cubeSize, cubeSize1, cubeSize2, null);
+        super(cubeSize, cubeSize1, cubeSize2, null);
     }
 }

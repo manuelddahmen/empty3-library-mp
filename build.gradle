@@ -121,7 +121,7 @@ ext.mainTestClasses = [
 Properties properties = new Properties()
 try {
     // Other configuration here
-    File propertiesFile = new File('../private.properties/gradle.properties')
+    File propertiesFile = new File(System.getProperty('user.dir') + '/../private.properties/gradle.properties')
     propertiesFile.withInputStream {
         properties.load(it)
     }
@@ -133,7 +133,7 @@ try {
 Properties propertiesReleaseConfig = new Properties()
 try {
     // Other configuration here
-    File propertiesFile = new File('../.jreleaser/config.properties')
+    File propertiesFile = new File(System.getProperty('user.home') + '/.jreleaser/config.properties')
     propertiesFile.withInputStream {
         propertiesReleaseConfig.load(it)
     }
@@ -535,6 +535,20 @@ tasks.register('TestPixM', JavaExec) {
     description = "Run the main class with JavaExecTask"
     classpath = sourceSets.test.runtimeClasspath
     mainClass ='TestPixM'
+}
+
+tasks.register('runClass', JavaExec) {
+    group = "application"
+    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
+    classpath = sourceSets.test.runtimeClasspath
+    if (project.hasProperty('className')) {
+        mainClass = project.getProperty('className')
+    } else {
+        mainClass = 'one.empty3.HelloWorld'
+    }
+    if (project.hasProperty('args')) {
+        args(project.getProperty('args').split(' '))
+    }
 }
 
 tasks.register("publishAll") {

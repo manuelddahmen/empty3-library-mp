@@ -155,4 +155,11 @@ public class RepresentableConteneur extends Representable implements IMovable, I
     public void setRe(StructureMatrix<Representable> re) {
         this.re = re;
     }
+
+    @Override
+    public void texture(ITexture tc) {
+        for (int i = 0; i < getListRepresentable().size(); i++) {
+            getListRepresentable().get(i).texture(tc);
+        }
+    }
 }

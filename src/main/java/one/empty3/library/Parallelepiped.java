@@ -56,9 +56,16 @@ import one.empty3.library.Polygon;
 import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.ColorTexture;
 
-/*__
- * Meta Description missing
- * @author Manuel Dahmen dathewolf@gmail.com
+/**
+ * Represents a 3D parallelepiped geometric object. A parallelepiped is a
+ * six-faced figure (also called a hexahedron) with opposite faces that are
+ * parallel and congruent. The class supports defining the dimensions and
+ * texture of the parallelepiped.
+ *
+ * This class extends {@link RepresentableConteneur}, allowing the parallelepiped
+ * to contain and manage its sub-elements, such as polygons that make up its faces.
+ *
+ * @author Manuel Dahmen _manuel.dahmen@gmx.com_
  */
 public class Parallelepiped extends RepresentableConteneur {
     Point3D[] p0;
@@ -76,9 +83,9 @@ public class Parallelepiped extends RepresentableConteneur {
                     (dim1 == 1) ? 1 : -1, (dim2 == 2) ? 1 : -1};
 
             add(new Polygon(new Point3D[]{
-                    p1[0], p(p1[0], cof[dim0], p0[1]),
-                    p(p1[0], cof[dim1], p0[2]),
-                    p(p1[0], cof[dim2], p0[2])}, texture()
+                    transformVec(p1[0]), transformVec(p(p1[0], cof[dim0], p0[1])),
+                    transformVec(p(p1[0], cof[dim1], p0[2])),
+                    transformVec(p(p1[0], cof[dim2], p0[2]))}, texture()
             ));
             p1[0] = p(p1[0], cof[dim1], p0[2]);
         }
@@ -94,26 +101,26 @@ public class Parallelepiped extends RepresentableConteneur {
         Point3D[] p = new Point3D[4];
         for (int x = -1; x <= 1; x++) {
 
-            p[0] = new Point3D(x * a, -1 * c);
-            p[1] = new Point3D(x * a, 1 * b, -1 * c);
-            p[2] = new Point3D(x * a, 1 * b, 1 * c);
-            p[3] = new Point3D(x * a, -1 * b, 1 * c);
+            p[0] = transformVec(new Point3D(x * a, -1 * b, -1 * c));
+            p[1] = transformVec(new Point3D(x * a, 1 * b, -1 * c));
+            p[2] = transformVec(new Point3D(x * a, 1 * b, 1 * c));
+            p[3] = transformVec(new Point3D(x * a, -1 * b, 1 * c));
 
             add(new Polygon(p, texture()));
         }
         for (int y = -1; y <= 1; y++) {
-            p[0] = new Point3D(1 * a, y * b, 1 * c);
-            p[1] = new Point3D(1 * a, y * b, -1 * c);
-            p[2] = new Point3D(-1 * a, y * b, -1 * c);
-            p[3] = new Point3D(-1 * a, y * b, 1 * c);
+            p[0] = transformVec(new Point3D(1 * a, y * b, 1 * c));
+            p[1] = transformVec(new Point3D(1 * a, y * b, -1 * c));
+            p[2] = transformVec(new Point3D(-1 * a, y * b, -1 * c));
+            p[3] = transformVec(new Point3D(-1 * a, y * b, 1 * c));
 
             add(new Polygon(p, texture()));
         }
         for (int z = -1; z <= 1; z++) {
-            p[0] = new Point3D(-1 * a, -1 * b, z * c);
-            p[1] = new Point3D(-1 * a, 1 * b, z * c);
-            p[2] = new Point3D(1 * a, 1 * b, z * c);
-            p[3] = new Point3D(1 * a, -1 * b, z * c);
+            p[0] = transformVec(new Point3D(-1 * a, -1 * b, z * c));
+            p[1] = transformVec(new Point3D(-1 * a, 1 * b, z * c));
+            p[2] = transformVec(new Point3D(1 * a, 1 * b, z * c));
+            p[3] = transformVec(new Point3D(1 * a, -1 * b, z * c));
 
             add(new Polygon(p, texture()));
         }
