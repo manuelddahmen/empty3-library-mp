@@ -55,6 +55,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 /**
@@ -171,7 +172,7 @@ public abstract class TestObjet implements Test, Runnable {
     protected Object applicationContext;
     protected File androidDirData;
     protected String date;
-    private ArrayList<Image> frames;
+    private ArrayList<String> frames;
     private File subDir;
 
     public File getDir0() {
@@ -346,11 +347,11 @@ public abstract class TestObjet implements Test, Runnable {
     public void exportFrame(String format, String filename) throws IOException {
 
         STLExport.save(
-                file0 = new File(configFile.getAbsolutePath() + File.separator + "stlExportFormatTXT" + filename + ".stl"),
+                file0 = new File(subDir + File.separator + "stlExportFormatTXT" + filename + ".stl"),
                 scene(),
                 false);
         ObjExport.save(
-                /*file0=*/new File(configFile.getAbsolutePath() + File.separator + "objExportFormatTXT" + filename + ".obj"),
+                /*file0=*/new File(subDir + File.separator + "objExportFormatTXT" + filename + ".obj"),
                 scene(),
                 false);
     }
@@ -969,6 +970,9 @@ public abstract class TestObjet implements Test, Runnable {
                                     ri.saveToFile(f.getAbsolutePath());
                                     if(f.exists()) {
                                         Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath());
+                                        if (getGenerate(GENERATE_MOVIE)) {
+                                            frames.add(f.getAbsolutePath());
+                                        }
                                     } else {
                                         Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + f.getAbsolutePath());
 
@@ -986,7 +990,6 @@ public abstract class TestObjet implements Test, Runnable {
                     }
                 }
                 if(getGenerate(GENERATE_MOVIE)) {
-                    addFrame(ri);
                 }
             }
             lastInfoEllapsedMillis = System.currentTimeMillis() - timeStart;
@@ -995,7 +998,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
             if ((getGenerate() & GENERATE_SAVE_XML) > 0) {
                 try {
-                    File fout = new File(this.dir.getAbsolutePath()
+                    File fout = new File(subDir.getAbsolutePath()
                             + File.separator + filename + ".bmo");
                     new Loader().saveTxt(fout, scene);
                     fout = new File(this.dir.getAbsolutePath()
@@ -1094,33 +1097,43 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private void endMovie() {
+        Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Encodage ffmpeg. ffmpeg must be in PATH");
         Process chperm;
         try {
-            for (int i = 0; i < frames.size(); i++) {
-                frames.get(i).saveToFile(String.format("/tmp/img%09d.jpg", i));
-            }
+            File f = new File(subDir, "frames.mp4");
 
-
-            File f = new File(subDir, getFilenameWoExt() + ".png");
-
+            String collect = frames.stream().collect(Collectors.joining(" "));
+            String s = frames.get(0);
+            int i = s.lastIndexOf(File.separator) + 1;
+            s = s.substring(0, i);
 
             if (isAndroid) {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Android platform cmdline");
+
                 chperm = Runtime.getRuntime().exec("su");
                 DataOutputStream os =
                         new DataOutputStream(chperm.getOutputStream());
 
-                os.writeBytes("ffmpeg -f image2 -i /tmp/img%09d.jpg " + f.getAbsolutePath() + "\n");
+
+                os.writeBytes("ffmpeg -f image2 -i " + s + "frame_%09d.png" + f.getAbsolutePath() + "\n");
 
 
                 os.flush();
 
                 chperm.waitFor();
             } else {
-                chperm = Runtime.getRuntime().exec("ffmpeg -f image2 -i /tmp/img%09d.jpg " + f.getAbsolutePath() + "\n");
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "JVM platform system shell");
+                chperm = Runtime.getRuntime().exec(new String[]{"ffmpeg", "-f", "image2", "-i", s + "frame_%09d.png", f.getAbsolutePath(), "\n"});
 
 
                 chperm.waitFor();
 
+            }
+
+            if (f.exists()) {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job done : " + f.getAbsolutePath());
+            } else {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job failed : " + f.getAbsolutePath());
             }
 
 
@@ -1134,12 +1147,12 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
-    private void addFrame(Image ri) {
+    private void addFrame(String ri) {
         frames.add(ri);
     }
 
     private void createMovie() {
-        frames = new ArrayList<Image>();
+        frames = new ArrayList<String>();
     }
 
     private File getNewDirectory() {
