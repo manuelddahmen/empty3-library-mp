@@ -646,8 +646,8 @@ public class Point3D extends Representable {
         Point3D p1 = this;
 
         return new one.empty3.library.Point3D(p1.getY() * p2.getZ() - p1.getZ() * p2.getY(),
-                -(p2.getZ() * getX() - p2.getX() * getZ()),
-                p1.getX() * p2.getY() - p1.getY() * p1.getX());
+                p1.getZ() * p2.getX() - p1.getX() * p2.getZ(),
+                p1.getX() * p2.getY() - p1.getY() * p2.getX());
     }
 
     /**

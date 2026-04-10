@@ -301,10 +301,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return;
         } else if (r instanceof RepresentableConteneur) {
             final Representable r1 = r;
-            ((RepresentableConteneur) r).getListRepresentable().forEach(representable -> {
+            RepresentableConteneur finalR = (RepresentableConteneur) r;
+            ((RepresentableConteneur) r).getListRepresentable().forEach(
+                    representable -> {
                         representable.setVectX(r1.getVectX());
                         representable.setVectY(r1.getVectY());
                         representable.setVectZ(r1.getVectZ());
+                        //finalR.transformContained(representable);
                         draw(representable);
                     }
             );
@@ -2115,7 +2118,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public class ImageMapElement {
-
+        int la, ha;
         int couleur_fond_int = -1;
         ImageMapElement instance;
         Representable[][] imeRepresentable;
@@ -2129,6 +2132,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
 
         public ImageMapElement() {
+            this.la = ZBufferImpl.this.la;
+            this.ha = ZBufferImpl.this.ha;
             this.coordinate = new Point3D[la][ha];
             this.color = new int[la * ha];
             this.imeId = new long[la][ha];
@@ -2156,10 +2161,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
 
         public void setElementRepresentable(int x, int y, double z, Representable representable) {
-            if ((ime.getElementProf(x, y) < z && representable != null) || ime.getElementRepresentable(x, y) == null) {
-                //imeRepresentable[x][y] = representable;
-                imeRepresentable[x][y] = getCurrentRepresentable();
-                rMap[x][y] = representable;
+            if (checkCoordinates(x, y)) {
+                if ((this.getElementProf(x, y) < z && representable != null) || this.getElementRepresentable(x, y) == null) {
+                    //imeRepresentable[x][y] = representable;
+                    imeRepresentable[x][y] = getCurrentRepresentable();
+                    rMap[x][y] = representable;
+                }
             }
         }
 
@@ -2180,24 +2187,24 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         public int getElementCouleur(int x, int y) {
             if (checkCoordinates(x, y)
-                    && ime.imeId[x][y] == idImg
-                    && ime.imeProf[x][y] > INFINITY.getZ()) {
-                return getRgbInt(ime.color, x, y);
+                    && this.imeId[x][y] == idImg
+                    && this.imeProf[x][y] > INFINITY.getZ()) {
+                return getRgbInt(this.color, x, y);
             } else {
                 return COULEUR_FOND_INT(x, y);
             }
         }
 
         public long getElementID(int x, int y) {
-            return ime.imeId[x][y];
+            return this.imeId[x][y];
         }
 
         public Point3D getElementPoint(int x, int y) {
-            return ime.coordinate[x][y];
+            return this.coordinate[x][y];
         }
 
         protected double getElementProf(int x, int y) {
-            return ime.imeProf[x][y];
+            return this.imeProf[x][y];
         }
 
         public ImageMapElement getInstance(int x, int y) {
@@ -2214,16 +2221,16 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         public void setElementCouleur(int x, int y, int pc) {
             setElementID(x, y, idImg);
-            setRgbInts(pc, ime.color, x, y);
+            setRgbInts(pc, this.color, x, y);
         }
 
         public void setElementID(int x, int y, long id) {
-            ime.imeId[x][y] = idImg;
+            this.imeId[x][y] = idImg;
         }
 
         public void setElementPoint(int x, int y, Point3D px) {
             setElementID(x, y, idImg);
-            ime.coordinate[x][y] = px;
+            this.coordinate[x][y] = px;
         }
 
         public double[][] getuMap() {
@@ -2252,18 +2259,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         protected void setDeep(int x, int y, double d) {
             if (checkCoordinates(x, y)) {
-                ime.imeProf[x][y] = (float) d;
+                this.imeProf[x][y] = (float) d;
                 if (toDrawR != null)
                     setElementRepresentable(x, y, toDrawR);
             }
         }
 
         protected void setRgbInts(int rgb, int[] sc, int x, int y) {
-            color[x + y * la] = rgb;
+            this.color[x + y * la] = rgb;
         }
 
         public void setElementProf(int i, int j, double pr) {
-            ime.imeProf[i][j] = pr;
+            this.imeProf[i][j] = pr;
         }
 
         public void dessine(Point3D p, Color colorAt) {
@@ -2280,29 +2287,29 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 //double prof = -1000;
                 int x = (int) ce.getX();
                 int y = (int) ce.getY();
-                if (x >= 0 & x < la & y >= 0 & y < ha && c[3] == 255) {
-                    ime.setElementID(x, y, idImg);
-                    ime.setElementPoint(x, y, x3d);
-                    ime.setElementCouleur(x, y, c1);
-                    //ime.setDeep(x, y, prof);
+                if (x >= 0 & x < la & y >= 0 & y < ha && c[3] == 1.0) {
+                    this.setElementID(x, y, idImg);
+                    this.setElementPoint(x, y, x3d);
+                    this.setElementCouleur(x, y, c1);
+                    //this.setDeep(x, y, prof);
                     if (toDrawR != null) {
-                        ime.setElementRepresentable(x, y, toDrawR);
+                        this.setElementRepresentable(x, y, toDrawR);
                     }
                 } else if (checkScreen(ce)) {
-                    int elementCouleur = ime.getElementCouleur(x, y);
+                    int elementCouleur = this.getElementCouleur(x, y);
                     double[] nc = c;
                     double[] ac = Lumiere.getDoubles(elementCouleur);
                     double[] b = new double[3];
                     for (int i = 0; i < 3; i++) {
-                        b[i] = nc[i] * c[3] / 255. + (1 - c[3] / 255.) * ac[i];
+                        b[i] = nc[i] * c[3] + (1 - c[3]) * ac[i];
                     }
                     int anInt = Lumiere.getInt(b);
-                    ime.setElementID(x, y, idImg);
-                    ime.setElementPoint(x, y, x3d);
-                    ime.setElementCouleur(x, y, anInt);
-                    //ime.setDeep(x, y, prof);
+                    this.setElementID(x, y, idImg);
+                    this.setElementPoint(x, y, x3d);
+                    this.setElementCouleur(x, y, anInt);
+                    //this.setDeep(x, y, prof);
                     if (toDrawR != null) {
-                        ime.setElementRepresentable(x, y, toDrawR);
+                        this.setElementRepresentable(x, y, toDrawR);
                     }
                 }
             } catch (RuntimeException e) {
@@ -2346,8 +2353,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int y = (int) ce.getY();
                 double deep = camera().distanceCamera(x3d);
                 if (x >= 0 & x < la & y >= 0 & y < ha
-                        && (deep >= ime.getElementProf(x, y)
-                        || ime.getElementProf(x, y) == INFINITY.getZ())) {
+                        && (deep >= this.getElementProf(x, y)
+                        || this.getElementProf(x, y) == INFINITY.getZ())) {
                     Point3D n = x3d.getNormale();
                     // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
                     // dans la même direction par rapport à la caméra.
@@ -2359,15 +2366,15 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         cc = scene().lumiereTotaleCouleur(c | 0xff000000, x3d, n);
                     else
                         cc = c | 0xff000000;
-                    ime.setElementID(x, y, idImg);
-                    ime.setElementCouleur(x, y, cc);
-                    ime.setDeep(x, y, deep);
-                    ime.setElementPoint(x, y, x3d);
-                    ime.setElementProf(x, y, deep);
+                    this.setElementID(x, y, idImg);
+                    this.setElementCouleur(x, y, cc);
+                    this.setDeep(x, y, deep);
+                    this.setElementPoint(x, y, x3d);
+                    this.setElementProf(x, y, deep);
                     if (toDrawR != null) {
-                        ime.setElementRepresentable(x, y, deep, toDrawR);
+                        this.setElementRepresentable(x, y, deep, toDrawR);
                     } else if (getCurrentRepresentable() != null) {
-                        ime.setElementRepresentable(x, y, deep, x3d);
+                        this.setElementRepresentable(x, y, deep, x3d);
                     }
                     return true;
                 }

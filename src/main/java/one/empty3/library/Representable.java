@@ -796,6 +796,19 @@ public class Representable implements Serializable, Comparable, XmlRepresentable
         return getOrig().plus(getVectX().mult(p0.getX())).plus(getVectY().mult(p0.getY())).plus(getVectZ().mult(p0.getZ()));
     }
 
+    public void transformContained(Representable contained) {
+
+        Matrix33 matrix33 = new Matrix33(getVectX(), getVectY(), getVectZ()).tild();
+        ;
+        Matrix33 res = new Matrix33();
+        for (int i = 0; i < 3; i++) {
+            res.set(i, matrix33.mult(contained.getVectors().getElem(i)));
+        }
+        for (int i = 0; i < 3; i++) {
+            contained.vectors.setElem(res.getColVectors()[i], i);
+        }
+        contained.setOrig(getOrig().plus(matrix33.mult(contained.getOrig())));
+    }
     public Point3D getOrig() {
         Point3D elem = vectors.getElem(3);
         return elem == null ? Point3D.O0 : elem;
