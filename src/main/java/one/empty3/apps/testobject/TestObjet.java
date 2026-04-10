@@ -112,9 +112,9 @@ public abstract class TestObjet implements Test, Runnable {
     protected boolean unterminable = false;
     protected long timeStart;
     protected long lastInfoEllapsedMillis;
-    protected int generate = GENERATE_IMAGE | GENERATE_MOVIE |
-            GENERATE_SAVE_IMAGE | GENERATE_SAVE_OBJ |
-            GENERATE_SAVE_STL | GENERATE_SAVE_ZIP;
+    protected int generate = GENERATE_IMAGE | GENERATE_MOVIE | GENERATE_SAVE_ZIP |
+            GENERATE_SAVE_IMAGE | GENERATE_SAVE_OBJ | GENERATE_OBJ | GENERATE_SAVE_XML | GENERATE_MODEL |
+            GENERATE_SAVE_STL | GENERATE_SAVE_ZIP | GENERATE_LOG;
     protected int version = 1;
     protected String template = "";
     protected String type = "JPEG";
@@ -171,6 +171,8 @@ public abstract class TestObjet implements Test, Runnable {
     protected Object applicationContext;
     protected File androidDirData;
     protected String date;
+    private ArrayList<Image> frames;
+    private File subDir;
 
     public File getDir0() {
         return dir0;
@@ -452,6 +454,7 @@ public abstract class TestObjet implements Test, Runnable {
         }
         try {
 
+            loop(true);
 
             if (initialise) {
                 return;
@@ -828,7 +831,6 @@ public abstract class TestObjet implements Test, Runnable {
 
         z = ZBufferFactory.newInstance(resx, resy);
         z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
-        z.scene(scene);
         //z.next();
         long timeStart = System.currentTimeMillis();
 
@@ -865,7 +867,7 @@ public abstract class TestObjet implements Test, Runnable {
             File dataf = new File(this.dir.getAbsolutePath() + File.separator
                     + filename + ".XML");
         }
-        File subDir = new File(dir.getAbsolutePath() + File.separator + getClass().getCanonicalName()+ File.separator+getInitialDate());
+        subDir = new File(dir.getAbsolutePath() + File.separator + getClass().getCanonicalName() + File.separator + getInitialDate());
         if(!subDir.exists()){
             if(!subDir.mkdirs()) {
                 Logger.getLogger(getClass().getCanonicalName()).severe("Cannot create dir :" + subDir.getAbsolutePath());
@@ -881,6 +883,7 @@ public abstract class TestObjet implements Test, Runnable {
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
         }
         ginit();
+        z.scene(scene);
 
 
         setRunning(true);
@@ -1091,15 +1094,52 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private void endMovie() {
+        Process chperm;
+        try {
+            for (int i = 0; i < frames.size(); i++) {
+                frames.get(i).saveToFile(String.format("/tmp/img%09d.jpg", i));
+            }
 
+
+            File f = new File(subDir, getFilenameWoExt() + ".png");
+
+
+            if (isAndroid) {
+                chperm = Runtime.getRuntime().exec("su");
+                DataOutputStream os =
+                        new DataOutputStream(chperm.getOutputStream());
+
+                os.writeBytes("ffmpeg -f image2 -i /tmp/img%09d.jpg " + f.getAbsolutePath() + "\n");
+
+
+                os.flush();
+
+                chperm.waitFor();
+            } else {
+                chperm = Runtime.getRuntime().exec("ffmpeg -f image2 -i /tmp/img%09d.jpg " + f.getAbsolutePath() + "\n");
+
+
+                chperm.waitFor();
+
+            }
+
+
+        } catch (IOException | InterruptedException e) {
+            if (e.getMessage().contains("Cannot run program \"ffmpeg\"")) {
+                System.out.println("choco install ffmpeg");
+            }
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    private void addFrame(Image ri) {
 
+    private void addFrame(Image ri) {
+        frames.add(ri);
     }
 
     private void createMovie() {
-
+        frames = new ArrayList<Image>();
     }
 
     private File getNewDirectory() {

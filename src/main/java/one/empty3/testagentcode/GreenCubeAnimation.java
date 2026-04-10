@@ -35,30 +35,34 @@ import one.empty3.libs.Color;
 
 public class GreenCubeAnimation extends TestObjetSub {
 
-    private Representable cube;
+    private Box cube;
     private double cubeSize = 0.5; // Correspond au quart d'une hauteur d'écran de 2.0 unités
 
     @Override
     public void ginit() {
+//        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(
+//                ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(getResx(), getResy())));
+//        z().setDisplayType(ZBufferImpl.DISPLAY_ALL
         // Initialisation de la scène
         scene = new Scene();
 
         // Création du cube vert
-        cube = new Cube(cubeSize, Point3D.O0);
+        cube = new Box(cubeSize, cubeSize, cubeSize);
         cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
 
         // Ajout du cube à la scène
-        scene().add(cube);
+        scene.add(cube);
 
         // Positionnement de la caméra (vue de face)
-        Camera camera = new Camera(new Point3D(0d, 0d, -5d), Point3D.O0);
+        Camera camera = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0, Point3D.Y);
         scene.cameraActive(camera);
     }
 
     @Override
     public void finit() {
         // Calcul de la progression du film (de 0.0 à 1.0)
-        double progress = (double) frame / getMaxFrames();
+        double progress = (double) frame() / getMaxFrames();
+
 
         // Animation : de gauche (x = -2.5) à droite (x = 2.5)
         double startX = -2.5;
@@ -68,6 +72,7 @@ public class GreenCubeAnimation extends TestObjetSub {
         // Mise à jour de la position du cube
         // On définit la position du centre du cube
         cube.setOrig(new Point3D(currentX, 0d, 0d));
+
     }
 
     public static void main(String[] args) {
@@ -75,7 +80,6 @@ public class GreenCubeAnimation extends TestObjetSub {
         // Configuration de la résolution et du nombre d'images
         animation.setResolution(800, 600);
         animation.setMaxFrames(100);
-
         new Thread(animation).start();
     }
 }

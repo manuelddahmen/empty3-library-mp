@@ -71,7 +71,7 @@ public class Camera extends CameraBox {
     public Camera(Point3D eye, Point3D lookat) {
         this(eye, lookat, null);
         scale.setElem(1.0);
-
+        //calculerMatrice(null);
     }
 
     public Camera(Point3D eye, Point3D lookat, Point3D up) {
