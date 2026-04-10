@@ -636,6 +636,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 for (int i = 0; i < points.size(); i++)
                     centre = centre.plus(points.get(i));
                 centre = centre.mult(1.0 / points.size());
+
+                for (int i = 0; i < points.size(); i++) {
+                    Point3D pi = points.get(i);
+                    points.set(i, p.transformVec(pi));
+                }
+
                 for (int i = 0; i < length; i++) {
                     if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
                         draw(new TRI(points.get(i), points.get((i + 1) % points.size()), centre, p.texture()));

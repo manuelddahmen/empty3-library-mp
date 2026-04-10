@@ -99,6 +99,9 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
 
 
     public StructureMatrix<Point3D> getPoints() {
+        if (points == null) {
+            points = new StructureMatrix<>(1, Point3D.class);
+        }
         return points;
     }
 

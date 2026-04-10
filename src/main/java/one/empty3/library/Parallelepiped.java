@@ -83,9 +83,9 @@ public class Parallelepiped extends RepresentableConteneur {
                     (dim1 == 1) ? 1 : -1, (dim2 == 2) ? 1 : -1};
 
             add(new Polygon(new Point3D[]{
-                    transformVec(p1[0]), transformVec(p(p1[0], cof[dim0], p0[1])),
-                    transformVec(p(p1[0], cof[dim1], p0[2])),
-                    transformVec(p(p1[0], cof[dim2], p0[2]))}, texture()
+                    p1[0], p(p1[0], cof[dim0], p0[1]),
+                    p(p1[0], cof[dim1], p0[2]),
+                    p(p1[0], cof[dim2], p0[2])}, texture()
             ));
             p1[0] = p(p1[0], cof[dim1], p0[2]);
         }
@@ -101,26 +101,26 @@ public class Parallelepiped extends RepresentableConteneur {
         Point3D[] p = new Point3D[4];
         for (int x = -1; x <= 1; x++) {
 
-            p[0] = transformVec(new Point3D(x * a, -1 * b, -1 * c));
-            p[1] = transformVec(new Point3D(x * a, 1 * b, -1 * c));
-            p[2] = transformVec(new Point3D(x * a, 1 * b, 1 * c));
-            p[3] = transformVec(new Point3D(x * a, -1 * b, 1 * c));
+            p[0] = new Point3D(x * a, -1 * b, -1 * c);
+            p[1] = new Point3D(x * a, 1 * b, -1 * c);
+            p[2] = new Point3D(x * a, 1 * b, 1 * c);
+            p[3] = new Point3D(x * a, -1 * b, 1 * c);
 
             add(new Polygon(p, texture()));
         }
         for (int y = -1; y <= 1; y++) {
-            p[0] = transformVec(new Point3D(1 * a, y * b, 1 * c));
-            p[1] = transformVec(new Point3D(1 * a, y * b, -1 * c));
-            p[2] = transformVec(new Point3D(-1 * a, y * b, -1 * c));
-            p[3] = transformVec(new Point3D(-1 * a, y * b, 1 * c));
+            p[0] = new Point3D(1 * a, y * b, 1 * c);
+            p[1] = new Point3D(1 * a, y * b, -1 * c);
+            p[2] = new Point3D(-1 * a, y * b, -1 * c);
+            p[3] = new Point3D(-1 * a, y * b, 1 * c);
 
             add(new Polygon(p, texture()));
         }
         for (int z = -1; z <= 1; z++) {
-            p[0] = transformVec(new Point3D(-1 * a, -1 * b, z * c));
-            p[1] = transformVec(new Point3D(-1 * a, 1 * b, z * c));
-            p[2] = transformVec(new Point3D(1 * a, 1 * b, z * c));
-            p[3] = transformVec(new Point3D(1 * a, -1 * b, z * c));
+            p[0] = new Point3D(-1 * a, -1 * b, z * c);
+            p[1] = new Point3D(-1 * a, 1 * b, z * c);
+            p[2] = new Point3D(1 * a, 1 * b, z * c);
+            p[3] = new Point3D(1 * a, -1 * b, z * c);
 
             add(new Polygon(p, texture()));
         }
