@@ -216,6 +216,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         setIncrementOptimizer(new IncrementOptimizer());
     }
 
+    private IncrementOptimizer getIncrementOptimizer() {
+        return incrementOptimizer;
+    }
+
     public ZBufferImpl(int l, int h) {
         this();
         la = l;
@@ -632,7 +636,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             } else if (r instanceof Polygon) {
                 toDrawR = r;
                 setCurrentRepresentable(r);
-                Polygon p = (Polygon) r;
+                /*Polygon p = (Polygon) r;
                 List<Point3D> points = p.getPoints().getData1d();
                 int length = points.size();
                 Point3D centre = Point3D.O0;
@@ -650,6 +654,28 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         draw(new TRI(points.get(i), points.get((i + 1) % points.size()), centre, p.texture()));
                     } else {
                         line(points.get((i % length)), points.get((i + 1) % length), p.texture);
+                    }
+                }*/
+                // Replace the Polygon drawing logic with:
+                Polygon p = (Polygon) r;
+                List<Point3D> points = p.getPoints().getData1d();
+                int length = points.size();
+
+// Create a local list for transformed points to avoid modifying the scene object
+                List<Point3D> transformedPoints = new ArrayList<>(length);
+                Point3D centre = Point3D.O0;
+                for (int i = 0; i < length; i++) {
+                    Point3D pi = p.transformVec(points.get(i));
+                    transformedPoints.add(pi);
+                    centre = centre.plus(pi);
+                }
+                centre = centre.mult(1.0 / length);
+
+                for (int i = 0; i < length; i++) {
+                    if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
+                        draw(new TRI(transformedPoints.get(i), transformedPoints.get((i + 1) % length), centre, p.texture()));
+                    } else {
+                        line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture);
                     }
                 }
             } else if (r instanceof RPv) {
