@@ -62,26 +62,26 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static class IncrementOptimizer {
         public enum Strategy {
             /**
-             * Cape l'incrément à une valeur maximale. Assure un NIVEAU DE DÉTAIL MINIMAL.
-             * Utile pour garantir la qualité sur de grands polygones.
-             * (Utilise Math.min pour plafonner la taille de l'incrément)
+             * Limit the increment to a maximum value. Assure un NIVEAU DE DÉTAIL MINIMAL.
+             * Useful for ensuring quality on large polygons.
+             * (Utilize Math.min to cap the increment size)
              */
             ENSURE_MINIMUM_DETAIL,
 
             /**
-             * Force l'incrément à avoir une valeur minimale. Limite le NIVEAU DE DÉTAIL MAXIMAL.
-             * Utile pour accélérer le rendu en évitant le sur-échantillonnage.
-             * (Utilise Math.max pour plancher la taille de l'incrément)
+             * Force the increment to have a minimum value. Limite le NIVEAU DE DÉTAIL MAXIMAL.
+             * Useful for speeding up rendering by avoiding oversampling.
+             * (Use Math.max to floor the increment size)
              */
             ENSURE_MAXIMUM_PERFORMANCE,
 
             /**
-             * Maintient l'incrément dans un intervalle [min, max].
+             * Maintains the increment within an interval [min, max].
              */
             CLAMP_WITHIN_RANGE,
 
             /**
-             * Aucune optimisation, utilise simplement l'incrément calculé.
+             * No optimization, simply use the calculated increment.
              */
             NONE
         }
@@ -233,7 +233,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     private void setDefaultIncrementOptimizer() {
-        setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 1.0 / Math.max(Math.max(la, ha) / 100.0, 1)));
+        //setIncrementOptimizer(new IncrementOptimizer(IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 1./Math.max(Math.max(la, ha) , 1)));
+        setIncrementOptimizer(new IncrementOptimizer(1. / Math.max(la, ha), 0.1));
     }
 
 
@@ -1224,7 +1225,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p3 = camera().coordinatesPoint2D(polygon.getPoints().getElem(2), this);
         p4 = camera().coordinatesPoint2D(polygon.getPoints().getElem(3), this);
 
-        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) / 3);
+        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 3);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = polygon.getPoints().getElem(0).plus(polygon.getPoints().getElem(0).mult(-1d).plus(polygon.getPoints().getElem(1)).mult(a));
             Point3D pElevation2 = polygon.getPoints().getElem(3).plus(polygon.getPoints().getElem(3).mult(-1d).plus(polygon.getPoints().getElem(3)).mult(a));
@@ -1233,7 +1234,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             Point3D pE2Image = polygonOnImage.getPoints().getElem(3).plus(polygonOnImage.getPoints().getElem(3).mult(-1d).plus(polygonOnImage.getPoints().getElem(3)).mult(a));
 
             double inter2 = incrementOptimizer.computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
-                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 Point3D pFinalOnImage = (pE1Image.plus(pE1Image.mult(-1d).plus(pE2Image).mult(b)));
@@ -1304,7 +1305,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) / 3);
+        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 3);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
@@ -1312,7 +1313,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             double u01 = textUv[4] + (textUv[2] - textUv[4]) * a;
             double u = (u00 + u01) / 2;
             double inter2 = incrementOptimizer.computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
-                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double v00 = textUv[1] + (textUv[7] - textUv[1]) * b;
@@ -1404,14 +1405,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) / 12.0);
+        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 12.0);
         for (double a = 0; a < 1.0; a += inter) {
             Vec pElevation1 = v1.add(v1.multiply(-1d).add(v2).multiply(a));
             Vec pElevation2 = v4.add(v4.multiply(-1d).add(v3).multiply(a));
             double u00 = textUv[0] + (textUv[2] - textUv[0]) * a;
             double u01 = textUv[4] + (textUv[2] - textUv[4]) * a;
             double inter2 = incrementOptimizer.computeIncrement((maxDistance(camera().coordinatesPoint2D(new Point3D(pElevation1.get(0), pElevation1.get(1), pElevation1.get(2)), this),
-                    camera().coordinatesPoint2D(new Point3D(pElevation2.get(0), pElevation2.get(1), pElevation2.get(2)), this)) + 1.) / 12.0);
+                    camera().coordinatesPoint2D(new Point3D(pElevation2.get(0), pElevation2.get(1), pElevation2.get(2)), this)) + 1.) * 12.0);
             for (double b = 0; b < 1.0; b += inter2) {
                 Vec pFinal0 = (pElevation1.add(pElevation1.multiply(-1d).add(pElevation2).multiply(b)));
                 double u = pFinal0.get(3);
@@ -1504,14 +1505,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) / 12);
+        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 12);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
 
 
             double inter2 = incrementOptimizer.computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
-                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) / 3.);
+                    camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
             for (double b = 0; b < 1.0; b += inter2) {
                 Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;
@@ -1591,10 +1592,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         if (checked >= CHECKED_POINT_SIZE_TRI)
             return;
-        double iteres1 = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3) + 1) / 3);
+        double iteres1 = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3) + 1) * 3);
         for (double a = 0; a < 1.0; a += iteres1) {
             Point3D p11 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
-            double iteres2 = incrementOptimizer.computeIncrement(maxDistance(p1, p2, p3) / 3);
+            double iteres2 = incrementOptimizer.computeIncrement(maxDistance(p1, p2, p3) * 3);
             for (double b = 0; b < 1.0; b += iteres2) {
                 Point3D p21 = p11.plus(p11.mult(-1d).plus(pp3).mult(b));
                 p21.setNormale(n);

@@ -236,8 +236,8 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void setResolution(int x, int y) {
-        setResx(x);
-        setResy(y);
+        setResX(x);
+        setResY(y);
         dimension = new Resolution(x, y);
     }
 
@@ -400,7 +400,7 @@ public abstract class TestObjet implements Test, Runnable {
 
     void initZ() {
         z = ZBufferFactory.instance(resX, resY, D3);
-        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resX, resY)));
+        //z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resX, resY)));
         z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
@@ -444,7 +444,7 @@ public abstract class TestObjet implements Test, Runnable {
     @Deprecated
     public void setResY(int resy) {
         this.resY = resy;
-        dimension = new Resolution(resX, resy);
+        dimension = new Resolution(resX, resY);
         initZ();
     }
 

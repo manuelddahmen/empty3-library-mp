@@ -112,8 +112,8 @@ public abstract class ParametricSurface extends Representable {
     public ParametricSurface() {
         startU.setElem(0.0);
         startV.setElem(0.0);
-        incrU.setElem(0.1);
-        incrV.setElem(0.1);
+        incrU.setElem(0.02);
+        incrV.setElem(0.02);
         endU.setElem(1.0);
         endV.setElem(1.0);
         incrVitesse.setElem(0.0001);
