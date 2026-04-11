@@ -55,7 +55,6 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 
 /**
@@ -122,8 +121,8 @@ public abstract class TestObjet implements Test, Runnable {
     protected String filenameZIP = "one/empty3/test/tests";
     protected String fileextZIP = "diapo";
     protected File file = null;
-    protected int resx = 640;
-    protected int resy = 480;
+    protected int resX = 640;
+    protected int resY = 480;
     protected File dir = null;
     protected Image ri;
     protected String filename = "frame";
@@ -209,7 +208,7 @@ public abstract class TestObjet implements Test, Runnable {
             init();
             setResx(dimension.x());
             setResy(dimension.y());
-            setDimension(new Resolution(resx, resy));
+            setDimension(new Resolution(resX, resY));
         } else {
         }
     }
@@ -399,31 +398,53 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
-    public int getResx() {
-        return resx;
+    void initZ() {
+        z = ZBufferFactory.instance(resX, resY, D3);
+        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resX, resY)));
+        z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
-    void initZ() {
-        z = ZBufferFactory.instance(resx, resy, D3);
-        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
-        z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+    public int getResx() {
+        return resX;
     }
 
     @Deprecated
     public void setResx(int resx) {
-        this.resx = resx;
-        dimension = new Resolution(resx, resy);
+        this.resX = resx;
+        dimension = new Resolution(resx, resY);
         initZ();
     }
 
     public int getResy() {
-        return resy;
+        return resY;
     }
 
     @Deprecated
     public void setResy(int resy) {
-        this.resy = resy;
-        dimension = new Resolution(resx, resy);
+        this.resY = resy;
+        dimension = new Resolution(resX, resy);
+        initZ();
+    }
+
+    public int getResX() {
+        return resX;
+    }
+
+    @Deprecated
+    public void setResX(int resx) {
+        this.resX = resx;
+        dimension = new Resolution(resx, resY);
+        initZ();
+    }
+
+    public int getResY() {
+        return resY;
+    }
+
+    @Deprecated
+    public void setResY(int resy) {
+        this.resY = resy;
+        dimension = new Resolution(resX, resy);
         initZ();
     }
 
@@ -1311,7 +1332,7 @@ public abstract class TestObjet implements Test, Runnable {
      */
     public ZBuffer getZ() {
         if (z == null)
-            z = ZBufferFactory.instance(resx, resy, D3);
+            z = ZBufferFactory.instance(resX, resY, D3);
         return z;
     }
 
@@ -1344,17 +1365,17 @@ public abstract class TestObjet implements Test, Runnable {
             Camera camera = camera();
             z().scene(scene1);
             z().camera(camera);
-            this.resx = dimension.x();
-            this.resy = dimension.y();
+            this.resX = dimension.x();
+            this.resY = dimension.y();
             this.dimension = dimension;
             z().camera(camera);
             z().scene(scene1);
-            setZ(new ZBufferImpl(resx, resy));
+            setZ(new ZBufferImpl(resX, resY));
         } else {
-            this.resx = dimension.x();
-            this.resy = dimension.y();
+            this.resX = dimension.x();
+            this.resY = dimension.y();
             this.dimension = dimension;
-            setZ(new ZBufferImpl(resx, resy));
+            setZ(new ZBufferImpl(resX, resY));
             //z().camera(camera());
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());

@@ -213,10 +213,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         that = this;
         scene = new Scene();
         texture(new ColorTexture(Color.newCol(0, 0, 0)));
-        setIncrementOptimizer(new IncrementOptimizer());
+        //setIncrementOptimizer(new IncrementOptimizer());
+
     }
 
-    private IncrementOptimizer getIncrementOptimizer() {
+    public IncrementOptimizer getIncrementOptimizer() {
         return incrementOptimizer;
     }
 
@@ -228,6 +229,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         dimy = ha;
         Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
+        setDefaultIncrementOptimizer();
+    }
+
+    private void setDefaultIncrementOptimizer() {
+        setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 1.0 / Math.max(Math.max(la, ha) / 100.0, 1)));
     }
 
 
@@ -238,6 +244,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         dimy = ha;
         Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
+        setDefaultIncrementOptimizer();
     }
 
     public void setIncrementOptimizer(IncrementOptimizer IncrementOptimizer) {
@@ -671,12 +678,16 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
                 centre = centre.mult(1.0 / length);
 
-                for (int i = 0; i < length; i++) {
-                    if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
-                        draw(new TRI(transformedPoints.get(i), transformedPoints.get((i + 1) % length), centre, p.texture()));
-                    } else {
-                        line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture);
+                if (length != 4) {
+                    for (int i = 0; i < length; i++) {
+                        if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
+                            draw(new TRI(transformedPoints.get(i), transformedPoints.get((i + 1) % length), centre, p.texture()));
+                        } else {
+                            line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture);
+                        }
                     }
+                } else {
+                    tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture, 0., 1., 0., 1., null);
                 }
             } else if (r instanceof RPv) {
                 drawElementVolume(((RPv) r).getRepresentable(), (RPv) r);

@@ -61,7 +61,6 @@ public class CubeRougeImage {
         int largeur = 800;
         int hauteur = 600;
         ZBufferImpl zBuffer = ZBufferFactory.instance(largeur, hauteur, scene);
-        zBuffer.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001));
         zBuffer.camera(camera);
 
         // Calcul du rendu des objets de la scène
