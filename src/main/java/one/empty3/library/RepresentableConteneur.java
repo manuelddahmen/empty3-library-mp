@@ -162,4 +162,9 @@ public class RepresentableConteneur extends Representable implements IMovable, I
             getListRepresentable().get(i).texture(tc);
         }
     }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        getListRepresentable().forEach(r -> r.setOrig(r.getOrig().plus(orig)));
+    }
 }

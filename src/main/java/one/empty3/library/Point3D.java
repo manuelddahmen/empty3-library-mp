@@ -1009,5 +1009,10 @@ public class Point3D extends Representable {
     public void setNormale(Point3D p) {
         normale = p;
     }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        changeTo(this.plus(orig));
+    }
 }
 

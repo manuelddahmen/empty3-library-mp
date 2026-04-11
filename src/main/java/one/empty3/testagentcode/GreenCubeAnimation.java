@@ -34,7 +34,8 @@ import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.libs.Color;
 
 public class GreenCubeAnimation extends TestObjetSub {
-
+    double startX = -2.5;
+    double endX = 2.5;
     private Box cube;
     private double cubeSize = 0.5; // Correspond au quart d'une hauteur d'écran de 2.0 unités
 
@@ -46,6 +47,8 @@ public class GreenCubeAnimation extends TestObjetSub {
         // Création du cube vert
         cube = new Box(cubeSize, cubeSize, cubeSize);
         cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
+
+        cube.setOrig(new Point3D(startX, 0d, 0d));
 
         // Ajout du cube à la scène
         scene.add(cube);
@@ -62,10 +65,9 @@ public class GreenCubeAnimation extends TestObjetSub {
 
 
         // Animation : de gauche (x = -2.5) à droite (x = 2.5)
-        double startX = -2.5;
-        double endX = 2.5;
-        double currentX = startX + (endX - startX) * progress;
 
+        double currentX = startX + (endX - startX) * progress;
+        currentX = (endX - startX) / getMaxFrames();
         // Mise à jour de la position du cube
         // On définit la position du centre du cube
         cube.setOrig(new Point3D(currentX, 0d, 0d));
