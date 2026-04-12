@@ -822,6 +822,14 @@ public class Point3D extends Representable {
         return norme();
     }
 
+    public Point3D multiply(double v) {
+        return mult(v);
+    }
+
+    public Point3D add(Point3D multiply) {
+        return plus(multiply);
+    }
+
 
     /**
      * The P class is a subclass of the Point3D class. It represents a point in a three-dimensional coordinate system.
