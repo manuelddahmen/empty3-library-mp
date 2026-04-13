@@ -29,7 +29,6 @@
 
 package one.empty3.testagentcode;
 
-import one.empty3.Cylinder;
 import one.empty3.library.*;
 import one.empty3.library.ZBufferImpl;
 import one.empty3.libs.Color;

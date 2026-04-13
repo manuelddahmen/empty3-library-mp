@@ -27,7 +27,7 @@
  *
  */
 
-package one.empty3;
+package one.empty3.library;
 
 import one.empty3.library.Line;
 import one.empty3.library.Point3D;
@@ -42,5 +42,22 @@ public class Cylinder extends T3D {
                 return radius;
             }
         });
+    }
+
+    public void setBase(Point3D base) {
+        ((Line) getSoulCurve().getElem()).setBase(base);
+    }
+
+    public void setTop(Point3D top) {
+        ((Line) getSoulCurve().getElem()).setTop(top);
+
+    }
+
+    public Point3D getTop() {
+        return ((Line) getSoulCurve().getElem()).getTop();
+    }
+
+    public Point3D getBase() {
+        return ((Line) getSoulCurve().getElem()).getTop();
     }
 }

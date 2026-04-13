@@ -32,16 +32,40 @@ package one.empty3.library;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
 public class Line extends ParametricCurve {
-    private Point3D base;
-    private Point3D top;
+    private StructureMatrix<Point3D> base = new StructureMatrix<>(0, Point3D.class);
+    private StructureMatrix<Point3D> top = new StructureMatrix<>(0, Point3D.class);
 
     public Line(Point3D base, Point3D top) {
-        this.base = base;
-        this.top = top;
+        this.base.setElem(base);
+        this.top.setElem(top);
     }
 
     @Override
     public Point3D calculerPoint3D(double u) {
-        return base.multiply(1 - u).add(top.multiply(u));
+        return base.getElem().multiply(1 - u)
+                .add(top.getElem().multiply(u));
+    }
+
+    public void setBase(Point3D base) {
+        this.base.setElem(base);
+    }
+
+    public void setTop(Point3D top) {
+        this.top.setElem(top);
+    }
+
+    public Point3D getTop() {
+        return top.getElem();
+    }
+
+    public Point3D getBase() {
+        return base.getElem();
+    }
+
+    @Override
+    public void declareProperties() {
+        super.declareProperties();
+        getDeclaredDataStructure().put("base/Bottom of the line", base);
+        getDeclaredDataStructure().put("top/Top of the line", top);
     }
 }
