@@ -98,7 +98,6 @@ public class TestChanteuseDansante extends TestObjetSub {
     @Override
     public void finit() {
         double t = frame / 25.0; // Temps basé sur l'image (25 fps)
-
         // Mouvement de danse (oscillation latérale)
         double décalageX = Math.sin(t * 2.0) * 0.5;
         double rotation = Math.cos(t * 1.5) * 0.2;
@@ -110,8 +109,8 @@ public class TestChanteuseDansante extends TestObjetSub {
         Point3D vX = new Point3D(Math.cos(rotation), 0d, Math.sin(rotation));
         Point3D vZ = new Point3D(-Math.sin(rotation), 0d, Math.cos(rotation));
 
+        scene.setOrig(centreBase);
         for (Representable r : scene.getObjets().getData1d()) {
-            r.setOrig(centreBase);
             r.setVectX(vX);
             r.setVectZ(vZ);
             r.setVectY(Point3D.Y);

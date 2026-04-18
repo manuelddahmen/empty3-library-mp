@@ -1424,4 +1424,7 @@ public abstract class TestObjet implements Test, Runnable {
         return running;
     }
 
+    protected void setLoopLimit(int i) {
+        setMaxFrames(i);
+    }
 }
