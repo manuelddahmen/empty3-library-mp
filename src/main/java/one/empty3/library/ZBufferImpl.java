@@ -418,10 +418,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             if (NEW_VERSION_ALPHA) {
                 if (camera() == null)
                     throw new RuntimeException("Camera is null ZBufferImpl draw ParametricSurface");
-                Point incrU0 = camera().coordinatesPoint2D(n.transformVec(n.calculerPoint3D(0.0, 0.0)), this);
-                Point incrU1 = camera().coordinatesPoint2D(n.transformVec(n.calculerPoint3D(0.0, 1.0)), this);
-                Point incrV0 = camera().coordinatesPoint2D(n.transformVec(n.calculerPoint3D(1.0, 0.0)), this);
-                Point incrV1 = camera().coordinatesPoint2D(n.transformVec(n.calculerPoint3D(1.0, 1.0)), this);
+                Point incrU0 = camera().coordinatesPoint2D(n.calculerPoint3D(0.0, 0.0), this);
+                Point incrU1 = camera().coordinatesPoint2D(n.calculerPoint3D(0.0, 1.0), this);
+                Point incrV0 = camera().coordinatesPoint2D(n.calculerPoint3D(1.0, 0.0), this);
+                Point incrV1 = camera().coordinatesPoint2D(n.calculerPoint3D(1.0, 1.0), this);
                 double v1 = 1.0;
                 if (incrU0 == null || incrU1 == null || incrV0 == null || incrV1 == null) {
                     Point p1 = incrU0 != null ? incrU0 : (incrU1 != null ? incrU1 : (incrV0 != null ? incrV0 : incrV1));
@@ -474,38 +474,46 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                             v2 = point3D.get(1);
                         }
 
-                        p1 = n.transformVec(n.calculerPoint3D(u, v));
+                        p1 = n.calculerPoint3D(u, v);
                         if ((n.getQuad_not_computed() & ParametricSurface.QUAD_NOT_COMPUTE_U2) == 0) {
-                            p2 = n.transformVec(n.calculerPoint3D(u2, v));
+                            p2 = n.calculerPoint3D(u2, v);
                         } else {
                             Point3D next = n.getNextV(u2, v);
-                            p2 = next != null ? next : n.transformVec(n.calculerPoint3D(u2, v));
+                            p2 = next != null ? next : n.calculerPoint3D(u2, v);
                         }
                         if ((n.getQuad_not_computed() & ParametricSurface.QUAD_NOT_COMPUTE_U2) == 0
                                 || (n.getQuad_not_computed() & ParametricSurface.QUAD_NOT_COMPUTE_V2) == 0)
-                            p3 = n.transformVec(n.calculerPoint3D(u2, v2));
+                            p3 = n.calculerPoint3D(u2, v2);
                         else {
-                            Point3D next = n.transformVec(n.getNextUV(u2, v2));
-                            p3 = next != null ? next : n.transformVec(n.calculerPoint3D(u2, v2));
+                            Point3D next = n.getNextUV(u2, v2);
+                            p3 = next != null ? next : n.calculerPoint3D(u2, v2);
                         }
                         if ((n.getQuad_not_computed() & ParametricSurface.QUAD_NOT_COMPUTE_V2) == 0) {
-                            p4 = n.transformVec(n.calculerPoint3D(u, v2));
+                            p4 = n.calculerPoint3D(u, v2);
                         } else {
                             Point3D next = n.getNextV(u, v2);
-                            p4 = next != null ? next : n.transformVec(n.calculerPoint3D(u, v2));
+                            p4 = next != null ? next : n.calculerPoint3D(u, v2);
                         }
                         if (n instanceof HeightMapSurface) {
                             HeightMapSurface h = (HeightMapSurface) n;
                             Point3D n1, n2, n3, n4;
-                            n1 = n.transformVec(n.calculerNormale3D(u, v));
-                            n2 = n.transformVec(n.calculerNormale3D(u2, v));
-                            n3 = n.transformVec(n.calculerNormale3D(u2, v2));
-                            n4 = n.transformVec(n.calculerNormale3D(u, v2));
+                            n1 = n.calculerNormale3D(u, v);
+                            n2 = n.calculerNormale3D(u2, v);
+                            n3 = n.calculerNormale3D(u2, v2);
+                            n4 = n.calculerNormale3D(u, v2);
                             p1 = p1.plus(n1.norme1().mult(h.height(u, v)));
                             p2 = p2.plus(n2.norme1().mult(h.height(u2, v)));
                             p3 = p3.plus(n3.norme1().mult(h.height(u2, v2)));
                             p4 = p4.plus(n4.norme1().mult(h.height(u, v2)));
                         }
+
+
+                        p1 = n.transformVec(p1);
+                        p2 = n.transformVec(p2);
+                        p3 = n.transformVec(p3);
+                        p4 = n.transformVec(p4);
+
+
                         if (displayType == SURFACE_DISPLAY_POINTS || displayType == SURFACE_DISPLAY_POINTS_DEEP) {
                             testDeep(p1, n.texture().getColorAt(u, v));
                             if (displayType == SURFACE_DISPLAY_POINTS_DEEP) {
@@ -523,7 +531,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                         }
                                 }
                             } else if (displayType == SURFACE_DISPLAY_POINTS_LARGE) {
-                                tracerQuad(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
+                                tracerQuad(
+                                        p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
                             }
                         } else if (displayType == SURFACE_DISPLAY_LINES) {
                             tracerLines(p1, p2, p3, p4, n.texture(), u, v, u2, v2, n);
