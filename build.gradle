@@ -35,8 +35,8 @@ plugins {
     id("signing")
 //    id("org.jetbrains.kotlin.jvm") version("2.3.10")
 }
-def JAVA_VERSION = 25
-def versionName = "2026.4.26-" + JAVA_VERSION
+def JAVA_VERSION = 21
+def versionName = "2026.5.18-" + JAVA_VERSION
 /*
 kotlin {
     jvmToolchain(JAVA_VERSION)

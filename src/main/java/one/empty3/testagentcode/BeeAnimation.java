@@ -41,6 +41,7 @@ public class BeeAnimation extends TestObjetSub {
 
     @Override
     public void ginit() {
+        frame = 130;
         // Effacer la scène précédente
         scene().clear();
 
