@@ -34,4 +34,11 @@ import one.empty3.libs.Image;
 import one.empty3.library.core.nurbs.*;
 
 public class Bezier extends CourbeParametriquePolynomialeBezier {
+    public Bezier() {
+        super();
+    }
+
+    public Bezier(Point3D[] points) {
+        super(points);
+    }
 }

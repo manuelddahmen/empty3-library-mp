@@ -29,15 +29,6 @@
 
 package one.empty3.library;
 
-import one.empty3.library.core.nurbs.SurfaceParametriquePolynomialeBezier;
-
-public class Bezier2D extends SurfaceParametriquePolynomialeBezier {
-    public Bezier2D() {
-        super();
-    }
-
-    public Bezier2D(Point3D[][] ps) {
-        super(ps);
-    }
-
+public enum Axis {
+    X, Y, Z;
 }

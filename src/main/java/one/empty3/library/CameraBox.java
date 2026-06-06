@@ -61,14 +61,16 @@ public class CameraBox extends Representable {
         this.angleX.setElem(angleX);
     }
 
+    @Deprecated
     public void angleXr(double angleX, double ratioXY) {
         this.angleX.setElem(angleX);
         this.angleY.setElem(angleX / ratioXY);
     }
 
-    public void angleXY(double angleX, double angleY) {
-        this.angleX.setElem(angleX);
-        this.angleY .setElem(angleY);
+    @Deprecated
+    public void angleXY(int width, int height, double angleRadians, Axis refAxis) {
+        this.angleX.setElem((refAxis.equals(Axis.X)) ? angleRadians : angleRadians * height / width);
+        this.angleY.setElem(refAxis.equals(Axis.Y) ? angleRadians : angleRadians * width / height);
     }
 
     public Double getAngleY() {
