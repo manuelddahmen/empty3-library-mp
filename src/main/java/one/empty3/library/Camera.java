@@ -345,4 +345,9 @@ public class Camera extends CameraBox {
     protected void setVerticale(Point3D vert2) {
         this.verticale.setElem(vert2);
     }
+
+    public void angleXY(double ax, double ay) {
+        this.angleX.setElem(ax);
+        this.angleY.setElem(ay);
+    }
 }

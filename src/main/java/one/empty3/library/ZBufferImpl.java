@@ -2446,4 +2446,56 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public PointInfo getInfosAt() {
         return new PointInfo();
     }
+
+    public int getDimx() {
+        return dimx;
+    }
+
+    public void setDimx(int dimx) {
+        this.dimx = dimx;
+    }
+
+    public int getDimy() {
+        return dimy;
+    }
+
+    public void setDimy(int dimy) {
+        this.dimy = dimy;
+    }
+
+    public int getHa() {
+        return ha;
+    }
+
+    public void setHa(int ha) {
+        this.ha = ha;
+    }
+
+    public int getLa() {
+        return la;
+    }
+
+    public void setLa(int la) {
+        this.la = la;
+    }
+
+    public double getAngleX() {
+        return angleX;
+    }
+
+    public void setAngleX(double angleX) {
+        this.angleX = angleX;
+    }
+
+    public double getAngleY() {
+        return angleY;
+    }
+
+    public void setAngleY(double angleY) {
+        this.angleY = angleY;
+    }
+
+    public ImageMapElement getIme() {
+        return ime;
+    }
 }

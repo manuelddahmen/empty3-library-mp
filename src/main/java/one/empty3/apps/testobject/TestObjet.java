@@ -1139,7 +1139,7 @@ public abstract class TestObjet implements Test, Runnable {
                 Process process = pb.start();
                 try (DataOutputStream os = new DataOutputStream(process.getOutputStream())) {
                     // Ensure spaces between arguments
-                    os.writeBytes("ffmpeg -y -f image2 -start_number 1 -i " + inputPattern + " " + f.getAbsolutePath() + "\n");
+                    os.writeBytes("ffmpeg -y -f image2 -r " + fps + " -start_number 1 -i " + inputPattern + " " + f.getAbsolutePath() + "\n");
                     os.flush();
                 }
                 process.waitFor();
@@ -1147,7 +1147,7 @@ public abstract class TestObjet implements Test, Runnable {
                 // Fix for JVM Platform: Remove "\n", add "-y", and "-start_number 1"
                 pb = new ProcessBuilder(
                         "ffmpeg", "-y",
-                        "-f", "image2", "-i", inputPattern, "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+                        "-f", "image2", "-r", String.valueOf(fps), "-i", inputPattern, "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
                         "-start_number", "1",
 
                         f.getAbsolutePath()

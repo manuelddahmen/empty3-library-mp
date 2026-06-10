@@ -31,17 +31,17 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("org.jreleaser") version("1.20.0")
+    id("org.jreleaser") version("1.24.0")
     id("signing")
-//    id("org.jetbrains.kotlin.jvm") version("2.3.10")
+    id("org.jetbrains.kotlin.jvm") version("2.4.0")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.6.4-1-" + JAVA_VERSION
-/*
+def versionName = "2026.6.7"
+
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
-*/
+
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
 }
@@ -79,11 +79,11 @@ sourceSets {
         resources {
             srcDirs = ['src/main/resources', 'src/main/configs', 'src/main/java']
         }
-        /*
+
         kotlin {
             srcDirs = ['src/main/kotlin', 'src/main/java']
         }
-*/
+
     }
 
     test {
@@ -93,11 +93,11 @@ sourceSets {
         resources {
             srcDirs = ['src/test/resources', 'src/test/configs', 'src/test/java']
         }
-        /*
+
         kotlin {
             srcDirs = ['src/test/kotlin', 'src/main/java']
         }
-        */
+
 
     }
 }
