@@ -250,17 +250,12 @@ public class Camera extends CameraBox {
 
             double scale = (1.0 / (x3d.getZ()));
 
-            double r = (angleY.getElem() / angleX.getElem());
-            //r = 1;
-            return new Point(
-                    (int) ((x3d.getX() * scale * la * r + (double) la / 2)),
-                    (int) ((-x3d.getY() * scale * ha + (double) ha / 2)));
-/*
-            Point p = new Point((int) (x + la / 2), (int) (y + ha / 2));
-            Logger.getAnonymousLogger().log(Level.INFO, p.toString());
+            double x = (x3d.getX() * scale / Math.tan(getAngleX()) * la / 2);
+            double y = (-x3d.getY() * scale / Math.tan(getAngleY()) * ha / 2);
 
-            return p;
-  */
+            return new Point(
+                    (int) (x + (double) la / 2),
+                    (int) (y + (double) ha / 2));
         }
         return null;
 

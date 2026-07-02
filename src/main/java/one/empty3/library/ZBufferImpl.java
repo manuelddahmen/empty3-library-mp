@@ -92,7 +92,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /**
          * Constructeur pour les stratégies simples (MIN_DETAIL, MAX_PERFORMANCE).
-         * @param strategy La stratégie à appliquer.
+         *
+         * @param strategy   La stratégie à appliquer.
          * @param limitValue La valeur de la limite.
          */
         public IncrementOptimizer(Strategy strategy, double limitValue) {
@@ -106,6 +107,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /**
          * Constructeur pour la stratégie CLAMP_WITHIN_RANGE.
+         *
          * @param minIncrement L'incrément minimal autorisé (haute performance).
          * @param maxIncrement L'incrément maximal autorisé (haute qualité).
          */
@@ -117,11 +119,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /**
          * Constructs an instance of IncrementOptimizer with the default strategy.
-         *
+         * <p>
          * The default strategy is set to {@code Strategy.NONE}.
          * This constructor initializes the optimizer with no specific strategy for increment/**
-         ing *.
-         Default */
+         * ing *.
+         * Default
+         */
         public IncrementOptimizer() {
             this.strategy = Strategy.NONE;
             this.valueA = MIN_INCR;
@@ -130,6 +133,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /**
          * Calcule la taille de l'incrément à utiliser en fonction de la taille projetée d'une primitive.
+         *
          * @param projectedPrimitiveSize La taille approximative (en pixels) de la primitive sur l'écran.
          * @return La taille de l'incrément optimisée.
          */
@@ -200,7 +204,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     ZBufferImpl that;
     private boolean isCheckedOccupied = false;
     private Representable toDrawR;
-    
+
     protected IncrementOptimizer incrementOptimizer;
 
     static {
@@ -776,18 +780,22 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         return i2;
 
     }
-
     public Image image() {
         Image bi = new Image(la, ha, ime.color);
-        for (int i = 0; i < la; i++) {
-            for (int j = 0; j < ha; j++) {
-                if (texture() != null && ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i, j) != idImg()) {
-                    bi.setRgb(i, j, texture().getColorAt(1.0 * i / la, 1.0 * j / ha));
+        for (int aa = 0; aa < la; aa++) {
+            for (int bb = 0; bb < ha; bb++) {
+                if (ime.getElementPoint(aa, bb) == null || ime.getElementPoint(aa, bb).equals(INFINITY) || ime.getElementID(aa, bb) != idImg()) {
+                    if (texture() != null) {
+                        bi.setRgb(aa, bb, texture().getColorAt(1.0 * aa / (double) la, 1.0 * bb / (double) ha));
+                    } else {
+                        bi.setRgb(aa, bb, getIme().COULEUR_FOND_INT(aa, bb) | 0xFF000000);
+                    }
                 } else {
-                    bi.setRgb(i, j, Color.TRANSLUCENT);
+                    bi.setRgb(aa, bb, ime.getRgbInt(ime.color, aa, bb) | 0xFF000000);
                 }
             }
         }
+        //this.bi = bi;
         return bi;
     }
 
@@ -2193,7 +2201,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 for (int j = 0; j < ha; j++) {
                     this.imeProf[i][j] = INFINITY.getZ();
                     this.imeId[i][j] = idImg;
-                    this.color[j * la + i] = COULEUR_FOND_INT(i, j);
+                    this.color[j * la + i] = 0xff000000;// COULEUR_FOND_INT(i, j);
                     this.imeRepresentable[i][j] = null;
                     this.rMap[i][j] = null;
                 }
@@ -2228,7 +2236,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
 
         public int COULEUR_FOND_INT(int x, int y) {
-            couleur_fond_int = texture().getColorAt(1.0 * x / largeur(), 1.0 * y / hauteur());
+            if (texture() != null) {
+                couleur_fond_int = texture().getColorAt(1.0 * x / largeur(), 1.0 * y / hauteur());
+            } else {
+                couleur_fond_int = 0xff000000;
+            }
             return couleur_fond_int;
         }
 

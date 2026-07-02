@@ -37,6 +37,7 @@ public class GreenCubeAnimation extends TestObjetSub {
     double startX = -2.5;
     double endX = 2.5;
     private Box cube;
+    private double lastX = startX;
 
     @Override
     public void ginit() {
@@ -50,12 +51,13 @@ public class GreenCubeAnimation extends TestObjetSub {
         cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
 
         cube.setOrig(new Point3D(startX, 0d, 0d));
+        lastX = startX;
 
         // Ajout du cube à la scène
         scene.add(cube);
 
         // Positionnement de la caméra (vue de face)
-        Camera camera1 = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0, Point3D.Y);
+        Camera camera1 = new Camera(new Point3D(0d, 0d, 10d), Point3D.O0, Point3D.Y);
         camera1.angleXY(z().la(), z().ha(), Math.PI / 3, Axis.Y);
         camera(camera1);
         scene.cameraActive(camera1);
@@ -71,8 +73,10 @@ public class GreenCubeAnimation extends TestObjetSub {
 
         double currentX = startX + (endX - startX) * progress;
         // Mise à jour de la position du cube
-        // On définit la position du centre du cube
-        cube.setOrig(new Point3D(currentX, 0d, 0d));
+        // On définit la position du centre du cube en appliquant le déplacement relatif
+        double deltaX = currentX - lastX;
+        cube.setOrig(new Point3D(deltaX, 0d, 0d));
+        lastX = currentX;
 
     }
 

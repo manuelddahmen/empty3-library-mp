@@ -49,8 +49,8 @@ public class CameraBox extends Representable {
 
     public CameraBox() {
         //System.err.println("New camera box");
-        angleX.setElem(Math.PI *2/360*60);
-        angleY.setElem(Math.PI *2/360*60);
+        angleX.setElem(Math.PI / 4);
+        angleY.setElem(Math.PI / 4);
     }
 
     public Double getAngleX() {
