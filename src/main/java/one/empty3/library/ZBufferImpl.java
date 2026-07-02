@@ -791,7 +791,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         bi.setRgb(aa, bb, getIme().COULEUR_FOND_INT(aa, bb) | 0xFF000000);
                     }
                 } else {
-                    bi.setRgb(aa, bb, ime.getRgbInt(ime.color, aa, bb) | 0xFF000000);
+                    bi.setRgb(aa, bb, ime.getElementCouleur(aa, bb) | 0xFF000000);
                 }
             }
         }

@@ -85,6 +85,7 @@ public class GreenCubeAnimation extends TestObjetSub {
         // Configuration de la résolution et du nombre d'images
         animation.setResolution(800, 600);
         animation.setMaxFrames(100);
+        animation.setPublish(true);
         new Thread(animation).start();
     }
 }

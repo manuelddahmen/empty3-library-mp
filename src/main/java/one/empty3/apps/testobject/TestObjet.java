@@ -992,7 +992,7 @@ public abstract class TestObjet implements Test, Runnable {
 
                                 if (!pass) {
                                     File f = new File(subDir , getFilenameWoExt()+ ".png");
-                                    ri.saveToFile(f.getAbsolutePath());
+                                    ri.saveFile(f);
                                     if(f.exists()) {
                                         Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath());
                                         if (getGenerate(GENERATE_MOVIE)) {
@@ -1005,8 +1005,6 @@ public abstract class TestObjet implements Test, Runnable {
                                 }
                             } catch (RuntimeException ex) {
                                 ex.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
                             afterRenderFrame();
                         }
