@@ -61,7 +61,7 @@ public class TextureImg extends ITexture {
     //private AVIReader reader;
     private int track = 0;
     private File avifile = null;
-    private int transparent = Color.TRANSLUCENT;
+    private int transparent = 0;
 
     public TextureImg() {
 

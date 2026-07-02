@@ -398,7 +398,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
     // Empty3 libraries
-    implementation 'one.empty3.libs:partial-desktop:0.0.39-17'
+    implementation 'one.empty3.libs:partial-desktop:0.0.40-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
 
     // Firebase libraries
