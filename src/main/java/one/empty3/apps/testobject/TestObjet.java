@@ -984,7 +984,7 @@ public abstract class TestObjet implements Test, Runnable {
                 }
                 if (getGenerate(TestObjet.GENERATE_IMAGE) && !(((generate & GENERATE_OPENGL) > 0))) {
                     try {
-                        ri = z.image2();
+                        ri = z.image();
 
                         if (getGenerate(TestObjet.GENERATE_SAVE_IMAGE)) {
                             boolean pass = false;

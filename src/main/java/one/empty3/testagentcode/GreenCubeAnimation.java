@@ -37,7 +37,6 @@ public class GreenCubeAnimation extends TestObjetSub {
     double startX = -2.5;
     double endX = 2.5;
     private Box cube;
-    private double cubeSize = 0.5; // Correspond au quart d'une hauteur d'écran de 2.0 unités
 
     @Override
     public void ginit() {
@@ -45,6 +44,8 @@ public class GreenCubeAnimation extends TestObjetSub {
         scene = new Scene();
 
         // Création du cube vert
+        // Correspond au quart d'une hauteur d'écran de 2.0 unités
+        double cubeSize = 0.5;
         cube = new Box(cubeSize, cubeSize, cubeSize);
         cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
 
@@ -54,8 +55,10 @@ public class GreenCubeAnimation extends TestObjetSub {
         scene.add(cube);
 
         // Positionnement de la caméra (vue de face)
-        Camera camera = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0, Point3D.Y);
-        scene.cameraActive(camera);
+        Camera camera1 = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0, Point3D.Y);
+        camera1.angleXY(z().la(), z().ha(), Math.PI / 3, Axis.Y);
+        camera(camera1);
+        scene.cameraActive(camera1);
     }
 
     @Override
@@ -67,7 +70,6 @@ public class GreenCubeAnimation extends TestObjetSub {
         // Animation : de gauche (x = -2.5) à droite (x = 2.5)
 
         double currentX = startX + (endX - startX) * progress;
-        currentX = (endX - startX) / getMaxFrames();
         // Mise à jour de la position du cube
         // On définit la position du centre du cube
         cube.setOrig(new Point3D(currentX, 0d, 0d));

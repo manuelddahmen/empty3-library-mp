@@ -68,6 +68,7 @@ public class Camera extends CameraBox {
         return verticale.getElem();
     }
 
+    @Deprecated
     public Camera(Point3D eye, Point3D lookat) {
         this(eye, lookat, null);
         scale.setElem(1.0);
@@ -250,7 +251,7 @@ public class Camera extends CameraBox {
             double scale = (1.0 / (x3d.getZ()));
 
             double r = (angleY.getElem() / angleX.getElem());
-            r = 1;
+            //r = 1;
             return new Point(
                     (int) ((x3d.getX() * scale * la * r + (double) la / 2)),
                     (int) ((-x3d.getY() * scale * ha + (double) ha / 2)));
@@ -346,8 +347,8 @@ public class Camera extends CameraBox {
         this.verticale.setElem(vert2);
     }
 
-    public void angleXY(double ax, double ay) {
-        this.angleX.setElem(ax);
-        this.angleY.setElem(ay);
+    public void angleXY(double axRad, double ayRad) {
+        this.angleX.setElem(axRad);
+        this.angleY.setElem(ayRad);
     }
 }

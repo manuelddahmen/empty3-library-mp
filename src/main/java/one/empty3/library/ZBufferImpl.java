@@ -176,7 +176,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static int CURVES_MAX_DEEP = 10;
     public static int SURFAS_MAX_DEEP = 10;
     // DEFINITIONS
-    public static double INFINITY_DEEP = -10E10;
+    public static double INFINITY_DEEP = Double.NEGATIVE_INFINITY;
     public static Point3D INFINITY = new Point3D(0d, 0d, INFINITY_DEEP);
     public ImageMapElement ime;
     public Box2D box;
@@ -568,9 +568,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         } else if (r instanceof PGenerator) {
             r = ((PGenerator) r).generatePO();
             draw(r);
-        } else if (r instanceof TRIConteneur) {
-            r = ((TRIConteneur) r).getObj();
-            draw(r);
         } else
             // OBJETS
             if (r instanceof TRIObject) {
@@ -765,6 +762,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 if (ime.imeProf[i][j] == INFINITY.getZ()) {
                     if (texture() != null) {
                         elementCouleur = texture().getColorAt(1.0 * i / la, 1.0 * j / ha);
+                    } else {
+                        elementCouleur = Color.TRANSLUCENT;
                     }
                 } else {
                     elementCouleur = ime.getElementCouleur(i, j);
@@ -782,11 +781,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         Image bi = new Image(la, ha, ime.color);
         for (int i = 0; i < la; i++) {
             for (int j = 0; j < ha; j++) {
-                if (ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i, j) != idImg()) {
+                if (texture() != null && ime.getElementPoint(i, j) == null || ime.getElementPoint(i, j).equals(INFINITY) || ime.getElementID(i, j) != idImg()) {
                     bi.setRgb(i, j, texture().getColorAt(1.0 * i / la, 1.0 * j / ha));
+                } else {
+                    bi.setRgb(i, j, Color.TRANSLUCENT);
                 }
-
-
             }
         }
         return bi;
@@ -1049,7 +1048,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void scene(Scene s) {
         this.currentScene = s;
-        this.texture(s.texture());
+        if (s.texture() != null)
+            texture(s.texture());
         //camera(s.cameraActive());
 
     }
@@ -2497,5 +2497,145 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public ImageMapElement getIme() {
         return ime;
+    }
+
+    public static boolean isNewVersionAlpha() {
+        return NEW_VERSION_ALPHA;
+    }
+
+    public static void setNewVersionAlpha(boolean newVersionAlpha) {
+        NEW_VERSION_ALPHA = newVersionAlpha;
+    }
+
+    public static double getMinIncr() {
+        return MIN_INCR;
+    }
+
+    public static void setMinIncr(double minIncr) {
+        MIN_INCR = minIncr;
+    }
+
+    public static int getCurvesMaxSize() {
+        return CURVES_MAX_SIZE;
+    }
+
+    public static void setCurvesMaxSize(int curvesMaxSize) {
+        CURVES_MAX_SIZE = curvesMaxSize;
+    }
+
+    public static int getSurfasMaxSize() {
+        return SURFAS_MAX_SIZE;
+    }
+
+    public static void setSurfasMaxSize(int surfasMaxSize) {
+        SURFAS_MAX_SIZE = surfasMaxSize;
+    }
+
+    public static int getCurvesMaxDeep() {
+        return CURVES_MAX_DEEP;
+    }
+
+    public static void setCurvesMaxDeep(int curvesMaxDeep) {
+        CURVES_MAX_DEEP = curvesMaxDeep;
+    }
+
+    public static int getSurfasMaxDeep() {
+        return SURFAS_MAX_DEEP;
+    }
+
+    public static void setSurfasMaxDeep(int surfasMaxDeep) {
+        SURFAS_MAX_DEEP = surfasMaxDeep;
+    }
+
+    public static double getInfinityDeep() {
+        return INFINITY_DEEP;
+    }
+
+    public static void setInfinityDeep(double infinityDeep) {
+        INFINITY_DEEP = infinityDeep;
+    }
+
+    public static Point3D getINFINITY() {
+        return INFINITY;
+    }
+
+    public static void setINFINITY(Point3D INFINITY) {
+        ZBufferImpl.INFINITY = INFINITY;
+    }
+
+    public void setIme(ImageMapElement ime) {
+        this.ime = ime;
+    }
+
+    public Box2D getBox() {
+        return box;
+    }
+
+    public void setBox(Box2D box) {
+        this.box = box;
+    }
+
+    public boolean isColorationActive() {
+        return colorationActive;
+    }
+
+    public void setColorationActive(boolean colorationActive) {
+        this.colorationActive = colorationActive;
+    }
+
+    public Image getBi() {
+        return bi;
+    }
+
+    public void setBi(Image bi) {
+        this.bi = bi;
+    }
+
+    public float getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public int getIdImg() {
+        return idImg;
+    }
+
+    public void setIdImg(int idImg) {
+        this.idImg = idImg;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setCurrentScene(Scene currentScene) {
+        this.currentScene = currentScene;
+    }
+
+    public void setScale(StructureMatrix<Double> scale) {
+        this.scale = scale;
+    }
+
+    public ZBufferImpl getThat() {
+        return that;
+    }
+
+    public void setThat(ZBufferImpl that) {
+        this.that = that;
+    }
+
+    public Representable getToDrawR() {
+        return toDrawR;
+    }
+
+    public void setToDrawR(Representable toDrawR) {
+        this.toDrawR = toDrawR;
     }
 }

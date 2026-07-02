@@ -66,7 +66,7 @@ public class Scene extends Representable implements Serializable {
     private List<Move> moves;
 
     {
-
+        texture(null);
     }
 
     // FOR LOADER

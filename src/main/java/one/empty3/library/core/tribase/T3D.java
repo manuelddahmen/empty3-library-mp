@@ -1,10 +1,10 @@
 /*
  *
  *  *
- *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
  *  *  *
  *  *  *
- *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *    Copyright 2026 Manuel Daniel Dahmen
  *  *  *
  *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *    you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@
 package one.empty3.library.core.tribase;
 
 import one.empty3.library.*;
+import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
 /***
@@ -57,8 +58,18 @@ public class T3D extends Tubulaire3 {
                 return super.height(u, v);
             }
         });
-    }
+        diameterFunction = new StructureMatrix<>(0, Function.class);
+        diameterFunction.setElem(new FctXY() {
+            {
+                setFormulaX("1.0");
+            }
 
+            @Override
+            public double result(double u) {
+                return super.result(u);
+            }
+        });
+    }
     /**
      * Calculates 3D point using curve, diameter, and surface
      */
