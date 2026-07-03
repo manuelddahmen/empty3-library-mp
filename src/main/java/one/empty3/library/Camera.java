@@ -33,13 +33,7 @@ package one.empty3.library;
  */
 public class Camera extends CameraBox {
 
-    /*__
-     *
-     */
-    public static final int PERSPECTIVE_ISOM = 0;
-    public static final int PERSPECTIVE_OEIL = 1;
     private static final long serialVersionUID = 2743860672948547944L;
-    protected int type_perspective = PERSPECTIVE_OEIL;
 
     protected StructureMatrix<Point3D> eye = new StructureMatrix<>(0, Point3D.class);
     protected StructureMatrix<Point3D> lookat = new StructureMatrix<>(0, Point3D.class);
@@ -303,10 +297,10 @@ public class Camera extends CameraBox {
 
 
     public Point coordinatesPoint2D(Point3D p, ZBuffer impl) {
-        switch (type_perspective) {
-            case PERSPECTIVE_ISOM:
+        switch (type) {
+            case PERSPECTIVE_ISOMETRIQUE:
                 return coordinatesPointScreenIso(calculerPointDansAxesIso(p), impl.getCube(), impl.la(), impl.ha());
-            case PERSPECTIVE_OEIL:
+            case PERSPECTIVE_POINTDEFUITE:
                 return coordinatesPointScreenPerspective(calculerPointDansRepere(p), impl.la(), impl.ha());
             default:
                 throw new UnsupportedOperationException("Type de perspective non reconnu");
@@ -318,9 +312,9 @@ public class Camera extends CameraBox {
     }
 
     public double distanceCamera(Point3D x3d) {
-        return switch (type_perspective) {
-            case PERSPECTIVE_ISOM -> x3d.getZ() - eye.getElem().getZ();
-            case PERSPECTIVE_OEIL -> x3d.moins(eye.getElem()).getZ();
+        return switch (type) {
+            case PERSPECTIVE_ISOMETRIQUE -> x3d.getZ() - eye.getElem().getZ();
+            case PERSPECTIVE_POINTDEFUITE -> x3d.moins(eye.getElem()).getZ();
             default -> throw new UnsupportedOperationException("Type de perspective non reconnu");
         };
 

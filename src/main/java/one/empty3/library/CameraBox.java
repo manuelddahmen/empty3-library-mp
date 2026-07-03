@@ -34,7 +34,6 @@
  */
 package one.empty3.library;
 
-
 /*__
  * @author Manuel DAHMEN
  * @date
@@ -42,13 +41,13 @@ package one.empty3.library;
 public class CameraBox extends Representable {
 
     public static final int PERSPECTIVE_ISOMETRIQUE = 1;
-    public static final int PERSPECTIVE_POINTDEFUITE = 1;
+    public static final int PERSPECTIVE_POINTDEFUITE = 2;
     protected StructureMatrix<Double> angleX = new StructureMatrix<>(0, Double.class);
     protected StructureMatrix<Double> angleY = new StructureMatrix<>(0, Double.class);
-    private int type = PERSPECTIVE_ISOMETRIQUE;
+    protected int type = PERSPECTIVE_POINTDEFUITE;
 
     public CameraBox() {
-        //System.err.println("New camera box");
+        // System.err.println("New camera box");
         angleX.setElem(Math.PI / 4);
         angleY.setElem(Math.PI / 4);
     }
@@ -67,9 +66,21 @@ public class CameraBox extends Representable {
         this.angleY.setElem(angleX / ratioXY);
     }
 
+    /***
+     *
+     * @param width        largeur de l'image
+     * @param height       hauteur de l'image
+     * @param angleRadians angle en radians
+     * @param refAxis      axe de référence
+     */
     public void angleXY(int width, int height, double angleRadians, Axis refAxis) {
-        this.angleX.setElem((refAxis.equals(Axis.X)) ? angleRadians : angleRadians * width / (double) height);
-        this.angleY.setElem(refAxis.equals(Axis.Y) ? angleRadians : angleRadians * height / (double) width);
+        if (refAxis.equals(Axis.X)) {
+            this.angleX.setElem(angleRadians);
+            this.angleY.setElem(Math.atan(Math.tan(angleRadians) * height / (double) width));
+        } else {
+            this.angleX.setElem(Math.atan(Math.tan(angleRadians) * width / (double) height));
+            this.angleY.setElem(angleRadians);
+        }
     }
 
     public Double getAngleY() {
@@ -81,8 +92,8 @@ public class CameraBox extends Representable {
     }
 
     public void setAngleYr(double angleY, double ratioXY) {
-        this.angleY .setElem( angleY);
-        this.angleX .setElem( angleY * ratioXY);
+        this.angleY.setElem(angleY);
+        this.angleX.setElem(Math.atan(Math.tan(angleY) * ratioXY));
     }
 
     public void perspectiveIsometrique() {
@@ -108,7 +119,8 @@ public class CameraBox extends Representable {
         getDeclaredDataStructure().put("angleY/angle vertical caméra", angleY);
 
     }
+
     public void ratioHorizontalAngle(int dimx, int dimy) {
-        this.angleX.setElem(1.0*dimx/dimy*angleY.getElem());
+        this.angleX.setElem(Math.atan(Math.tan(angleY.getElem()) * dimx / (double) dimy));
     }
 }
