@@ -733,10 +733,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public int getColorAt(Point p) {
-        if (ime.getElementProf((int) p.getX(), (int) p.getY()) <= INFINITY_DEEP) {
+        if (ime.getElementProf((int) p.getX(), (int) p.getY()) > INFINITY_DEEP) {
             return ime.getElementCouleur((int) p.getX(), (int) p.getY());
         } else {
-            return Color.newCol(1, 1, 1).getRgb();
+            return 0x00000000;
         }
     }
 
@@ -793,7 +793,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             for (int bb = 0; bb < ha; bb++) {
                 if (ime.imeProf[aa][bb] == INFINITY.getZ() || ime.getElementID(aa, bb) != idImg()) {
                     if (texture() != null) {
-                        bi.setRgb(aa, bb, texture().getColorAt(1.0 * aa / (double) la, 1.0 * bb / (double) ha) | 0xFF000000);
+                        bi.setRgb(aa, bb,
+                                texture().getColorAt(1.0 * aa / (double) la, 1.0 * bb / (double) ha) | 0xFF000000);
                     } else {
                         bi.setRgb(aa, bb, getIme().COULEUR_FOND_INT(aa, bb) & 0x00FFFFFF);
                     }
@@ -802,7 +803,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
             }
         }
-        //this.bi = bi;
+        // this.bi = bi;
         return bi;
     }
 

@@ -29,6 +29,8 @@
 
 package one.empty3.library;
 
+import one.empty3.libs.Color;
+
 public class Box extends Parallelepiped {
     public Box(Point3D base, Point3D a, Point3D b, Point3D c, ITexture texture) {
         super(base, a, b, c, texture);
@@ -40,5 +42,23 @@ public class Box extends Parallelepiped {
 
     public Box(double cubeSize, double cubeSize1, double cubeSize2) {
         super(cubeSize, cubeSize1, cubeSize2, null);
+    }
+
+    public Box(Point3D firstCorner, Point3D oppositeCorner) {
+        this(
+                firstCorner,
+                axisEndpoint(firstCorner, Point3D.X, coordinateDistance(firstCorner, oppositeCorner, 0)),
+                axisEndpoint(firstCorner, Point3D.Y, coordinateDistance(firstCorner, oppositeCorner, 1)),
+                axisEndpoint(firstCorner, Point3D.Z, coordinateDistance(firstCorner, oppositeCorner, 2)),
+                DEFAULT_TEXTURE
+        );
+    }
+
+    private static double coordinateDistance(Point3D firstPoint, Point3D secondPoint, int coordinateIndex) {
+        return Math.abs(secondPoint.get(coordinateIndex) - firstPoint.get(coordinateIndex));
+    }
+
+    private static Point3D axisEndpoint(Point3D origin, Point3D axis, double length) {
+        return origin.plus(axis.mult(length));
     }
 }
