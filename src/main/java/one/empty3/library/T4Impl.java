@@ -29,6 +29,7 @@
 
 package one.empty3.library;
 
+import one.empty3.testagentcode.Vis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class T4Impl extends T4 {
-    private final int WIDTH = 800 / 4;
-    private final int HEIGHT = 600 / 4;
+    private final int WIDTH = 800 / 2;
+    private final int HEIGHT = 600 / 2;
     private static final Logger log = LoggerFactory.getLogger(T4Impl.class);
     ArrayList<Representable> t4s;
 
@@ -58,6 +59,9 @@ public class T4Impl extends T4 {
                 {new Point3D(1.0, 0.0, 1.0), new Point3D(1.0, 1.0, 1.0)}})));
         t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
         t4s.add(t4);
+        t4 = new Vis(1, 2, 4, 1.0);
+        t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
+        t4s.add(t4);
         t4s.add(new Sphere(Point3D.O0, 1.0));
 
     }
@@ -72,7 +76,7 @@ public class T4Impl extends T4 {
         ZBufferImpl zBuffer = new ZBufferImpl(WIDTH, HEIGHT);
         Scene scene = new Scene();
         scene.add(t4);
-        Camera camera = new Camera(new Point3D(0., 0., 4.), Point3D.O0, Point3D.Y);
+        Camera camera = new Camera(new Point3D(0., 0., 3.), Point3D.O0, Point3D.Y);
         scene.cameraActive(camera);
         zBuffer.scene(scene);
         zBuffer.camera(camera);

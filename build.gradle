@@ -1,4 +1,4 @@
-/*
+/***
  *
  *  *
  *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
@@ -36,7 +36,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.0")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.6.7"
+def versionName = "2026.7.3"
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
