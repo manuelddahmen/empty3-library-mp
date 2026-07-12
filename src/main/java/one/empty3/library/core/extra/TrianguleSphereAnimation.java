@@ -76,9 +76,9 @@ package one.empty3.library.core.extra;
  for (int i1 = 0; i1 < n - 1; i1++)
  for (int j = 0; j < n - 1; j++) {
  o.add(new TRI(pcurrent[i1][j], pcurrent[i1][j + 1],
- pcurrent[i1 + 1][j + 1], Color.black));
+ pcurrent[i1 + 1][j + 1], one.empty3.libs.Color.newCol(0.0f,0.0f,0.0f)));
  o.add(new TRI(pcurrent[i1 + 1][j], pcurrent[i1 + 1][j],
- pcurrent[i1 + 1][j + 1], Color.black));
+ pcurrent[i1 + 1][j + 1], one.empty3.libs.Color.newCol(0.0f,0.0f,0.0f)));
  }
  Scene s = new Scene();
  s.add(o);

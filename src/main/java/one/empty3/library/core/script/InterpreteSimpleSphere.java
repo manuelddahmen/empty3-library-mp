@@ -82,7 +82,7 @@ public class InterpreteSimpleSphere implements Interprete {
     public Object interprete(String text, int pos) throws InterpreteException {
         Point3D c = null;
         double r = 1;
-        Color col = new Color(Color.black);
+        Color col = new Color(one.empty3.libs.Color.newCol(0.0f, 0.0f, 0.0f));
 
         InterpretesBase ib;
         InterpretePoint3DBAK ip;

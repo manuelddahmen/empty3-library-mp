@@ -37,7 +37,8 @@ import one.empty3.libs.*;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
 
 public class Turtle2D {
     private Color zeColor = new Color(Color.newCol(0.5f,0.5f,0.5f).getRGB());

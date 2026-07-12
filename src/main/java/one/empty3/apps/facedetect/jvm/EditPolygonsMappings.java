@@ -340,7 +340,7 @@ public class EditPolygonsMappings implements Runnable {
                 point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                         point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
                 Graphics graphics = panelDraw.getGraphics();
-                graphics.setColor(Color.YELLOW);
+                graphics.setColor(one.empty3.libs.Color.newCol(0.0,0.0,1));
                 graphics.fillOval((int) (point.getX() - 3),
                         (int) ((point.getY()) - 3),
                         7, 7);
@@ -350,7 +350,7 @@ public class EditPolygonsMappings implements Runnable {
                 point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                         point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
                 Graphics graphics = panelDraw.getGraphics();
-                graphics.setColor(Color.YELLOW);
+                graphics.setColor(one.empty3.libs.Color.newCol(0.0,0.0,1));
                 graphics.fillOval((int) (point.getX() - 3),
                         (int) ((point.getY()) - 3),
                         7, 7);

@@ -34,6 +34,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
+
 import java.awt.*;
 import java.util.ArrayList;
 

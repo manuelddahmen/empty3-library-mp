@@ -448,7 +448,7 @@ public abstract class TestObjet implements Test, Runnable {
         initZ();
     }
 
-    public abstract void ginit();
+    public abstract void ginit() throws IOException;
 
     public void someMethod() {
         if (TestObjet.isAndroid) {

@@ -57,11 +57,11 @@ public class TestClinDoeil extends TestObjetSub {
 
         // Création de l'œil droit (fixe)
         oeilDroit = new Sphere(new Point3D(0.7d, 0.5d, 1.8d), 0.3d);
-        oeilDroit.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        oeilDroit.texture(new TextureCol(new Color(one.empty3.libs.Color.newCol(1.0f, 1.0f, 1f).getRGB())));
 
         // Création de l'œil gauche (celui qui clignera)
         oeilGauche = new Sphere(new Point3D(-0.7d, 0.5d, 1.8d), 0.3d);
-        oeilGauche.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        oeilGauche.texture(new TextureCol(new Color(one.empty3.libs.Color.newCol(1.0f, 1.0f, 1f).getRGB())));
 
         // Ajout des objets à la scène
         scene.add(tete);

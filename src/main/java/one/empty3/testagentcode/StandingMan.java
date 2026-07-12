@@ -50,7 +50,7 @@ public class StandingMan {
 
         // --- Head (Sphere) ---
         Sphere head = new Sphere(new Point3D(0.0, 1.8, 0.0), 0.2);
-        head.texture(new ColorTexture(one.empty3.libs.Color.YELLOW.getRGB()));
+        head.texture(new ColorTexture(one.empty3.libs.one.empty3.libs.Color.newCol(0.0, 0.0, 1).getRGB()));
         scene.add(head);
 
         // --- Torso (Box) ---
@@ -58,7 +58,7 @@ public class StandingMan {
                 new Point3D(-0.2, 1.0, -0.1),
                 new Point3D(0.2, 1.6, 0.1)
         );
-        torso.texture(new ColorTexture(Color.BLUE.getRGB()));
+        torso.texture(new ColorTexture(one.empty3.libs.Color.newCol(0, 0, 1).getRGB()));
         scene.add(torso);
 
         // --- Left Arm (Cylinder) ---
@@ -67,7 +67,7 @@ public class StandingMan {
                 new Point3D(-0.3, 1.0, 0.0),
                 0.08
         );
-        leftArm.texture(new ColorTexture(Color.RED.getRGB()));
+        leftArm.texture(new ColorTexture(one.empty3.libs.Color.newCol(1.0f, 0.0f, 0f).getRGB()));
         scene.add(leftArm);
 
         // --- Right Arm (Cylinder) ---
@@ -76,7 +76,7 @@ public class StandingMan {
                 new Point3D(0.3, 1.0, 0.0),
                 0.08
         );
-        rightArm.texture(new ColorTexture(Color.RED.getRGB()));
+        rightArm.texture(new ColorTexture(one.empty3.libs.Color.newCol(1.0f, 0.0f, 0f).getRGB()));
         scene.add(rightArm);
 
         // --- Left Leg (Cylinder) ---
@@ -85,7 +85,7 @@ public class StandingMan {
                 new Point3D(-0.1, 0.0, 0.0),
                 0.1
         );
-        leftLeg.texture(new ColorTexture(Color.GREEN.getRGB()));
+        leftLeg.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 1.0f, 0f).getRGB()));
         scene.add(leftLeg);
 
         // --- Right Leg (Cylinder) ---
@@ -94,7 +94,7 @@ public class StandingMan {
                 new Point3D(0.1, 0.0, 0.0),
                 0.1
         );
-        rightLeg.texture(new ColorTexture(Color.GREEN.getRGB()));
+        rightLeg.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 1.0f, 0f).getRGB()));
         scene.add(rightLeg);
 
         // --- Ground (Plane) ---
@@ -134,7 +134,7 @@ public class StandingMan {
  4. Box torso = new Box(...) : Crée une boîte pour le torse, définie par deux points opposés.
  5. Cylinder leftArm = new Cylinder(...) et rightArm, leftLeg, rightLeg : Créent des cylindres pour les bras et les jambes, chacun défini par ses deux points d'extrémité et son rayon.
  6. Box ground = new Box(...) : Crée un plan (une très fine boîte) pour simuler le sol.
- 7. object.texture(new ColorTexture(Color.BLUE)) : Applique une couleur unie à chaque objet.
+ 7. object.texture(new ColorTexture(one.empty3.libs.Color.newCol(0,0,1))) : Applique une couleur unie à chaque objet.
  8. scene.add(object) : Ajoute chaque objet à la scène.
  9. ZBufferImpl zBuffer = new ZBufferImpl(800, 600); : Initialise le moteur de rendu avec les dimensions de l'image (800x600 pixels).
  10. zBuffer.setScene(scene); et zBuffer.setCamera(camera); : Lie la scène et la caméra au moteur de rendu.

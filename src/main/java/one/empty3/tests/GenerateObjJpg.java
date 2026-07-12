@@ -52,7 +52,7 @@ public class GenerateObjJpg {
         Scene scene = new Scene();
         E3Model e3Model = new E3Model(new BufferedReader(new FileReader(obj.getAbsolutePath())), true, null);
         scene.add(e3Model);
-        scene.getObjets().getElem(0).texture(new ColorTexture(new Color(Color.BLACK)));
+            scene.getObjets().getElem(0).texture(new ColorTexture(new Color(one.empty3.libs.Color.newCol(0.0f, 0.0f, 0.0f))));
         scene.cameraActive(new Camera());
         scene.cameraActive().getEye().setX(10.);
         zBuffer.scene(scene);

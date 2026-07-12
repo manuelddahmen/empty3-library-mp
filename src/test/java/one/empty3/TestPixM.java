@@ -33,7 +33,9 @@ import one.empty3.feature.PixM;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
 import java.io.File;
 import java.io.IOException;
 
@@ -44,29 +46,29 @@ public class TestPixM {
     public final int dim = 100;
     @Test
     public void testPixM() throws IOException {
-        assert Color.pink.getRGB()!=0;
+        assert 0xFFC5D3.getRGB() != 0;
 
 
         PixM pixM1 = new PixM(dim, dim);
         PixM pixM2 = new PixM(dim, dim);
         PixM pixM3 = new PixM(dim, dim);
-        fillWithIntColor(pixM1, Color.pink.getRGB());
-        fillWithAwtColor(pixM2, Color.pink);
-        fillWithEmpty3Color(pixM3, new one.empty3.libs.Color(Color.pink.getRGB()));
-        System.out.println(getWithAwtColor(pixM1, Color.pink));
-        System.out.println(getWithAwtColor(pixM2, Color.pink));
-        System.out.println(getWithAwtColor(pixM3, Color.pink));
-        System.out.println(getWithIntColor(pixM1, Color.pink.getRGB()));
-        System.out.println(getWithIntColor(pixM2, Color.pink.getRGB()));
-        System.out.println(getWithIntColor(pixM3, Color.pink.getRGB()));
-        System.out.println(getWithEmpty3Color(pixM1, new one.empty3.libs.Color(Color.pink.getRGB())));
-        System.out.println(getWithEmpty3Color(pixM2, new one.empty3.libs.Color(Color.pink.getRGB())));
-        System.out.println(getWithEmpty3Color(pixM3, new one.empty3.libs.Color(Color.pink.getRGB())));
+        fillWithIntColor(pixM1, 0xFFC5D3.getRGB());
+        fillWithAwtColor(pixM2, 0xFFC5D3);
+        fillWithEmpty3Color(pixM3, new one.empty3.libs.Color(0xFFC5D3.getRGB()));
+        System.out.println(getWithAwtColor(pixM1, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM2, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM3, 0xFFC5D3));
+        System.out.println(getWithIntColor(pixM1, 0xFFC5D3.getRGB()));
+        System.out.println(getWithIntColor(pixM2, 0xFFC5D3.getRGB()));
+        System.out.println(getWithIntColor(pixM3, 0xFFC5D3.getRGB()));
+        System.out.println(getWithEmpty3Color(pixM1, new one.empty3.libs.Color(0xFFC5D3.getRGB())));
+        System.out.println(getWithEmpty3Color(pixM2, new one.empty3.libs.Color(0xFFC5D3.getRGB())));
+        System.out.println(getWithEmpty3Color(pixM3, new one.empty3.libs.Color(0xFFC5D3.getRGB())));
 
         for(PixM pixM : new PixM[]{pixM1, pixM2, pixM3}) {
             for (int i = 0; i < dim; i++) {
                 for (int j = 0; j < dim; j++) {
-                    assert (pixM.getInt(i, j)&0xFFFFFF) == (Color.pink.getRGB()&0xFFFFFF) && (Color.pink.getRGB()&0xFFFFFF)!=0;
+                    assert (pixM.getInt(i, j) & 0xFFFFFF) == (0xFFC5D3.getRGB() & 0xFFFFFF) && (0xFFC5D3.getRGB() & 0xFFFFFF) != 0;
                     //System.out.println(new Color(pixM.getInt(i, j)&0xFFFFFF).toString());
                 }
             }
@@ -86,15 +88,15 @@ public class TestPixM {
         for(PixM pixM : new PixM[]{pixM1, pixM2, pixM3}) {
             for (int i = 0; i < dim; i++) {
                 for (int j = 0; j < dim; j++) {
-                    assert (pixM.getInt(i, j)&0xFFFFFF) == (Color.pink.getRGB()&0xFFFFFF) && (Color.pink.getRGB()&0xFFFFFF)!=0;
+                    assert (pixM.getInt(i, j) & 0xFFFFFF) == (0xFFC5D3.getRGB() & 0xFFFFFF) && (0xFFC5D3.getRGB() & 0xFFFFFF) != 0;
                     //System.out.println(new Color(pixM.getInt(i, j)&0xFFFFFF).toString());
                 }
             }
         }
 
-        System.out.println(getWithAwtColor(pixM1, Color.pink));
-        System.out.println(getWithAwtColor(pixM2, Color.pink));
-        System.out.println(getWithAwtColor(pixM3, Color.pink));
+        System.out.println(getWithAwtColor(pixM1, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM2, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM3, 0xFFC5D3));
 
         pixM1 = new PixM(new one.empty3.libs.Image(new File("tests-pixM1-1.png")));
         pixM2 = new PixM(ImageIO.read(new File("tests-pixM2-1.png")));
@@ -103,15 +105,15 @@ public class TestPixM {
         for(PixM pixM : new PixM[]{pixM1, pixM2, pixM3}) {
             for (int i = 0; i < dim; i++) {
                 for (int j = 0; j < dim; j++) {
-                    assert (pixM.getInt(i, j)&0xFFFFFF) == (Color.pink.getRGB()&0xFFFFFF) && (Color.pink.getRGB()&0xFFFFFF)!=0;
+                    assert (pixM.getInt(i, j) & 0xFFFFFF) == (0xFFC5D3.getRGB() & 0xFFFFFF) && (0xFFC5D3.getRGB() & 0xFFFFFF) != 0;
                     //System.out.println(new Color(pixM.getInt(i, j)&0xFFFFFF).toString());
                 }
             }
         }
 
-        System.out.println(getWithAwtColor(pixM1, Color.pink));
-        System.out.println(getWithAwtColor(pixM2, Color.pink));
-        System.out.println(getWithAwtColor(pixM3, Color.pink));
+        System.out.println(getWithAwtColor(pixM1, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM2, 0xFFC5D3));
+        System.out.println(getWithAwtColor(pixM3, 0xFFC5D3));
 
         //pixM1.colorsRegion(2, 2, 4, 4, new double[]{1, 1, 1});
         PixM pixM = pixM1.copySubImage(2, 2, 8, 8);

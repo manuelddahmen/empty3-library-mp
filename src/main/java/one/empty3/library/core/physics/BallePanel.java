@@ -115,8 +115,8 @@ public class BallePanel extends DataPanel implements Runnable {
             for (int i = 0; i < noBilles / 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     positions[c * noBilles + (i * 5 + j)] = new Bille();
-                    positions[c * noBilles + (i * 5 + j)].color = c == 0 ? Color.RED
-                            : Color.BLUE;
+                    positions[c * noBilles + (i * 5 + j)].color = c == 0 ? one.empty3.libs.Color.newCol(1.0f,0.0f,0f)
+                            : one.empty3.libs.Color.newCol(0,0,1);
 
                     int pasx = getWidth() / 4 / (noBilles + 1);
                     int pasy = getHeight() / (5 + 1);

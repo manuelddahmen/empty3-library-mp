@@ -82,11 +82,11 @@ package one.empty3.library.core.extra;
  for (int j = 0; j < n; j++) {
  o.add(new TRI(pcurrent[(i1) % n][(j) % n],
  pcurrent[(i1) % n][(j + 1) % n],
- pcurrent[(i1 + 1) % n][(j + 1) % n], Color.blue));
+ pcurrent[(i1 + 1) % n][(j + 1) % n], one.empty3.libs.Color.newCol(0,0,1)));
 				
  o.add(new TRI(pcurrent[(i1 + 1) % n][(j) % n],
  pcurrent[(i1 + 1) % n][(j) % n],
- pcurrent[(i1 + 1) % n][(j + 1) % n], Color.red));
+ pcurrent[(i1 + 1) % n][(j + 1) % n], one.empty3.libs.Color.newCol(1.0f,0.0f,0f)));
  }
  Scene s = new Scene();
  s.add(o);

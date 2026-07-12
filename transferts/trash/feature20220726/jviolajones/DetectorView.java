@@ -1,3 +1,32 @@
+/*
+ *
+ *  *
+ *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2026 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
+ *  *
+ *  *
+ *
+ *
+ *
+ *  * Created by $user $date
+ *
+ *
+ */
+
 //package one.empty3.feature20220726.jviolajones;
 //
 //
@@ -70,7 +99,7 @@ import java.util.logging.Logger;
 //
 //    public void paint(Graphics g) {
 //        Graphics2D g1 = (Graphics2D) g;
-//        g1.setColor(Color.red);
+//        g1.setColor(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
 //        g1.setStroke(new BasicStroke(2f));
 //        if (img == null)
 //            return;

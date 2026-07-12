@@ -84,7 +84,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //
 //    public static void superimposeCircles(List<CircleHit> hits, one.empty3.libs.Color in, File out) {
 //        Graphics2D g = in.createGraphics();
-//        g.setColor(Color.RED);
+//        g.setColor(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
 //        for (int circles = 0; circles < drawnCircles; circles++) {
 //            CircleHit toDraw = hits.get(circles);
 //            double a = toDraw.x - toDraw.r * Math.cos(0 * Math.PI / 180);
@@ -111,7 +111,7 @@ package one.empty3.feature.model;//package one.empty3.feature20220726;
 //        Image total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
 //        totalCircles.getGraphics().drawImage(total, 0, 0);
 //        Graphics2D g = totalCircles.createGraphics();
-//        g.setColor(Color.RED);
+//        g.setColor(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
 //        for (int circles = 0; circles < drawnCircles; circles++) {
 //            CircleHit toDraw = hits.get(circles);
 //            double a = toDraw.x - toDraw.r * Math.cos(0 * Math.PI / 180);
