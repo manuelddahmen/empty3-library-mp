@@ -29,14 +29,12 @@
 
 package one.empty3.library;
 
-import one.empty3.library.Line;
-import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.T3D;
 
 public class Cylinder extends T3D {
     public Cylinder(Point3D base, Point3D top, double radius) {
-        getSoulCurve().setElem(new Line(base, top));
+        getSoulCurve().setElem(new Bezier(base, top));
         getDiameterFunction().setElem(new FctXY() {
             public double result(double x) {
                 return radius;

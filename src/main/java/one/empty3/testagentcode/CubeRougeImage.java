@@ -33,7 +33,8 @@ import one.empty3.library.*;
 import one.empty3.libs.Color;
 
 import java.io.File;
-import javax.imageio.ImageIO;
+
+import one.empty3.libs.Image;
 
 public class CubeRougeImage {
     public static void main(String[] args) {

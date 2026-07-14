@@ -37,7 +37,7 @@ import one.empty3.library.objloader.E3Model;
 import one.empty3.library.objloader.ModelLoaderOBJ;
 import one.empty3.libs.Color;
 
-import javax.imageio.ImageIO;
+import one.empty3.libs.Image;
 import java.io.*;
 
 public class GenerateObjJpg {

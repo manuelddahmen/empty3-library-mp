@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import one.empty3.feature.M3;
+import one.empty3.library.Bezier;
 
 public class FollowLines {
     private M3 traces;

@@ -50,7 +50,7 @@ public class StandingMan {
 
         // --- Head (Sphere) ---
         Sphere head = new Sphere(new Point3D(0.0, 1.8, 0.0), 0.2);
-        head.texture(new ColorTexture(one.empty3.libs.one.empty3.libs.Color.newCol(0.0, 0.0, 1).getRGB()));
+        head.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1f).getRGB()));
         scene.add(head);
 
         // --- Torso (Box) ---
