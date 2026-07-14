@@ -40,6 +40,8 @@ import one.empty3.libs.*;
 
 import one.empty3.libs.*;
 import one.empty3.apps.testobject.TestObjetSub;
+
+import java.awt.*;
 import java.io.File;
 
 /**

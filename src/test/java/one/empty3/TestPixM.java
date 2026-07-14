@@ -32,7 +32,7 @@ package one.empty3;
 import one.empty3.feature.PixM;
 import org.junit.jupiter.api.Test;
 
-import javax.imageio.ImageIO;
+import one.empty3.libs.Image;
 
 import one.empty3.libs.*;
 import one.empty3.apps.testobject.TestObjetSub;
@@ -99,7 +99,7 @@ public class TestPixM {
         System.out.println(getWithAwtColor(pixM3, 0xFFC5D3));
 
         pixM1 = new PixM(new one.empty3.libs.Image(new File("tests-pixM1-1.png")));
-        pixM2 = new PixM(ImageIO.read(new File("tests-pixM2-1.png")));
+        pixM2 = new PixM(Image.staticLoadFile(new File("tests-pixM2-1.png")));
         pixM3 = new PixM(new one.empty3.libs.Image(new File("tests-pixM3-1.png")));
 
         for(PixM pixM : new PixM[]{pixM1, pixM2, pixM3}) {

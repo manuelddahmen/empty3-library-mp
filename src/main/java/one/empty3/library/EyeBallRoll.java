@@ -37,6 +37,8 @@ import javax.swing.*;
 
 import one.empty3.libs.*;
 import one.empty3.apps.testobject.TestObjetSub;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

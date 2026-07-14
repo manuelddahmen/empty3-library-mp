@@ -908,7 +908,11 @@ public abstract class TestObjet implements Test, Runnable {
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
         }
-        ginit();
+        try {
+            ginit();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         z.scene(scene);
 
 

@@ -29,12 +29,13 @@
 
 package one.empty3.feature.model;
 
+import one.empty3.library.Bezier;
 import one.empty3.library.Point2D;
 
 import java.util.Iterator;
 import java.util.function.Consumer;
 
-public class Line {
+public class Line extends Bezier {
     private int size;
     static MultiLinkList xys = new MultiLinkList();
     private int index;

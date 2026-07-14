@@ -41,4 +41,8 @@ public class Bezier extends CourbeParametriquePolynomialeBezier {
     public Bezier(Point3D[] points) {
         super(points);
     }
+
+    public Bezier(Point3D base, Point3D top) {
+        super(new Point3D[]{base, top});
+    }
 }

@@ -35,12 +35,12 @@ import one.empty3.library.core.nurbs.ParametricCurve;
 
 /***
  * @author manuelddahmen
- * @see one.empty3.library.core.tribase.Tubulaire3
+ * @see one.empty3.library.core.tribase.Tubulaire4
  * @see one.empty3.library.HeightMapSurface
  *
  * Tube (cylindre à âme courbe et sculptée par une image en niveauc de gris (0-255)
  */
-public class T3D extends Tubulaire3 {
+public class T3D extends Tubulaire4 {
     protected StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
     private ITexture texture2;
 

@@ -33,7 +33,8 @@ import one.empty3.library.*;
 
 import java.awt.Color;
 import java.io.File;
-import javax.imageio.ImageIO;
+
+import one.empty3.libs.Image;
 
 public class SphereBleue {
     public static void main(String[] args) {
@@ -69,7 +70,7 @@ public class SphereBleue {
         // 6. Enregistrement de l'image
         try {
             File output = new File("sphere_bleue.png");
-            ImageIO.write(zBuffer.image().getBi(), "png", output);
+            zBuffer.image().saveFile(output);
             System.out.println("Image de la sphère bleue générée : " + output.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
