@@ -63,7 +63,6 @@ public class Balade1 extends TestObjetSub {
             ciel_ensoleille = new ImageTexture(new one.empty3.libs.Image(Objects.requireNonNull(Image.staticLoadFile(new File("resources/ciel_ensoleille.jpg")))));
             sol_sableux = new ImageTexture(new one.empty3.libs.Image(Objects.requireNonNull(Image.staticLoadFile(new File("res/img/planets2/others/8k_saturn_ring_alpha.png")))));
 
-
         polygonSol = new Tubulaire3refined();
         polygonSol.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
