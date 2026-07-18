@@ -113,7 +113,7 @@ public class StandingMan {
         try {
             zBuffer.draw();
             one.empty3.libs.Image image = zBuffer.image();
-            File outputFile = new File("standing_man.jpg");
+            File outputFile = new File("standing_man.png");
             if (image.saveFile(outputFile)) {
                 System.out.println("Image saved to: " + outputFile.getAbsolutePath());
             } else {
