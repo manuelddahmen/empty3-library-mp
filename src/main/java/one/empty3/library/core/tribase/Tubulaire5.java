@@ -27,8 +27,9 @@
  *
  */
 
-package one.empty3.library;
+package one.empty3.library.core.tribase;
 
+import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricCurve;
@@ -37,7 +38,7 @@ import one.empty3.library.core.nurbs.ParametricSurface;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class T4 extends ParametricSurface {
+public class Tubulaire5 extends ParametricSurface {
     public double TAN_FCT_INCR = 0.000001;
     public double NORM_FCT_INCR = 0.000001;
 
@@ -57,7 +58,7 @@ public class T4 extends ParametricSurface {
             }
     }
 
-    public T4() {
+    public Tubulaire5() {
         super();
         soulCurve.setElem(new CourbeParametriquePolynomialeBezier());
         diameterFunctionZ.setElem(new BezierMap(new Bezier2D()));
@@ -65,7 +66,7 @@ public class T4 extends ParametricSurface {
         this.quad_not_computed = 0;
     }
 
-    public T4(ParametricCurve baseCurve, double rayonMembres) {
+    public Tubulaire5(ParametricCurve baseCurve, double rayonMembres) {
         this();
         this.soulCurve.setElem(baseCurve);
         this.diameterFunctionZ.setElem(new BezierMap(new ParametricSurface() {
@@ -186,14 +187,14 @@ public class T4 extends ParametricSurface {
         if (level == 0 && quad_not_computed > 0) {
             super.calculerPoint3D(v, u);
         }
-        Point3D[] vectPerp = vectPerp(u, v);
+        Point3D[] vecPerp = vectPerp(u, v);
         // Offsets point by cosine of scaled diameter
         Point3D z = diameterFunctionZ.getElem().calculerPoint3D(u, v);
         return transformVec(
 
                 soulCurve.getElem().calculerPoint3D(u).plus(
-                        vectPerp[1].mult(z.getZ() * Math.cos(2 * Math.PI * v))).plus(
-                        vectPerp[2].mult(z.getZ() * Math.sin(2 * Math.PI * v)))
+                        vecPerp[1].mult(z.getZ() * Math.cos(2 * Math.PI * v))).plus(
+                        vecPerp[2].mult(z.getZ() * Math.sin(2 * Math.PI * v)))
 
         );
     }

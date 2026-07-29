@@ -213,7 +213,7 @@ public class Tubulaire4 extends ParametricSurface {
         super.declareProperties();
         soulCurve.getElem().declareProperties();
         diameterFunction.getElem().declareProperties();
-        getDeclaredDataStructure().put("soulCurve/ame de la courbe", soulCurve);
+        getDeclaredDataStructure().put("soulCurve/axe courbe de la courbe", soulCurve);
         getDeclaredDataStructure().put("diameterFunction/fonction de la longueur du diamètre", diameterFunction);
 
     }

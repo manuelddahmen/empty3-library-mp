@@ -32,13 +32,12 @@ package one.empty3.testagentcode;
 import one.empty3.library.Bezier;
 import one.empty3.library.BezierMap;
 import one.empty3.library.Point3D;
-import one.empty3.library.T4;
+import one.empty3.library.core.tribase.Tubulaire5;
 import one.empty3.library.core.nurbs.ParametricSurface;
 
 import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 
-public class Vis extends T4 {
+public class Vis extends Tubulaire5 {
     private final double min;
     private final double max;
     private final int nSpires;

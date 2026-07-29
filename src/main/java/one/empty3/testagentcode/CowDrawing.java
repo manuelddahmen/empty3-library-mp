@@ -31,19 +31,14 @@ package one.empty3.testagentcode;
 
 import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.library.*;
-import one.empty3.library.objloader.E3Model;
-import one.empty3.libs.Color;
-import one.empty3.libs.Image;
-
-import java.io.*;
-import java.nio.charset.Charset;
+import one.empty3.library.core.tribase.Tubulaire5;
 
 
 public class CowDrawing extends TestObjetSub {
     int FPS = 25;
     double DURATION_SECONDS = 20.0;
 
-    private static T4 cowModel;
+    private static Tubulaire5 cowModel;
     private double totalFrames;
 
     @Override
@@ -72,14 +67,14 @@ public class CowDrawing extends TestObjetSub {
         // Ceci évite les matrices de caméra dégénérées.
         camera(new Camera(new Point3D(0.0, 0.0, 5.0), Point3D.O0, Point3D.Y));
         scene().cameraActive(camera());
-        T4 t4 = new T4();
-        t4.getSoulCurve().setElem(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}));
-        t4.getDiameterFunctionZ().setElem(new BezierMap(new Bezier2D(new Point3D[][]{{new Point3D(0.0, 0.0, .5), new Point3D(0.0, 0.1, .5)},
+        Tubulaire5 tubulaire5 = new Tubulaire5();
+        tubulaire5.getSoulCurve().setElem(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}));
+        tubulaire5.getDiameterFunctionZ().setElem(new BezierMap(new Bezier2D(new Point3D[][]{{new Point3D(0.0, 0.0, .5), new Point3D(0.0, 0.1, .5)},
                 {new Point3D(1.0, 0.0, 1.0), new Point3D(1.0, 1.0, 1.0)}})));
-        t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
+        tubulaire5.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
 
-        cowModel = t4;
-        scene().add(t4);
+        cowModel = tubulaire5;
+        scene().add(tubulaire5);
     }
 
     public static void main(String[] args) {

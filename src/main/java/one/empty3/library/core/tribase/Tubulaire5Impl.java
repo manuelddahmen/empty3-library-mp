@@ -27,45 +27,43 @@
  *
  */
 
-package one.empty3.library;
+package one.empty3.library.core.tribase;
 
+import one.empty3.library.*;
 import one.empty3.testagentcode.Vis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 
-import one.empty3.libs.*;
-import one.empty3.apps.testobject.TestObjetSub;
-
 import java.awt.*;
 import java.util.ArrayList;
 
-public class T4Impl extends T4 {
+public class Tubulaire5Impl extends Tubulaire5 {
     private final int WIDTH = 800 / 2;
     private final int HEIGHT = 600 / 2;
-    private static final Logger log = LoggerFactory.getLogger(T4Impl.class);
+    private static final Logger log = LoggerFactory.getLogger(Tubulaire5Impl.class);
     ArrayList<Representable> t4s;
 
     /**
      *
      */
-    public T4Impl() {
+    public Tubulaire5Impl() {
         t4s = new ArrayList<>();
-        T4 t4;
-        t4 = new T4(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}),
+        Tubulaire5 tubulaire5;
+        tubulaire5 = new Tubulaire5(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}),
                 .5);
-        t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
-        t4s.add(t4);
-        t4 = new T4();
-        t4.getSoulCurve().setElem(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}));
-        t4.getDiameterFunctionZ().setElem(new BezierMap(new Bezier2D(new Point3D[][]{{new Point3D(0.0, 0.0, .5), new Point3D(0.0, 0.1, .5)},
+        tubulaire5.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
+        t4s.add(tubulaire5);
+        tubulaire5 = new Tubulaire5();
+        tubulaire5.getSoulCurve().setElem(new Bezier(new Point3D[]{Point3D.O0, Point3D.O0.add(new Point3D(1.0, 0.1, 0.0)), Point3D.O0.add(new Point3D(2.0, 0.2, 0.0))}));
+        tubulaire5.getDiameterFunctionZ().setElem(new BezierMap(new Bezier2D(new Point3D[][]{{new Point3D(0.0, 0.0, .5), new Point3D(0.0, 0.1, .5)},
                 {new Point3D(1.0, 0.0, 1.0), new Point3D(1.0, 1.0, 1.0)}})));
-        t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
-        t4s.add(t4);
-        t4 = new Vis(1, 2, 4, 1.0);
-        t4.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
-        t4s.add(t4);
+        tubulaire5.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
+        t4s.add(tubulaire5);
+        tubulaire5 = new Vis(1, 2, 4, 1.0);
+        tubulaire5.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f, 0.0f, 1.0f)));
+        t4s.add(tubulaire5);
         t4s.add(new Sphere(Point3D.O0, 1.0));
 
     }
@@ -112,7 +110,7 @@ public class T4Impl extends T4 {
 
 
     public static void main(String[] args) {
-        new T4Impl().testAll();
+        new Tubulaire5Impl().testAll();
 
     }
 }

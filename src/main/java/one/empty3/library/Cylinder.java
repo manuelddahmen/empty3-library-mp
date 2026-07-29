@@ -31,10 +31,11 @@ package one.empty3.library;
 
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.tribase.T3D;
+import one.empty3.library.core.tribase.Tubulaire4;
 
-public class Cylinder extends T3D {
+public class Cylinder extends Tubulaire4 {
     public Cylinder(Point3D base, Point3D top, double radius) {
-        getSoulCurve().setElem(new Bezier(base, top));
+        getSoulCurve().setElem(new Line(base, top));
         getDiameterFunction().setElem(new FctXY() {
             public double result(double x) {
                 return radius;
