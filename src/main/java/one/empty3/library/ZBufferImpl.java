@@ -148,7 +148,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             // Si la primitive est grande, on a besoin d'un petit incrément pour voir les
             // détails.
             double calculatedIncrement = 1.0;
-            if (projectedPrimitiveSize > 1 && forceMin1) {
+            if (projectedPrimitiveSize > 1 || !forceMin1) {
                 calculatedIncrement = 1.0 / projectedPrimitiveSize;
             }
 

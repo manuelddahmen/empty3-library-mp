@@ -38,6 +38,20 @@ plugins {
 def JAVA_VERSION = 21
 def versionName = "2026.7.30"
 
+
+//Solution by the second link
+allprojects {
+    tasks.withType(Javadoc).all { enabled = false }
+}
+//Solution by the first link
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
@@ -500,11 +514,14 @@ java {
     withJavadocJar()
     withSourcesJar()
 }
+//Solution by the second link
+allprojects {
+    tasks.withType(Javadoc).configureEach { enabled = false }
+}
 javadoc {
     if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
-    
     // Ignorer les erreurs de Javadoc
     failOnError = false
     
