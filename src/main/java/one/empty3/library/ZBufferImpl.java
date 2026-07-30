@@ -38,9 +38,9 @@ import one.empty3.library.core.nurbs.*;
 import one.empty3.library.core.tribase.Precomputable;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.library1.shader.Vec;
+import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 import one.empty3.pointset.PCont;
-
-import one.empty3.libs.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,6 +58,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public static boolean NEW_VERSION_ALPHA = false;
 
     public static class IncrementOptimizer {
+        private boolean forceMin1 = false;
+
+
         public enum Strategy {
             /**
              * Limit the increment to a maximum value. Assure un NIVEAU DE DÉTAIL MINIMAL.
@@ -145,7 +148,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             // Si la primitive est grande, on a besoin d'un petit incrément pour voir les
             // détails.
             double calculatedIncrement = 1.0;
-            if (projectedPrimitiveSize > 1) {
+            if (projectedPrimitiveSize > 1 && forceMin1) {
                 calculatedIncrement = 1.0 / projectedPrimitiveSize;
             }
 
@@ -163,6 +166,26 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 default:
                     return calculatedIncrement;
             }
+        }
+
+        public boolean isForceMin1() {
+            return forceMin1;
+        }
+
+        public void setForceMin1(boolean forceMin1) {
+            this.forceMin1 = forceMin1;
+        }
+
+        public Strategy getStrategy() {
+            return strategy;
+        }
+
+        public double getValueA() {
+            return valueA;
+        }
+
+        public double getValueB() {
+            return valueB;
         }
     }
 

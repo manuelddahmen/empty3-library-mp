@@ -587,6 +587,7 @@ public abstract class TestObjet implements Test, Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        loop(true);
         initialise = true;
         loop(true);
     }

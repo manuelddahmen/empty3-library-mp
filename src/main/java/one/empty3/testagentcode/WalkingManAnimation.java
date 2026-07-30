@@ -29,6 +29,7 @@
 
 package one.empty3.testagentcode;
 
+import one.empty3.apps.testobject.Resolution;
 import one.empty3.library.*;
 import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.libs.Color;
@@ -123,8 +124,8 @@ public class WalkingManAnimation extends TestObjetSub {
 
     public static void main(String[] args) {
         WalkingManAnimation animation = new WalkingManAnimation();
-        animation.loop(true);
         animation.setMaxFrames(25 * 20);
+        animation.setDimension(new Resolution(800 / 8, 600 / 8));
         // Rendu de 200 images de marche
         new Thread(animation).start();
     }
