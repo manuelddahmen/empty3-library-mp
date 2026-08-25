@@ -39,6 +39,8 @@ public class WalkingManAnimation extends TestObjetSub {
     public void ginit() {
         // Initialisation de la scène globale
         scene = new Scene();
+
+        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 10.0));
     }
 
     @Override
@@ -125,7 +127,7 @@ public class WalkingManAnimation extends TestObjetSub {
     public static void main(String[] args) {
         WalkingManAnimation animation = new WalkingManAnimation();
         animation.setMaxFrames(25 * 20);
-        animation.setDimension(new Resolution(800 / 8, 600 / 8));
+        animation.setDimension(new Resolution(800, 600));
         // Rendu de 200 images de marche
         new Thread(animation).start();
     }

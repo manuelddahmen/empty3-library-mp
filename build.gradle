@@ -36,9 +36,9 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.0")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.7.30"
+def versionName = "2026.8.11"
 
-
+/*
 //Solution by the second link
 allprojects {
     tasks.withType(Javadoc).all { enabled = false }
@@ -51,7 +51,7 @@ if (JavaVersion.current().isJava8Compatible()) {
         }
     }
 }
-
+*/
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
@@ -747,6 +747,15 @@ test {
     }
 }
 
+
+tasks.configureEach { task ->
+    if (task.class.name.contains('JReleaser')) {
+        if (task.hasProperty('outputDirectory')) {
+            task.outputDirectory = layout.buildDirectory.dir("jreleaser-out")
+        }
+    }
+}
+
 jreleaser {
     signing {
 
@@ -862,5 +871,21 @@ jreleaser {
         // Defaults to `ALWAYS`.
         //
         active = 'ALWAYS'
+    }
+}
+tasks.register('dumpJreleaser') {
+    doLast {
+        def ext = project.extensions.findByName('jreleaser')
+        ext.properties.each { k, v ->
+            println "EXT: " + k + " = " + v
+        }
+    }
+}
+tasks.register('dumpJreleaserTask') {
+    doLast {
+        def t = tasks.getByName('jreleaserFullRelease')
+        t.properties.each { k, v ->
+            println "TASK_PROP: " + k + " = " + v
+        }
     }
 }
