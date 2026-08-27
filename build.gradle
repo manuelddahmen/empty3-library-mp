@@ -33,10 +33,10 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.24.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.4.0")
+    id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.8.11"
+def versionName = "2026.8.26-1"
 
 /*
 //Solution by the second link

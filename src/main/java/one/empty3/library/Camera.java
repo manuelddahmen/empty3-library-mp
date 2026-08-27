@@ -249,7 +249,7 @@ public class Camera extends CameraBox {
 
             return new Point(
                     (int) (x + (double) la / 2),
-                    (int) (y - (double) ha / 2));
+                    (int) (-y + (double) ha / 2));
         }
         return null;
 
