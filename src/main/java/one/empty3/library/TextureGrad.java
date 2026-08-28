@@ -71,7 +71,7 @@ public class TextureGrad extends TextureMov {
             int a = rgb >> 24 & 0xFF;
             int r = rgb >> 16 & 0xFF;
             int g = rgb >> 8 & 0xFF;
-            int b = rgb >> 0 & 0xFF;
+            int b = rgb & 0xFF;
             return new int[]{a, r, g, b};
 
         } else
