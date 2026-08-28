@@ -33,9 +33,9 @@ plugins {
     id("maven-publish")
     id("org.jreleaser") version("1.20.0")
     id("signing")
-    id("org.jetbrains.kotlin.jvm") version("2.1.0")
+    id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
-def JAVA_VERSION = 17
+def JAVA_VERSION = 21
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -381,6 +381,17 @@ signing {
 
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
+
+    // Netty constraints to force version
+    constraints {
+        implementation('io.netty:netty-codec-http:4.2.17.Final')
+        implementation('com.fasterxml.jackson.core:jackson-core:2.21.4')
+        implementation('io.grpc:grpc-netty-shaded:1.75.0')
+        implementation('com.google.protobuf:protobuf-java:4.28.2')
+    }
+
+
     // https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'org.slf4j:slf4j-simple:2.0.17'

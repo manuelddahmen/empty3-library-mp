@@ -73,24 +73,32 @@ public class Parallelepiped extends RepresentableConteneur {
 
     public Parallelepiped(Point3D base, Point3D a, Point3D b, Point3D c, ITexture texture) {
         p0 = new Point3D[]{base, a, b, c};
-        Point3D[] p1 = new Point3D[]{base};
 
-        for (int face = 0; face < 6; face++) {
-            int dim0 = face / 2;
-            int dim1 = (dim0 + 1) % 3;
-            int dim2 = (dim1 + 1) % 3;
-            double[] cof = new double[]{(dim0 == 0) ? 1 : -1,
-                    (dim1 == 1) ? 1 : -1, (dim2 == 2) ? 1 : -1};
+        Point3D v_a = a.moins(base);
+        Point3D v_b = b.moins(base);
+        Point3D v_c = c.moins(base);
 
-            add(new Polygon(new Point3D[]{
-                    p1[0], p(p1[0], cof[dim0], p0[1]),
-                    p(p1[0], cof[dim1], p0[2]),
-                    p(p1[0], cof[dim2], p0[2])}, texture()
-            ));
-            p1[0] = p(p1[0], cof[dim1], p0[2]);
-        }
-        // add( new Quad(p0[0], p0[1], p0[2], p0[3]));
+        Point3D p000 = base;
+        Point3D p100 = base.plus(v_a);
+        Point3D p010 = base.plus(v_b);
+        Point3D p001 = base.plus(v_c);
+        Point3D p110 = base.plus(v_a).plus(v_b);
+        Point3D p101 = base.plus(v_a).plus(v_c);
+        Point3D p011 = base.plus(v_b).plus(v_c);
+        Point3D p111 = base.plus(v_a).plus(v_b).plus(v_c);
 
+        // Face 1: Bottom (Z=0)
+        add(new Polygon(new Point3D[]{p000, p100, p110, p010}, texture));
+        // Face 2: Top (Z=1)
+        add(new Polygon(new Point3D[]{p001, p101, p111, p011}, texture));
+        // Face 3: Front (Y=0)
+        add(new Polygon(new Point3D[]{p000, p100, p101, p001}, texture));
+        // Face 4: Back (Y=1)
+        add(new Polygon(new Point3D[]{p010, p110, p111, p011}, texture));
+        // Face 5: Left (X=0)
+        add(new Polygon(new Point3D[]{p000, p010, p011, p001}, texture));
+        // Face 6: Right (X=1)
+        add(new Polygon(new Point3D[]{p100, p110, p111, p101}, texture));
     }
 
     public Parallelepiped(double a, double b, double c, ColorTexture texture) {
