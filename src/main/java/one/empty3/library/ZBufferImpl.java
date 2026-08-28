@@ -188,7 +188,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public static final int CHECKED_POINT_SIZE_TRI = 3;
-    public static final int CHECKED_POINT_SIZE_QUADS = 4;
+    public static final int CHECKED_POINT_SIZE_QUADS = 3;
     public static final int DISPLAY_ALL = 1;
     public static final int SURFACE_DISPLAY_TEXT_QUADS = 2;
     public static final int SURFACE_DISPLAY_TEXT_TRI = 4;
@@ -346,6 +346,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return;
         } else if (r instanceof RepresentableConteneur) {
             final Representable r1 = r;
+            RepresentableConteneur finalR = (RepresentableConteneur) r;
+            ((RepresentableConteneur) r).getListRepresentable().forEach(
+                    representable -> {
+                        representable.setVectX(r1.getVectX());
+                        representable.setVectY(r1.getVectY());
+                        representable.setVectZ(r1.getVectZ());
+                        // finalR.transformContained(representable);
+                        draw(representable);
+                    });
+            return;
+        } else if (r instanceof RepresentableConteneur) {
+            final Representable r1 = r;
             Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
             Vec a = new Vec(
                     r.getOrig().getCoordArr().getElem(0), r.getOrig().getCoordArr().getElem(1), r.getOrig().getCoordArr().getElem(2),
@@ -379,9 +391,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /* OBJECTS */
         if (r instanceof Point3D) {
-            //  if(origin != null)
-            //      testDeep(new Point3D(origin));
-            testDeep((Point3D) r);
+            Point3D p = (Point3D) r;
+            testDeep(p);
         } else if (r instanceof ThickSurface) {
             setCurrentRepresentable(r);
             ThickSurface n = (ThickSurface) r;
@@ -728,20 +739,23 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 // object
                 List<Point3D> transformedPoints = new ArrayList<>(length);
                 Point3D centre = Point3D.O0;
-                for (int i = 0; i < length; i++) {
-                    Point3D pi = p.transformVec(points.get(i));
+                for (Point3D point : points) {
+                    Point3D pi = p.transformVec(point);
                     transformedPoints.add(pi);
-                    double a;
-                    if ((a = maxSize) >= centre.moins(pi).norme() && a > 0) {
-                        maxSize = a;
+                    centre = centre.plus(pi);
+                }
+                centre = centre.mult(1.0 / length);
+                double a;
+                for (int i = 0; i < length; i++) {
+                    Point3D pi = transformedPoints.get(i);
+                    if (maxSize >= centre.moins(pi).norme() && maxSize > 0) {
+                        maxSize = centre.moins(pi).norme();
                     }
                     if (sizeIncr < 1. / distance2D(centre, pi)) {
                         sizeIncr = 1. / distance2D(centre, pi);
                     }
-                    centre = centre.plus(pi);
                 }
-                centre = centre.mult(1.0 / length);
-
+                maxSize = maxSize * 2;
                 if (length != 4) {
                     for (int i = 0; i < length; i++) {
                         if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
@@ -762,13 +776,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     double lastV = 0;
                     for (double u = 0; u < 1; u += sizeIncr) {
                         for (double v = 0; v < 1; v += sizeIncr) {
-                            double a;
                             Point3D[] pointsDiv = new Point3D[4];
-                            pointsDiv[0] = transformedPoints.get(0).plus(normU01.mult(u)).plus(normV03.mult(v));
-                            pointsDiv[1] = transformedPoints.get(1).plus(normU01.mult(u + lastU)).plus(normV12.mult(v));
-                            pointsDiv[2] = transformedPoints.get(2).plus(normU32.mult(u + lastU)).plus(normV12.mult(v + lastV));
-                            pointsDiv[3] = transformedPoints.get(3).plus(normU32.mult(u)).plus(normV03.mult(v + lastV));
-                            tracerQuad(pointsDiv[0], pointsDiv[1], pointsDiv[2], pointsDiv[3], p.texture, 0., 1., 0., 1., null);
+                            pointsDiv[0] = transformedPoints.get(0).plus(normU01.mult(u));
+                            pointsDiv[1] = transformedPoints.get(1).plus(normV12.mult(u + lastU));
+                            pointsDiv[2] = transformedPoints.get(2).plus(normU32.mult(-1.).mult(u + lastU));
+                            pointsDiv[3] = transformedPoints.get(3).plus((normV03.mult(-1.)).mult(u));
+                            tracerQuad(pointsDiv[0], pointsDiv[1], pointsDiv[2], pointsDiv[3], p.texture, u, u + sizeIncr, v, v + sizeIncr, null);
                             lastV = v;
                         }
                         lastU = u;
@@ -1034,10 +1047,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public double maxDistance(Point... points) {
         double max = 0.0;
         for (Point value : points)
-            for (Point point : points) {
-                double max1 = Point.distance(value.x, value.y, point.x, point.y);
-                if (max1 > max)
-                    max = max1;
+            if (value != null) {
+                for (Point point : points) {
+                    if (point != null) {
+                        double max1 = Point.distance(value.x, value.y, point.x, point.y);
+                        if (max1 > max)
+                            max = max1;
+                    }
+                }
             }
         return max;
     }

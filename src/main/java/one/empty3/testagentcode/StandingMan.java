@@ -99,8 +99,8 @@ public class StandingMan {
 
         // --- Ground (Plane) ---
         Box ground = new Box(
-                new Point3D(-2.0, -2.0, -2.0),
-                new Point3D(2.0, 0.0, 2.0)
+                new Point3D(-5.0, -2.0, -5.0),
+                new Point3D(5.0, 0.0, 5.0)
         );
         ground.texture(new ColorTexture(Color.newCol(64 / 255f, 64 / 255f, 64 / 255f)));
         scene.add(ground);
