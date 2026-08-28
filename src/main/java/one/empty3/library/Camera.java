@@ -340,4 +340,5 @@ public class Camera extends CameraBox {
         this.angleX.setElem(axRad);
         this.angleY.setElem(ayRad);
     }
+
 }

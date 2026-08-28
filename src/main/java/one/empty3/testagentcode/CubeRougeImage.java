@@ -1,5 +1,4 @@
-/*
- *
+/***
  *  *
  *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
  *  *  *
@@ -34,7 +33,6 @@ import one.empty3.libs.Color;
 
 import java.io.File;
 
-import one.empty3.libs.Image;
 
 public class CubeRougeImage {
     public static void main(String[] args) {
@@ -55,7 +53,7 @@ public class CubeRougeImage {
         // Positionnée en (2, 2, 2) pour une vue en perspective, regardant l'origine (0, 0, 0)
         Point3D positionCamera = new Point3D(2.0, 2.0, 2.0);
         Point3D pointCible = Point3D.O0;
-        Camera camera = new Camera(positionCamera, pointCible);
+        Camera camera = new Camera(positionCamera, pointCible, Point3D.Y);
         scene.cameraActive(camera);
 
         // 5. Rendu de l'image avec ZBufferImpl

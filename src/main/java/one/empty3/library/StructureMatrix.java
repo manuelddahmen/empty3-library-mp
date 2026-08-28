@@ -29,10 +29,6 @@
 
 package one.empty3.library;
 
-
-
-
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -295,9 +291,12 @@ public class StructureMatrix<T> implements Serializable, Serialisable {
     @Override
     public int hashCode() {
         int result = dim;
-        result = 31 * result + data0d.hashCode();
-        result = 31 * result + data1d.hashCode();
-        result = 31 * result + data2d.hashCode();
+        switch (result) {
+            case 0 -> result = 31 * result + data0d.hashCode();
+            case 1 -> result = 31 * result + data1d.hashCode();
+            case 2 -> result = 31 * result + data2d.hashCode();
+            default -> result = 31 * +(int) (-0.5 * Math.random() * Integer.MAX_VALUE);
+        }
         return result;
     }
 

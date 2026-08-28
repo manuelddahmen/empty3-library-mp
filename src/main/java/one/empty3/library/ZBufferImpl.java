@@ -43,10 +43,7 @@ import one.empty3.libs.Image;
 import one.empty3.pointset.PCont;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +52,7 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
+    HashMap<Representable, Vec> finalRmatrix = new HashMap<>();
     public static boolean NEW_VERSION_ALPHA = false;
 
     public static class IncrementOptimizer {
@@ -326,6 +324,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public synchronized void draw(Representable r) {
+        Vec origin = null;
+        if (r != null && finalRmatrix.containsKey(r)) {
+            origin = finalRmatrix.get(r);
+        }
         if (r instanceof Precomputable) {
             ((Precomputable) r).precompute();
         }
@@ -344,15 +346,30 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return;
         } else if (r instanceof RepresentableConteneur) {
             final Representable r1 = r;
-            RepresentableConteneur finalR = (RepresentableConteneur) r;
+            Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
+            Vec a = new Vec(
+                    r.getOrig().getCoordArr().getElem(0), r.getOrig().getCoordArr().getElem(1), r.getOrig().getCoordArr().getElem(2),
+                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2),
+                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2),
+                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2)
+            );
             ((RepresentableConteneur) r).getListRepresentable().forEach(
                     representable -> {
-                        representable.setVectX(r1.getVectX());
-                        representable.setVectY(r1.getVectY());
-                        representable.setVectZ(r1.getVectZ());
-                        // finalR.transformContained(representable);
+                        associate(r1, a);
                         draw(representable);
                     });
+            /*
+            Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
+             ((RepresentableConteneur) r).getListRepresentable().forEach(
+                     representable -> {
+                         representable.setOrig(finalR.getOrig().plus(finalRmatrix.mult(representable.getOrig())));
+                         representable.setVectX(finalRmatrix.mult((representable.getVectX())));
+                         representable.setVectY(finalRmatrix.mult((representable.getVectY())));
+                         representable.setVectZ(finalRmatrix.mult((representable.getVectY())));
+                         // finalR.transformContained(representable);
+                         draw(representable);
+                     });
+*/
             return;
         }
 
@@ -362,8 +379,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         /* OBJECTS */
         if (r instanceof Point3D) {
-            Point3D p = (Point3D) r;
-            testDeep(p);
+            //  if(origin != null)
+            //      testDeep(new Point3D(origin));
+            testDeep((Point3D) r);
         } else if (r instanceof ThickSurface) {
             setCurrentRepresentable(r);
             ThickSurface n = (ThickSurface) r;
@@ -704,7 +722,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 Polygon p = (Polygon) r;
                 List<Point3D> points = p.getPoints().getData1d();
                 int length = points.size();
-
+                double sizeIncr = Double.MAX_VALUE;
+                double maxSize = 0;
                 // Create a local list for transformed points to avoid modifying the scene
                 // object
                 List<Point3D> transformedPoints = new ArrayList<>(length);
@@ -712,6 +731,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 for (int i = 0; i < length; i++) {
                     Point3D pi = p.transformVec(points.get(i));
                     transformedPoints.add(pi);
+                    double a;
+                    if ((a = maxSize) >= centre.moins(pi).norme() && a > 0) {
+                        maxSize = a;
+                    }
+                    if (sizeIncr < 1. / distance2D(centre, pi)) {
+                        sizeIncr = 1. / distance2D(centre, pi);
+                    }
                     centre = centre.plus(pi);
                 }
                 centre = centre.mult(1.0 / length);
@@ -726,13 +752,42 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         }
                     }
                 } else {
-                    tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2),
-                            transformedPoints.get(3), p.texture, 0., 1., 0., 1., null);
+                    Point3D normU01 = transformedPoints.get(0).moins(transformedPoints.get(1)).mult(-1.).mult(1. / sizeIncr);
+                    Point3D normU32 = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(-1.).mult(1. / sizeIncr);
+                    Point3D normV12 = transformedPoints.get(1).moins(transformedPoints.get(2)).mult(-1.).mult(1. / sizeIncr);
+                    Point3D normV03 = transformedPoints.get(0).moins(transformedPoints.get(3)).mult(-1.).mult(1. / sizeIncr);
+
+
+                    double lastU = 0;
+                    double lastV = 0;
+                    for (double u = 0; u < 1; u += sizeIncr) {
+                        for (double v = 0; v < 1; v += sizeIncr) {
+                            double a;
+                            Point3D[] pointsDiv = new Point3D[4];
+                            pointsDiv[0] = transformedPoints.get(0).plus(normU01.mult(u)).plus(normV03.mult(v));
+                            pointsDiv[1] = transformedPoints.get(1).plus(normU01.mult(u + lastU)).plus(normV12.mult(v));
+                            pointsDiv[2] = transformedPoints.get(2).plus(normU32.mult(u + lastU)).plus(normV12.mult(v + lastV));
+                            pointsDiv[3] = transformedPoints.get(3).plus(normU32.mult(u)).plus(normV03.mult(v + lastV));
+                            tracerQuad(pointsDiv[0], pointsDiv[1], pointsDiv[2], pointsDiv[3], p.texture, 0., 1., 0., 1., null);
+                            lastV = v;
+                        }
+                        lastU = u;
+                    }
                 }
             } else if (r instanceof RPv) {
                 drawElementVolume(((RPv) r).getRepresentable(), (RPv) r);
             }
 
+    }
+
+    public double distance2D(Point3D p1, Point3D p2) {
+        Point point = camera().coordinatesPoint2D(p1, this);
+        Point point1 = camera().coordinatesPoint2D(p2, this);
+        return maxDistance(point, point1);
+    }
+
+    private void associate(Representable r, Vec o3x3y3z3) {
+        finalRmatrix.put(r, o3x3y3z3);
     }
 
     private void setCurrentRepresentable(Representable r) {
