@@ -2472,9 +2472,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 int x = (int) ce.getX();
                 int y = (int) ce.getY();
                 double deep = camera().distanceCamera(x3d);
-                if (x >= 0 & x < la & y >= 0 & y < ha
-                        && (deep >= this.getElementProf(x, y)
-                        || this.getElementProf(x, y) == INFINITY.getZ())) {
+                // Proposed
+                double epsilon = Math.abs(deep) * 1e-4;
+                if (x >= 0 & x < la & y >= 0 & y < ha && (deep >= this.getElementProf(x, y) - epsilon || this.getElementProf(x, y) == INFINITY.getZ())) {
                     Point3D n = x3d.getNormale();
                     // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
                     // dans la même direction par rapport à la caméra.

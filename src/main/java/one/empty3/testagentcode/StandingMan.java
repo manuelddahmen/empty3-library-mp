@@ -32,10 +32,10 @@ package one.empty3.testagentcode;
 import one.empty3.library.*;
 import one.empty3.library.Box;
 import one.empty3.library.Cylinder;
+import one.empty3.libs.Color;
 
 import java.io.File;
 import java.io.IOException;
-import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +63,7 @@ public class StandingMan {
 
         // --- Left Arm (Cylinder) ---
         Cylinder leftArm = new Cylinder(
-                new Point3D(-0.3, 1.5, 0.0),
+                new Point3D(-0.3, 1.55, 0.0),
                 new Point3D(-0.3, 1.0, 0.0),
                 0.08
         );
@@ -72,7 +72,7 @@ public class StandingMan {
 
         // --- Right Arm (Cylinder) ---
         Cylinder rightArm = new Cylinder(
-                new Point3D(0.3, 1.5, 0.0),
+                new Point3D(0.3, 1.55, 0.0),
                 new Point3D(0.3, 1.0, 0.0),
                 0.08
         );
@@ -102,7 +102,7 @@ public class StandingMan {
                 new Point3D(-5.0, -0.01, -5.0),
                 new Point3D(5.0, 0.0, 5.0)
         );
-        ground.texture(new ColorTexture(Color.DARK_GRAY.getRGB()));
+        ground.texture(new ColorTexture(Color.newCol(64 / 255f, 64 / 255f, 64 / 255f)));
         scene.add(ground);
 
         // --- Rendering ---
