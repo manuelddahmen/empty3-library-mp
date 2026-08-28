@@ -36,7 +36,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.8.26-1"
+def versionName = "2026.8.28"
 
 /*
 //Solution by the second link

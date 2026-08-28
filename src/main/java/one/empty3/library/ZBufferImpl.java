@@ -365,11 +365,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2),
                     r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2)
             );
+            //associate(r1, a);
             ((RepresentableConteneur) r).getListRepresentable().forEach(
-                    representable -> {
-                        associate(r1, a);
-                        draw(representable);
-                    });
+                    this::draw);
             /*
             Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
              ((RepresentableConteneur) r).getListRepresentable().forEach(
