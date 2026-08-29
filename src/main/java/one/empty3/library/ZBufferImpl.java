@@ -1661,8 +1661,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
             }
         }
-
-        // }
     }
 
     public void tracerQuad(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
