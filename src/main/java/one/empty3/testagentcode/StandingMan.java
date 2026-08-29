@@ -33,6 +33,7 @@ import one.empty3.library.*;
 import one.empty3.library.Box;
 import one.empty3.library.Cylinder;
 import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,14 +103,15 @@ public class StandingMan {
                 new Point3D(-5.0, -2.0, -5.0),
                 new Point3D(5.0, 0.0, 5.0)
         );
-        ground.texture(new ColorTexture(Color.newCol(64 / 255f, 64 / 255f, 64 / 255f)));
+        ground.texture(new ImageTexture(new File("res/img/carte-monde-vue-satellite.jpg")));
+        //new ColorTexture(Color.newCol(64 / 255f, 64 / 255f, 64 / 255f)));
         scene.add(ground);
 
         // --- Rendering ---
         ZBufferImpl zBuffer = new ZBufferImpl(800, 600); // Image dimensions
         zBuffer.scene(scene);
         zBuffer.camera(camera);
-
+        zBuffer.setDisplayType(ZBufferImpl.DISPLAY_ALL);
         try {
             zBuffer.draw();
             one.empty3.libs.Image image = zBuffer.image();

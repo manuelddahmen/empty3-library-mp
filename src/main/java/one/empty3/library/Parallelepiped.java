@@ -73,7 +73,6 @@ public class Parallelepiped extends RepresentableConteneur {
 
     public Parallelepiped(Point3D base, Point3D a, Point3D b, Point3D c, ITexture texture) {
         p0 = new Point3D[]{base, a, b, c};
-        this.texture = texture;
         Point3D v_a = a.moins(base);
         Point3D v_b = b.moins(base);
         Point3D v_c = c.moins(base);
@@ -102,7 +101,6 @@ public class Parallelepiped extends RepresentableConteneur {
     }
 
     public Parallelepiped(double a, double b, double c, ColorTexture texture) {
-        this.texture = texture;
         this.a = a;
         this.b = b;
         this.c = c;

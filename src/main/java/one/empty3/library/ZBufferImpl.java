@@ -746,41 +746,61 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double a;
                 for (int i = 0; i < length; i++) {
                     Point3D pi = transformedPoints.get(i);
-                    if (maxSize >= centre.moins(pi).norme() && maxSize > 0) {
+                    if (maxSize < centre.moins(pi).norme() && maxSize > 0) {
                         maxSize = centre.moins(pi).norme();
                     }
                     if (sizeIncr < 1. / distance2D(centre, pi)) {
                         sizeIncr = 1. / distance2D(centre, pi);
                     }
                 }
-                maxSize = maxSize * 2;
                 if (length != 4) {
                     for (int i = 0; i < length; i++) {
                         if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
                             draw(new TRI(transformedPoints.get(i), transformedPoints.get((i + 1) % length), centre,
                                     p.texture()));
                         } else {
-                            line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture);
+                            line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture());
                         }
                     }
                 } else {
-                    Point3D normU01 = transformedPoints.get(0).moins(transformedPoints.get(1)).mult(-1.).mult(1. / sizeIncr);
-                    Point3D normU32 = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(-1.).mult(1. / sizeIncr);
-                    Point3D normV12 = transformedPoints.get(1).moins(transformedPoints.get(2)).mult(-1.).mult(1. / sizeIncr);
-                    Point3D normV03 = transformedPoints.get(0).moins(transformedPoints.get(3)).mult(-1.).mult(1. / sizeIncr);
-
 
                     double lastU = 0;
                     double lastV = 0;
                     for (double u = 0; u < 1; u += sizeIncr) {
                         for (double v = 0; v < 1; v += sizeIncr) {
+                            tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
+
+
+                            /*
+                            Point3D normU01a = transformedPoints.get(1).moins(transformedPoints.get(0)).mult(u);
+                            Point3D normU23a = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(u);
+                            Point3D normV12a = transformedPoints.get(2).moins(transformedPoints.get(1)).mult(v);
+                            Point3D normV03a = transformedPoints.get(3).moins(transformedPoints.get(0)).mult(v);
+                            Point3D normU01b = transformedPoints.get(1).moins(transformedPoints.get(0)).mult(u+1. / sizeIncr);
+                            Point3D normU23b = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(u+1. / sizeIncr);
+                            Point3D normV12b = transformedPoints.get(2).moins(transformedPoints.get(1)).mult(v+1. / sizeIncr);
+                            Point3D normV03b = transformedPoints.get(3).moins(transformedPoints.get(0)).mult(v+1. / sizeIncr);
+
+
                             Point3D[] pointsDiv = new Point3D[4];
-                            pointsDiv[0] = transformedPoints.get(0).plus(normU01.mult(u));
-                            pointsDiv[1] = transformedPoints.get(1).plus(normV12.mult(u + lastU));
-                            pointsDiv[2] = transformedPoints.get(2).plus(normU32.mult(-1.).mult(u + lastU));
-                            pointsDiv[3] = transformedPoints.get(3).plus((normV03.mult(-1.)).mult(u));
+
+                            Point3D [] pointsElevationUV = new Point3D[4];
+                            pointsElevationUV[0] = (normU01a.plus(normU23a.mult(-1))).mult(v);
+                            pointsElevationUV[1] = (normV12a.plus(normV03a)).mult(u);
+                            pointsElevationUV[2] = (normU01b.plus(normU23b.mult(-1))).mult(v+sizeIncr);
+                            pointsElevationUV[3] = (normV12b.plus(normV03b)).mult(u+sizeIncr);
+
+
+                            Point3D [] pointsFinaux = new Point3D[4];
+
+                            pointsDiv[0] = transformedPoints.get(0).plus(pointsElevationUV[0]);
+                            pointsDiv[1] = transformedPoints.get(1).plus(pointsElevationUV[1]);
+                            pointsDiv[2] = transformedPoints.get(2).plus(pointsElevationUV[2]);
+                            pointsDiv[3] = transformedPoints.get(3).plus(pointsElevationUV[3]);
                             tracerQuad(pointsDiv[0], pointsDiv[1], pointsDiv[2], pointsDiv[3], p.texture, u, u + sizeIncr, v, v + sizeIncr, null);
+                            */
                             lastV = v;
+
                         }
                         lastU = u;
                     }
@@ -1404,6 +1424,31 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     }
 
+    public void tracerQuadSubDiv(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
+                                 double v0, double v1, ParametricSurface n) {
+        int uDiv = 10;
+        int vDiv = 10;
+        double du = (u1 - u0) / uDiv;
+        double dv = (v1 - v0) / vDiv;
+
+        for (int i = 0; i < uDiv; i++) {
+            for (int j = 0; j < vDiv; j++) {
+                double u = u0 + i * du;
+                double v = v0 + j * dv;
+                double uNext = u + du;
+                double vNext = v + dv;
+
+                // Bilinear interpolation
+                Point3D p00 = pp1.plus(pp2.moins(pp1).mult((u - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((v - v0) / (v1 - v0)));
+                Point3D p10 = pp1.plus(pp2.moins(pp1).mult((uNext - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((v - v0) / (v1 - v0)));
+                Point3D p11 = pp1.plus(pp2.moins(pp1).mult((uNext - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((vNext - v0) / (v1 - v0)));
+                Point3D p01 = pp1.plus(pp2.moins(pp1).mult((u - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((vNext - v0) / (v1 - v0)));
+
+                tracerQuad(p00, p10, p11, p01, texture, u, uNext, v, vNext, n);
+            }
+        }
+    }
+
     public void tracerQuadRefined(E3Model.FaceWithUv face) {
         Polygon polygon = face.getPolygon();
         tracerQuad8uv(polygon.getPoints().getElem(0), polygon.getPoints().getElem(1),
@@ -1667,10 +1712,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         // testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
                         testDeep(pFinal, n.texture(), uPoint, vPoint, n);
                     } else {
+                        pFinal.texture(texture);
                         testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
                     }
                 } else {
-                    testDeep(pFinal, col);
+                    pFinal.texture(texture);
+                    testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
                 }
             }
         }
