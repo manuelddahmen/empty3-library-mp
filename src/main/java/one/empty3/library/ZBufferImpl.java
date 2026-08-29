@@ -778,14 +778,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         Point3D pElevation1u1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u + sizeIncr));
                         Point3D pElevation2u1 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u + sizeIncr));
                         for (double v = 0; v < 1; v += sizeIncr) {
-                            Point3D ppp1 = (pElevation1u0.plus(pElevation1u0.mult(-1d).plus(pElevation2u0))).mult(v);
-                            Point3D ppp2 = (pElevation1u1.plus(pElevation1u1.mult(-1d).plus(pElevation2u1))).mult(v);
-                            Point3D ppp3 = (pElevation1u1.plus(pElevation1u1.mult(-1d).plus(pElevation2u1))).mult(v + sizeIncr);
-                            Point3D ppp4 = (pElevation1u0.plus(pElevation1u0.mult(-1d).plus(pElevation1u1))).mult(v + sizeIncr);
-                            ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
-                            ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
-                            ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
-                            ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
+                            Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
+                            Point3D ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
+                            Point3D ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
+                            Point3D ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
 
                             //tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
                             tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
