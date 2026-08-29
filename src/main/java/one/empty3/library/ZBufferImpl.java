@@ -188,7 +188,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public static final int CHECKED_POINT_SIZE_TRI = 3;
-    public static final int CHECKED_POINT_SIZE_QUADS = 3;
+    public static final int CHECKED_POINT_SIZE_QUADS = 4;
     public static final int DISPLAY_ALL = 1;
     public static final int SURFACE_DISPLAY_TEXT_QUADS = 2;
     public static final int SURFACE_DISPLAY_TEXT_TRI = 4;
@@ -731,8 +731,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 Polygon p = (Polygon) r;
                 List<Point3D> points = p.getPoints().getData1d();
                 int length = points.size();
-                double sizeIncr = Double.MAX_VALUE;
-                double maxSize = 0;
+                double sizeIncr = 1E+200;
+                double maxSize = 1E-200;
                 // Create a local list for transformed points to avoid modifying the scene
                 // object
                 List<Point3D> transformedPoints = new ArrayList<>(length);
@@ -746,11 +746,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double a;
                 for (int i = 0; i < length; i++) {
                     Point3D pi = transformedPoints.get(i);
-                    if (maxSize < centre.moins(pi).norme() && maxSize > 0) {
-                        maxSize = centre.moins(pi).norme();
+                    double distance2D = distance2D(centre, pi);
+                    if (maxSize < distance2D) {
+                        maxSize = distance2D;
                     }
-                    if (sizeIncr < 1. / distance2D(centre, pi)) {
-                        sizeIncr = 1. / distance2D(centre, pi);
+                    if (sizeIncr < 1. / distance2D) {
+                        sizeIncr = 1. / distance2D;
                     }
                 }
                 if (length != 4) {
@@ -772,58 +773,37 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     Point3D pp3 = transformedPoints.get(2);
                     Point3D pp4 = transformedPoints.get(3);
 
-                    for (double u = 0; u < 1; u += sizeIncr) {
-                        Point3D pElevation1u0 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u));
-                        Point3D pElevation2u0 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u));
-                        Point3D pElevation1u1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u + sizeIncr));
-                        Point3D pElevation2u1 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u + sizeIncr));
-                        for (double v = 0; v < 1; v += sizeIncr) {
+                    sizeIncr = Math.min(Math.max(0, 1. / maxSize), Math.max(0, sizeIncr));
+
+                    System.out.println("Size incr :  " + sizeIncr);
+                    for (double u = 0; u + sizeIncr <= 1; u += sizeIncr) {
+                        for (double v = 0; v + sizeIncr <= 1; v += sizeIncr) {
                             Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
                             Point3D ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
                             Point3D ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
                             Point3D ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
 
                             //tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
-                            tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
-
-                            /*
-                            Point3D normU01a = transformedPoints.get(1).moins(transformedPoints.get(0)).mult(u);
-                            Point3D normU23a = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(u);
-                            Point3D normV12a = transformedPoints.get(2).moins(transformedPoints.get(1)).mult(v);
-                            Point3D normV03a = transformedPoints.get(3).moins(transformedPoints.get(0)).mult(v);
-                            Point3D normU01b = transformedPoints.get(1).moins(transformedPoints.get(0)).mult(u+1. / sizeIncr);
-                            Point3D normU23b = transformedPoints.get(3).moins(transformedPoints.get(2)).mult(u+1. / sizeIncr);
-                            Point3D normV12b = transformedPoints.get(2).moins(transformedPoints.get(1)).mult(v+1. / sizeIncr);
-                            Point3D normV03b = transformedPoints.get(3).moins(transformedPoints.get(0)).mult(v+1. / sizeIncr);
-
-
-                            Point3D[] pointsDiv = new Point3D[4];
-
-                            Point3D [] pointsElevationUV = new Point3D[4];
-                            pointsElevationUV[0] = (normU01a.plus(normU23a.mult(-1))).mult(v);
-                            pointsElevationUV[1] = (normV12a.plus(normV03a)).mult(u);
-                            pointsElevationUV[2] = (normU01b.plus(normU23b.mult(-1))).mult(v+sizeIncr);
-                            pointsElevationUV[3] = (normV12b.plus(normV03b)).mult(u+sizeIncr);
-
-
-                            Point3D [] pointsFinaux = new Point3D[4];
-
-                            pointsDiv[0] = transformedPoints.get(0).plus(pointsElevationUV[0]);
-                            pointsDiv[1] = transformedPoints.get(1).plus(pointsElevationUV[1]);
-                            pointsDiv[2] = transformedPoints.get(2).plus(pointsElevationUV[2]);
-                            pointsDiv[3] = transformedPoints.get(3).plus(pointsElevationUV[3]);
-                            tracerQuad(pointsDiv[0], pointsDiv[1], pointsDiv[2], pointsDiv[3], p.texture, u, u + sizeIncr, v, v + sizeIncr, null);
-                            */
-                            lastV = v;
-
+                            if (checkScreenCount(new Point3D[]{ppp1, ppp2, ppp3, ppp4}) > 0) {
+                                tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
+                            }
                         }
-                        lastU = u;
                     }
                 }
             } else if (r instanceof RPv) {
                 drawElementVolume(((RPv) r).getRepresentable(), (RPv) r);
             }
 
+    }
+
+    public int checkScreenCount(Point3D[] point3DS) {
+        int count = 0;
+        for (Point3D point3D : point3DS) {
+            if (checkScreen(camera().coordinatesPoint2D(point3D, this))) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public double distance2D(Point3D p1, Point3D p2) {
@@ -1449,8 +1429,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public void tracerQuadSubDiv(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
                                  double v0, double v1, ParametricSurface n) {
-        int uDiv = 10;
-        int vDiv = 10;
+        double max = Math.max(Math.max(distance2D(pp1, pp2), distance2D(pp2, pp3)),
+                Math.max(distance2D(pp3, pp4), distance2D(pp4, pp1)));
+        max = Math.max(max, 1);
+        int uDiv = (int) max;
+        int vDiv = (int) max;
         double du = (u1 - u0) / uDiv;
         double dv = (v1 - v0) / vDiv;
 
@@ -1460,6 +1443,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double v = v0 + j * dv;
                 double uNext = u + du;
                 double vNext = v + dv;
+
+                if (u < 0 || v < 0 || uNext < 0 || vNext < 0 || u > 1 || v > 1 || uNext > 1 || vNext > 1)
+                    continue;
 
                 // Bilinear interpolation
                 Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
@@ -1688,17 +1674,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p3 = camera().coordinatesPoint2D(pp3, this);
         p4 = camera().coordinatesPoint2D(pp4, this);
 
-        int checkedFalse = 0;
-        if (!checkScreen(p1) || isOccupied(pp1))
-            checkedFalse++;
-        if (!checkScreen(p2) || isOccupied(pp2))
-            checkedFalse++;
-        if (!checkScreen(p3) || isOccupied(pp3))
-            checkedFalse++;
-        if (!checkScreen(p4) || isOccupied(pp4))
-            checkedFalse++;
 
-        if (p1 == null || p2 == null || p3 == null || p4 == null || checkedFalse >= CHECKED_POINT_SIZE_QUADS)
+        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) > 4 - CHECKED_POINT_SIZE_QUADS))
             return;
 
         int col = texture.getColorAt(u0, v0);

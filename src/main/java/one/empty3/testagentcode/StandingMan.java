@@ -109,6 +109,7 @@ public class StandingMan {
 
         // --- Rendering ---
         ZBufferImpl zBuffer = new ZBufferImpl(800, 600); // Image dimensions
+        zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
         zBuffer.scene(scene);
         zBuffer.camera(camera);
 
