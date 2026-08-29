@@ -111,7 +111,7 @@ public class StandingMan {
         ZBufferImpl zBuffer = new ZBufferImpl(800, 600); // Image dimensions
         zBuffer.scene(scene);
         zBuffer.camera(camera);
-        zBuffer.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+
         try {
             zBuffer.draw();
             one.empty3.libs.Image image = zBuffer.image();

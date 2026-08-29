@@ -766,10 +766,29 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
                     double lastU = 0;
                     double lastV = 0;
-                    for (double u = 0; u < 1; u += sizeIncr) {
-                        for (double v = 0; v < 1; v += sizeIncr) {
-                            tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
 
+                    Point3D pp1 = transformedPoints.get(0);
+                    Point3D pp2 = transformedPoints.get(1);
+                    Point3D pp3 = transformedPoints.get(2);
+                    Point3D pp4 = transformedPoints.get(3);
+
+                    for (double u = 0; u < 1; u += sizeIncr) {
+                        Point3D pElevation1u0 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u));
+                        Point3D pElevation2u0 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u));
+                        Point3D pElevation1u1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u + sizeIncr));
+                        Point3D pElevation2u1 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u + sizeIncr));
+                        for (double v = 0; v < 1; v += sizeIncr) {
+                            Point3D ppp1 = (pElevation1u0.plus(pElevation1u0.mult(-1d).plus(pElevation2u0))).mult(v);
+                            Point3D ppp2 = (pElevation1u1.plus(pElevation1u1.mult(-1d).plus(pElevation2u1))).mult(v);
+                            Point3D ppp3 = (pElevation1u1.plus(pElevation1u1.mult(-1d).plus(pElevation2u1))).mult(v + sizeIncr);
+                            Point3D ppp4 = (pElevation1u0.plus(pElevation1u0.mult(-1d).plus(pElevation1u1))).mult(v + sizeIncr);
+                            ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
+                            ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
+                            ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
+                            ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
+
+                            //tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
+                            tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
 
                             /*
                             Point3D normU01a = transformedPoints.get(1).moins(transformedPoints.get(0)).mult(u);
@@ -817,6 +836,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         return maxDistance(point, point1);
     }
 
+    public Point3D pointQuad(Point3D p1, Point3D p2, Point3D p3, Point3D p4, double u, double v) {
+        Point3D pElevation1 = p1
+                .plus(p1.mult(-1d).plus(p2).mult(u));
+        Point3D pElevation2 = p4
+                .plus(p4.mult(-1d).plus(p3).mult(u));
+
+        return (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(v)));
+    }
     private void associate(Representable r, Vec o3x3y3z3) {
         finalRmatrix.put(r, o3x3y3z3);
     }
@@ -1439,12 +1466,12 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double vNext = v + dv;
 
                 // Bilinear interpolation
-                Point3D p00 = pp1.plus(pp2.moins(pp1).mult((u - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((v - v0) / (v1 - v0)));
-                Point3D p10 = pp1.plus(pp2.moins(pp1).mult((uNext - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((v - v0) / (v1 - v0)));
-                Point3D p11 = pp1.plus(pp2.moins(pp1).mult((uNext - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((vNext - v0) / (v1 - v0)));
-                Point3D p01 = pp1.plus(pp2.moins(pp1).mult((u - u0) / (u1 - u0))).plus(pp4.moins(pp1).mult((vNext - v0) / (v1 - v0)));
+                Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
+                Point3D ppp2 = pointQuad(pp1, pp2, pp3, pp4, uNext, v);
+                Point3D ppp3 = pointQuad(pp1, pp2, pp3, pp4, uNext, vNext);
+                Point3D ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, vNext);
 
-                tracerQuad(p00, p10, p11, p01, texture, u, uNext, v, vNext, n);
+                tracerQuad(ppp1, ppp2, ppp3, ppp4, texture, u, uNext, v, vNext, n);
             }
         }
     }
