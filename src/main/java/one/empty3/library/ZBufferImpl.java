@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
-    private static double MAX_SUBDIVISIONS = 1000000;
+    private static double MAX_SUBDIVISIONS = 10000;
     HashMap<Representable, Vec> finalRmatrix = new HashMap<>();
     public static boolean NEW_VERSION_ALPHA = false;
 
@@ -223,7 +223,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     protected int dimx;
     protected int dimy;
     protected Scene currentScene;
-    protected int displayType = SURFACE_DISPLAY_TEXT_TRI;
+    protected int displayType = SURFACE_DISPLAY_TEXT_QUADS;
     protected boolean FORCE_POSITIVE_NORMALS = true;
     protected StructureMatrix<Double> scale = new StructureMatrix<>(0, Double.class);
     ZBufferImpl that;
@@ -514,7 +514,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     for (double v = n.getStartV(); v + n.getIncrV() <= n.getEndV(); v += n.getIncrV()) {
                         Point3D p1, p2, p3, p4;
                         double u2 = u + n.getIncrU(), v2 = v + n.getIncrV();
-                        double texU2 = u + n.getIncrU(), texV2 = v + n.getIncrV();
                         if (u2 >= n.getEndU() - n.getIncrU()) {
                             Point3D point3D = new Point3D(u2, v2, 0.0);
                             point3D = n.getTerminalU().getElem().result(point3D);
@@ -597,11 +596,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         } else if (displayType == DISPLAY_ALL || displayType == SURFACE_DISPLAY_TEXT_TRI ||
                                 displayType == SURFACE_DISPLAY_COL_QUADS) {
                             if (p1 != null && p2 != null && p3 != null && p4 != null) {
-                                drawPoly(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
+                                tracerQuad(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
                             }
                         } else {
                             if (p1 != null && p2 != null && p3 != null && p4 != null) {
-                                drawPoly(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
+                                tracerQuad(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
                             }
                         }
                     }
@@ -727,8 +726,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     private void drawPoly(Point3D p1, Point3D p2, Point3D p3, Point3D p4, ITexture texture, double u0, double u1, double v0, double v1, ParametricSurface n) {
-        double sizeIncr = 1. / MAX_SUBDIVISIONS;
-        double maxSize = Double.POSITIVE_INFINITY;
+        double sizeIncr = MAX_SUBDIVISIONS;
+        double maxSize = 1. / MAX_SUBDIVISIONS;
         // Create a local list for transformed points to avoid modifying the scene
         // object
         List<Point3D> transformedPoints = new ArrayList<>();
@@ -759,7 +758,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         //double max2D = maxDouble(distance2D(pp1, pp2), distance2D(pp2, pp3), distance2D(pp3, pp4), distance2D(pp4, pp1), distance2D(pp2, pp4), distance2D(pp1, pp3));
 
-        sizeIncr = Math.min(Math.max(1.0 / MAX_SUBDIVISIONS, 1. / (maxSize + 1)), Math.max(1.0 / MAX_SUBDIVISIONS, sizeIncr)) * 0.5;
+        //sizeIncr = Math.min(Math.max(1.0 / MAX_SUBDIVISIONS, 1. / (maxSize + 1)), Math.max(1.0 / MAX_SUBDIVISIONS, sizeIncr)) * 0.5;
 
         for (double u = u0; u <= u1; u += sizeIncr) {
             for (double v = v0; v <= v1; v += sizeIncr) {
@@ -1412,9 +1411,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
             }
         }
-
-        // }
-
     }
 
     public void tracerQuadSubDiv(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
@@ -1434,7 +1430,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double uNext = u + du;
                 double vNext = v + dv;
 
-                if (u < 0 || v < 0 || uNext < 0 || vNext < 0 || u > 1 || v > 1 || uNext > 1 || vNext > 1)
+                if (u < u0 || v < v0 || uNext < u0 || vNext < u0 || u1 > 1 || v1 > 1 || uNext > u1 || vNext > v1)
                     continue;
 
                 // Bilinear interpolation
