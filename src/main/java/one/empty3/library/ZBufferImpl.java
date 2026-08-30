@@ -52,6 +52,7 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
+    private static double MAX_SUBDIVISIONS = 1000000;
     HashMap<Representable, Vec> finalRmatrix = new HashMap<>();
     public static boolean NEW_VERSION_ALPHA = false;
 
@@ -596,23 +597,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         } else if (displayType == DISPLAY_ALL || displayType == SURFACE_DISPLAY_TEXT_TRI ||
                                 displayType == SURFACE_DISPLAY_COL_QUADS) {
                             if (p1 != null && p2 != null && p3 != null && p4 != null) {
-                                tracerQuad(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
+                                drawPoly(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
                             }
                         } else {
                             if (p1 != null && p2 != null && p3 != null && p4 != null) {
-                                tracerQuad(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
+                                drawPoly(p1, p2, p3, p4, n.texture(), u, u2, v, v2, n);
                             }
                         }
-                    } /*
-                     * Point3D quad0 = n.calculerPoint3D(u, n.getEndV());
-                     * Point3D quad1 =n.calculerPoint3D(u+n.getIncrU(), n.getEndV());
-                     * Point3D quad2 =n.getTerminalV().getElem().result(new Point3D(u+n.getIncrU(),
-                     * n.getStartV()));
-                     * Point3D quad3 =n.getTerminalV().getElem().result(new Point3D(u,
-                     * n.getStartV()));
-                     * tracerQuad(quad0, quad1, quad2, quad3, n.texture(), u, u+n.getIncrU(),
-                     * v.g, v2, n);
-                     */
+                    }
                 }
             }
         } else if (r instanceof TRIGenerable) {
@@ -701,40 +693,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     }
                 }
 
-            } else if (r instanceof Polygon) {
-                toDrawR = r;
-                setCurrentRepresentable(r);
-                /*
-                 * Polygon p = (Polygon) r;
-                 * List<Point3D> points = p.getPoints().getData1d();
-                 * int length = points.size();
-                 * Point3D centre = Point3D.O0;
-                 * for (int i = 0; i < points.size(); i++)
-                 * centre = centre.plus(points.get(i));
-                 * centre = centre.mult(1.0 / points.size());
-                 *
-                 * for (int i = 0; i < points.size(); i++) {
-                 * Point3D pi = points.get(i);
-                 * points.set(i, p.transformVec(pi));
-                 * }
-                 *
-                 * for (int i = 0; i < length; i++) {
-                 * if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
-                 * draw(new TRI(points.get(i), points.get((i + 1) % points.size()), centre,
-                 * p.texture()));
-                 * } else {
-                 * line(points.get((i % length)), points.get((i + 1) % length), p.texture);
-                 * }
-                 * }
-                 */
-                // Replace the Polygon drawing logic with:
-                Polygon p = (Polygon) r;
+            } else if (r instanceof Polygon p) {
+                toDrawR = p;
+                setCurrentRepresentable(p);
                 List<Point3D> points = p.getPoints().getData1d();
-                int length = points.size();
-                double sizeIncr = 1E+200;
-                double maxSize = 2;
-                // Create a local list for transformed points to avoid modifying the scene
-                // object
+                int length = p.getPoints().getData1d().size();
                 List<Point3D> transformedPoints = new ArrayList<>(length);
                 Point3D centre = Point3D.O0;
                 for (Point3D point : points) {
@@ -742,58 +705,85 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     transformedPoints.add(pi);
                     centre = centre.plus(pi);
                 }
-                centre = centre.mult(1.0 / length);
-                double a;
-                for (int i = 0; i < length; i++) {
-                    Point3D pi = transformedPoints.get(i);
-                    double distance2D = distance2D(centre, pi);
-                    if (maxSize < distance2D) {
-                        maxSize = distance2D;
-                    }
-                    if (sizeIncr < 1. / distance2D) {
-                        sizeIncr = 1. / distance2D;
-                    }
-                }
                 if (length != 4) {
                     for (int i = 0; i < length; i++) {
                         if (getDisplayType() <= SURFACE_DISPLAY_COL_TRI) {
                             draw(new TRI(transformedPoints.get(i), transformedPoints.get((i + 1) % length), centre,
-                                    p.texture()));
+                                    texture));
                         } else {
-                            line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), p.texture());
+                            line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), texture);
                         }
                     }
-                } else {
-
-                    double lastU = 0;
-                    double lastV = 0;
-
-                    Point3D pp1 = transformedPoints.get(0);
-                    Point3D pp2 = transformedPoints.get(1);
-                    Point3D pp3 = transformedPoints.get(2);
-                    Point3D pp4 = transformedPoints.get(3);
-
-                    sizeIncr = Math.min(Math.max(0, 1. / (maxSize + 1)), Math.max(0, sizeIncr)) * 0.5;
-
-                    System.out.println("Size incr :  " + sizeIncr);
-                    for (double u = 0; u + sizeIncr <= 1; u += sizeIncr) {
-                        for (double v = 0; v + sizeIncr <= 1; v += sizeIncr) {
-                            Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
-                            Point3D ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
-                            Point3D ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
-                            Point3D ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
-
-                            //tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
-                            if (checkScreenCount(new Point3D[]{ppp1, ppp2, ppp3, ppp4}) > 0) {
-                                tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
-                            }
-                        }
-                    }
-                }
+                } else
+                    drawPoly(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture());
             } else if (r instanceof RPv) {
                 drawElementVolume(((RPv) r).getRepresentable(), (RPv) r);
             }
 
+    }
+
+    private void drawPoly(Point3D p1, Point3D p2, Point3D p3, Point3D p4, ITexture texture) {
+        drawPoly(p1, p2, p3, p4, texture, 0, 1, 0, 1, null);
+    }
+
+    private void drawPoly(Point3D p1, Point3D p2, Point3D p3, Point3D p4, ITexture texture, double u0, double u1, double v0, double v1, ParametricSurface n) {
+        double sizeIncr = 1. / MAX_SUBDIVISIONS;
+        double maxSize = Double.POSITIVE_INFINITY;
+        // Create a local list for transformed points to avoid modifying the scene
+        // object
+        List<Point3D> transformedPoints = new ArrayList<>();
+        Point3D centre = Point3D.O0;
+        int length = 4;
+        for (Point3D pi : new Point3D[]{p1, p2, p3, p4}) {
+            transformedPoints.add(pi);
+            centre = centre.plus(pi);
+        }
+        centre = centre.mult(1.0 / length);
+
+        for (int i = 0; i < length; i++) {
+            Point3D pi = transformedPoints.get(i);
+            double distance2D = distance2D(centre, pi);
+            if (maxSize > distance2D) {
+                maxSize = distance2D;
+            }
+            double requiredStep = 1.0 / distance2D;
+            if (requiredStep < sizeIncr) {
+                sizeIncr = requiredStep;
+            }
+        }
+
+        Point3D pp1 = transformedPoints.get(0);
+        Point3D pp2 = transformedPoints.get(1);
+        Point3D pp3 = transformedPoints.get(2);
+        Point3D pp4 = transformedPoints.get(3);
+
+        //double max2D = maxDouble(distance2D(pp1, pp2), distance2D(pp2, pp3), distance2D(pp3, pp4), distance2D(pp4, pp1), distance2D(pp2, pp4), distance2D(pp1, pp3));
+
+        sizeIncr = Math.min(Math.max(1.0 / MAX_SUBDIVISIONS, 1. / (maxSize + 1)), Math.max(1.0 / MAX_SUBDIVISIONS, sizeIncr)) * 0.5;
+
+        for (double u = u0; u <= u1; u += sizeIncr) {
+            for (double v = v0; v <= v1; v += sizeIncr) {
+                Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
+                Point3D ppp2 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v);
+                Point3D ppp3 = pointQuad(pp1, pp2, pp3, pp4, u + sizeIncr, v + sizeIncr);
+                Point3D ppp4 = pointQuad(pp1, pp2, pp3, pp4, u, v + sizeIncr);
+
+                //tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), u, u + sizeIncr, v, v + sizeIncr, null);
+                if (checkScreenCount(new Point3D[]{ppp1, ppp2, ppp3, ppp4}) > 0) {
+                    tracerQuadSubDiv(ppp1, ppp2, ppp3, ppp4, texture, u, u + sizeIncr, v, v + sizeIncr, n);
+                }
+            }
+        }
+    }
+
+    private double maxDouble(double... v) {
+        double max = Double.NEGATIVE_INFINITY;
+        for (double vi : v) {
+            if (vi > max) vi = max;
+
+
+        }
+        return max;
     }
 
     public int checkScreenCount(Point3D[] point3DS) {
