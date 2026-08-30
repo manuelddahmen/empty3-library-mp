@@ -188,7 +188,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     }
 
     public static final int CHECKED_POINT_SIZE_TRI = 3;
-    public static final int CHECKED_POINT_SIZE_QUADS = 4;
+    public static final int CHECKED_POINT_SIZE_QUADS = 3;
     public static final int DISPLAY_ALL = 1;
     public static final int SURFACE_DISPLAY_TEXT_QUADS = 2;
     public static final int SURFACE_DISPLAY_TEXT_TRI = 4;
@@ -732,7 +732,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 List<Point3D> points = p.getPoints().getData1d();
                 int length = points.size();
                 double sizeIncr = 1E+200;
-                double maxSize = 1E-200;
+                double maxSize = 2;
                 // Create a local list for transformed points to avoid modifying the scene
                 // object
                 List<Point3D> transformedPoints = new ArrayList<>(length);
@@ -773,7 +773,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                     Point3D pp3 = transformedPoints.get(2);
                     Point3D pp4 = transformedPoints.get(3);
 
-                    sizeIncr = Math.min(Math.max(0, 1. / maxSize), Math.max(0, sizeIncr));
+                    sizeIncr = Math.min(Math.max(0, 1. / (maxSize + 1)), Math.max(0, sizeIncr)) * 0.5;
 
                     System.out.println("Size incr :  " + sizeIncr);
                     for (double u = 0; u + sizeIncr <= 1; u += sizeIncr) {
@@ -1673,7 +1673,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p4 = camera().coordinatesPoint2D(pp4, this);
 
 
-        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) > 4 - CHECKED_POINT_SIZE_QUADS))
+        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 4 - CHECKED_POINT_SIZE_QUADS))
             return;
 
         int col = texture.getColorAt(u0, v0);
