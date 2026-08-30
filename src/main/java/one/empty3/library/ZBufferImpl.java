@@ -52,6 +52,7 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
+    private static double NEAR = 0.0;
     private static double MAX_SUBDIVISIONS = 10000;
     HashMap<Representable, Vec> finalRmatrix = new HashMap<>();
     public static boolean NEW_VERSION_ALPHA = false;
@@ -785,6 +786,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         return max;
     }
 
+    /**
+     * Calculates and returns the count of points that pass a screen check based on their
+     * projection onto a 2D coordinate system using the specified camera.
+     *
+     * @param point3DS an array of 3D points to be processed and checked.
+     * @return the number of points that successfully pass the screen check.
+     */
     public int checkScreenCount(Point3D[] point3DS) {
         int count = 0;
         for (Point3D point3D : point3DS) {
@@ -809,6 +817,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         return (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(v)));
     }
+
     private void associate(Representable r, Vec o3x3y3z3) {
         finalRmatrix.put(r, o3x3y3z3);
     }
@@ -1072,7 +1081,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     @Override
     public boolean testDeep(Point3D pFinal, ITexture texture, double u, double v, ParametricSurface n) {
         try {
-            return testDeep(pFinal, n.texture().getColorAt(u, v));
+            return testDeep(pFinal, ((n != null) ? n.texture() : texture).getColorAt(u, v));
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -1081,7 +1090,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
     public boolean testDeep(Point3D pFinal, ITexture texture, double u, double v, ParametricCurve n) {
         try {
-            return testDeep(pFinal, texture);
+            return testDeep(pFinal, ((n != null) ? n.texture() : texture));
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -1417,11 +1426,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                  double v0, double v1, ParametricSurface n) {
         double max = Math.max(Math.max(distance2D(pp1, pp2), distance2D(pp2, pp3)),
                 Math.max(distance2D(pp3, pp4), distance2D(pp4, pp1)));
-        max = Math.max(max, 1);
-        int uDiv = (int) max;
-        int vDiv = (int) max;
+        double max1 = Math.max(max + 1, 3);
+        int uDiv = (int) max1;
+        int vDiv = (int) max1;
         double du = (u1 - u0) / uDiv;
         double dv = (v1 - v0) / vDiv;
+
+        if (max <= 1 && texture != null) {
+            testDeep(pp1, texture, u0, v0, (ParametricSurface) null);
+            testDeep(pp2, texture, u1, v0, (ParametricSurface) null);
+            testDeep(pp3, texture, u1, v1, (ParametricSurface) null);
+            testDeep(pp4, texture, u0, v1, (ParametricSurface) null);
+        }
 
         for (int i = 0; i < uDiv; i++) {
             for (int j = 0; j < vDiv; j++) {
@@ -1430,8 +1446,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double uNext = u + du;
                 double vNext = v + dv;
 
-                if (u < u0 || v < v0 || uNext < u0 || vNext < u0 || u1 > 1 || v1 > 1 || uNext > u1 || vNext > v1)
-                    continue;
+                //if (u < u0 || v < v0 || uNext < u0 || vNext < u0 || u1 > 1 || v1 > 1 || uNext > u1 || vNext > v1)
+                //    continue;
 
                 // Bilinear interpolation
                 Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
@@ -1649,6 +1665,22 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         }
     }
 
+    /**
+     * Renders a quadrilateral surface defined by four 3D points and applies texture mapping.
+     * This method computes 2D projections, handles optimizations for rendering,
+     * and manages texture parameterization as well as normal computations.
+     *
+     * @param pp1     The first vertex of the quadrilateral in 3D space.
+     * @param pp2     The second vertex of the quadrilateral in 3D space.
+     * @param pp3     The third vertex of the quadrilateral in 3D space.
+     * @param pp4     The fourth vertex of the quadrilateral in 3D space.
+     * @param texture The texture to be applied to the quadrilateral.
+     * @param u0      The starting U texture coordinate.
+     * @param u1      The ending U texture coordinate.
+     * @param v0      The starting V texture coordinate.
+     * @param v1      The ending V texture coordinate.
+     * @param n       An optional parametric surface that defines normals and points for advanced rendering.
+     */
     public void tracerQuad(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
                            double v0, double v1, ParametricSurface n) {
 
@@ -1658,11 +1690,16 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p3 = camera().coordinatesPoint2D(pp3, this);
         p4 = camera().coordinatesPoint2D(pp4, this);
 
-
-        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 4 - CHECKED_POINT_SIZE_QUADS))
+        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < CHECKED_POINT_SIZE_QUADS))
             return;
 
-        int col = texture.getColorAt(u0, v0);
+        boolean check1 = camera().calculerPointDansRepere(pp1).getZ() < near();
+        boolean check2 = camera().calculerPointDansRepere(pp2).getZ() < near();
+        boolean check3 = camera().calculerPointDansRepere(pp3).getZ() < near();
+        boolean check4 = camera().calculerPointDansRepere(pp4).getZ() < near();
+
+        if (!check1 && !check2 && !check3 && !check4)
+            ;//return;
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
@@ -2575,7 +2612,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double deep = camera().distanceCamera(x3d);
                 // Proposed
                 double epsilon = Math.abs(deep) * 1e-4;
-                if (x >= 0 & x < la & y >= 0 & y < ha && (deep >= this.getElementProf(x, y) - epsilon || this.getElementProf(x, y) == INFINITY.getZ())) {
+                if (x >= 0 & x < la & y >= 0 & y < ha && (deep >= this.getElementProf(x, y) || this.getElementProf(x, y) == INFINITY.getZ())) {
                     Point3D n = x3d.getNormale();
                     // Vérifier : n.eye>0 sinon n = -n Avoir toutes les normales
                     // dans la même direction par rapport à la caméra.
@@ -2812,4 +2849,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
     public void setToDrawR(Representable toDrawR) {
         this.toDrawR = toDrawR;
     }
+
+    private Double near() {
+        return NEAR;
+    }
+
+    public void setNear(double near) {
+        NEAR = near;
+    }
 }
+

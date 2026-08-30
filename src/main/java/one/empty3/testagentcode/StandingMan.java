@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 public class StandingMan {
 
     public static void main(String[] args) {
+        long timeMillis = System.currentTimeMillis();
         Scene scene = new Scene();
 
         // Camera setup (with explicit UP vector to avoid degenerated matrix)
@@ -119,6 +120,7 @@ public class StandingMan {
             File outputFile = new File("standing_man.png");
             if (image.saveFile(outputFile)) {
                 System.out.println("Image saved to: " + outputFile.getAbsolutePath());
+                Logger.getLogger(StandingMan.class.getName()).log(Level.SEVERE, "Temps (secondes) : " + (System.currentTimeMillis() - timeMillis) / 1000.0);
             } else {
                 System.out.println("Failed to save image to: " + outputFile.getAbsolutePath());
             }
