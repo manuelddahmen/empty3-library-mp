@@ -1426,7 +1426,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                  double v0, double v1, ParametricSurface n) {
         double max = Math.max(Math.max(distance2D(pp1, pp2), distance2D(pp2, pp3)),
                 Math.max(distance2D(pp3, pp4), distance2D(pp4, pp1)));
-        double max1 = Math.max(max + 1, 3);
+        double max1 = Math.max(max + 1, 4);
         int uDiv = (int) max1;
         int vDiv = (int) max1;
         double du = (u1 - u0) / uDiv;
@@ -1690,7 +1690,16 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p3 = camera().coordinatesPoint2D(pp3, this);
         p4 = camera().coordinatesPoint2D(pp4, this);
 
-        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < CHECKED_POINT_SIZE_QUADS))
+        double max = 0.0;
+        if ((max = maxDouble(maxDistance(p1, p2), maxDistance(p2, p3), maxDistance(p3, p4), maxDistance(p4, p1))) < 1) {
+            testDeep(pp1, texture, u0, v0, (ParametricSurface) null);
+            testDeep(pp2, texture, u1, v0, (ParametricSurface) null);
+            testDeep(pp3, texture, u1, v1, (ParametricSurface) null);
+            testDeep(pp4, texture, u0, v1, (ParametricSurface) null);
+            return;
+        }
+
+        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 1))
             return;
 
         boolean check1 = camera().calculerPointDansRepere(pp1).getZ() < near();
@@ -1742,8 +1751,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
             }
         }
-
-        // }
     }
 
     private boolean isOccupied(Point3D newValue) {
