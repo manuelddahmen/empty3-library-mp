@@ -52,16 +52,43 @@ public class Config {
     private File modelsDir;
     private File texturesDir;
     protected Map<String, String> map = new HashMap<String, String>();
+    private static String androidRootPath = null;
+
 
     public Config() {
         initIfEmpty();
     }
 
+    public static boolean isAndroid() {
+        return "Dalvik".equals(System.getProperty("java.vm.name"));
+    }
+
+    public static void setAndroidRootPath(String path) {
+        if (isAndroid()) {
+            androidRootPath = path;
+        }
+    }
+
+    public String getUserHome() {
+        if (isAndroid()) {
+            if(androidRootPath != null) {
+                return androidRootPath;
+            }
+            return "/storage/0/Pictures";
+        }
+        return System.getProperty("user.home");
+    }
+
+    /**
+     * Initializes config by loading or creating file; populates map
+     */
     public boolean initIfEmpty() {
         Properties p = new Properties();
         Reader reader = null;
-        configFile = new File(System.getProperty("user.home") + File.separator + "empty3.config");
+        String userHome = getUserHome();
+        configFile = new File(userHome + File.separator + "empty3.config");
         Logger.getAnonymousLogger().log(Level.INFO, "Config file: " + configFile.getAbsolutePath());
+        // Loads config properties into map; sets default output path
         if (!configFile.exists()) {
             createConfig();
         }
@@ -90,18 +117,27 @@ public class Config {
             return false;
         }
         return false;
+            // Creates config file with paths if absent; logs errors
+                // Ensures parent directories exist before file creation
     }
 
     public boolean createConfig() {
         if (!configFile.exists()) {
             try {
+                if (configFile.getParentFile() != null && !configFile.getParentFile().exists()) {
+                    configFile.getParentFile().mkdirs();
+                }
                 configFile.createNewFile();
                 PrintWriter pw = new PrintWriter(configFile);
-                pw.println("folderoutput=c\\" + System.getProperty("user.home") + "\\EmptyCanvasTest");
-                pw.println("path=" + System.getProperty("user.home") + "\\EmptyCanvasTest");
+                String userHome = getUserHome();
+                String path = userHome + File.separator + "EmptyCanvasTest";
+                
+                pw.println("folderoutput=" + path.replace("\\", "\\\\"));
+                pw.println("path=" + path.replace("\\", "\\\\"));
                 pw.close();
                 return true;
             } catch (IOException ex) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Error creating config file", ex);
                 return false;
             }
         } else return true;
@@ -140,6 +176,9 @@ public class Config {
     public boolean save() {
         if (!configFile.exists()) {
             try {
+                if (configFile.getParentFile() != null && !configFile.getParentFile().exists()) {
+                    configFile.getParentFile().mkdirs();
+                }
                 configFile.createNewFile();
             } catch (IOException e) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Config.save() error", e);
@@ -160,4 +199,3 @@ public class Config {
         }
     }
 }
-

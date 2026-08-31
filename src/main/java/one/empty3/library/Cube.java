@@ -126,9 +126,9 @@ public class Cube extends Representable implements TRIGenerable {
             }
 
             TRI t = new TRI(
-                    computeCubic(coord2[0], cote.getElem()/2),
-                    computeCubic(coord2[1], cote.getElem()/2),
-                    computeCubic(coord2[2], cote.getElem()/2),
+                    transformVec(computeCubic(coord2[0], cote.getElem() / 2)),
+                    transformVec(computeCubic(coord2[1], cote.getElem() / 2)),
+                    transformVec(computeCubic(coord2[2], cote.getElem() / 2)),
                     texture());
 
             ts.add(t);

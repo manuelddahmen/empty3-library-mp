@@ -63,7 +63,7 @@ public class Balade1 extends TestObjetSub {
     @Override
     public void ginit() {
 
-        super.ginit();
+
         ImageTexture sol_sableux;
 
         File f = new File(".\\res\\img\\planets\\carte-monde-vue-satellite.jpg");

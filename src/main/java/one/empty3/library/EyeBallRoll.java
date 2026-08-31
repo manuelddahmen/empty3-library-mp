@@ -35,6 +35,9 @@ import one.empty3.libs.Image;
 
 import javax.swing.*;
 
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -162,11 +165,11 @@ public class EyeBallRoll extends JPanel {
                     graphics.setColor(Color.newCol(1f,1f,1f));
                     graphics.fillRect(0, 0, RES, RES);
 
-                    graphics.setColor(Color.RED);
+                    graphics.setColor(one.empty3.libs.Color.newCol(1.0f, 0.0f, 0f));
                     graphics.drawLine(RES / 2, RES / 2, (int) ex.getX(), (int) ex.getY());
-                    graphics.setColor(Color.GREEN);
+                    graphics.setColor(one.empty3.libs.Color.newCol(0.0f, 1.0f, 0f));
                     graphics.drawLine(RES / 2, RES / 2, (int) ey.getX(), (int) ey.getY());
-                    graphics.setColor(Color.BLUE);
+                    graphics.setColor(one.empty3.libs.Color.newCol(0, 0, 1));
                     graphics.drawLine(RES / 2, RES / 2, (int) ez.getX(), (int) ez.getY());
                     //out(.println("ex, ey, ez" + ex + "\n" + ey + "\n" + ez);
 
@@ -176,11 +179,11 @@ public class EyeBallRoll extends JPanel {
                     ez = transform3D2D1(Point3D.Z);
                     //out(.println("Systeme d'origine ex, ey, ez" + ex + "\n" + ey + "\n" + ez);
 
-                    graphics.setColor(Color.RED);
+                    graphics.setColor(one.empty3.libs.Color.newCol(1.0f, 0.0f, 0f));
                     graphics.drawLine(RES / 2, RES / 2, (int) ex.getX(), (int) ex.getY());
-                    graphics.setColor(Color.GREEN);
+                    graphics.setColor(one.empty3.libs.Color.newCol(0.0f, 1.0f, 0f));
                     graphics.drawLine(RES / 2, RES / 2, (int) ey.getX(), (int) ey.getY());
-                    graphics.setColor(Color.BLUE);
+                    graphics.setColor(one.empty3.libs.Color.newCol(0, 0, 1));
                     graphics.drawLine(RES / 2, RES / 2, (int) ez.getX(), (int) ez.getY());
                     //out(.println("ex, ey, ez" + ex + "\n" + ey + "\n" + ez);
 

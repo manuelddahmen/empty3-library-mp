@@ -38,7 +38,8 @@ import one.empty3.library.Point3D;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import java.awt.*;
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

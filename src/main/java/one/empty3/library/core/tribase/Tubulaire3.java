@@ -40,10 +40,7 @@
 package one.empty3.library.core.tribase;
 
 import one.empty3.library.*;
-import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.nurbs.FctXY;
-import one.empty3.library.core.nurbs.ParametricCurve;
-import one.empty3.library.core.nurbs.ParametricSurface;
+import one.empty3.library.core.nurbs.*;
 
 import javax.xml.transform.SourceLocator;
 import java.util.logging.Level;
@@ -53,7 +50,7 @@ public class Tubulaire3 extends ParametricSurface {
     public double TAN_FCT_INCR = 0.000001;
     public double NORM_FCT_INCR = 0.000001;
 
-    protected StructureMatrix<ParametricCurve> soulCurve = new StructureMatrix<>(0, ParametricCurve.class);
+    protected StructureMatrix<CourbeParametriquePolynomiale> soulCurve = new StructureMatrix<>(0, ParametricCurve.class);
     protected StructureMatrix<FctXY> diameterFunction = new StructureMatrix<>(0, FctXY.class);
     protected Point3D lastNorm;
     protected Point3D lastTan = Point3D.Z;
@@ -77,9 +74,9 @@ public class Tubulaire3 extends ParametricSurface {
         this.quad_not_computed = 0;//QUAD_NOT_COMPUTE_U2|QUAD_NOT_COMPUTE_V2;
     }
 
-    public Tubulaire3(ParametricCurve lineSegment, double rayonMembres) {
+    public Tubulaire3(CourbeParametriquePolynomiale curve, double rayonMembres) {
         this();
-        this.soulCurve.setElem(lineSegment);
+        this.soulCurve.setElem(curve);
         FctXY fctXY = new FctXY() {
             @Override
             public double result(double u) {
@@ -221,7 +218,7 @@ public class Tubulaire3 extends ParametricSurface {
 
     }
 
-    public StructureMatrix<ParametricCurve> getSoulCurve() {
+    public StructureMatrix<CourbeParametriquePolynomiale> getSoulCurve() {
         return soulCurve;
     }
 

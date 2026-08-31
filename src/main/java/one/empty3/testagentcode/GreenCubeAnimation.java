@@ -1,0 +1,91 @@
+/*
+ *
+ *  *
+ *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2026 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
+ *  *
+ *  *
+ *
+ *
+ *
+ *  * Created by $user $date
+ *
+ *
+ */
+
+package one.empty3.testagentcode;
+
+import one.empty3.library.*;
+import one.empty3.apps.testobject.TestObjetSub;
+import one.empty3.libs.Color;
+
+public class GreenCubeAnimation extends TestObjetSub {
+    double startX = -2.5;
+    double endX = 2.5;
+    private Box cube;
+    private double lastX = startX;
+
+    @Override
+    public void ginit() {
+        // Initialisation de la scène
+        scene = new Scene();
+
+        // Création du cube vert
+        // Correspond au quart d'une hauteur d'écran de 2.0 unités
+        double cubeSize = 0.5;
+        cube = new Box(cubeSize, cubeSize, cubeSize);
+        cube.texture(new ColorTexture(Color.newCol(0f, 1f, 0f)));
+
+        cube.setOrig(new Point3D(startX, 0d, 0d));
+        lastX = startX;
+
+        // Ajout du cube à la scène
+        scene.add(cube);
+
+        // Positionnement de la caméra (vue de face)
+        Camera camera1 = new Camera(new Point3D(0d, 0d, 10d), Point3D.O0, Point3D.Y);
+        camera1.angleXY(z().la(), z().ha(), Math.PI / 3, Axis.Y);
+        camera(camera1);
+        scene.cameraActive(camera1);
+    }
+
+    @Override
+    public void finit() {
+        // Calcul de la progression du film (de 0.0 à 1.0)
+        double progress = (double) frame() / getMaxFrames();
+
+
+        // Animation : de gauche (x = -2.5) à droite (x = 2.5)
+
+        double currentX = startX + (endX - startX) * progress;
+        // Mise à jour de la position du cube
+        // On définit la position du centre du cube en appliquant le déplacement relatif
+        double deltaX = currentX - lastX;
+        cube.setOrig(new Point3D(deltaX, 0d, 0d));
+        lastX = currentX;
+
+    }
+
+    public static void main(String[] args) {
+        GreenCubeAnimation animation = new GreenCubeAnimation();
+        // Configuration de la résolution et du nombre d'images
+        animation.setResolution(800, 600);
+        animation.setMaxFrames(100);
+        animation.setPublish(true);
+        new Thread(animation).start();
+    }
+}

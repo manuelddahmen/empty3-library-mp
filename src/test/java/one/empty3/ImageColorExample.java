@@ -57,8 +57,8 @@ public class ImageColorExample {
         
         // On peut aussi utiliser des constantes prédéfinies si elles existent
         // ou instancier avec un entier ARGB (équivalent à java.awt.Color(int, boolean))
-        Color red = new Color(0xFFFF0000); 
-        // Note: Dans certaines versions, Color.RED (int) est aussi disponible.
+        Color red = new Color(0xFFFF0000);
+        // Note: Dans certaines versions, one.empty3.libs.Color.newCol(1.0f,0.0f,0f) (int) est aussi disponible.
 
         // 3. Manipulation des pixels
         // image.setRgb(x, y, int) est disponible

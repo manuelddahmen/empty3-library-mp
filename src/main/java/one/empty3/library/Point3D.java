@@ -646,8 +646,8 @@ public class Point3D extends Representable {
         Point3D p1 = this;
 
         return new one.empty3.library.Point3D(p1.getY() * p2.getZ() - p1.getZ() * p2.getY(),
-                -(p2.getZ() * getX() - p2.getX() * getZ()),
-                p1.getX() * p2.getY() - p1.getY() * p1.getX());
+                p1.getZ() * p2.getX() - p1.getX() * p2.getZ(),
+                p1.getX() * p2.getY() - p1.getY() * p2.getX());
     }
 
     /**
@@ -820,6 +820,14 @@ public class Point3D extends Representable {
      */
     public double getLength() {
         return norme();
+    }
+
+    public Point3D multiply(double v) {
+        return mult(v);
+    }
+
+    public Point3D add(Point3D multiply) {
+        return plus(multiply);
     }
 
 
@@ -1008,6 +1016,11 @@ public class Point3D extends Representable {
 
     public void setNormale(Point3D p) {
         normale = p;
+    }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        changeTo(this.plus(orig));
     }
 }
 

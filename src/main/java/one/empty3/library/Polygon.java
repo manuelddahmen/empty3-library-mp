@@ -99,6 +99,9 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
 
 
     public StructureMatrix<Point3D> getPoints() {
+        if (points == null) {
+            points = new StructureMatrix<>(1, Point3D.class);
+        }
         return points;
     }
 
@@ -340,6 +343,11 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
         Logger.getAnonymousLogger().log(Level.INFO, "Points count : " + count + " | Points drawn : " + pixels + "fillPolygon");
 
         return pixM;
+    }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        points.getData1d().forEach(r -> r.setOrig(r.getOrig().plus(orig)));
     }
 }
 

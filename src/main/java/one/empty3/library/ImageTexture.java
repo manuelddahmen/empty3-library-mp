@@ -90,7 +90,7 @@ public class ImageTexture extends ITexture {
     @Override
     public int getColorAt(double x, double y) {
         Point2D trans = getCoord(x, y);
-        return couleur(trans.x, trans.y)|0xFF000000;
+        return couleur(trans.x, trans.y) | 0xff000000;
     }
 
     public Point2D getRepeatCords(double xr, double yr) {

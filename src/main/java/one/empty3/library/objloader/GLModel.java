@@ -84,7 +84,7 @@ public class GLModel {
         rightpoint = 0.0F;
         farpoint = 0.0F;
         nearpoint = 0.0F;
-        loadobject(ref);
+        loadObject(ref);
         if (centerit)
             centerit();
         //opengldrawtolist(gl);
@@ -103,7 +103,7 @@ public class GLModel {
         facesnorms.clear();
     }
 
-    private void loadobject(BufferedReader br) {
+    private void loadObject(BufferedReader br) {
         int linecounter = 0;
         int facecounter = 0;
         try {

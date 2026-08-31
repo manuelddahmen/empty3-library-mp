@@ -97,7 +97,7 @@ public class TextureMov extends ITexture {
             return rgb & 0x00FFFFFF;
 
         } else
-            return Color.TRANSLUCENT;
+            return 0;
     }
 
     protected void current() {

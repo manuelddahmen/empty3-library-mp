@@ -102,7 +102,7 @@ public class Matrix33 extends Representable {
         dim1 = dim2 = (int) Math.sqrt(d.length);
         Double[] D = new Double[9];
         for (int i = 0; i < d.length; i++) {
-            d[i] = d[i];
+            D[i] = d[i];
         }
         this.d.setAll(D);
     }
@@ -221,7 +221,7 @@ public class Matrix33 extends Representable {
 
         for (int i = 0; i < d.getData1d().size(); i++) {
             double value = m.d.getElem(i);
-            mres.d.setElem(d.getElem(i) + value);
+            mres.d.setElem(d.getElem(i) + value, i);
         }
         return mres;
     }
@@ -230,8 +230,8 @@ public class Matrix33 extends Representable {
         Matrix33 mres = new Matrix33(this);
 
         for (int i = 0; i < d.getData1d().size(); i++) {
-            double value = mres.d.getElem(i);
-            mres.d.setElem(d.getElem(i) - value);
+            double value = m.d.getElem(i);
+            mres.d.setElem(d.getElem(i) - value, i);
         }
         return mres;
     }
@@ -369,12 +369,13 @@ public class Matrix33 extends Representable {
     private Matrix33 cofactor(int i, int j) {
         if (getDim1() == 2 && getDim2() == 2)
             return new Matrix33(new double[]{
-                    get((i - 1) % 3, ((j - 1) % 3)),
-                    get((i - 1) % 3, ((j + 1) % 3)),
-                    get((i + 1) % 3, ((j + 1) % 3)),
-                    get((i - 1) % 3, ((j + 1) % 3))});
+                    get((i + 1) % 3, (j + 1) % 3),
+                    get((i + 1) % 3, (j + 2) % 3),
+                    get((i + 2) % 3, (j + 1) % 3),
+                    get((i + 2) % 3, (j + 2) % 3),
+                    0, 0, 0, 0, 0});
         else if (dim1 == 1 && dim2 == 1) {
-            return new Matrix33(new double[]{get(0, 0)});
+            return new Matrix33(new double[]{get(0, 0), 0, 0, 0, 0, 0, 0, 0, 0});
         }
         Matrix33 matrix33 = new Matrix33(dim1 - 1, dim2 - 1);
         int row = 0, column = 0;

@@ -112,17 +112,17 @@ public abstract class TestObjet implements Test, Runnable {
     protected boolean unterminable = false;
     protected long timeStart;
     protected long lastInfoEllapsedMillis;
-    protected int generate = GENERATE_IMAGE | GENERATE_MOVIE |
-            GENERATE_SAVE_IMAGE | GENERATE_SAVE_OBJ |
-            GENERATE_SAVE_STL | GENERATE_SAVE_ZIP;
+    protected int generate = GENERATE_IMAGE | GENERATE_MOVIE | GENERATE_SAVE_ZIP |
+            GENERATE_SAVE_IMAGE | GENERATE_SAVE_OBJ | GENERATE_OBJ | GENERATE_SAVE_XML | GENERATE_MODEL |
+            GENERATE_SAVE_STL | GENERATE_SAVE_ZIP | GENERATE_LOG;
     protected int version = 1;
     protected String template = "";
     protected String type = "JPEG";
     protected String filenameZIP = "one/empty3/test/tests";
     protected String fileextZIP = "diapo";
     protected File file = null;
-    protected int resx = 640;
-    protected int resy = 480;
+    protected int resX = 640;
+    protected int resY = 480;
     protected File dir = null;
     protected Image ri;
     protected String filename = "frame";
@@ -171,6 +171,8 @@ public abstract class TestObjet implements Test, Runnable {
     protected Object applicationContext;
     protected File androidDirData;
     protected String date;
+    private ArrayList<String> frames;
+    private File subDir;
 
     public File getDir0() {
         return dir0;
@@ -206,7 +208,7 @@ public abstract class TestObjet implements Test, Runnable {
             init();
             setResx(dimension.x());
             setResy(dimension.y());
-            setDimension(new Resolution(resx, resy));
+            setDimension(new Resolution(resX, resY));
         } else {
         }
     }
@@ -234,8 +236,8 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void setResolution(int x, int y) {
-        setResx(x);
-        setResy(y);
+        setResX(x);
+        setResY(y);
         dimension = new Resolution(x, y);
     }
 
@@ -344,11 +346,11 @@ public abstract class TestObjet implements Test, Runnable {
     public void exportFrame(String format, String filename) throws IOException {
 
         STLExport.save(
-                file0 = new File(configFile.getAbsolutePath() + File.separator + "stlExportFormatTXT" + filename + ".stl"),
+                file0 = new File(subDir + File.separator + "stlExportFormatTXT" + filename + ".stl"),
                 scene(),
                 false);
         ObjExport.save(
-                /*file0=*/new File(configFile.getAbsolutePath() + File.separator + "objExportFormatTXT" + filename + ".obj"),
+                /*file0=*/new File(subDir + File.separator + "objExportFormatTXT" + filename + ".obj"),
                 scene(),
                 false);
     }
@@ -396,29 +398,57 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
 
+    void initZ() {
+        z = ZBufferFactory.instance(resX, resY, D3);
+        //z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resX, resY)));
+        z.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+    }
+
     public int getResx() {
-        return resx;
+        return resX;
     }
 
     @Deprecated
     public void setResx(int resx) {
-        this.resx = resx;
-        dimension = new Resolution(resx, resy);
-        z = ZBufferFactory.instance(resx, resy, D3);
+        this.resX = resx;
+        dimension = new Resolution(resx, resY);
+        initZ();
     }
 
     public int getResy() {
-        return resy;
+        return resY;
     }
 
     @Deprecated
     public void setResy(int resy) {
-        this.resy = resy;
-        dimension = new Resolution(resx, resy);
-        z = ZBufferFactory.instance(resx, resy, D3);
+        this.resY = resy;
+        dimension = new Resolution(resX, resy);
+        initZ();
     }
 
-    public abstract void ginit();
+    public int getResX() {
+        return resX;
+    }
+
+    @Deprecated
+    public void setResX(int resx) {
+        this.resX = resx;
+        dimension = new Resolution(resx, resY);
+        initZ();
+    }
+
+    public int getResY() {
+        return resY;
+    }
+
+    @Deprecated
+    public void setResY(int resy) {
+        this.resY = resy;
+        dimension = new Resolution(resX, resY);
+        initZ();
+    }
+
+    public abstract void ginit() throws IOException;
 
     public void someMethod() {
         if (TestObjet.isAndroid) {
@@ -452,6 +482,7 @@ public abstract class TestObjet implements Test, Runnable {
         }
         try {
 
+            loop(true);
 
             if (initialise) {
                 return;
@@ -556,6 +587,7 @@ public abstract class TestObjet implements Test, Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        loop(true);
         initialise = true;
         loop(true);
     }
@@ -825,10 +857,7 @@ public abstract class TestObjet implements Test, Runnable {
             init();
 
 
-
-        z = ZBufferFactory.newInstance(resx, resy);
-        z.setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, Math.max(resx, resy)));
-        z.scene(scene);
+        initZ();
         //z.next();
         long timeStart = System.currentTimeMillis();
 
@@ -865,7 +894,7 @@ public abstract class TestObjet implements Test, Runnable {
             File dataf = new File(this.dir.getAbsolutePath() + File.separator
                     + filename + ".XML");
         }
-        File subDir = new File(dir.getAbsolutePath() + File.separator + getClass().getCanonicalName()+ File.separator+getInitialDate());
+        subDir = new File(dir.getAbsolutePath() + File.separator + getClass().getCanonicalName() + File.separator + getInitialDate());
         if(!subDir.exists()){
             if(!subDir.mkdirs()) {
                 Logger.getLogger(getClass().getCanonicalName()).severe("Cannot create dir :" + subDir.getAbsolutePath());
@@ -880,7 +909,12 @@ public abstract class TestObjet implements Test, Runnable {
 
             Logger.getAnonymousLogger().log(Level.INFO, "Starting movie  {0}" + runtimeInfoSucc());
         }
-        ginit();
+        try {
+            ginit();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        z.scene(scene);
 
 
         setRunning(true);
@@ -955,7 +989,7 @@ public abstract class TestObjet implements Test, Runnable {
                 }
                 if (getGenerate(TestObjet.GENERATE_IMAGE) && !(((generate & GENERATE_OPENGL) > 0))) {
                     try {
-                        ri = z.image2();
+                        ri = z.image();
 
                         if (getGenerate(TestObjet.GENERATE_SAVE_IMAGE)) {
                             boolean pass = false;
@@ -966,6 +1000,9 @@ public abstract class TestObjet implements Test, Runnable {
                                     ri.saveToFile(f.getAbsolutePath());
                                     if(f.exists()) {
                                         Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath());
+                                        if (getGenerate(GENERATE_MOVIE)) {
+                                            frames.add(f.getAbsolutePath());
+                                        }
                                     } else {
                                         Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + f.getAbsolutePath());
 
@@ -974,7 +1011,7 @@ public abstract class TestObjet implements Test, Runnable {
                             } catch (RuntimeException ex) {
                                 ex.printStackTrace();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                throw new RuntimeException(e);
                             }
                             afterRenderFrame();
                         }
@@ -983,7 +1020,6 @@ public abstract class TestObjet implements Test, Runnable {
                     }
                 }
                 if(getGenerate(GENERATE_MOVIE)) {
-                    addFrame(ri);
                 }
             }
             lastInfoEllapsedMillis = System.currentTimeMillis() - timeStart;
@@ -992,7 +1028,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
             if ((getGenerate() & GENERATE_SAVE_XML) > 0) {
                 try {
-                    File fout = new File(this.dir.getAbsolutePath()
+                    File fout = new File(subDir.getAbsolutePath()
                             + File.separator + filename + ".bmo");
                     new Loader().saveTxt(fout, scene);
                     fout = new File(this.dir.getAbsolutePath()
@@ -1091,15 +1127,64 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private void endMovie() {
+        Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Encoding with ffmpeg...");
+        try {
+            File f = new File(subDir, "frames.mp4");
+            if (frames.isEmpty()) return;
 
+            String s = frames.get(0);
+            int i = s.lastIndexOf(File.separator) + 1;
+            String directoryPath = s.substring(0, i);
+            String inputPattern = directoryPath + "frame_%08d.png";
+
+            ProcessBuilder pb;
+            if (isAndroid) {
+                // Fix for Android su shell
+                pb = new ProcessBuilder("su");
+                Process process = pb.start();
+                try (DataOutputStream os = new DataOutputStream(process.getOutputStream())) {
+                    // Ensure spaces between arguments
+                    os.writeBytes("ffmpeg -y -f image2 -r " + fps + " -start_number 1 -i " + inputPattern + " " + f.getAbsolutePath() + "\n");
+                    os.flush();
+                }
+                process.waitFor();
+            } else {
+                // Fix for JVM Platform: Remove "\n", add "-y", and "-start_number 1"
+                pb = new ProcessBuilder(
+                        "ffmpeg", "-y",
+                        "-f", "image2", "-r", String.valueOf(fps), "-i", inputPattern, "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+                        "-start_number", "1",
+
+                        f.getAbsolutePath()
+                );
+
+                // Redirect error stream to stdout or inherit to see why it fails
+                pb.inheritIO();
+
+                Process process = pb.start();
+                process.waitFor();
+            }
+
+            if (f.exists() && f.length() > 0) {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job done: " + f.getAbsolutePath());
+            } else {
+                Logger.getLogger(getClass().getCanonicalName()).log(Level.INFO, "Job failed: File is missing or empty.");
+            }
+
+        } catch (IOException | InterruptedException e) {
+            if (e.getMessage() != null && e.getMessage().contains("Cannot run program \"ffmpeg\"")) {
+                System.err.println("ffmpeg not found in PATH. Install via: choco install ffmpeg");
+            }
+            e.printStackTrace();
+        }
     }
 
-    private void addFrame(Image ri) {
-
+    private void addFrame(String ri) {
+        frames.add(ri);
     }
 
     private void createMovie() {
-
+        frames = new ArrayList<String>();
     }
 
     private File getNewDirectory() {
@@ -1252,7 +1337,7 @@ public abstract class TestObjet implements Test, Runnable {
      */
     public ZBuffer getZ() {
         if (z == null)
-            z = ZBufferFactory.instance(resx, resy, D3);
+            z = ZBufferFactory.instance(resX, resY, D3);
         return z;
     }
 
@@ -1285,17 +1370,17 @@ public abstract class TestObjet implements Test, Runnable {
             Camera camera = camera();
             z().scene(scene1);
             z().camera(camera);
-            this.resx = dimension.x();
-            this.resy = dimension.y();
+            this.resX = dimension.x();
+            this.resY = dimension.y();
             this.dimension = dimension;
             z().camera(camera);
             z().scene(scene1);
-            setZ(new ZBufferImpl(resx, resy));
+            setZ(new ZBufferImpl(resX, resY));
         } else {
-            this.resx = dimension.x();
-            this.resy = dimension.y();
+            this.resX = dimension.x();
+            this.resY = dimension.y();
             this.dimension = dimension;
-            setZ(new ZBufferImpl(resx, resy));
+            setZ(new ZBufferImpl(resX, resY));
             //z().camera(camera());
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());
@@ -1344,4 +1429,7 @@ public abstract class TestObjet implements Test, Runnable {
         return running;
     }
 
+    protected void setLoopLimit(int i) {
+        setMaxFrames(i);
+    }
 }

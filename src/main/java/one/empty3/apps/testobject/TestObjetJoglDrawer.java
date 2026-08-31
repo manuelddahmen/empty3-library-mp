@@ -42,7 +42,9 @@
 //import one.empty3.libs.Color;
 //
 //import javax.swing.*;
-//import java.awt.*;
+//import one.empty3.libs.*;
+
+import one.empty3.apps.testobject.TestObjetSub;
 //import java.util.ConcurrentModificationException;
 //import java.util.Iterator;
 //import java.util.function.Consumer;
@@ -593,12 +595,12 @@
 //
 ////        TubulaireN2<CourbeParametriquePolynomialeBezier> courbeParametriquePolynomialeBezierTubulaireN2 = new TubulaireN2<>();
 ////        courbeParametriquePolynomialeBezierTubulaireN2.curve(new CourbeParametriquePolynomialeBezier(arc[0]));
-////        courbeParametriquePolynomialeBezierTubulaireN2.texture(new ColorTexture(Color.GREEN));
+////        courbeParametriquePolynomialeBezierTubulaireN2.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f,1.0f,0f)));
 ////
 ////
 ////        TubulaireN2<CourbeParametriquePolynomialeBezier> courbeParametriquePolynomialeBezierTubulaireN22 = new TubulaireN2<>();
 ////        courbeParametriquePolynomialeBezierTubulaireN22.curve(new CourbeParametriquePolynomialeBezier(arc[1]));
-////        courbeParametriquePolynomialeBezierTubulaireN22.texture(new ColorTexture(Color.GREEN));
+////        courbeParametriquePolynomialeBezierTubulaireN22.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f,1.0f,0f)));
 //
 //        // TODO draw(courbeParametriquePolynomialeBezierTubulaireN2, glu, gl);
 //        // TODO draw(courbeParametriquePolynomialeBezierTubulaireN22, glu, gl);

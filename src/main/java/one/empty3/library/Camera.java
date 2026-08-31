@@ -33,13 +33,7 @@ package one.empty3.library;
  */
 public class Camera extends CameraBox {
 
-    /*__
-     *
-     */
-    public static final int PERSPECTIVE_ISOM = 0;
-    public static final int PERSPECTIVE_OEIL = 1;
     private static final long serialVersionUID = 2743860672948547944L;
-    protected int type_perspective = PERSPECTIVE_OEIL;
 
     protected StructureMatrix<Point3D> eye = new StructureMatrix<>(0, Point3D.class);
     protected StructureMatrix<Point3D> lookat = new StructureMatrix<>(0, Point3D.class);
@@ -68,10 +62,11 @@ public class Camera extends CameraBox {
         return verticale.getElem();
     }
 
+    @Deprecated
     public Camera(Point3D eye, Point3D lookat) {
         this(eye, lookat, null);
         scale.setElem(1.0);
-
+        //calculerMatrice(null);
     }
 
     public Camera(Point3D eye, Point3D lookat, Point3D up) {
@@ -241,25 +236,20 @@ public class Camera extends CameraBox {
                 (x3d.getZ() > 0 && -getAngleX() < Math.atan(x3d.getX() / x3d.getZ())
                         && Math.atan(x3d.getX() / x3d.getZ()) < getAngleX() && -getAngleY() < Math.atan(x3d.getY() / x3d.getZ())
                         && Math.atan(x3d.getY() / x3d.getZ()) < getAngleY());
-        if (!conditionInBounds) {
+        /*if (!conditionInBounds) {
             x3d = pointIntersects(x3d, la, ha);
-        }
+        }*/
 
-        if (x3d != null && conditionInBounds) {
+        if (x3d != null /*&& conditionInBounds*/) {
 
             double scale = (1.0 / (x3d.getZ()));
 
-            double r = (angleY.getElem() / angleX.getElem());
-            r = 1;
-            return new Point(
-                    (int) ((x3d.getX() * scale * la * r + (double) la / 2)),
-                    (int) ((-x3d.getY() * scale * ha + (double) ha / 2)));
-/*
-            Point p = new Point((int) (x + la / 2), (int) (y + ha / 2));
-            Logger.getAnonymousLogger().log(Level.INFO, p.toString());
+            double x = (x3d.getX() * scale / Math.tan(getAngleX()) * la / 2);
+            double y = (-x3d.getY() * scale / Math.tan(getAngleY()) * ha / 2);
 
-            return p;
-  */
+            return new Point(
+                    (int) (x + (double) la / 2),
+                    (int) (-y + (double) ha / 2));
         }
         return null;
 
@@ -307,10 +297,10 @@ public class Camera extends CameraBox {
 
 
     public Point coordinatesPoint2D(Point3D p, ZBuffer impl) {
-        switch (type_perspective) {
-            case PERSPECTIVE_ISOM:
+        switch (type) {
+            case PERSPECTIVE_ISOMETRIQUE:
                 return coordinatesPointScreenIso(calculerPointDansAxesIso(p), impl.getCube(), impl.la(), impl.ha());
-            case PERSPECTIVE_OEIL:
+            case PERSPECTIVE_POINTDEFUITE:
                 return coordinatesPointScreenPerspective(calculerPointDansRepere(p), impl.la(), impl.ha());
             default:
                 throw new UnsupportedOperationException("Type de perspective non reconnu");
@@ -322,9 +312,9 @@ public class Camera extends CameraBox {
     }
 
     public double distanceCamera(Point3D x3d) {
-        return switch (type_perspective) {
-            case PERSPECTIVE_ISOM -> x3d.getZ() - eye.getElem().getZ();
-            case PERSPECTIVE_OEIL -> x3d.moins(eye.getElem()).getZ();
+        return switch (type) {
+            case PERSPECTIVE_ISOMETRIQUE -> x3d.getZ() - eye.getElem().getZ();
+            case PERSPECTIVE_POINTDEFUITE -> x3d.moins(eye.getElem()).getZ();
             default -> throw new UnsupportedOperationException("Type de perspective non reconnu");
         };
 
@@ -345,4 +335,10 @@ public class Camera extends CameraBox {
     protected void setVerticale(Point3D vert2) {
         this.verticale.setElem(vert2);
     }
+
+    public void angleXY(double axRad, double ayRad) {
+        this.angleX.setElem(axRad);
+        this.angleY.setElem(ayRad);
+    }
+
 }
