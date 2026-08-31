@@ -82,11 +82,11 @@ public class Sphere extends ParametricSurface {
             c.calculerRepere1();
         }
         double cos = Math.cos(-Math.PI / 2 + Math.PI * v);
-        Point3D multi = getVectX().mult(
+        Point3D multi = c.getVectX().mult(
                         Math.cos(2.0 * Math.PI * u) * cos).plus(
-                        getVectY().mult(
+                        c.getVectY().mult(
                                 Math.sin(2.0 * Math.PI * u) * cos))
-                .plus(getVectZ().mult(Math.sin(-Math.PI / 2 + Math.PI * v)));
+                .plus(c.getVectZ().mult(Math.sin(-Math.PI / 2 + Math.PI * v)));
         if (multi.norme() <= Double.MIN_VALUE) {
             return c.getCenter();
         } else
