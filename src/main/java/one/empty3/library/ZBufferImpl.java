@@ -263,7 +263,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         setDefaultIncrementOptimizer();
     }
 
-    private void setDefaultIncrementOptimizer() {
+    public void setDefaultIncrementOptimizer() {
         // setIncrementOptimizer(new
         // IncrementOptimizer(IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL,
         // 1./Math.max(Math.max(la, ha) , 1)));
@@ -1689,17 +1689,17 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         p2 = camera().coordinatesPoint2D(pp2, this);
         p3 = camera().coordinatesPoint2D(pp3, this);
         p4 = camera().coordinatesPoint2D(pp4, this);
-
+/*
         double max = 0.0;
-        if ((max = maxDouble(maxDistance(p1, p2), maxDistance(p2, p3), maxDistance(p3, p4), maxDistance(p4, p1))) < 1) {
+        if ((max = maxDouble(maxDistance(p1, p2), maxDistance(p2, p3), maxDistance(p3, p4), maxDistance(p4, p1))) < 0.001) {
             testDeep(pp1, texture, u0, v0, (ParametricSurface) null);
             testDeep(pp2, texture, u1, v0, (ParametricSurface) null);
             testDeep(pp3, texture, u1, v1, (ParametricSurface) null);
             testDeep(pp4, texture, u0, v1, (ParametricSurface) null);
             return;
         }
-
-        if (p1 == null || p2 == null || p3 == null || p4 == null || (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 1))
+*/
+        if (p1 == null || p2 == null || p3 == null || p4 == null /*|| (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 1*/)
             return;
 
         boolean check1 = camera().calculerPointDansRepere(pp1).getZ() < near();

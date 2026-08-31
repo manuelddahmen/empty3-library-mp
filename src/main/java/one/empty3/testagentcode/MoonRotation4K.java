@@ -49,7 +49,7 @@ public class MoonRotation4K extends TestObjetSub {
         scene = new Scene();
 
         // 1. Create Axis strictly aligned with the Y-axis.
-        // North Pole (P1) is UP (0, 1, 0), South Pole (P2) is DOWN (0, -1, 0).
+        // The North Pole (P1) is UP (0, 1, 0), the South Pole (P2) is DOWN (0, -1, 0).
         Axe yAxis = new Axe(new Point3D(0.0, 1.0, 0.0), new Point3D(0.0, -1.0, 0.0));
 
         // 2. Initialize Sphere with this axis.
@@ -62,11 +62,13 @@ public class MoonRotation4K extends TestObjetSub {
 
         // 3. Texture setup
         try {
-            File textureFile = new File("d:\\current\\moon2.tif");
+            File textureFile = new File("d:\\current\\moon2.jpg");
             if (textureFile.exists()) {
-                moon.texture(new ImageTexture((Image) Image.getFromFile(textureFile)));
+                Image image = new Image(textureFile);
+                moon.texture(new ImageTexture(textureFile));
             } else {
                 moon.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.8f, 0.4f, 0.2f)));
+                System.out.println("Texture file not found");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,10 +79,13 @@ public class MoonRotation4K extends TestObjetSub {
         // 4. Camera setup looking at the center
         Camera camera = new Camera(new Point3D(0.0, 0.0, 3.0), Point3D.O0, Point3D.Y);
         scene.cameraActive(camera);
+
     }
 
     @Override
     public void finit() {
+        ((ZBufferImpl) z()).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.01));
+        ((ZBufferImpl) z()).setDisplayType(ZBufferImpl.DISPLAY_ALL);
         // 5. Animation de la rotation autour de l'axe Y
         double totalFrames = (double) (DURATION_SECONDS * FPS);
         double angle = 2.0 * Math.PI * (double) frame / totalFrames;
