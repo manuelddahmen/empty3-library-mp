@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -107,6 +107,7 @@ public class Parallelepiped extends RepresentableConteneur {
         texture(texture);
         Point3D[] p = new Point3D[4];
         for (int x = -1; x <= 1; x += 2) {
+            p = new Point3D[4];
 
             p[0] = new Point3D(x * a, -1 * b, -1 * c);
             p[1] = new Point3D(x * a, 1 * b, -1 * c);
@@ -116,6 +117,7 @@ public class Parallelepiped extends RepresentableConteneur {
             add(new Polygon(p, texture()));
         }
         for (int y = -1; y <= 1; y += 2) {
+            p = new Point3D[4];
             p[0] = new Point3D(1 * a, y * b, 1 * c);
             p[1] = new Point3D(1 * a, y * b, -1 * c);
             p[2] = new Point3D(-1 * a, y * b, -1 * c);
@@ -124,6 +126,7 @@ public class Parallelepiped extends RepresentableConteneur {
             add(new Polygon(p, texture()));
         }
         for (int z = -1; z <= 1; z += 2) {
+            p = new Point3D[4];
             p[0] = new Point3D(-1 * a, -1 * b, z * c);
             p[1] = new Point3D(-1 * a, 1 * b, z * c);
             p[2] = new Point3D(1 * a, 1 * b, z * c);

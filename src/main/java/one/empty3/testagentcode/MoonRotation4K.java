@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -87,6 +87,9 @@ public class MoonRotation4K extends TestObjetSub {
         ((ZBufferImpl) z()).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.01));
         ((ZBufferImpl) z()).setDisplayType(ZBufferImpl.DISPLAY_ALL);
         // 5. Animation de la rotation autour de l'axe Y
+
+        z().texture(new ImageTexture(new File("res/img/planets3/stars.jpg")));
+
         double totalFrames = (double) (DURATION_SECONDS * FPS);
         double angle = 2.0 * Math.PI * (double) frame / totalFrames;
 

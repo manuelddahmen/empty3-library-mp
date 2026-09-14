@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -96,7 +96,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
          * Constructeur pour les stratégies simples (MIN_DETAIL, MAX_PERFORMANCE).
          *
          * @param strategy   La stratégie à appliquer.
-         * @param limitValue La valeur de la limite.
+         * @param limitValue La valeur de la limite. en pixels
          */
         public IncrementOptimizer(Strategy strategy, double limitValue) {
             if (strategy == Strategy.CLAMP_WITHIN_RANGE) {
@@ -111,8 +111,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         /**
          * Constructeur pour la stratégie CLAMP_WITHIN_RANGE.
          *
-         * @param minIncrement L'incrément minimal autorisé (haute performance).
-         * @param maxIncrement L'incrément maximal autorisé (haute qualité).
+         * @param minIncrement L'incrément minimal autorisé (haute performance). en pixels
+         * @param maxIncrement L'incrément maximal autorisé (haute qualité). en pixels
          */
         public IncrementOptimizer(double minIncrement, double maxIncrement) {
             this.strategy = Strategy.CLAMP_WITHIN_RANGE;
@@ -125,7 +125,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
          * <p>
          * The default strategy is set to {@code Strategy.NONE}.
          * This constructor initializes the optimizer with no specific strategy for
-         * increment/**
+         * increment
          * ing *.
          * Default
          */
@@ -301,6 +301,11 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         this.scene().cameraActive(c);
     }
 
+    /**
+     * Renders the current scene by invoking the draw method with the active scene configuration.
+     * This method is thread-safe, ensuring that only one thread can execute the drawing process
+     * at any given time.
+     */
     public synchronized void draw() {
         draw(scene());
     }
@@ -310,6 +315,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         // return camera().calculerPointDansRepere(super.rotate(p0, ref));
     }
 
+    /**
+     * Draws the elements of the given collection. If an element is of type {@code Representable},
+     * it processes the object and invokes the appropriate actions. If the element is another
+     * collection, the method is recursively called to process its elements.
+     *
+     * @param collection the collection of objects to be drawn; it can contain elements of
+     *                   type {@code Representable}, {@code Scene}, {@code Point3D}, or other collections
+     */
     public synchronized void draw(Collection<Object> collection) {
         collection.forEach(new Consumer() {
             @Override
@@ -325,6 +338,18 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         });
     }
 
+    /**
+     * Renders the specified {@code Representable} object by processing its components
+     * and handling various types of objects, such as scenes, containers, points,
+     * surfaces, and other drawable entities. Depending on the object's type, it may
+     * also apply precomputations, invoke texture manipulations, or handle case-specific
+     * rendering logic.
+     *
+     * @param r the {@link Representable} object to be drawn. The object can represent a
+     *          wide variety of elements such as scenes, containers, surfaces, points, or
+     *          triangles. Null values are handled gracefully, and specific logging is
+     *          performed if {@code r} is null.
+     */
     public synchronized void draw(Representable r) {
         Vec origin = null;
         if (r != null && finalRmatrix.containsKey(r)) {
@@ -354,34 +379,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         representable.setVectX(r1.getVectX());
                         representable.setVectY(r1.getVectY());
                         representable.setVectZ(r1.getVectZ());
-                        // finalR.transformContained(representable);
+                        //finalR.transformContained(representable);
                         draw(representable);
-                    });
-            return;
-        } else if (r instanceof RepresentableConteneur) {
-            final Representable r1 = r;
-            Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
-            Vec a = new Vec(
-                    r.getOrig().getCoordArr().getElem(0), r.getOrig().getCoordArr().getElem(1), r.getOrig().getCoordArr().getElem(2),
-                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2),
-                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2),
-                    r.getVectX().getCoordArr().getElem(0), r.getVectY().getCoordArr().getElem(1), r.getVectZ().getCoordArr().getElem(2)
+                    }
             );
-            //associate(r1, a);
-            ((RepresentableConteneur) r).getListRepresentable().forEach(
-                    this::draw);
-            /*
-            Matrix33 finalRmatrix = new Matrix33(r.getVectX(), r.getVectY(), r.getVectZ());
-             ((RepresentableConteneur) r).getListRepresentable().forEach(
-                     representable -> {
-                         representable.setOrig(finalR.getOrig().plus(finalRmatrix.mult(representable.getOrig())));
-                         representable.setVectX(finalRmatrix.mult((representable.getVectX())));
-                         representable.setVectY(finalRmatrix.mult((representable.getVectY())));
-                         representable.setVectZ(finalRmatrix.mult((representable.getVectY())));
-                         // finalR.transformContained(representable);
-                         draw(representable);
-                     });
-*/
             return;
         }
 
@@ -694,8 +695,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
 
             } else if (r instanceof Polygon p) {
-                toDrawR = p;
-                setCurrentRepresentable(p);
+                //toDrawR = p;
+                //setCurrentRepresentable(p);
                 List<Point3D> points = p.getPoints().getData1d();
                 int length = p.getPoints().getData1d().size();
                 List<Point3D> transformedPoints = new ArrayList<>(length);

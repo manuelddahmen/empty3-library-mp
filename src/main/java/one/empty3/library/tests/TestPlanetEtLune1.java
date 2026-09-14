@@ -53,11 +53,11 @@ public class TestPlanetEtLune1 extends TestObjetSub {
     private static final int REAL_DAYS = 365;
     private final File planets = new File("res\\img\\planets2");
     private final File earthFilename = new File(planets.getAbsolutePath() +
-            File.separator + "_earth.jpg");
+            File.separator + "3.Earth.jpg");
     private final File moonFilename = new File(planets.getAbsolutePath() +
             File.separator + "8k_moon.jpg");
     private final File sunFilename = new File(planets.getAbsolutePath() +
-            File.separator + "8k_sun.jpg");
+            File.separator + "0.Sun.jpg");
     private final double radius = 2.0;
     private final double sunDistance = 150;
     private final double moonDistance = 0.384;

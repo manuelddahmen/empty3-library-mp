@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -36,7 +36,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 21
-def versionName = "2026.8.31"
+def versionName = "2026.9.1"
 
 /*
 //Solution by the second link
