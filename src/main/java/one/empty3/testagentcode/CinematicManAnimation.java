@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by Manuel D Dahmen -2026
+ *  * Created by $user $date
  *
  *
  */
@@ -34,6 +34,7 @@ import one.empty3.library.*;
 import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.libs.Color;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class CinematicManAnimation extends TestObjetSub {
     @Override
     public void ginit() {
         scene = new Scene();
+
 
         // 1. Génération des bâtiments en arrière-plan (Phase 1)
         for (int i = 0; i < 8; i++) {
@@ -126,7 +128,7 @@ public class CinematicManAnimation extends TestObjetSub {
         super.finit();
         scene.clear();
 
-        //z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer());//ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 4)
+        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 0.5));
 
         // Ré-assemblage de la scène
         for (Box b : buildings) scene.add(b);
@@ -256,7 +258,7 @@ public class CinematicManAnimation extends TestObjetSub {
     public static void main(String[] args) {
         CinematicManAnimation cinematic = new CinematicManAnimation();
         cinematic.loop(true);
-        cinematic.setDimension(new Resolution(320, 240));
+        cinematic.setDimension(new Resolution(800, 600));
         cinematic.setMaxFrames(300);
         new Thread(cinematic).start();
     }

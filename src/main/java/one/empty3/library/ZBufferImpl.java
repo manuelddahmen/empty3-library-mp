@@ -258,8 +258,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         ha = h;
         dimx = la;
         dimy = ha;
-        Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         this.ime = new ImageMap(la, ha).getIme();
+        Logger.getAnonymousLogger().log(Level.INFO, "width,height(" + la + ", " + ha + ")");
         setDefaultIncrementOptimizer();
     }
 
@@ -715,8 +715,10 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                             line(transformedPoints.get(i), transformedPoints.get((i + 1) % length), texture);
                         }
                     }
-                } else
-                    drawPoly(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture());
+                } else {
+                    //drawPoly(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture());
+                    tracerQuad(transformedPoints.get(0), transformedPoints.get(1), transformedPoints.get(2), transformedPoints.get(3), p.texture(), 0, 1, 0, 1, null);
+                }
             } else if (r instanceof RPv) {
                 drawElementVolume(((RPv) r).getRepresentable(), (RPv) r);
             }
@@ -744,7 +746,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         for (int i = 0; i < length; i++) {
             Point3D pi = transformedPoints.get(i);
             double distance2D = distance2D(centre, pi);
-            if (maxSize > distance2D) {
+            if (maxSize < distance2D) {
                 maxSize = distance2D;
             }
             double requiredStep = 1.0 / distance2D;
@@ -761,6 +763,14 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         //double max2D = maxDouble(distance2D(pp1, pp2), distance2D(pp2, pp3), distance2D(pp3, pp4), distance2D(pp4, pp1), distance2D(pp2, pp4), distance2D(pp1, pp3));
 
         //sizeIncr = Math.min(Math.max(1.0 / MAX_SUBDIVISIONS, 1. / (maxSize + 1)), Math.max(1.0 / MAX_SUBDIVISIONS, sizeIncr)) * 0.5;
+        double minIncr = 1. / MAX_SUBDIVISIONS; // Cap to limit subdivision granularity
+        if (maxSize > 0) {
+            minIncr = getIncrementOptimizer().computeIncrement(maxSize);
+            sizeIncr = Math.max(sizeIncr, minIncr);
+
+
+            if (sizeIncr <= 0)
+                return;
 
         for (double u = u0; u <= u1; u += sizeIncr) {
             for (double v = v0; v <= v1; v += sizeIncr) {
@@ -775,12 +785,13 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 }
             }
         }
+        }/**/
     }
 
     private double maxDouble(double... v) {
         double max = Double.NEGATIVE_INFINITY;
         for (double vi : v) {
-            if (vi > max) vi = max;
+            if (vi > max) max = vi;
 
 
         }
@@ -1427,7 +1438,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                  double v0, double v1, ParametricSurface n) {
         double max = Math.max(Math.max(distance2D(pp1, pp2), distance2D(pp2, pp3)),
                 Math.max(distance2D(pp3, pp4), distance2D(pp4, pp1)));
-        double max1 = Math.max(max + 1, 4);
+        double max1 = Math.max(max + 1, 1);
         int uDiv = (int) max1;
         int vDiv = (int) max1;
         double du = (u1 - u0) / uDiv;
@@ -1438,6 +1449,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             testDeep(pp2, texture, u1, v0, (ParametricSurface) null);
             testDeep(pp3, texture, u1, v1, (ParametricSurface) null);
             testDeep(pp4, texture, u0, v1, (ParametricSurface) null);
+            return;
         }
 
         for (int i = 0; i < uDiv; i++) {
@@ -1713,16 +1725,23 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
+        Point3D old, pFinal = null;
         double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 12);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
+            if (distance2D(pElevation1, pElevation2) <= 1.0) {
+                continue;
+            }
 
             double inter2 = incrementOptimizer
-                    .computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
-                            camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
+                    .computeIncrement(distance2D(pElevation1, pElevation2) + 1.) * 3.;
             for (double b = 0; b < 1.0; b += inter2) {
-                Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
+                old = pFinal;
+                pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
+                if (pFinal != null && old != null && distance2D(pFinal, old) <= 1.0) {
+                    continue;
+                }
                 double uPoint = u0 + (u1 - u0) * a;
                 double vPoint = v0 + (v1 - v0) * b;
                 pFinal.setNormale(normale);
