@@ -40,7 +40,7 @@ public class WalkingManAnimation extends TestObjetSub {
         // Initialisation de la scène globale
         scene = new Scene();
 
-        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 10.0));
+        //z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 10.0));
     }
 
     @Override

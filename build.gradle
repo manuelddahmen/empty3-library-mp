@@ -332,7 +332,10 @@ tasks.register('FaceDetectApp.gui', JavaExec) {
     args ''
     dependsOn(jar)
 }
-
+tasks.register('javadoc', Javadoc) {
+    source = sourceSets.main.allJava
+    dependsOn(publish)
+}
 tasks.register('one.empty3.library1.tree.TestStringAnalyzer5', JavaExec) {
     classpath sourceSets.test.runtimeClasspath
     mainClass = 'one.empty3.library1.tree.TestStringAnalyzer5'
@@ -571,6 +574,8 @@ tasks.register('runClass', JavaExec) {
 }
 
 tasks.register("publishAll") {
+    dependsOn("jar")
+    dependsOn('javadocJar')
     dependsOn(getTasksByName("publishAllPublicationsToJetBrainsSpaceEmpty3Repository", true))
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))

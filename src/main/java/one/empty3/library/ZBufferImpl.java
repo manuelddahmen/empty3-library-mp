@@ -52,10 +52,18 @@ import java.util.logging.Logger;
  * * Classe de rendu graphique
  */
 public class ZBufferImpl extends Representable implements ZBuffer {
+    protected Polygon leftFrustum;
+    protected Polygon rightFrustum;
+    protected Polygon topFrustum;
+    protected Polygon bottomFrustum;
+    protected Polygon nearFrustum;
+    protected Polygon farFrustum;
+
     private static double NEAR = 0.0;
     private static double MAX_SUBDIVISIONS = 10000;
     HashMap<Representable, Vec> finalRmatrix = new HashMap<>();
     public static boolean NEW_VERSION_ALPHA = false;
+    private List<FrustumPolygonIntersection.Plane> planes;
 
     public static class IncrementOptimizer {
         private boolean forceMin1 = false;
@@ -369,6 +377,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         if (r instanceof Scene) {
             Scene scene = (Scene) r;
+            updatePerpective();
             scene.getObjets().getData1d().forEach(this::draw);
             return;
         } else if (r instanceof RepresentableConteneur) {
@@ -766,7 +775,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         double minIncr = 1. / MAX_SUBDIVISIONS; // Cap to limit subdivision granularity
         if (maxSize > 0) {
             minIncr = getIncrementOptimizer().computeIncrement(maxSize);
-            sizeIncr = Math.max(sizeIncr, minIncr);
+            sizeIncr = Math.min(sizeIncr, minIncr);
 
 
             if (sizeIncr <= 0)
@@ -1438,17 +1447,19 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                                  double v0, double v1, ParametricSurface n) {
         double max = Math.max(Math.max(distance2D(pp1, pp2), distance2D(pp2, pp3)),
                 Math.max(distance2D(pp3, pp4), distance2D(pp4, pp1)));
-        double max1 = Math.max(max + 1, 1);
+        double max1 = Math.max(max, 0);
         int uDiv = (int) max1;
         int vDiv = (int) max1;
         double du = (u1 - u0) / uDiv;
         double dv = (v1 - v0) / vDiv;
 
-        if (max <= 1 && texture != null) {
-            testDeep(pp1, texture, u0, v0, (ParametricSurface) null);
-            testDeep(pp2, texture, u1, v0, (ParametricSurface) null);
-            testDeep(pp3, texture, u1, v1, (ParametricSurface) null);
-            testDeep(pp4, texture, u0, v1, (ParametricSurface) null);
+        if (max1 <= 1 && texture != null) {
+            testDeep(pp1, texture, u0, v0, n);
+            testDeep(pp2, texture, u1, v0, n);
+            testDeep(pp3, texture, u1, v1, n);
+            testDeep(pp4, texture, u0, v1, n);
+            return;
+        } else if (max <= 1) {
             return;
         }
 
@@ -1459,8 +1470,8 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                 double uNext = u + du;
                 double vNext = v + dv;
 
-                //if (u < u0 || v < v0 || uNext < u0 || vNext < u0 || u1 > 1 || v1 > 1 || uNext > u1 || vNext > v1)
-                //    continue;
+                if (u < u0 || v < v0 || uNext < u0 || vNext < u0 || u1 > 1 || v1 > 1 || uNext > u1 || vNext > v1)
+                    continue;
 
                 // Bilinear interpolation
                 Point3D ppp1 = pointQuad(pp1, pp2, pp3, pp4, u, v);
@@ -1696,7 +1707,6 @@ public class ZBufferImpl extends Representable implements ZBuffer {
      */
     public void tracerQuad(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
                            double v0, double v1, ParametricSurface n) {
-
         Point p1, p2, p3, p4;
         p1 = camera().coordinatesPoint2D(pp1, this);
         p2 = camera().coordinatesPoint2D(pp2, this);
@@ -1725,23 +1735,88 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         TRI triBas = new TRI(pp1, pp2, pp3, texture);
         Point3D normale = triBas.normale();
-        Point3D old, pFinal = null;
         double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 12);
         for (double a = 0; a < 1.0; a += inter) {
             Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
             Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
-            if (distance2D(pElevation1, pElevation2) <= 1.0) {
-                continue;
-            }
 
             double inter2 = incrementOptimizer
-                    .computeIncrement(distance2D(pElevation1, pElevation2) + 1.) * 3.;
+                    .computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
+                            camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
             for (double b = 0; b < 1.0; b += inter2) {
-                old = pFinal;
-                pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
-                if (pFinal != null && old != null && distance2D(pFinal, old) <= 1.0) {
-                    continue;
+                Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
+                double uPoint = u0 + (u1 - u0) * a;
+                double vPoint = v0 + (v1 - v0) * b;
+                pFinal.setNormale(normale);
+                pFinal.texture(texture);
+                if (n != null) {
+                    pFinal.setNormale(n.calculerNormale3D(uPoint, vPoint));
+                    if (displayType == DISPLAY_ALL) {
+                        pFinal = n.calculerPoint3D(uPoint, vPoint);
+                        pFinal.texture(texture);
+                    } else {
+                        pFinal.setNormale(normale);
+                        pFinal.texture(texture);
+
+                    }
                 }
+                if (displayType <= SURFACE_DISPLAY_TEXT_QUADS) {
+                    if (n != null) {
+                        // testDeep(pFinal, n.texture().getColorAt(uPoint, vPoint));
+                        testDeep(pFinal, n.texture(), uPoint, vPoint, n);
+                    } else {
+                        pFinal.texture(texture);
+                        testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
+                    }
+                } else {
+                    pFinal.texture(texture);
+                    testDeep(pFinal, texture.getColorAt(uPoint, vPoint));
+                }
+            }
+        }
+    }
+
+    /**
+     * Renders a quadrilateral surface defined by four 3D points and applies texture mapping.
+     * This method computes 2D projections, handles optimizations for rendering,
+     * and manages texture parameterization as well as normal computations.
+     *
+     * @param pp1     The first vertex of the quadrilateral in 3D space.
+     * @param pp2     The second vertex of the quadrilateral in 3D space.
+     * @param pp3     The third vertex of the quadrilateral in 3D space.
+     * @param pp4     The fourth vertex of the quadrilateral in 3D space.
+     * @param texture The texture to be applied to the quadrilateral.
+     * @param u0      The starting U texture coordinate.
+     * @param u1      The ending U texture coordinate.
+     * @param v0      The starting V texture coordinate.
+     * @param v1      The ending V texture coordinate.
+     * @param n       An optional parametric surface that defines normals and points for advanced rendering.
+     */
+    public void tracerQuadIntersection(Point3D pp1, Point3D pp2, Point3D pp3, Point3D pp4, ITexture texture, double u0, double u1,
+                                       double v0, double v1, ParametricSurface n) {
+        List<FrustumPolygonIntersection.TexturedPoint> intersection = intersection(pp1, pp2, pp3, pp4, u0, u1, v0, v1);
+
+        Point p1, p2, p3, p4;
+        p1 = camera().coordinatesPoint2D(pp1, this);
+        p2 = camera().coordinatesPoint2D(pp2, this);
+        p3 = camera().coordinatesPoint2D(pp3, this);
+        p4 = camera().coordinatesPoint2D(pp4, this);
+
+        if (p1 == null || p2 == null || p3 == null || p4 == null /*|| (checkScreenCount(new Point3D[]{pp1, pp2, pp3, pp4}) < 1*/)
+            return;
+
+        TRI triBas = new TRI(pp1, pp2, pp3, texture);
+        Point3D normale = triBas.normale();
+        double inter = incrementOptimizer.computeIncrement((maxDistance(p1, p2, p3, p4) + 1) * 12);
+        for (double a = 0; a < 1.0; a += inter) {
+            Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(a));
+            Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(a));
+
+            double inter2 = incrementOptimizer
+                    .computeIncrement((maxDistance(camera().coordinatesPoint2D(pElevation1, this),
+                            camera().coordinatesPoint2D(pElevation2, this)) + 1.) * 3.);
+            for (double b = 0; b < 1.0; b += inter2) {
+                Point3D pFinal = (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(b)));
                 double uPoint = u0 + (u1 - u0) * a;
                 double vPoint = v0 + (v1 - v0) * b;
                 pFinal.setNormale(normale);
@@ -2881,8 +2956,129 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         return NEAR;
     }
 
+    public double getNear() {
+        return NEAR;
+    }
+
     public void setNear(double near) {
-        NEAR = near;
+        ZBufferImpl.NEAR = near;
+    }
+
+    public void setInfinite(double max) {
+        this.INFINITY_DEEP = max;
+    }
+
+    public double getInfinite() {
+        return INFINITY_DEEP;
+    }
+
+    public void updatePerpective() {
+        planes = createFrustumPlanes();
+    }
+
+    public List<FrustumPolygonIntersection.TexturedPoint> intersection(Point3D p1, Point3D p2, Point3D p3, Point3D p4, double u0, double u1, double v0, double v1) {
+
+        List<FrustumPolygonIntersection.TexturedPoint> polygon =
+                new ArrayList<>();
+
+        polygon.add(new FrustumPolygonIntersection.TexturedPoint(
+                p1, u0, v0
+        ));
+
+        polygon.add(new FrustumPolygonIntersection.TexturedPoint(
+                p2, u1, v0
+        ));
+
+        polygon.add(new FrustumPolygonIntersection.TexturedPoint(
+                p3, u1, v1
+        ));
+
+        polygon.add(new FrustumPolygonIntersection.TexturedPoint(
+                p4, u0, v1
+        ));
+
+        FrustumPolygonIntersection.Result result = FrustumPolygonIntersection.intersects(polygon, planes);
+
+        return switch (result.getType()) {
+            case NONE ->
+                // Aucun morceau du polygone dans le frustum.
+                    null;
+            case PARTIAL -> {
+                // Intersection partielle.
+                List<FrustumPolygonIntersection.TexturedPoint> clipped =
+                        result.getPolygon();
+                yield clipped;
+            }
+            case FULL -> {
+                // Le polygone complet est dans le frustum.
+                List<FrustumPolygonIntersection.TexturedPoint> full =
+                        result.getPolygon();
+                yield full;
+            }
+        };
+
+    }
+
+    private List<FrustumPolygonIntersection.Plane> createFrustumPlanes() {
+        Point3D eye = camera().getEye();
+
+        Point3D forward = camera().getLookat()
+                .moins(eye);
+
+        Point3D vertical = camera().getVerticale();
+
+        double angleX = camera().getAngleX();
+        double angleY = camera().getAngleY();
+
+        double near = this.getNear();
+        double far = this.getInfinite();
+
+        FrustumCorners corners = new FrustumCorners(
+                eye,
+                forward,
+                vertical,
+                angleX,
+                angleY,
+                near,
+                far
+        );
+        Point3D nearTopLeft = corners.nearTopLeft;
+        Point3D nearTopRight = corners.nearTopRight;
+        Point3D nearBottomRight = corners.nearBottomRight;
+        Point3D nearBottomLeft = corners.nearBottomLeft;
+
+        Point3D farTopLeft = corners.farTopLeft;
+        Point3D farTopRight = corners.farTopRight;
+        Point3D farBottomRight = corners.farBottomRight;
+        Point3D farBottomLeft = corners.farBottomLeft;
+
+        leftFrustum = new Polygon(nearTopLeft, nearBottomLeft, farBottomLeft, farTopLeft);
+        rightFrustum = new Polygon(nearTopRight, nearBottomRight, farBottomRight, farTopRight);
+        topFrustum = new Polygon(nearTopLeft, nearTopRight, farTopRight, farTopLeft);
+        bottomFrustum = new Polygon(nearBottomLeft, nearBottomRight, farBottomRight, farBottomLeft);
+        nearFrustum = new Polygon(nearTopLeft, nearTopRight, nearBottomRight, nearBottomLeft);
+        farFrustum = new Polygon(farTopLeft, farTopRight, farBottomRight, farBottomLeft);
+
+        List<FrustumPolygonIntersection.Plane> planes = new ArrayList<>();
+        planes.add(createPlaneFrom3Points(nearTopLeft, nearBottomLeft, farBottomLeft));   // Left
+        planes.add(createPlaneFrom3Points(nearTopRight, farBottomRight, nearBottomRight)); // Right
+        planes.add(createPlaneFrom3Points(nearTopLeft, farTopRight, nearTopRight));       // Top
+        planes.add(createPlaneFrom3Points(nearBottomLeft, nearBottomRight, farBottomRight));// Bottom
+        planes.add(createPlaneFrom3Points(nearTopLeft, nearBottomRight, nearTopRight));    // Near
+        planes.add(createPlaneFrom3Points(farTopLeft, farBottomRight, farTopRight));      // Far
+
+        return planes;
+    }
+
+    private FrustumPolygonIntersection.Plane createPlaneFrom3Points(Point3D p1, Point3D p2, Point3D p3) {
+        Point3D v1 = p2.moins(p1);
+        Point3D v2 = p3.moins(p1);
+        Point3D normal = v1.prodVect(v2);
+        double a = normal.getX();
+        double b = normal.getY();
+        double c = normal.getZ();
+        double d = -normal.dot(p1);
+        return new FrustumPolygonIntersection.Plane(a, b, c, d);
     }
 }
 

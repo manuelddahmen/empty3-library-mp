@@ -127,8 +127,7 @@ public class CinematicManAnimation extends TestObjetSub {
     public void finit() throws Exception {
         super.finit();
         scene.clear();
-
-        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 0.5));
+        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 5));
 
         // Ré-assemblage de la scène
         for (Box b : buildings) scene.add(b);
