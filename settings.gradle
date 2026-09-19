@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -64,10 +64,6 @@ dependencyResolutionManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            url 'https://jitpack.io'
-            name 'jitpack'
-        }
     }
 }
 rootProject.name = 'empty3-library-mp'

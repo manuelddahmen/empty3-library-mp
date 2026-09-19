@@ -196,7 +196,7 @@ public class Lines5 extends ProcessFile {
         // d'après pcount x, y et curve xy supprimer les courbes en trop.
         Image bLines = new one.empty3.libs.Image(o.getColumns(), o.getLines(), Image.TYPE_INT_RGB);
 
-        //bLines.setRgb(Color.RED);
+        //bLines.setRgb(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
         list3.forEach(point3DS -> {
             Point3D p1 = point3DS.get(0);
             Point3D p2 = point3DS.get(point3DS.size() - 1);
@@ -220,7 +220,7 @@ public class Lines5 extends ProcessFile {
         int i = 0;
         List<Point3D> temp1 = new ArrayList<Point3D>();
         List<Point3D> temp2 = new ArrayList<Point3D>();
-        //g.setColor(Color.GREEN);
+        //g.setColor(one.empty3.libs.Color.newCol(0.0f,1.0f,0f));
         boolean temp1b = false;
         boolean temp2b = false;
         List<Point3D> listTemp1 = null;
@@ -231,7 +231,7 @@ public class Lines5 extends ProcessFile {
                 Point3D p1 = points.get(0);
                 Point3D p2 = points.get(points.size() - 1);
                 if (p1 != p2) {
-                    //g.setColor(Color.RED);
+                    //g.setColor(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
                     bLines.drawLine((int) (double) p1.getX(),
                             (int) (double) p1.getY(),
                             (int) (double) p2.getX(),

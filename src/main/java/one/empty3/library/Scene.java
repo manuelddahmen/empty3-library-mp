@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -66,7 +66,7 @@ public class Scene extends Representable implements Serializable {
     private List<Move> moves;
 
     {
-
+        texture(null);
     }
 
     // FOR LOADER

@@ -23,7 +23,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */

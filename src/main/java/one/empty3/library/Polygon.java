@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 /*__
  * @author Manuel
  */
-public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
+public class Polygon extends ParametricSurface implements SurfaceElem, ClosedCurve {
 
     /*__
      *
@@ -81,6 +81,10 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
         points.setAll(list);
     }
 
+    public Polygon(Point3D... all) {
+        points.setAll(all);
+    }
+
     public void add(Point3D point3D) {
         int newLength;
         if (points == null) {
@@ -99,6 +103,9 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
 
 
     public StructureMatrix<Point3D> getPoints() {
+        if (points == null) {
+            points = new StructureMatrix<>(1, Point3D.class);
+        }
         return points;
     }
 
@@ -164,6 +171,17 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
     }
 */
 
+    @Override
+    public Point3D calculerPoint3D(double u, double v) {
+        Point3D pp1 = getPoints().getElem(0);
+        Point3D pp2 = getPoints().getElem(1);
+        Point3D pp3 = getPoints().getElem(2);
+        Point3D pp4 = getPoints().getElem(3);
+        Point3D pElevation1 = pp1.plus(pp1.mult(-1d).plus(pp2).mult(u));
+        Point3D pElevation2 = pp4.plus(pp4.mult(-1d).plus(pp3).mult(u));
+
+        return (pElevation1.plus(pElevation1.mult(-1d).plus(pElevation2).mult(v)));
+    }
 
     public StructureMatrix<Point3D> getBoundRect2d() {
         StructureMatrix<Point3D> boundRect2d = new StructureMatrix<>(1, Point3D.class);
@@ -340,6 +358,11 @@ public class Polygon extends Representable implements SurfaceElem, ClosedCurve {
         Logger.getAnonymousLogger().log(Level.INFO, "Points count : " + count + " | Points drawn : " + pixels + "fillPolygon");
 
         return pixM;
+    }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        points.getData1d().forEach(r -> r.setOrig(r.getOrig().plus(orig)));
     }
 }
 

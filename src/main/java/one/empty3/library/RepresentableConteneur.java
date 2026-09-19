@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -154,5 +154,17 @@ public class RepresentableConteneur extends Representable implements IMovable, I
 
     public void setRe(StructureMatrix<Representable> re) {
         this.re = re;
+    }
+
+    @Override
+    public void texture(ITexture tc) {
+        for (int i = 0; i < getListRepresentable().size(); i++) {
+            getListRepresentable().get(i).texture(tc);
+        }
+    }
+
+    @Override
+    public void setOrig(Point3D orig) {
+        getListRepresentable().forEach(r -> r.setOrig(r.getOrig().plus(orig)));
     }
 }

@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -35,6 +35,9 @@
 package one.empty3.library.core.tribase;
 
 import one.empty3.libs.*;
+
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
 
 import java.awt.*;
 

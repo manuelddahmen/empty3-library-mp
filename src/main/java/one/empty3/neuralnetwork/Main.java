@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -37,6 +37,9 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import one.empty3.libs.*;
+
+import one.empty3.libs.*;
+import one.empty3.apps.testobject.TestObjetSub;
 
 import java.awt.*;
 import java.io.File;

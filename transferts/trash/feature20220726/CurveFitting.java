@@ -298,9 +298,9 @@ public class CurveFitting extends ProcessFile {
         //        pix.getLines()/2, 0)), Point3D.Z.mult(-1)), (imgX2-imgX1)/3.*2);
 
         inPix.paintAll(new double[]{0, 0, 0});
-        inPix.fillIn(curveInitial, new ColorTexture(Color.newCol(1f,1f,1f)), new ColorTexture(Color.RED));
+        inPix.fillIn(curveInitial, new ColorTexture(Color.newCol(1f,1f,1f)), new ColorTexture(one.empty3.libs.Color.newCol(1.0f,0.0f,0f)));
         outPix.paintAll(new double[]{1, 1, 1});
-        outPix.fillIn(curveInitial, new ColorTexture(Color.newCol(0f,0f,0f)), new ColorTexture(Color.RED));
+        outPix.fillIn(curveInitial, new ColorTexture(Color.newCol(0f,0f,0f)), new ColorTexture(one.empty3.libs.Color.newCol(1.0f,0.0f,0f)));
 
         curvePoints = approx();
 
@@ -321,7 +321,7 @@ public class CurveFitting extends ProcessFile {
         Logger.getAnonymousLogger().log(Level.INFO, "Courbe 4/5");
         p.plotCurve(curvePoints, new ColorTexture(Color.newCol(1f,1f,1f)));
         Logger.getAnonymousLogger().log(Level.INFO, "Courbe 5/5");
-        p.plotCurve(circle, new ColorTexture(Color.BLUE));
+        p.plotCurve(circle, new ColorTexture(one.empty3.libs.Color.newCol(0,0,1)));
         for (Point3D c : curvePoints.getCoefficients().getData1d()) {
             Rectangle rectangle = new Rectangle(c.getX() - 3, c.getY() - 3, 6, 6);
             rectangle.setIncrU(0.1);
@@ -333,8 +333,8 @@ public class CurveFitting extends ProcessFile {
         // Convergence vers ?
         // Changer l1,l2,l3
         // Convergence de courbe . Modification de la courbe.
-        //normalize.plotCurve(courbeParametriquePolynomialeBezier, Color.GREEN);
-        //normalize.plotCurve(curvePoints, Color.BLUE);
+        //normalize.plotCurve(courbeParametriquePolynomialeBezier, one.empty3.libs.Color.newCol(0.0f,1.0f,0f));
+        //normalize.plotCurve(curvePoints, one.empty3.libs.Color.newCol(0,0,1));
 
         //normalize.fillIn(courbeParametriquePolynomialeBezier, Color.newCol(0f,0f,0f), Color.newCol(1f,1f,1f));
 
@@ -351,7 +351,7 @@ public class CurveFitting extends ProcessFile {
 //
 //            Graphics graphics = image.getGraphics();
 //
-//            graphics.setColor(Color.RED);
+//            graphics.setColor(one.empty3.libs.Color.newCol(1.0f,0.0f,0f));
 //
 //            graphics.drawArc(image.getWidth() / 2 - square / 2, image.getHeight() / 2 - square / 2,
 //                    square, square, 0, 360);

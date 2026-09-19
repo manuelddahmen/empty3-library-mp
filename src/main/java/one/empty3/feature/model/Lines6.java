@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -284,7 +284,7 @@ public class Lines6 extends ProcessFile {
         temp1.forEach(point3D -> {
                     System.out.printf("POINT LIST TEMP1 %s", point3D);
                     //bLines.drawLine((int) (double) point3D.getX() - 2, (int) (double) point3D.getY() - 2,
-                    //        (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, Color.BLUE);
+            //        (int) (double) point3D.getX() + 2, (int) (double) point3D.getY() + 2, one.empty3.libs.Color.newCol(0,0,1));
                 }
         );
         temp2.forEach(point3D -> System.out.printf("POINT LIST TEMP2 %s", point3D));
