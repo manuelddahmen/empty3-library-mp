@@ -29,7 +29,7 @@
 
 package one.empty3.library;
 
-public static class TexturedPoint {
+public class TexturedPoint {
 
     public Point3D p;
     public double u;

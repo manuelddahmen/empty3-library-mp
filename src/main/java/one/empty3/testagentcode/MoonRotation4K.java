@@ -33,7 +33,11 @@ import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.library.*;
 import one.empty3.libs.Image;
 
+import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Animation d'une sphère Moon en 4K pendant 20 secondes.
@@ -41,82 +45,115 @@ import java.io.File;
 public class MoonRotation4K extends TestObjetSub {
     private Sphere moon;
     private static final int FPS = 25;
-    private static final int DURATION_SECONDS = 20;
+    private static final int DURATION_SECONDS = 50;
+    private static final String STARS_TEXTURE_PATH = "res/img/planets3/stars.jpg";
+    private ImageTexture imageTexture;
+    private ArrayList<File> planetsImagesFile;
+    private String[] planetsImages;
+    private int oldI;
+    private String currentImageName;
 
     @Override
     public void ginit() {
         frame = 0;
+        // 1. Création de la scène
         scene = new Scene();
 
-        // 1. Create Axis strictly aligned with the Y-axis.
-        // The North Pole (P1) is UP (0, 1, 0), the South Pole (P2) is DOWN (0, -1, 0).
-        Axe yAxis = new Axe(new Point3D(0.0, 1.0, 0.0), new Point3D(0.0, -1.0, 0.0));
 
-        // 2. Initialize Sphere with this axis.
-        moon = new Sphere(yAxis, 1.0);
-
-        // IMPORTANT: Let the sphere compute its own basis.
-        // Do NOT manually setVectX, setVectY, setVectZ here.
-        // If you applied the fix to Circle.calculerRepere1(),
-        // it will now correctly build the basis aligned with this Y-axis.
-
-        // 3. Texture setup
-        try {
-            File textureFile = new File("d:\\current\\moon2.jpg");
-            if (textureFile.exists()) {
-                Image image = new Image(textureFile);
-                moon.texture(new ImageTexture(textureFile));
-            } else {
-                moon.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.8f, 0.4f, 0.2f)));
-                System.out.println("Texture file not found");
+        File file1 = new File("res/img/planets3");
+        if (file1.exists()) {
+            Object[] sorted = Arrays.stream(Objects.requireNonNull(new File("res/img/planets3/").list())).sorted().toArray();
+            planetsImagesFile = new ArrayList<>();
+            for (Object o : sorted) {
+                if (o != null && !o.equals("others") && !o.equals("stars.jpg")) {
+                    assert planetsImages != null;
+                    System.out.println("File exists: " + o);
+                    planetsImagesFile.add(new File("res/img/planets3/" + o.toString()));
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            setMaxFrames(planetsImagesFile.size() * DURATION_SECONDS * FPS);
         }
 
+
+        imageTexture = new ImageTexture(new File(STARS_TEXTURE_PATH));
+
+        // 2. Création de la sphère (Centre 0,0,0, Rayon 1.0)
+        moon = new Sphere(new Axe(Point3D.Y.mult(-1), Point3D.Y), 1.0);
+        moon.calculerPoint3D(0, 0);
+        // Ajout de la sphère à la scène
         scene.add(moon);
 
-        // 4. Camera setup looking at the center
-        Camera camera = new Camera(new Point3D(0.0, 0.0, 3.0), Point3D.O0, Point3D.Y);
+        // 4. Configuration de la caméra (Rule 7 & 8: Vecteur UP explicite pour éviter matrice nulle)
+        // Positionnée à z=3 pour voir la sphère de rayon 1.0
+        Camera camera = new Camera(new Point3D(0.0, 0.0, 2.0), Point3D.O0, Point3D.Y);
+        camera.angleXY(((ZBufferImpl) z()).getDimx(), ((ZBufferImpl) z()).getDimy(), Math.PI / 3, Axis.Y);
         scene.cameraActive(camera);
-
+        oldI = -1;
     }
 
     @Override
     public void finit() {
-        ((ZBufferImpl) z()).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.01));
-        ((ZBufferImpl) z()).setDisplayType(ZBufferImpl.DISPLAY_ALL);
-        // 5. Animation de la rotation autour de l'axe Y
 
-        z().texture(new ImageTexture(new File("res/img/planets3/stars.jpg")));
+        int planetI = (frame() - 1) / (FPS * DURATION_SECONDS);
 
-        double totalFrames = (double) (DURATION_SECONDS * FPS);
-        double angle = 2.0 * Math.PI * (double) frame / totalFrames;
+        // 3. Application de la texture Moon (Rule 4 & 11)
+        try {
+            if (oldI != planetI) {
+                ImageTexture imageTexture = new ImageTexture(planetsImagesFile.get(planetI));
+                moon.setTexture(imageTexture);
+                currentImageName = planetsImagesFile.get(planetI).getName();
+                oldI = planetI;
+            }
+        } catch (Exception e) {
+            moon.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.8f, 0.4f, 0.2f)));
+            e.printStackTrace();
+        }
 
-        // Rotation matrix around Y axis
-        Matrix33 rotY = Matrix33.rotationY(angle);
 
-        // Apply rotation to the sphere's orientation vectors
-        moon.setVectX(rotY.mult(Point3D.X));
-        moon.setVectY(rotY.mult(Point3D.Z));
-        moon.setVectZ(Point3D.Y);
+        z().texture(imageTexture);
+        // 5. Animation de la rotation (Rule 2 & 5)
+        // Calcul de l'angle en fonction de l'image actuelle (frame)
+        double totalFrames = (DURATION_SECONDS * FPS);
+        double angle = 2.0 * Math.PI * (double) ((frame % ((int) totalFrames)) / totalFrames);
 
-        moon.setOrig(new Point3D(0.0, 0.0, 0.0));
+        // Rotation autour de l'axe Y : mise à jour des vecteurs d'orientation
+        double cosA = Math.cos(angle);
+        double sinA = Math.sin(angle);
+
+
+        // Modification des axes de la sphère pour la faire tourner sur elle-même
+        moon.getCircle().setVectX(new Point3D(sinA, 0.0, cosA));
+        moon.getCircle().setVectY(new Point3D(cosA, 0.0, -sinA));
+        moon.getCircle().setVectZ(Point3D.Y);
+        //moon.setVectZ(Point3D.Y);
+        moon.setOrig(new Point3D(0.0, 0.0, 0.0)); // Centre de rotation
     }
 
     public static void main(String[] args) {
         MoonRotation4K animation = new MoonRotation4K();
         animation.setGenerate(GENERATE_IMAGE | GENERATE_MOVIE | GENERATE_SAVE_IMAGE);
         // Configuration du rendu
-        animation.setResX(3840 / 8); // 4K UHD
-        animation.setResY(2160 / 8);
+        animation.setResX(3840); // 4K UHD
+        animation.setResY(2160);
+        //animation.setResX(300); // 4K UHD
+        //animation.setResY(200);
         animation.setFps(FPS);
-        animation.setPublish(false);
+        animation.setPublish(true);
         // Nombre total d'images (20s * 25fps = 500 frames)
         animation.setMaxFrames(DURATION_SECONDS * FPS);
 
         // Lancement du processus de rendu
         Thread thread = new Thread(animation);
         thread.start();
+    }
+
+    @Override
+    public void afterRender() {
+        super.afterRender();
+        Image graphe = getPicture();
+        Graphics graphics = graphe.getGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(currentImageName, 10, 10);
+        graphe.getGraphics();
     }
 }

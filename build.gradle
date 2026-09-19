@@ -36,22 +36,9 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 25
-def versionName = "2026.9.1"
+def versionName = "2026.9.19"
 
-/*
-//Solution by the second link
-allprojects {
-    tasks.withType(Javadoc).all { enabled = false }
-}
-//Solution by the first link
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-}
-*/
+
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
@@ -332,10 +319,7 @@ tasks.register('FaceDetectApp.gui', JavaExec) {
     args ''
     dependsOn(jar)
 }
-tasks.register('javadoc', Javadoc) {
-    source = sourceSets.main.allJava
-    dependsOn(publish)
-}
+
 tasks.register('one.empty3.library1.tree.TestStringAnalyzer5', JavaExec) {
     classpath sourceSets.test.runtimeClasspath
     mainClass = 'one.empty3.library1.tree.TestStringAnalyzer5'
@@ -501,11 +485,6 @@ tasks.register('shadowJar', Jar) {
 }
 
 
-tasks.register('javadocJar', Jar) {
-    dependsOn javadoc
-    archiveClassifier = "javadoc"
-    from javadoc.destinationDir
-}
 
 
 
@@ -521,7 +500,7 @@ java {
 }
 //Solution by the second link
 allprojects {
-    tasks.withType(Javadoc).configureEach { enabled = false }
+    tasks.withType(Javadoc).configureEach { enabled = true }
 }
 javadoc {
     if (JavaVersion.current().isJava9Compatible()) {
@@ -575,7 +554,7 @@ tasks.register('runClass', JavaExec) {
 
 tasks.register("publishAll") {
     dependsOn("jar")
-    dependsOn('javadocJar')
+    dependsOn('javadoc')
     dependsOn(getTasksByName("publishAllPublicationsToJetBrainsSpaceEmpty3Repository", true))
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
