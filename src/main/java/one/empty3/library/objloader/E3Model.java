@@ -734,59 +734,6 @@ public class E3Model extends RepresentableConteneur {
         getListRepresentable().forEach(representable -> representable.texture(tc));
     }
 
-    /***
-     *
-     * @param pos Point de l'espace
-     * @return coordonnées (u,v) du point dy modèle le plus proche de point
-     */
-    public Point3D findUvForPoint3D(Point3D pos) {
-        final Point3D[] p = {null};
-        final double[] eps = {Double.MAX_VALUE};
-        final FaceWithUv[] face = new FaceWithUv[1];
-        for (int i = 0; i < faces.size(); i++) {
-            for (Representable representable : getListRepresentable()) {
-                if (representable instanceof FaceWithUv faceWithUv) {
-                    if (faceWithUv.textUv != null) {
-                        double minU = Math.min(Math.min(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.min(faceWithUv.textUv[4], faceWithUv.textUv[6]));
-                        double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
-                        double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                        double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                        faceWithUv.getPolygon().getPoints().getData1d().forEach(point3D -> {
-                            if (Point3D.distance(pos, point3D) < eps[0]) {
-                                eps[0] = Point3D.distance(pos, point3D);
-                                face[0] = faceWithUv;
-                                p[0] = point3D;
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        FaceWithUv faceWithUv = face[0];
-        double u = p[0].getX();
-        double v = p[0].getY();
-        Point3D goood;
-        Point3D selectedUv = null;
-        for (double i = 0; i < 10; i++) {
-            for (double j = 0; j < 10; j++) {
-                double minU = Math.min(Math.min(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.min(faceWithUv.textUv[4], faceWithUv.textUv[6]));
-                double maxU = Math.max(Math.max(faceWithUv.textUv[0], faceWithUv.textUv[2]), Math.max(faceWithUv.textUv[4], faceWithUv.textUv[6]));
-                double minV = Math.min(Math.min(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.min(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                double maxV = Math.max(Math.max(faceWithUv.textUv[1], faceWithUv.textUv[3]), Math.max(faceWithUv.textUv[5], faceWithUv.textUv[7]));
-                u = minU + (maxU - minU) * i / 10;
-                v = minV + (maxV - minV) * j / 10;
-                if (minU <= u && u <= maxU && minV <= v && v <= maxV) {
-                    goood = faceWithUv.calculerPoint3D((u - minU) / (maxU - minU), (v - minV) / (maxV - minV));
-                    if (Point3D.distance(goood, pos) <= eps[0]) {
-                        selectedUv = new Point3D(u, v, 0.0);
-                    }
-                }
-            }
-        }
-
-        return selectedUv;
-    }
 
     @Override
     public String toString() {
@@ -800,108 +747,25 @@ public class E3Model extends RepresentableConteneur {
                 '}';
     }
 
-    Point3D xyzFromUV(
-            Point3D p1,
-            Point3D p2,
-            Point3D p3,
-            Point3D p4,
+
+    private Point3D derivativeU(
+            FaceWithUv face,
             double u,
             double v) {
-        Point3D a = p1.plus(
-                p2.moins(p1).mult(u)
-        );
 
-        Point3D b = p4.plus(
-                p3.moins(p4).mult(u)
-        );
+        Point3D p1 = face.getPoint(0);
+        Point3D p2 = face.getPoint(1);
+        Point3D p3 = face.getPoint(2);
+        Point3D p4 = face.getPoint(3);
 
-        return a.plus(
-                b.moins(a).mult(v)
-        );
-    }
+        Point3D a =
+                p2.moins(p1);
 
-    Point3D xyzFromUV(
-            Point3D p1, double u1, double v1,
-            Point3D p2, double u2, double v2,
-            Point3D p3, double u3, double v3,
-            double u, double v) {
-        return null;
-    }
+        Point3D b =
+                p3.moins(p4);
 
-    /**
-     * Recherche les coordonnées UV correspondant au point 3D le plus proche
-     * sur les faces OBJ possédant des coordonnées de texture.
-     *
-     * @param pos point dans l'espace 3D
-     * @return Point3D(u, v, 0), ou null si aucune face UV n'est disponible
-     */
-    public Point3D findUvForPoint3D(Point3D pos) {
-
-        if (pos == null) {
-            return null;
-        }
-
-        E3Model.FaceWithUv bestFace = null;
-        Point3D bestUv = null;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (Representable representable : getListRepresentable()) {
-
-            if (!(representable instanceof E3Model.FaceWithUv face)) {
-                continue;
-            }
-
-            if (face.textUv == null) {
-                continue;
-            }
-
-            if (face.isTriangle()) {
-
-                Point3D uv = findUvTriangle(face, pos);
-
-                if (uv != null) {
-                    Point3D projected =
-                            xyzFromUVTriangle(face, uv.getX(), uv.getY());
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = uv;
-                    }
-                }
-
-            } else if (face.isQuad()) {
-
-                Point3D uv = findUvQuad(face, pos);
-
-                if (uv != null) {
-
-                    Point3D projected =
-                            face.calculerPoint3D(
-                                    uv.getX(),
-                                    uv.getY()
-                            );
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = new Point3D(
-                                localUToTextureU(face, uv.getX()),
-                                localVToTextureV(face, uv.getY()),
-                                0.0
-                        );
-                    }
-                }
-            }
-        }
-
-        return bestUv;
+        return a.mult(1.0 - v)
+                .plus(b.mult(v));
     }
 
     /**
@@ -980,6 +844,21 @@ public class E3Model extends RepresentableConteneur {
         return bestUv;
     }
 
+    private double localVToTextureV(
+            FaceWithUv face,
+            double localV) {
+
+        double minV = Double.MAX_VALUE;
+        double maxV = -Double.MAX_VALUE;
+
+        for (int i = 1; i < face.textUv.length; i += 2) {
+            minV = Math.min(minV, face.textUv[i]);
+            maxV = Math.max(maxV, face.textUv[i]);
+        }
+
+        return minV + localV * (maxV - minV);
+    }
+
     private Point3D xyzFromUVTriangle(
             FaceWithUv face,
             double u,
@@ -1020,117 +899,7 @@ public class E3Model extends RepresentableConteneur {
                 .plus(face.getPoint(2).mult(w2));
     }
 
-    private Point3D findUvQuad(
-            FaceWithUv face,
-            Point3D target) {
 
-        /*
-         * Plusieurs points de départ rendent la méthode robuste
-         * lorsque le quad est fortement déformé.
-         */
-        double[][] starts = {
-                {0.0, 0.0},
-                {1.0, 0.0},
-                {1.0, 1.0},
-                {0.0, 1.0},
-                {0.5, 0.5}
-        };
-
-        double bestU = 0.0;
-        double bestV = 0.0;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (double[] start : starts) {
-
-            double u = start[0];
-            double v = start[1];
-
-            for (int iteration = 0; iteration < 20; iteration++) {
-
-                Point3D p =
-                        face.calculerPoint3D(u, v);
-
-                Point3D error =
-                        p.moins(target);
-
-                /*
-                 * ∂P/∂u
-                 */
-                Point3D pu =
-                        derivativeU(face, u, v);
-
-                /*
-                 * ∂P/∂v
-                 */
-                Point3D pv =
-                        derivativeV(face, u, v);
-
-                /*
-                 * Résolution du système des moindres carrés :
-                 *
-                 * [pu.pu pu.pv] [du] = -error.pu
-                 * [pu.pv pv.pv] [dv] = -error.pv
-                 */
-
-                double a = pu.dot(pu);
-                double b = pu.dot(pv);
-                double c = pv.dot(pv);
-
-                double d = -error.dot(pu);
-                double e = -error.dot(pv);
-
-                double determinant =
-                        a * c - b * b;
-
-                if (Math.abs(determinant) < 1e-14) {
-                    break;
-                }
-
-                double du =
-                        (d * c - b * e)
-                                / determinant;
-
-                double dv =
-                        (a * e - b * d)
-                                / determinant;
-
-                u += du;
-                v += dv;
-
-                /*
-                 * Le solveur peut légèrement sortir du quad
-                 * à cause des erreurs numériques.
-                 */
-                u = Math.max(0.0, Math.min(1.0, u));
-                v = Math.max(0.0, Math.min(1.0, v));
-
-                if (Math.abs(du) < 1e-10
-                        && Math.abs(dv) < 1e-10) {
-                    break;
-                }
-            }
-
-            Point3D result =
-                    face.calculerPoint3D(u, v);
-
-            double distance =
-                    Point3D.distance(target, result);
-
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestU = u;
-                bestV = v;
-            }
-        }
-
-        /*
-         * Tolérance adaptée à la géométrie du modèle.
-         *
-         * On ne rejette pas systématiquement le point :
-         * on renvoie la solution la plus proche.
-         */
-        return new Point3D(bestU, bestV, 0.0);
-    }
 
     private Point3D findUvQuad(
             FaceWithUv face,
@@ -1267,521 +1036,6 @@ public class E3Model extends RepresentableConteneur {
         return b.moins(a);
     }
 
-    private double localUToTextureU(
-            FaceWithUv face,
-            double localU) {
-
-        double minU = Double.MAX_VALUE;
-        double maxU = -Double.MAX_VALUE;
-
-        for (int i = 0; i < face.textUv.length; i += 2) {
-            minU = Math.min(minU, face.textUv[i]);
-            maxU = Math.max(maxU, face.textUv[i]);
-        }
-
-        return minU + localU * (maxU - minU);
-    }
-
-    private double localUToTextureU(
-            FaceWithUv face,
-            double localU) {
-
-        double minU = Double.MAX_VALUE;
-        double maxU = -Double.MAX_VALUE;
-
-        for (int i = 0; i < face.textUv.length; i += 2) {
-            minU = Math.min(minU, face.textUv[i]);
-            maxU = Math.max(maxU, face.textUv[i]);
-        }
-
-        return minU + localU * (maxU - minU);
-    }
-
-    Point3D xyzFromUV(
-            Point3D p1, double u1, double v1,
-            Point3D p2, double u2, double v2,
-            Point3D p3, double u3, double v3,
-            double u, double v) {
-
-        double det =
-                (u2 - u1) * (v3 - v1)
-                        - (u3 - u1) * (v2 - v1);
-
-        if (Math.abs(det) < 1e-14) {
-            return null;
-        }
-
-        double w1 =
-                ((u - u1) * (v3 - v1)
-                        - (u3 - u1) * (v - v1))
-                        / det;
-
-        double w2 =
-                ((u2 - u1) * (v - v1)
-                        - (u - u1) * (v2 - v1))
-                        / det;
-
-        double w0 =
-                1.0 - w1 - w2;
-
-        return p1.mult(w0)
-                .plus(p2.mult(w1))
-                .plus(p3.mult(w2));
-    }
-
-    /**
-     * Recherche les coordonnées UV correspondant au point 3D le plus proche
-     * sur les faces OBJ possédant des coordonnées de texture.
-     *
-     * @param pos point dans l'espace 3D
-     * @return Point3D(u, v, 0), ou null si aucune face UV n'est disponible
-     */
-    public Point3D findUvForPoint3D(Point3D pos) {
-
-        if (pos == null) {
-            return null;
-        }
-
-        FaceWithUv bestFace = null;
-        Point3D bestUv = null;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (Representable representable : getListRepresentable()) {
-
-            if (!(representable instanceof FaceWithUv face)) {
-                continue;
-            }
-
-            if (face.textUv == null) {
-                continue;
-            }
-
-            if (face.isTriangle()) {
-
-                Point3D uv = findUvTriangle(face, pos);
-
-                if (uv != null) {
-                    Point3D projected =
-                            xyzFromUVTriangle(face, uv.getX(), uv.getY());
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = uv;
-                    }
-                }
-
-            } else if (face.isQuad()) {
-
-                Point3D uv = findUvQuad(face, pos);
-
-                if (uv != null) {
-
-                    Point3D projected =
-                            face.calculerPoint3D(
-                                    uv.getX(),
-                                    uv.getY()
-                            );
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = new Point3D(
-                                localUToTextureU(face, uv.getX()),
-                                localVToTextureV(face, uv.getY()),
-                                0.0
-                        );
-                    }
-                }
-            }
-        }
-
-        return bestUv;
-    }
-
-    /**
-     * Recherche les coordonnées UV correspondant au point 3D le plus proche
-     * sur les faces OBJ possédant des coordonnées de texture.
-     *
-     * @param pos point dans l'espace 3D
-     * @return Point3D(u, v, 0), ou null si aucune face UV n'est disponible
-     */
-    public Point3D findUvForPoint3D(Point3D pos) {
-
-        if (pos == null) {
-            return null;
-        }
-
-        FaceWithUv bestFace = null;
-        Point3D bestUv = null;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (Representable representable : getListRepresentable()) {
-
-            if (!(representable instanceof FaceWithUv face)) {
-                continue;
-            }
-
-            if (face.textUv == null) {
-                continue;
-            }
-
-            if (face.isTriangle()) {
-
-                Point3D uv = findUvTriangle(face, pos);
-
-                if (uv != null) {
-                    Point3D projected =
-                            xyzFromUVTriangle(face, uv.getX(), uv.getY());
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = uv;
-                    }
-                }
-
-            } else if (face.isQuad()) {
-
-                Point3D uv = findUvQuad(face, pos);
-
-                if (uv != null) {
-
-                    Point3D projected =
-                            face.calculerPoint3D(
-                                    uv.getX(),
-                                    uv.getY()
-                            );
-
-                    double distance =
-                            Point3D.distance(pos, projected);
-
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        bestFace = face;
-                        bestUv = new Point3D(
-                                localUToTextureU(face, uv.getX()),
-                                localVToTextureV(face, uv.getY()),
-                                0.0
-                        );
-                    }
-                }
-            }
-        }
-
-        return bestUv;
-    }
-
-    private Point3D xyzFromUVTriangle(
-            FaceWithUv face,
-            double u,
-            double v) {
-
-        double u0 = face.getU(0);
-        double v0 = face.getV(0);
-
-        double u1 = face.getU(1);
-        double v1 = face.getV(1);
-
-        double u2 = face.getU(2);
-        double v2 = face.getV(2);
-
-        double det =
-                (u1 - u0) * (v2 - v0)
-                        - (u2 - u0) * (v1 - v0);
-
-        if (Math.abs(det) < 1e-14) {
-            return null;
-        }
-
-        double w1 =
-                ((u - u0) * (v2 - v0)
-                        - (u2 - u0) * (v - v0))
-                        / det;
-
-        double w2 =
-                ((u1 - u0) * (v - v0)
-                        - (u - u0) * (v1 - v0))
-                        / det;
-
-        double w0 =
-                1.0 - w1 - w2;
-
-        return face.getPoint(0).mult(w0)
-                .plus(face.getPoint(1).mult(w1))
-                .plus(face.getPoint(2).mult(w2));
-    }
-
-    private Point3D findUvQuad(
-            FaceWithUv face,
-            Point3D target) {
-
-        /*
-         * Plusieurs points de départ rendent la méthode robuste
-         * lorsque le quad est fortement déformé.
-         */
-        double[][] starts = {
-                {0.0, 0.0},
-                {1.0, 0.0},
-                {1.0, 1.0},
-                {0.0, 1.0},
-                {0.5, 0.5}
-        };
-
-        double bestU = 0.0;
-        double bestV = 0.0;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (double[] start : starts) {
-
-            double u = start[0];
-            double v = start[1];
-
-            for (int iteration = 0; iteration < 20; iteration++) {
-
-                Point3D p =
-                        face.calculerPoint3D(u, v);
-
-                Point3D error =
-                        p.moins(target);
-
-                /*
-                 * ∂P/∂u
-                 */
-                Point3D pu =
-                        derivativeU(face, u, v);
-
-                /*
-                 * ∂P/∂v
-                 */
-                Point3D pv =
-                        derivativeV(face, u, v);
-
-                /*
-                 * Résolution du système des moindres carrés :
-                 *
-                 * [pu.pu pu.pv] [du] = -error.pu
-                 * [pu.pv pv.pv] [dv] = -error.pv
-                 */
-
-                double a = pu.dot(pu);
-                double b = pu.dot(pv);
-                double c = pv.dot(pv);
-
-                double d = -error.dot(pu);
-                double e = -error.dot(pv);
-
-                double determinant =
-                        a * c - b * b;
-
-                if (Math.abs(determinant) < 1e-14) {
-                    break;
-                }
-
-                double du =
-                        (d * c - b * e)
-                                / determinant;
-
-                double dv =
-                        (a * e - b * d)
-                                / determinant;
-
-                u += du;
-                v += dv;
-
-                /*
-                 * Le solveur peut légèrement sortir du quad
-                 * à cause des erreurs numériques.
-                 */
-                u = Math.max(0.0, Math.min(1.0, u));
-                v = Math.max(0.0, Math.min(1.0, v));
-
-                if (Math.abs(du) < 1e-10
-                        && Math.abs(dv) < 1e-10) {
-                    break;
-                }
-            }
-
-            Point3D result =
-                    face.calculerPoint3D(u, v);
-
-            double distance =
-                    Point3D.distance(target, result);
-
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestU = u;
-                bestV = v;
-            }
-        }
-
-        /*
-         * Tolérance adaptée à la géométrie du modèle.
-         *
-         * On ne rejette pas systématiquement le point :
-         * on renvoie la solution la plus proche.
-         */
-        return new Point3D(bestU, bestV, 0.0);
-    }
-
-    private Point3D findUvQuad(
-            FaceWithUv face,
-            Point3D target) {
-
-        /*
-         * Plusieurs points de départ rendent la méthode robuste
-         * lorsque le quad est fortement déformé.
-         */
-        double[][] starts = {
-                {0.0, 0.0},
-                {1.0, 0.0},
-                {1.0, 1.0},
-                {0.0, 1.0},
-                {0.5, 0.5}
-        };
-
-        double bestU = 0.0;
-        double bestV = 0.0;
-        double bestDistance = Double.MAX_VALUE;
-
-        for (double[] start : starts) {
-
-            double u = start[0];
-            double v = start[1];
-
-            for (int iteration = 0; iteration < 20; iteration++) {
-
-                Point3D p =
-                        face.calculerPoint3D(u, v);
-
-                Point3D error =
-                        p.moins(target);
-
-                /*
-                 * ∂P/∂u
-                 */
-                Point3D pu =
-                        derivativeU(face, u, v);
-
-                /*
-                 * ∂P/∂v
-                 */
-                Point3D pv =
-                        derivativeV(face, u, v);
-
-                /*
-                 * Résolution du système des moindres carrés :
-                 *
-                 * [pu.pu pu.pv] [du] = -error.pu
-                 * [pu.pv pv.pv] [dv] = -error.pv
-                 */
-
-                double a = pu.dot(pu);
-                double b = pu.dot(pv);
-                double c = pv.dot(pv);
-
-                double d = -error.dot(pu);
-                double e = -error.dot(pv);
-
-                double determinant =
-                        a * c - b * b;
-
-                if (Math.abs(determinant) < 1e-14) {
-                    break;
-                }
-
-                double du =
-                        (d * c - b * e)
-                                / determinant;
-
-                double dv =
-                        (a * e - b * d)
-                                / determinant;
-
-                u += du;
-                v += dv;
-
-                /*
-                 * Le solveur peut légèrement sortir du quad
-                 * à cause des erreurs numériques.
-                 */
-                u = Math.max(0.0, Math.min(1.0, u));
-                v = Math.max(0.0, Math.min(1.0, v));
-
-                if (Math.abs(du) < 1e-10
-                        && Math.abs(dv) < 1e-10) {
-                    break;
-                }
-            }
-
-            Point3D result =
-                    face.calculerPoint3D(u, v);
-
-            double distance =
-                    Point3D.distance(target, result);
-
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestU = u;
-                bestV = v;
-            }
-        }
-
-        /*
-         * Tolérance adaptée à la géométrie du modèle.
-         *
-         * On ne rejette pas systématiquement le point :
-         * on renvoie la solution la plus proche.
-         */
-        return new Point3D(bestU, bestV, 0.0);
-    }
-
-    private Point3D derivativeV(
-            FaceWithUv face,
-            double u,
-            double v) {
-
-        Point3D p1 = face.getPoint(0);
-        Point3D p2 = face.getPoint(1);
-        Point3D p3 = face.getPoint(2);
-        Point3D p4 = face.getPoint(3);
-
-        Point3D a =
-                p1.plus(
-                        p2.moins(p1).mult(u)
-                );
-
-        Point3D b =
-                p4.plus(
-                        p3.moins(p4).mult(u)
-                );
-
-        return b.moins(a);
-    }
-
-    private double localUToTextureU(
-            FaceWithUv face,
-            double localU) {
-
-        double minU = Double.MAX_VALUE;
-        double maxU = -Double.MAX_VALUE;
-
-        for (int i = 0; i < face.textUv.length; i += 2) {
-            minU = Math.min(minU, face.textUv[i]);
-            maxU = Math.max(maxU, face.textUv[i]);
-        }
-
-        return minU + localU * (maxU - minU);
-    }
 
     private double localUToTextureU(
             FaceWithUv face,
@@ -2054,4 +1308,64 @@ public class E3Model extends RepresentableConteneur {
         }
 
     }
+
+    private Point3D findUvTriangle(
+            FaceWithUv face,
+            Point3D p) {
+
+        Point3D a = face.getPoint(0);
+        Point3D b = face.getPoint(1);
+        Point3D c = face.getPoint(2);
+
+        Point3D v0 = b.moins(a);
+        Point3D v1 = c.moins(a);
+        Point3D vp = p.moins(a);
+
+        double d00 = v0.dot(v0);
+        double d01 = v0.dot(v1);
+        double d11 = v1.dot(v1);
+        double d20 = vp.dot(v0);
+        double d21 = vp.dot(v1);
+
+        double denom = d00 * d11 - d01 * d01;
+
+        if (Math.abs(denom) < 1e-14) {
+            return null;
+        }
+
+        double bary1 =
+                (d11 * d20 - d01 * d21) / denom;
+
+        double bary2 =
+                (d00 * d21 - d01 * d20) / denom;
+
+        double bary0 =
+                1.0 - bary1 - bary2;
+
+        /*
+         * On accepte une petite tolérance pour les points
+         * situés exactement sur une arête.
+         */
+        final double epsilon = 1e-8;
+
+        if (bary0 < -epsilon
+                || bary1 < -epsilon
+                || bary2 < -epsilon) {
+            return null;
+        }
+
+        double u =
+                bary0 * face.getU(0)
+                        + bary1 * face.getU(1)
+                        + bary2 * face.getU(2);
+
+        double v =
+                bary0 * face.getV(0)
+                        + bary1 * face.getV(1)
+                        + bary2 * face.getV(2);
+
+        return new Point3D(u, v, 0.0);
+    }
+
+
 }

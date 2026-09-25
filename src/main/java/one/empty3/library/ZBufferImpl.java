@@ -378,7 +378,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             return;
         } else if (r instanceof RepresentableConteneur finalR) {
             final Representable r1 = r;
-            ((RepresentableConteneur) r).getListRepresentable().forEach(
+            finalR.getListRepresentable().forEach(
                     representable -> {
                         representable.setVectX(r1.getVectX());
                         representable.setVectY(r1.getVectY());
@@ -1310,6 +1310,101 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         ((p1.getY() - p2.getY()) * (p1.getY() - p2.getY())));
     }
 
+    public void tracerTriangle(
+            Point3D pp1,
+            Point3D pp2,
+            Point3D pp3,
+            ITexture texture,
+
+            double u1,
+            double v1,
+
+            double u2,
+            double v2,
+
+            double u3,
+            double v3
+    ) {
+        Point p1 = camera().coordinatesPoint2D(pp1, this);
+        Point p2 = camera().coordinatesPoint2D(pp2, this);
+        Point p3 = camera().coordinatesPoint2D(pp3, this);
+
+        if (p1 == null || p2 == null || p3 == null) {
+            return;
+        }
+
+        TRI tri = new TRI(pp1, pp2, pp3, texture);
+        Point3D normale = tri.normale();
+
+        double inter = incrementOptimizer.computeIncrement(
+                maxDistance(p1, p2, p3)
+        );
+
+        if (!(inter > 0.0)
+                || Double.isNaN(inter)
+                || Double.isInfinite(inter)) {
+            return;
+        }
+
+        for (double a = 0.0; a <= 1.0; a += inter) {
+
+            double maxB = 1.0 - a;
+
+            for (double b = 0.0; b <= maxB; b += inter) {
+
+                double w1 = 1.0 - a - b;
+                double w2 = a;
+                double w3 = b;
+
+                Point3D pFinal =
+                        pp1.mult(w1)
+                                .plus(pp2.mult(w2))
+                                .plus(pp3.mult(w3));
+
+                /*
+                 * Interpolation UV barycentrique.
+                 */
+                double u =
+                        u1 * w1
+                                + u2 * w2
+                                + u3 * w3;
+
+                double v =
+                        v1 * w1
+                                + v2 * w2
+                                + v3 * w3;
+
+                pFinal.setNormale(normale);
+                pFinal.texture(texture);
+
+                if (displayType <= SURFACE_DISPLAY_TEXT_TRI) {
+
+                    if (texture != null) {
+                        testDeep(
+                                pFinal,
+                                texture,
+                                u,
+                                v,
+                                (ParametricSurface) null
+                        );
+                    } else {
+                        testDeep(pFinal);
+                    }
+
+                } else {
+
+                    if (texture != null) {
+                        testDeep(
+                                pFinal,
+                                texture.getColorAt(u, v)
+                        );
+                    } else {
+                        testDeep(pFinal);
+                    }
+                }
+            }
+        }
+    }
     public void tracerTriangle(Point3D pp1, Point3D pp2, Point3D pp3,
                                ITexture t,
                                double u0, double v0, double u1, double v1) {
