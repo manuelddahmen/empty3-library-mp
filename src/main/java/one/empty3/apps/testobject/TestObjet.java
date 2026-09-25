@@ -183,7 +183,6 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     private File dir0 = new File("output" + File.separator + "frames" + File.separator + getClass().getCanonicalName());
-    ;
 
     public void setAndroidContext(Object applicationContext) {
         if (isAndroid) {
@@ -335,11 +334,8 @@ public abstract class TestObjet implements Test, Runnable {
             // Check system properties as a fallback
             String vmVendor = System.getProperty("java.vm.vendor");
             String vmName = System.getProperty("java.vm.name");
-            if ((vmVendor != null && vmVendor.toLowerCase().contains("android")) ||
-                    (vmName != null && vmName.toLowerCase().contains("dalvik"))) {
-                return true;
-            }
-            return false; // Not in Android
+            return (vmVendor != null && vmVendor.toLowerCase().contains("android")) ||
+                    (vmName != null && vmName.toLowerCase().contains("dalvik"));// Not in Android
         }
     }
 
@@ -999,12 +995,12 @@ public abstract class TestObjet implements Test, Runnable {
                                     File f = new File(subDir , getFilenameWoExt()+ ".png");
                                     ri.saveToFile(f.getAbsolutePath());
                                     if(f.exists()) {
-                                        Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath());
+                                        Logger.getAnonymousLogger().log(Level.INFO, "File written : " + f.getAbsolutePath() + "(/" + getMaxFrames() + ")");
                                         if (getGenerate(GENERATE_MOVIE)) {
                                             frames.add(f.getAbsolutePath());
                                         }
                                     } else {
-                                        Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + f.getAbsolutePath());
+                                        Logger.getAnonymousLogger().log(Level.INFO, "No file written : " + f.getAbsolutePath() + "(/" + getMaxFrames() + ")");
 
                                     }
                                 }
@@ -1422,7 +1418,7 @@ public abstract class TestObjet implements Test, Runnable {
 
 
     public Image getPicture() {
-        return (Image) ri;
+        return ri;
     }
 
     public boolean isRunning() {

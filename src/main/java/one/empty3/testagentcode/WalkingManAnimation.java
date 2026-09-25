@@ -30,8 +30,8 @@
 package one.empty3.testagentcode;
 
 import one.empty3.apps.testobject.Resolution;
-import one.empty3.library.*;
 import one.empty3.apps.testobject.TestObjetSub;
+import one.empty3.library.*;
 import one.empty3.libs.Color;
 
 public class WalkingManAnimation extends TestObjetSub {
@@ -39,7 +39,7 @@ public class WalkingManAnimation extends TestObjetSub {
     public void ginit() {
         // Initialisation de la scène globale
         scene = new Scene();
-
+        frame = 0;
         //z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 10.0));
     }
 
@@ -124,7 +124,7 @@ public class WalkingManAnimation extends TestObjetSub {
         scene.cameraActive(camera);
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         WalkingManAnimation animation = new WalkingManAnimation();
         animation.setMaxFrames(25 * 20);
         animation.setDimension(new Resolution(800, 600));
