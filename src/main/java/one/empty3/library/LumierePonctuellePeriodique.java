@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -48,7 +48,7 @@ import one.empty3.libs.*;
  */
 public final class LumierePonctuellePeriodique extends Lumiere {
 
-    private Color couleurLumiere = new Color(Color.RED);
+    private Color couleurLumiere = new Color(one.empty3.libs.Color.newCol(1.0f, 0.0f, 0f));
     private Point3D position;
     private double k = 1;
     private double r0 = 11;

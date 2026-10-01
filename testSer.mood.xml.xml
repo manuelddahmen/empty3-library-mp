@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  *
+  ~  *  * Copyright (c) 2026. Manuel Daniel Dahmen
+  ~  *  *
+  ~  *  *
+  ~  *  *    Copyright 2026 Manuel Daniel Dahmen
+  ~  *  *
+  ~  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+  ~  *  *    you may not use this file except in compliance with the License.
+  ~  *  *    You may obtain a copy of the License at
+  ~  *  *
+  ~  *  *        http://www.apache.org/licenses/LICENSE-2.0
+  ~  *  *
+  ~  *  *    Unless required by applicable law or agreed to in writing, software
+  ~  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+  ~  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  *  *    See the License for the specific language governing permissions and
+  ~  *  *    limitations under the License.
+  ~  *
+  ~  *
+  ~  */
+  ~
+  ~ /*
+  ~  * Created by $user $date
+  ~  */
+  ~
+  -->
+
+<Representable class="one.empty3.library.Scene">
+    <StructureMatrix name="vectors/vectors" dim="1" class="one.empty3.library.StructureMatrix"
+                     typeClass="one.empty3.library.Point3D">
+        <Data>
+            <Cell l="0" c="0">
+                <Representable class="one.empty3.library.Point3D">
+                    <StructureMatrix name="coordArr/coordonnées" dim="1" class="one.empty3.library.StructureMatrix"
+                                     typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">1.0</Double>
+                            </Cell>
+                            <Cell l="0" c="1">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="2">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+            <Cell l="0" c="1">
+                <Representable class="one.empty3.library.Point3D">
+                    <StructureMatrix name="coordArr/coordonnées" dim="1" class="one.empty3.library.StructureMatrix"
+                                     typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="1">
+                                <Double class="class java.lang.Double">1.0</Double>
+                            </Cell>
+                            <Cell l="0" c="2">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+            <Cell l="0" c="2">
+                <Representable class="one.empty3.library.Point3D">
+                    <StructureMatrix name="coordArr/coordonnées" dim="1" class="one.empty3.library.StructureMatrix"
+                                     typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="1">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="2">
+                                <Double class="class java.lang.Double">1.0</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+            <Cell l="0" c="3">
+                <Representable class="one.empty3.library.Point3D">
+                    <StructureMatrix name="coordArr/coordonnées" dim="1" class="one.empty3.library.StructureMatrix"
+                                     typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="1">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                            <Cell l="0" c="2">
+                                <Double class="class java.lang.Double">0.0</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+        </Data>
+    </StructureMatrix>
+    <StructureMatrix name="cameras/Caméras de la scène. cameraActive caméra en cours" dim="1"
+                     class="one.empty3.library.StructureMatrix" typeClass="one.empty3.library.Camera">
+        <Data>
+            <Cell l="0" c="0">
+                <Representable class="one.empty3.library.Camera">
+                    <StructureMatrix name="matrice/matrice" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Matrix33">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Matrix33">
+                                    <StructureMatrix name="d/3x3 matrix" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">-0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="3">
+                                                <Double class="class java.lang.Double">-0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="4">
+                                                <Double class="class java.lang.Double">-1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="5">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="6">
+                                                <Double class="class java.lang.Double">-1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="7">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="8">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="eye/eye" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">100.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="angleX/angle horizontal caméra" dim="0"
+                                     class="one.empty3.library.StructureMatrix" typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">1.0471975511965976</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="angleY/angle vertical caméra" dim="0"
+                                     class="one.empty3.library.StructureMatrix" typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">1.0471975511965976</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="verticale/verticale" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="lookat/lookAt" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+        </Data>
+    </StructureMatrix>
+    <StructureMatrix name="lumieres/Lumières additionnelles" dim="1" class="one.empty3.library.StructureMatrix"
+                     typeClass="one.empty3.library.Lumiere">
+        <Data></Data>
+    </StructureMatrix>
+    <StructureMatrix name="cameraActive/cameraActive" dim="0" class="one.empty3.library.StructureMatrix"
+                     typeClass="one.empty3.library.Camera">
+        <Data>
+            <Cell l="0" c="0">
+                <Representable class="one.empty3.library.Camera">
+                    <StructureMatrix name="matrice/matrice" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Matrix33">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Matrix33">
+                                    <StructureMatrix name="d/3x3 matrix" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">-0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="3">
+                                                <Double class="class java.lang.Double">-0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="4">
+                                                <Double class="class java.lang.Double">-1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="5">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="6">
+                                                <Double class="class java.lang.Double">-1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="7">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="8">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="eye/eye" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">100.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="angleX/angle horizontal caméra" dim="0"
+                                     class="one.empty3.library.StructureMatrix" typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">1.0471975511965976</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="angleY/angle vertical caméra" dim="0"
+                                     class="one.empty3.library.StructureMatrix" typeClass="java.lang.Double">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Double class="class java.lang.Double">1.0471975511965976</Double>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="verticale/verticale" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">1.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                    <StructureMatrix name="lookat/lookAt" dim="0" class="one.empty3.library.StructureMatrix"
+                                     typeClass="one.empty3.library.Point3D">
+                        <Data>
+                            <Cell l="0" c="0">
+                                <Representable class="one.empty3.library.Point3D">
+                                    <StructureMatrix name="coordArr/coordonnées" dim="1"
+                                                     class="one.empty3.library.StructureMatrix"
+                                                     typeClass="java.lang.Double">
+                                        <Data>
+                                            <Cell l="0" c="0">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="1">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                            <Cell l="0" c="2">
+                                                <Double class="class java.lang.Double">0.0</Double>
+                                            </Cell>
+                                        </Data>
+                                    </StructureMatrix>
+                                </Representable>
+                            </Cell>
+                        </Data>
+                    </StructureMatrix>
+                </Representable>
+            </Cell>
+        </Data>
+    </StructureMatrix>
+    <StructureMatrix name="objets/Objets à peindre" dim="1" class="one.empty3.library.StructureMatrix"
+                     typeClass="one.empty3.library.Representable">
+        <Data></Data>
+    </StructureMatrix>
+    <StructureMatrix name="animations/Animation (pas implémenté maintenant jamais" dim="1"
+                     class="one.empty3.library.StructureMatrix" typeClass="one.empty3.tests.Animation">
+        <Data></Data>
+    </StructureMatrix>
+</Representable>

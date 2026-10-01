@@ -2,7 +2,7 @@ package one.empty3.library;
 
 
 import one.empty3.libs.Image;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.apps.testobject.TestObjet;
 public class RenderedTexture {
      public RenderedTexture(int x, int y) {
      }

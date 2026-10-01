@@ -22,7 +22,7 @@
 
 package one.empty3.testscopy.tests.test3;
 
-public class TestAxeSpheres {
+public class TestAxesSpheres {
 /*
     @Test
     public void testSphereTrajectoire() {

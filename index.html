@@ -1,10 +1,10 @@
 <!--
   ~ /*
   ~  *
-  ~  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+  ~  *  * Copyright (c) 2026. Manuel Daniel Dahmen
   ~  *  *
   ~  *  *
-  ~  *  *    Copyright 2024 Manuel Daniel Dahmen
+  ~  *  *    Copyright 2026 Manuel Daniel Dahmen
   ~  *  *
   ~  *  *    Licensed under the Apache License, Version 2.0 (the "License");
   ~  *  *    you may not use this file except in compliance with the License.
@@ -22,197 +22,153 @@
   ~  */
   ~
   ~ /*
-  ~  * Created by $user $date
+  ~  * Created by Manuel Daniel Dahmen 2026-03-19
   ~  */
   ~
   -->
 
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <title>page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empty3 Library - Moteur 3D et Traitement d'Images</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 40px 20px; background-color: #f8f9fa; }
+        header { border-bottom: 3px solid #3498db; margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        h2 { color: #2980b9; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 40px; }
+        h3 { color: #16a085; }
+        p { margin-bottom: 15px; }
+        code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em; }
+        pre { background: #2c3e50; color: #ecf0f1; padding: 20px; border-radius: 8px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        pre code { background: transparent; color: inherit; padding: 0; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 20px; }
+        .feature-item { background: white; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .feature-item:hover { transform: translateY(-5px); }
+        .legacy { background: #fff9e6; border-left: 5px solid #f39c12; padding: 20px; margin-top: 50px; border-radius: 0 8px 8px 0; }
+        .legacy h3 { color: #d35400; margin-top: 0; }
+        .links a { display: inline-block; background: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-right: 10px; transition: background 0.3s; }
+        .links a:hover { background: #2980b9; }
+        footer { margin-top: 60px; text-align: center; font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 20px; }
+        .tech-stack { list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech-stack li { background: #ecf0f1; padding: 5px 15px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: #34495e; }
+    </style>
 </head>
 <body>
-<h1>README MIS A JOUR</h1>
-* AU 18/04/2020
+    <header>
+        <h1>Empty3 Library (empty3-library-mp)</h1>
+        <p><strong>Framework polyvalent pour le rendu 3D, la modélisation paramétrique et la vision par ordinateur.</strong></p>
+    </header>
 
-18/04/2020
-----------
-Nouveau développement en cours: #opengl #java #json #javascript #shader #glsl
+    <section id="overview">
+        <h2>Présentation</h2>
+        <p>
+            Empty3 est une bibliothèque de classes Java/Kotlin puissante et flexible conçue pour simplifier la création d'applications 3D, 
+            le traitement d'images et la génération de contenu média. Que ce soit pour l'éducation, la recherche ou le développement 
+            d'outils de visualisation complexes, Empty3 propose une approche mathématique et paramétrique rigoureuse.
+        </p>
+        <ul class="tech-stack">
+            <li>Java 21/22</li>
+            <li>Kotlin 2.1</li>
+            <li>OpenGL (JOGL)</li>
+            <li>Google Cloud Functions</li>
+            <li>OpenCV</li>
+            <li>Maven / Gradle</li>
+        </ul>
+    </section>
 
+    <section id="features">
+        <h2>Fonctionnalités Clés</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h3>Moteur de Rendu 3D</h3>
+                <p>Un pipeline complet incluant :</p>
+                <ul>
+                    <li>Rendu par Z-Buffer optimisé</li>
+                    <li>Textures riches : couleurs, images, flux vidéo et textures algorithmiques</li>
+                    <li>Gestion avancée des caméras et de l'éclairage</li>
+                    <li>Support des shaders GLSL</li>
+                </ul>
+            </div>
+            <div class="feature-item">
+                <h3>Modélisation Géométrique</h3>
+                <p>Une approche paramétrique unique :</p>
+                <ul>
+                    <li>Formes de base : points, triangles, polygones, polyhèdres</li>
+                    <li>Surfaces et courbes de Bézier et <strong>NURBS</strong></li>
+                    <li><strong>Mesh Editor</strong> intégré</li>
+                    <li>Analyseur de formules algébriques</li>
+                    <li>Exportateurs standards (STL, OBJ)</li>
+                </ul>
+            </div>
+            <div class="feature-item">
+                <h3>Vision & IA</h3>
+                <p>Capacités d'analyse d'image intégrées :</p>
+                <ul>
+                    <li>Filtres d'images variés (Gauss, Sobel, Harris, etc.)</li>
+                    <li>Détection de contours et de features 2D/3D</li>
+                    <li>Détection faciale et masques</li>
+                    <li>Réseaux de neurones pour la classification</li>
+                </ul>
+            </div>
+            <div class="feature-item">
+                <h3>Vidéo & Cloud</h3>
+                <p>Génération de média à grande échelle :</p>
+                <ul>
+                    <li>Génération de séquences d'images pour vidéos MPEG</li>
+                    <li>Intégration native avec Google Cloud Functions</li>
+                    <li>Déploiement facile via Docker et Google Cloud SDK</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-13/10/2019
-----------
-J'avais des idées pour Opad, visionné l'évolution du jeu. Mais tout seul ça va être long.
+    <section id="quickstart">
+        <h2>Démarrage Rapide (Java)</h2>
+        <p>Voici comment créer et rendre une sphère simple en quelques lignes :</p>
+        <pre><code>// 1. Initialiser la scène
+Scene scene = new Scene();
 
+// 2. Ajouter un objet avec une texture
+Sphere sphere = new Sphere(new Point3D(0, 0, 0), 1.0);
+sphere.texture(new ColorTexture(one.empty3.libs.Color.newCol(1.0f,0.0f,0f)));
+scene.add(sphere);
 
-12/10/2019
-----------
-Les Representable ("objet3D") contiennent des propriétés de classe "StructureMatrix" qui peuvent être à 0, 1 ou 2
-dimensions. Contenant des objets (pas des données de type scalar).
-Dans chaque Representable, les StructureMatrix sont instanciées dans le constructeur avec des valeurs par défaut.
-En cas de changement, une méthode
-public void declareProperties();
-permet de rafraîchir les références vers les propriétés StructureMatrix.
-La méthode declarations() permet d'itérer ou de getter (sur) une/les propriété(s).
-Celà a demandé des efforts, d'abandonner la vitesse d'exécution qui n'était déjà pas élevée au profit d'une interface
-GUI : e3gui
-La représentation XML: nouvelle. Donc enregistrer/charger les données 3D. Pas encore terminé. La position n'est pas
-sauvegardée ou chargée pour le moment.
+// 3. Configurer la caméra
+Camera camera = new Camera(new Point3D(0, 0, -5), new Point3D(0, 0, 0));
+scene.cameraActive(camera);
 
-21/03/2019
-----------
-Oui les anciens de l'école c'est toujours gentil d'avoir des intentions et des avis sur moi, quoique
-je crois m'être fait largement oublier. En tout cas ce n'est pas sympa de m'avoir insulté et pire.
+// 4. Effectuer le rendu
+ZBufferImpl buffer = new ZBufferImpl(800, 600);
+buffer.scene(scene);
+buffer.draw();</code></pre>
+    </section>
 
+    <section id="links" class="links">
+        <h2>Ressources & Liens</h2>
+        <p>Accédez au code source et à la documentation étendue :</p>
+        <a href="https://gitlab.com/manuelddahmen/empty3-library-mp" target="_blank">Projet GitLab</a>
+        <a href="http://empty3.one" target="_blank">Site Officiel (empty3.one)</a>
+        <a href="https://drive.google.com/folderview?id=10CXWU2JPVsNMbHrAssxN23KzizzNkvHg" target="_blank">Documentation (Google Drive)</a>
+    </section>
 
-J'ai lu des livres sur la folie appris l'informatique dans des écoles
-sur des sites internet comme tout ceux qui l'ont fait. Ce n'est pas important le monde est une merde géante.
-Que suis-je? On m'a condamné mes lectures comme on fait en Inde ou en Arabie Saoudite. Pourtant c'est la Belgique
-fortemenent réprimandée pour son injustice superficielle et ses rats puants de la justice des avocats des docteurs
-toutes ces professions où la belle situation l'emporte largement sur l'intelligence et la moralité et la santé mentale
-que ce sont eux seuls à évaluer les pourceaux. L'Ordre des médecins? Je ne sais pas ce que c'est mais je voudrais les
-contacter. Bref cela mes problèmes qui ne sont pas uniques où il y collage de pages sur la gueule du lecteur. Pitoyable
-pour des adultes. Des identifications sur base de lecture, humour? Non sauvagerie grottesque et insolence meurtrière.
+    <section class="legacy">
+        <h3>Archive & Historique</h3>
+        <p><em>Note : Cette section conserve des traces de l'évolution du projet.</em></p>
+        <p>
+            Le projet Empty3 (anciennement EmptyCanvas) a débuté vers 2014 comme un exercice de logique sur les structures de matrices d'images. 
+            Depuis, il a traversé de nombreuses phases, intégrant progressivement le raytracing (aujourd'hui remplacé), 
+            le support NURBS (finalisé après 2018), et plus récemment les technologies Cloud et IA (2024-2026).
+        </p>
+        <p>Dernière mise à jour majeure du README : 18/04/2020 | Révision globale : 19/03/2026.</p>
+    </section>
 
-Finalement cette condamnation grottesque m'a fait faire des bonds en avant sur la compréhension que j'avais de cette
-société de bâtards dans laquelle mes parents ont essayé de me jeter comme un lapin sur le feu selon le rite dont
-j'ai entendu à la télé hier.
-
-TextCol, TextImg TextMov 3 classes que j'ai codées comme un bâtard et qui fonctionnent bien. Les noms sont explicites.
-
-On ne se la joue pas finaux non plus avec l'exportateur STL (encore un vernissage à la con où on ne a pas envie de
-parler mais de se ruer au bar) qui permet quand même d'ouvrir les fichiers exportés dans 3D Builder (il semble que ce ne
-soit pas adéquat pour le Print 3D. TODO 1
-
-Comment se servir de ce framework? TODO TUTO 1
-
-Finir ma bière.
-
-
-Sinon il n'y a rien de nouveau depuis 2016.
-
-Les NURBS qui ont eu la côte, et qui sont assez faciles mais longues à implémenter. Je compte finaliser en moins d'un an
-pour ne pas me sentir pressé. D'ailleurs personne n'attend rien de moi tout le monde m'a dit dégage mais j'imagine
-qu'ils reviendront quand je serai riche moi non j'irai aux Caraïbes me former au tourisme....
-
-
-11/10/2016
-----------
-Ajout d'un raytracer débutant...
-http://www.alrj.org/docs/3D/raytracer/raytracertutchap2.htm
-par darkWorlf.
-info\emptycanvas\library\raytracer
-traduit du C++ vers Java par Manuel Dahmen.
-
-
-18/12/2014
-----------
-Ce texte est écrit en français. Il sera peut-être traduit dans
-sa version actuelle ou future dans d'autres langues comme
-l'anglais, l'italien, l'espagnol, l'allemand, le nérerlandais.
-Selon mes moyens, mon temps, etc.
-
-Ce fichier README est fourni tel quel.
-Emptycanvas (Empty3) est une bibliothèque de classes Java. Il a été conçu
-pour être prêt à l'emploi, après téléchargement. Mais Netbeans,
-Eclipse, ou autres, reste pour le moins des outils incontournables,
-bien qu'il soit possible de s'en passer et certains le font avec
-réussite j'imgine ;-)
-
-Il est disponible en telechargement sur :
-http://www.gitlab.com/Graphics3D/ qui contient des informations de base
-sur l'auteur du projet.
-
-Les sites de référence pour le code source sont:
-
-http://gitlab.com
-http://manudahmen.be
-
-Le logiciel accompagné de ces sources est fourni ici, sous forme de
-sources Java ou autre langage. Des releases plus ou moins fréquentes
-permettent à ce projet de se donner régulièrement à l'utilisateur.
-
-Le projet, cependant, n'évolue pas vite. Il "n'est pas à la hauteur"
-c'est-à-dire "L'essayer c'est l'adopter". ... Mais oui, mais
-Mesdames, Messieurs, parfois on se lasse, l'utilisateur, que dire
-alors du développeur? Eh bien, il ne perd pas courage et espère voir
-un jour ses solutions adoptées, ses problèmes résolus.
-
-Le prix:
-
-+ no cost for proper internet connexion. (Je crois que ça fait partie
-du texte de la GNU GPL ou d'un dire de RMS, notre grand gourou à tous.
-
-Licence logicielle:
-
-J'ai déjà pensé à bidouiller mes licences, à jouer à qui-perd-gagne,
-au pigeon idiot, au requin méchant.
-
-Disons que la licence est libre, en tant que développeur ou
-utlisateur vous avez un choix:
-- Microsoft Public Licence
-- FSF GNU General Licence (123+)
-- Une licence que je souhaite écrire moi-même, ou me faire
-aider d'une secrétaire ou d'un avocat.
-
-
-[DESSIN DE PILULLE] Emptycanvas ne contient pas de code malicieux a ma connaissance.
-Toutefois beaucoup de calculs sans accélération matérielle
-peuvent être lourds: dans ce cas, il vaut mieux ne pas utiliser Emptycanvas si
-vos calculs sont longs et pénibles, ou bien que votre machine n'est pas au standard
-du marché actuel.
-
-
-Le logiciel a été testé avec succès sur différentes plateformes
-et systèmes d'exploitation;
-
-WINDOWS² 7 32b
-WINDOWS² 7 64b
-LINUX² Ubuntu² 32b
-- Java²@Oracle ²
-- Java²@openjdk²
-
-Les jars ne sont pas signés pour l'instant:
-"""ce serait pas trop te"""
-"""demander que de ne pas .."""
-""te faire taxer "ton bic"!"""
-
-
-Emptycanvas utlise les bibliothèques tierces suivantes:
-- OpenGL (Jogl) OpenGL for Java.²
-- Montemedia randelhofs.ch Creative Commons² la bibliotheque
-MonteMedia d'une tierce partie est incluse²
-- JAI Java Advanced Imaging²
-- API Netbeans
-
-Qu'est-ce qu'il fait Emtycanvas au juste:
-C'était au départ une excercice. Je voulais je crois extraire la
-logique d'une ecImageStructureMatrix 2D en obtenant des paramètres de perspective,
-de localisation d'objets, d'idenfication de forme et de personnes.
-Le projet est lui-même à ce stade est plus modeste. Apparence
-d'une bibliothèque de classe permettant de dessiner des images et de
-construire des vidéos à partir des formes de base: comme le point,
-le triangle, le polygone, le segment de droite,
-les équations paramétriques, les polyhèdres, les formes
-de Bézier (courbes et surface) et bientôt les NURBS [à ce jour, février 2018
-je n'y suis pas encore arrivé, et les bonnes implémentations libres je
-ne sais pas s'il y en a].
-
-[février 2018] A venir:
-D'autres objets mathémathiques, pour le rendu,
-les utlisent comme les fractales, les processus stochastiques, et d'autres.
-
-Au niveau des vidéos, EC génère une série d'images. Au cours de la
-génération de chaque ecImageStructureMatrix, un processus - une méthode - permet
-de modifier la scène (composée d'objets géométriques tels que
-cités plus haut) on peut avoir une méthode qui calcule l'ecImageStructureMatrix suivante.
-Différents calculs sont posibles:
-- Modification de formes et de couleurs d'objets.
-- Ajout / Suppression d'objets.
-- Déplacement d'objets (y compris la caméra)
-- La rotation d'objet n'est pas toujours au point, il faudrait l'écrire pour
-chaque objet, ou enregistrer (registerPoint) les points qui comptent dans le
-dessin auprès de la matrice d'homothétie... Mais là je vais quand même prendre
-un dafalgan même si j'ai presque 40 ans et que j'ai réussi mes cours de maths.
+    <footer>
+        <p>
+            Licence Apache 2.0 | &copy; 2026 Manuel Daniel Dahmen<br>
+            Développé avec passion pour les mathématiques et le graphisme.
+        </p>
+    </footer>
 </body>
 </html>

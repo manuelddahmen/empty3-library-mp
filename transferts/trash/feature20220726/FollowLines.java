@@ -94,7 +94,7 @@ public class FollowLines {
                             }
                         if (add < getMaxNeighbours()) {
                             for (int a = 0; a < getMaxNeighbours(); a++) {
-                                Line l = new Line(i, j, x[a], y[a]);
+                                Line l = new Bezier(i, j, x[a], y[a]);
                                 lines.add(l);
                             }
                         }

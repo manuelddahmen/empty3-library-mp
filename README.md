@@ -216,7 +216,7 @@ Moteur de rendu et éléments de conception.
 
    // Ajouter des objets (exemple: sphère)
    Sphere sphere = new Sphere(new Point3D(0, 0, 0), 1.0);
-   sphere.texture(new ColorTexture(Color.RED));
+   sphere.texture(new ColorTexture(one.empty3.libs.Color.newCol(1.0f,0.0f,0f)));
    scene.add(sphere);
 
    // Configurer la caméra

@@ -22,7 +22,7 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
@@ -32,10 +32,10 @@ package one.empty3.tests;
 import one.empty3.apps.testobject.Resolution;
 import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.library.*;
+import one.empty3.library.core.nurbs.CourbeParametriquePolynomiale;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.nurbs.FctXY;
-import one.empty3.library.core.tribase.Tubulaire3refined;
-
+import one.empty3.library.core.nurbs.ParametricSurface;
+import one.empty3.library.core.tribase.Tubulaire5;
 import one.empty3.libs.Image;
 
 import java.io.File;
@@ -45,9 +45,9 @@ public class Balade1 extends TestObjetSub {
 
     private static final int VUE_1 = 75;
     private static final int FPS = 25;
-    Tubulaire3refined tube = new Tubulaire3refined();
+    Tubulaire5 tube = new Tubulaire5();
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         Balade1 balade1 = new Balade1();
         balade1.loop(true);
         balade1.setMaxFrames(VUE_1 * FPS);
@@ -63,7 +63,7 @@ public class Balade1 extends TestObjetSub {
     @Override
     public void ginit() {
 
-        super.ginit();
+
         ImageTexture sol_sableux;
 
         File f = new File(".\\res\\img\\planets\\carte-monde-vue-satellite.jpg");
@@ -76,19 +76,20 @@ public class Balade1 extends TestObjetSub {
             throw new RuntimeException("file not exists or can't read");
         }
 
-        tube = new Tubulaire3refined();
+        tube = new Tubulaire5();
         tube.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
 
         for (int i = 0; i < 5; i++) {
-            tube.getSoulCurve().getElem().getCoefficients().setElem(Point3D.random(10.0), i);
+            ((CourbeParametriquePolynomiale) (tube.getSoulCurve().getElem())).getCoefficients().setElem(Point3D.random(10.0), i);
         }
-        tube.getDiameterFunction().setElem(new FctXY() {
+        tube.getDiameterFunctionZ().setElem(new BezierMap(new ParametricSurface() {
+            final Point3D z = Point3D.Z.mult(2);
             @Override
-            public double result(double input) {
-                return 2.0;
+            public Point3D calculerPoint3D(double u, double v) {
+                return z;
             }
-        });
+        }));
         tube.setIncrU(0.01);
         tube.setIncrV(0.01);
 

@@ -302,7 +302,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
                     }
 
                     if (l1 != l2 && l1 != null && l2 != null)
-                        lines.add(new LineSegment(l1, l2, new ColorTexture(Color.BLUE)));
+                        lines.add(new LineSegment(l1, l2, new ColorTexture(one.empty3.libs.Color.newCol(0,0,1))));
                 }
             }
 

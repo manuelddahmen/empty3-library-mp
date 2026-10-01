@@ -30,7 +30,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="one.empty3.tests.Balade1" type="Application" factoryName="Application" singleton="false">
     <option name="MAIN_CLASS_NAME" value="one.empty3.tests.Balade1" />
-    <module name="empty3-library-mp.main" />
+      <module name="empty3-library-mp~1.main"/>
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="tests.tests2.simula.*" />

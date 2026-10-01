@@ -22,12 +22,14 @@
  *
  *
  *
- *  * Created by $user $date
+ *  * Created by Manuel D Dahmen -2026
  *
  *
  */
 
 package one.empty3.apps.testobject;
+
+import java.io.IOException;
 
 public class TestObjetSub extends TestObjet {
 
@@ -36,7 +38,7 @@ public class TestObjetSub extends TestObjet {
 
     }
 
-    public void ginit() {
+    public void ginit() throws IOException {
 
     }
 
