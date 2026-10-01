@@ -36,7 +36,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 25
-def versionName = "2026.9.26"
+def versionName = "2026.10.1"
 def moduleName = 'empty3_library_mp'
 
 kotlin {
