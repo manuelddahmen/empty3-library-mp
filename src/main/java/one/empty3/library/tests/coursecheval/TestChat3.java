@@ -23,12 +23,12 @@
 package one.empty3.library.tests.coursecheval;
 
 import one.empty3.apps.testobject.Resolution;
+import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.tribase.Plan3D;
+import one.empty3.libs.Color;
 
-import one.empty3.libs.*;
-import one.empty3.apps.testobject.TestObjetSub;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
@@ -68,7 +68,7 @@ public class TestChat3 extends TestObjetSub {
         return FPS * SECONDS * REAL_DAYS;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         TestChat3 testCourseChat = new TestChat3();
         testCourseChat.loop(true);
         testCourseChat.setResolution(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y());
@@ -86,7 +86,7 @@ public class TestChat3 extends TestObjetSub {
         parametricSurface = new Plan3D(Point3D.O0, Point3D.Z.mult(10.0), Point3D.X.mult(10.0));
         parametricSurface = new Sphere(Point3D.O0, 5);
 
-
+        setGenerate(GENERATE_IMAGE | GENERATE_MOVIE | GENERATE_SAVE_IMAGE);
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
 
         z().texture(new ColorTexture(one.empty3.libs.Color.newCol(0.0f,0.0f,0.0f)));

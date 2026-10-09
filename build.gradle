@@ -36,7 +36,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version("2.4.10")
 }
 def JAVA_VERSION = 25
-def versionName = "2026.10.1"
+def versionName = "2026.10.7"
 def moduleName = 'empty3_library_mp'
 
 kotlin {
@@ -754,7 +754,7 @@ jreleaser {
         publicKey = load.get('signing.publicKeyPath')
         passphrase = load.get('signing.passphrase')
         secretKey = load.get('signing.secretKey')
-        release.github.token = load.get('release.github.token')
+        //release.github.token = load.get('release.github.token')
 
     }
     project {

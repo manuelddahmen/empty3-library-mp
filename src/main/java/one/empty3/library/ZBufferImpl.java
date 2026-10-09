@@ -473,9 +473,9 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
             } else if (pointCount == 3) {
 
-                Point3D p1 = polygon.getPoints().getElem(0);
-                Point3D p2 = polygon.getPoints().getElem(1);
-                Point3D p3 = polygon.getPoints().getElem(2);
+                Point3D p1 = transformVec(polygon.getPoints().getElem(0));
+                Point3D p2 = transformVec(polygon.getPoints().getElem(1));
+                Point3D p3 = transformVec(polygon.getPoints().getElem(2));
 
                 tracerTriangle(
                         p1,

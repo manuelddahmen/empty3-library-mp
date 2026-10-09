@@ -60,22 +60,22 @@ public class MoonRotation4K extends TestObjetSub {
         scene = new Scene();
 
 
-        File file1 = new File("res/img/planets3");
+        File file1 = new File("res/img/planets2");
         if (file1.exists()) {
-            Object[] sorted = Arrays.stream(Objects.requireNonNull(new File("res/img/planets3/").list())).sorted().toArray();
+            Object[] sorted = Arrays.stream(Objects.requireNonNull(new File("res/img/planets2/").list())).sorted().toArray();
             planetsImagesFile = new ArrayList<>();
             for (Object o : sorted) {
                 if (o != null && !o.equals("others") && !o.equals("stars.jpg")) {
                     assert planetsImages != null;
                     System.out.println("File exists: " + o);
-                    planetsImagesFile.add(new File("res/img/planets3/" + o.toString()));
+                    planetsImagesFile.add(new File("res/img/planets2/" + o));
                 }
             }
             setMaxFrames(planetsImagesFile.size() * DURATION_SECONDS * FPS);
         }
 
 
-        imageTexture = new ImageTexture(new File(STARS_TEXTURE_PATH));
+        //imageTexture = new ImageTexture(new File(STARS_TEXTURE_PATH));
 
         // 2. Création de la sphère (Centre 0,0,0, Rayon 1.0)
         moon = new Sphere(new Axe(Point3D.Y.mult(-1), Point3D.Y), 1.0);
@@ -86,7 +86,7 @@ public class MoonRotation4K extends TestObjetSub {
         // 4. Configuration de la caméra (Rule 7 & 8: Vecteur UP explicite pour éviter matrice nulle)
         // Positionnée à z=3 pour voir la sphère de rayon 1.0
         Camera camera = new Camera(new Point3D(0.0, 0.0, 2.0), Point3D.O0, Point3D.Y);
-        camera.angleXY(((ZBufferImpl) z()).getDimx(), ((ZBufferImpl) z()).getDimy(), Math.PI / 3, Axis.Y);
+        camera.angleXY(z().getDimx(), z().getDimy(), Math.PI / 3, Axis.Y);
         scene.cameraActive(camera);
         oldI = -1;
     }
@@ -110,11 +110,11 @@ public class MoonRotation4K extends TestObjetSub {
         }
 
 
-        z().texture(imageTexture);
+        //z().texture(imageTexture);
         // 5. Animation de la rotation (Rule 2 & 5)
         // Calcul de l'angle en fonction de l'image actuelle (frame)
         double totalFrames = (DURATION_SECONDS * FPS);
-        double angle = 2.0 * Math.PI * (double) ((frame % ((int) totalFrames)) / totalFrames);
+        double angle = 2.0 * Math.PI * ((frame % ((int) totalFrames)) / totalFrames);
 
         // Rotation autour de l'axe Y : mise à jour des vecteurs d'orientation
         double cosA = Math.cos(angle);
@@ -129,7 +129,7 @@ public class MoonRotation4K extends TestObjetSub {
         moon.setOrig(new Point3D(0.0, 0.0, 0.0)); // Centre de rotation
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         MoonRotation4K animation = new MoonRotation4K();
         animation.setGenerate(GENERATE_IMAGE | GENERATE_MOVIE | GENERATE_SAVE_IMAGE);
         // Configuration du rendu
