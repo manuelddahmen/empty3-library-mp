@@ -22,7 +22,6 @@
 
 package one.empty3.library.tests.test3.xmlrepresentation;
 
-import nu.xom.tests.XOMTestCase;
 import one.empty3.library.Scene;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /*__
  * Created by manue on 20-09-19.
  */
-public class XmlSceneTest extends XOMTestCase {
-    public XmlSceneTest(String s) {
-        super(s);
-    }
+public class XmlSceneTest {
 
     @Test
     public void testScene() {

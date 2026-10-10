@@ -30,7 +30,7 @@
 package one.empty3.library;
 
 
-import one.empty3.libs.Image;/*
+/*
  * Copyright (c) 2017. Tous les fichiers dans ce programme sont soumis à la License Publique Générale GNU créée par la Free Softxware Association, Boston.
  * La plupart des licenses de parties tièrces sont compatibles avec la license principale.
  * Les parties tierces peuvent être soumises à d'autres licenses.
@@ -44,24 +44,19 @@ import one.empty3.libs.Image;/*
 
 /*__
  * *
- * Global license : * Microsoft Public Licence
+ * Global license : * Microsoft Public License
  * <p>
  * author Manuel Dahmen _manuel.dahmen@gmx.com_
  * <p>
  * *
  */
 
-import one.empty3.library.Point3D;
-import one.empty3.library.Polygon;
-import one.empty3.library.RepresentableConteneur;
-import one.empty3.library.ColorTexture;
-
 /**
  * Represents a 3D parallelepiped geometric object. A parallelepiped is a
  * six-faced figure (also called a hexahedron) with opposite faces that are
  * parallel and congruent. The class supports defining the dimensions and
  * texture of the parallelepiped.
- *
+ * <p>
  * This class extends {@link RepresentableConteneur}, allowing the parallelepiped
  * to contain and manage its sub-elements, such as polygons that make up its faces.
  *
@@ -77,7 +72,6 @@ public class Parallelepiped extends RepresentableConteneur {
         Point3D v_b = b.moins(base);
         Point3D v_c = c.moins(base);
 
-        Point3D p000 = base;
         Point3D p100 = base.plus(v_a);
         Point3D p010 = base.plus(v_b);
         Point3D p001 = base.plus(v_c);
@@ -87,15 +81,15 @@ public class Parallelepiped extends RepresentableConteneur {
         Point3D p111 = base.plus(v_a).plus(v_b).plus(v_c);
 
         // Face 1: Bottom (Z=0)
-        add(new Polygon(new Point3D[]{p000, p100, p110, p010}, texture));
+        add(new Polygon(new Point3D[]{base, p100, p110, p010}, texture));
         // Face 2: Top (Z=1)
         add(new Polygon(new Point3D[]{p001, p101, p111, p011}, texture));
         // Face 3: Front (Y=0)
-        add(new Polygon(new Point3D[]{p000, p100, p101, p001}, texture));
+        add(new Polygon(new Point3D[]{base, p100, p101, p001}, texture));
         // Face 4: Back (Y=1)
         add(new Polygon(new Point3D[]{p010, p110, p111, p011}, texture));
         // Face 5: Left (X=0)
-        add(new Polygon(new Point3D[]{p000, p010, p011, p001}, texture));
+        add(new Polygon(new Point3D[]{base, p010, p011, p001}, texture));
         // Face 6: Right (X=1)
         add(new Polygon(new Point3D[]{p100, p110, p111, p101}, texture));
     }
@@ -105,7 +99,7 @@ public class Parallelepiped extends RepresentableConteneur {
         this.b = b;
         this.c = c;
         texture(texture);
-        Point3D[] p = new Point3D[4];
+        Point3D[] p;
         for (int x = -1; x <= 1; x += 2) {
             p = new Point3D[4];
 
@@ -158,10 +152,6 @@ public class Parallelepiped extends RepresentableConteneur {
 
     public void setC(double c) {
         this.c = c;
-    }
-
-    Point3D p(Point3D p0, double a, Point3D p1) {
-        return p0.plus(p1.moins(p0).mult(a));
     }
 
     @Override

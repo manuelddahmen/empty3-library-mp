@@ -29,9 +29,16 @@
 
 package one.empty3.gui;
 
-
-import nu.xom.*;
 import one.empty3.library.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,6 +51,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -71,13 +79,14 @@ public class DataModel implements PropertyChangeListener {
         if (!inputEcXml.isDirectory() && inputEcXml.exists()) {
             sceneDirectory = inputEcXml.getParent();
             try {
-                Document build = new Builder().build(inputEcXml);
-                Element rootElement = build.getRootElement();
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(inputEcXml);
+                doc.getDocumentElement().normalize();
+                Element rootElement = doc.getDocumentElement();
 
                 browser(rootElement, new Scene());
-            } catch (ParsingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ParserConfigurationException | SAXException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -85,11 +94,59 @@ public class DataModel implements PropertyChangeListener {
         Logger.getAnonymousLogger().log(Level.INFO, "Model loaded");
     }
 
+    private List<Element> getChildElements(Element element) {
+        List<Element> list = new ArrayList<>();
+        NodeList nodeList = element.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                list.add((Element) node);
+            }
+        }
+        return list;
+    }
+
+    private List<Element> getChildElements(Element element, String tagName) {
+        List<Element> list = new ArrayList<>();
+        NodeList nodeList = element.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE && (tagName == null || node.getNodeName().equals(tagName))) {
+                list.add((Element) node);
+            }
+        }
+        return list;
+    }
+
+    private Element getFirstChildElement(Element element, String tagName) {
+        NodeList nodeList = element.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE && (tagName == null || node.getNodeName().equals(tagName))) {
+                return (Element) node;
+            }
+        }
+        return null;
+    }
+
+    private String getAttributeValue(Element element, String name) {
+        if (element.hasAttribute(name)) {
+            String val = element.getAttribute(name);
+            return val.isEmpty() ? null : val;
+        }
+        return null;
+    }
+
+    private String getLocalName(Element element) {
+        String localName = element.getLocalName();
+        return localName != null ? localName : element.getNodeName();
+    }
+
     private void browser(Element element, MatrixPropertiesObject representable) {
         ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-        Attribute aClass = element.getAttribute("class");
+        String classVal = getAttributeValue(element, "class");
         try {
-            Class<?> aClass1 = systemClassLoader.loadClass(aClass.getValue());
+            Class<?> aClass1 = systemClassLoader.loadClass(classVal);
             if (aClass1.equals(Scene.class)) {
                 this.scene = new Scene();
                 representable = scene;
@@ -99,15 +156,16 @@ public class DataModel implements PropertyChangeListener {
                     ((Representable) representable).declareProperties();
                 // TODO TEST EQUALITY CLASSES
             }
-            for (int i = 0; i < element.getChildElements().size(); i++) {
-                Element element1 = element.getChildElements().get(i);
-                String name = element1.getAttributeValue("name");
+            List<Element> childElements = getChildElements(element);
+            for (int i = 0; i < childElements.size(); i++) {
+                Element element1 = childElements.get(i);
+                String name = getAttributeValue(element1, "name");
                 if (name != null) {
                     if (name.contains("/"))
                         name = name.split("/")[0];
                 StructureMatrix declaredProperty = representable.getDeclaredProperty(name);
                 if (declaredProperty == null)
-                    System.err.println("Element: " + element.toString() + "Element class: " + element.getAttributeValue("class") + "\nStructureMatrix : null \nelement1: name=" + name + "\nElement1= " + element1.toString());
+                    System.err.println("Element: " + element.toString() + "Element class: " + getAttributeValue(element, "class") + "\nStructureMatrix : null \nelement1: name=" + name + "\nElement1= " + element1.toString());
                 else
                     browser(element1, (StructureMatrix) declaredProperty);
                 }
@@ -129,28 +187,30 @@ public class DataModel implements PropertyChangeListener {
             } catch (ClassesNotEqualException e) {
                 e.printStackTrace();
             }
-        if (!structureElement.getAttributeValue("class").equals(StructureMatrix.class.getName()))
-            throw new ClassesNotEqualException(Class.forName(structureElement.getAttributeValue("class")), StructureMatrix.class);
+        if (!getAttributeValue(structureElement, "class").equals(StructureMatrix.class.getName()))
+            throw new ClassesNotEqualException(Class.forName(getAttributeValue(structureElement, "class")), StructureMatrix.class);
 
-        String smClassName = structureElement.getAttributeValue("typeClass");
+        String smClassName = getAttributeValue(structureElement, "typeClass");
         try {
             Class<?> aClass = Class.forName(smClassName);
-            Element data = structureElement.getFirstChildElement("Data");
-            int dim = Integer.parseInt(structureElement.getAttributeValue("dim"));
+            Element data = getFirstChildElement(structureElement, "Data");
+            int dim = Integer.parseInt(getAttributeValue(structureElement, "dim"));
             sm.init(dim, aClass);
-            int size = data.getChildElements("Cell").size();
+            List<Element> cellElements = getChildElements(data, "Cell");
+            int size = cellElements.size();
             for (int i = 0; i < size; i++) {
                 int l, c;
-                Element cell = data.getChildElements("Cell").get(i);
-                l = Integer.parseInt(cell.getAttributeValue("l"));
-                c = Integer.parseInt(cell.getAttributeValue("c"));
-                if (cell.getChildElements().size() > 0) {
+                Element cell = cellElements.get(i);
+                l = Integer.parseInt(getAttributeValue(cell, "l"));
+                c = Integer.parseInt(getAttributeValue(cell, "c"));
+                List<Element> cellChildren = getChildElements(cell);
+                if (cellChildren.size() > 0) {
 
                     Object valueOf = null;
-                    valueOf = valueOf(cell.getChildElements().get(0));
+                    valueOf = valueOf(cellChildren.get(0));
                     Object elemLc = null;
                     if (valueOf == null)
-                        elemLc = browser(cell.getChildElements().get(0), sm, dim, l, c);
+                        elemLc = browser(cellChildren.get(0), sm, dim, l, c);
                     if (valueOf != null || elemLc != null) {
 
                         if (valueOf instanceof Representable && size > 0 && size == 3) {
@@ -195,8 +255,8 @@ public class DataModel implements PropertyChangeListener {
     }
 
     private Object valueOf(Element simple) {
-        String localName = simple.getLocalName();
-        String value = simple.getValue();
+        String localName = getLocalName(simple);
+        String value = simple.getTextContent();
         switch (localName) {
             case "Double":
                 return Double.parseDouble(value);
@@ -217,7 +277,7 @@ public class DataModel implements PropertyChangeListener {
 
         try {
 
-            Class<?> rClass = Class.forName(matrixContainedObjet.getAttributeValue("class"));
+            Class<?> rClass = Class.forName(getAttributeValue(matrixContainedObjet, "class"));
             Object o = rClass.newInstance();
             if (rClass.getMethod("getDeclaredProperty", String.class) != null) {
                 if (o instanceof Representable) {
@@ -355,7 +415,7 @@ public class DataModel implements PropertyChangeListener {
         }
     }
 
-    private static ZipEntry getEntry(ZipFile zipIn, String zipEntry) throws IOException {
+    static ZipEntry getEntry(ZipFile zipIn, String zipEntry) throws IOException {
         return zipIn.getEntry(zipEntry);
     }
 

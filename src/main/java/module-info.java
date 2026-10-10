@@ -9,11 +9,10 @@ module empty3_library_mp {
     requires java.datatransfer;
     requires java.desktop;
     requires java.logging;
-    requires nu.xom;
     requires org.apache.commons.net;
     requires org.checkerframework.checker.qual;
     requires partial.desktop;
-    requires  org.junit.jupiter.api;
+    requires org.junit.jupiter.api;
     requires org.slf4j;
     //requires kotlin.stdlib;
 //    requires jcodec.javase;
