@@ -86,7 +86,7 @@ if(in==null)
         //Logger.getAnonymousLogger().log(Level.INFO, "AVIDemo " + DecodeMonte.class.getPackage().getImplementationVersion());
         Logger.getAnonymousLogger().log(Level.INFO, "This is a demo of the Monte Media library.");
         Logger.getAnonymousLogger().log(Level.INFO, "Copyright © Werner Randelshofer. All Rights Reserved.");
-        Logger.getAnonymousLogger().log(Level.INFO, "License: Creative Commons Attribution 3.0.");
+        Logger.getAnonymousLogger().log(Level.INFO, "License:  Attribution 3.0.");
         
 
         try {

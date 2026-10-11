@@ -27,11 +27,6 @@
  *
  */
 
-/*__
- * *
- * Global license  Apache 2.0 or GNU GPL 2.0
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- */
 package one.empty3.library;
 
 import one.empty3.libs.Image;

@@ -29,28 +29,6 @@
 
 package one.empty3.library;
 
-
-/*
- * Copyright (c) 2017. Tous les fichiers dans ce programme sont soumis à la License Publique Générale GNU créée par la Free Softxware Association, Boston.
- * La plupart des licenses de parties tièrces sont compatibles avec la license principale.
- * Les parties tierces peuvent être soumises à d'autres licenses.
- * Montemedia : Creative Commons
- * ECT : Tests à valeur artistique ou technique.
- * La partie RayTacer a été honteusement copiée sur le Net. Puis traduite en Java et améliorée.
- * Java est une marque de la société Oracle.
- *
- * Pour le moment le programme est entièrement accessible sans frais supplémentaire. Get the sources, build it, use it, like it, share it.
- */
-
-/*__
- * *
- * Global license : * Microsoft Public License
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- * <p>
- * *
- */
-
 /**
  * Represents a 3D parallelepiped geometric object. A parallelepiped is a
  * six-faced figure (also called a hexahedron) with opposite faces that are

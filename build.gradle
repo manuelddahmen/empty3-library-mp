@@ -621,7 +621,7 @@ publishing {
                 inceptionYear = '2008'
                 licenses {
                     license {
-                        name = "Apache version 2"
+                        name = "The Apache License, Version 2.0"
                         url = "https://www.apache.org/licenses/LICENSE-2.0"
                         distribution = "repo"
                     }
@@ -760,7 +760,7 @@ jreleaser {
         publicKey = load.get('signing.publicKeyPath')
         passphrase = load.get('signing.passphrase')
         secretKey = load.get('signing.secretKey')
-        //release.github.token = load.get('release.github.token')
+        release.github.token = load.get('release.github.token')
 
     }
     project {
