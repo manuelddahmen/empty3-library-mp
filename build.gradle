@@ -34,6 +34,7 @@ plugins {
     id("org.jreleaser") version("1.20.0")
     id("signing")
     id("org.jetbrains.kotlin.jvm") version("2.1.0")
+ id("org.sonatype.gradle.plugins.scan") version( "3.1.3")
 }
 def JAVA_VERSION = 17
 
@@ -44,7 +45,11 @@ kotlin {
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
 }
-
+ossIndexAudit{
+isAllConfigurations=false;
+outputFormat='JSON_CYCLONE_DX_1_4';
+resultFilePath='build/bom.json'
+}
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(JAVA_VERSION)
