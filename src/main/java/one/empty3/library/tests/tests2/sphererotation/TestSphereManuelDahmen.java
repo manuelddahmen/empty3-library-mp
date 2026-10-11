@@ -20,7 +20,6 @@
  *
  */
 
-/*
 
 
 package one.empty3.library.tests.tests2.sphererotation;

@@ -36,7 +36,6 @@ import one.empty3.library.core.extra.SimpleSphere;
 import one.empty3.library.core.extra.SimpleSphereAvecTexture;
 import one.empty3.library.core.extra.Tourbillon;
 import one.empty3.library.core.nurbs.BSpline;
-import one.empty3.library.core.nurbs.NurbsSurface;
 import one.empty3.library.core.tribase.Plan3D;
 import one.empty3.library.core.tribase.TRIEllipsoide;
 import one.empty3.library.core.tribase.TRISphere;
@@ -672,17 +671,6 @@ public class Loader implements SceneLoader {
                 continue;
             }
             if ("nurbs".equals(id)) {
-                try {
-                    NurbsSurface n = interpreteH.interpreteNurbs();
-                    sc.add(n);
-                    latest = n;
-                    failed = false;
-
-                } catch (InterpreteException ex) {
-                    failed = true;
-                    Logger.getLogger(Loader.class.getName()).log(Level.SEVERE,
-                            null, ex);
-                }
                 continue;
             }
             if ("quads".equals(id)) {

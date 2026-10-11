@@ -37,7 +37,6 @@ import one.empty3.library.*;
 import one.empty3.library.Polygon;
 import one.empty3.library.core.extra.*;
 import one.empty3.library.core.nurbs.BSpline;
-import one.empty3.library.core.nurbs.NurbsSurface;
 import one.empty3.library.core.tribase.Plan3D;
 import one.empty3.library.core.tribase.TRIEllipsoide;
 import one.empty3.library.core.tribase.TRISphere;
@@ -507,13 +506,6 @@ public class InterpreteFacade {
     }
 
     public void interpreteMODTranslation(Representable r) {
-    }
-
-    public NurbsSurface interpreteNurbs() throws InterpreteException {
-        NurbsSurface n = null;
-        InterpreteNurbs iq = new InterpreteNurbs();
-        n = (NurbsSurface) iq.interprete(text, pos);
-        return n;
     }
 
     public void interpreteParentheseFermante() throws InterpreteException {
