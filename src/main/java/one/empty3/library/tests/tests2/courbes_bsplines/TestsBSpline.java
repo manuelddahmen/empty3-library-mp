@@ -20,11 +20,7 @@
  *
  */
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package one.empty3.library.tests.tests2.courbes_bsplines;
 
 import one.empty3.library.Point3D;

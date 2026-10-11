@@ -32,7 +32,7 @@
 %
 %   See also snakeminimize.
 
-% (C) Copyright 2009-2010, All rights reserved.
+% (C) Copyright 2009-2010, .
 % Cris Luengo, Uppsala, 18 September 2009.
 %
 % 4 March 2010: Added DIP_SNAKE(IMG) syntax, improved indexing, 

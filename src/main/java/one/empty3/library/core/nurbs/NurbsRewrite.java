@@ -30,28 +30,7 @@
 package one.empty3.library.core.nurbs;
 
 public class NurbsRewrite {
-    /*  Subroutine to generate B-spline basis functions for open knot vectors
-
-     C code for An Introduction to NURBS
-     by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
-	
-     Name: basis.c
-     Language: C
-     Subroutines called: none
-     Book reference: p. 279
-
-     c        = order of the B-spline basis function
-     d        = first term of the basis function recursion relation
-     e        = second term of the basis function recursion relation
-     npts     = number of defining polygon vertices
-     n[]      = array containing the basis functions
-     n[1] contains the basis function associated with B1 etc.
-     nplusc   = constant -- npts + c -- maximum number of knot values
-     t        = parameter value
-     temp[]   = temporary array
-     coordArr[]      = knot vector
-     */
+   <>
 
     public static void basis(int c, double t, int npts, int[] x, double[] n) {
         int nplusc;
@@ -137,7 +116,7 @@ public class NurbsRewrite {
 
      C code for An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: rbspsurf.c
      Language: C
@@ -268,7 +247,7 @@ public class NurbsRewrite {
 
      C code for An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: sumrbas.c
      Language: C
@@ -319,7 +298,7 @@ public class NurbsRewrite {
     /*
      Test program for C code from An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: trbsurf.c
      Purpose: Test rational B-spline surface generator

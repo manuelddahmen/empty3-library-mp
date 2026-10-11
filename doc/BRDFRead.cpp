@@ -1,4 +1,4 @@
-// Copyright 2005 Mitsubishi Electric Research Laboratories All Rights Reserved.
+// Copyright 2005 Mitsubishi Electric Research Laboratories .
 
 // Permission to use, copy and modify this software and its documentation without
 // fee for educational, research and non-profit purposes, is hereby granted, provided

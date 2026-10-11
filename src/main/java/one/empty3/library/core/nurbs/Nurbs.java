@@ -34,7 +34,7 @@ public class Nurbs {
 
      C code for An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: basis.c
      Language: C
@@ -137,7 +137,7 @@ public class Nurbs {
 
      C code for An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: rbspsurf.c
      Language: C
@@ -267,7 +267,7 @@ public class Nurbs {
 
      C code for An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: sumrbas.c
      Language: C
@@ -318,7 +318,7 @@ public class Nurbs {
     /*
      Test program for C code from An Introduction to NURBS
      by David F. Rogers. Copyright (C) 2000 David F. Rogers,
-     All rights reserved.
+     .
 	
      Name: trbsurf.c
      Purpose: Test rational B-spline surface generator

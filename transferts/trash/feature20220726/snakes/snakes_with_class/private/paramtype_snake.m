@@ -1,6 +1,6 @@
 %PARAMTYPE_SNAKE   Called by PARAMTYPE.
 
-% (C) Copyright 1999-2010, All rights reserved.
+% (C) Copyright 1999-2010, .
 % Cris Luengo, 18 September 2009.
 % Based on PARAMTYPE_DATASET.
 %
