@@ -27,14 +27,7 @@
  *
  */
 
-/*__
- * *
- * Global license : * CC Attribution
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- * <p>
- * *
- */
+
 package one.empty3.library.colorcomp;
 
 import one.empty3.libs.*;

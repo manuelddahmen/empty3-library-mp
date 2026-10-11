@@ -20,13 +20,7 @@
  *
  */
 
-/*__
- Global license :
 
- Microsoft Public Licence
-
- author Manuel Dahmen _manuel.dahmen@gmx.com_
- ***/
 
 
 package one.empty3.library.tests.tests2.trigenerateurabstract.triextrusiongeneralisee;

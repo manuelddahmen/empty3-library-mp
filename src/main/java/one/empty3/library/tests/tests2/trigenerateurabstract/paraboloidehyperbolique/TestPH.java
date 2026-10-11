@@ -20,15 +20,7 @@
  *
  */
 
-/*__
- * *
- * Global license :  *
- * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- * <p>
- * *
- */
+
 package one.empty3.library.tests.tests2.trigenerateurabstract.paraboloidehyperbolique;
 
 import one.empty3.library.Camera;

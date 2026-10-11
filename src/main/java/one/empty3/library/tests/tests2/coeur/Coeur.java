@@ -20,16 +20,6 @@
  *
  */
 
-/*__
- Global license :
-
- Microsoft Public Licence
-
- author Manuel Dahmen <manuel.dahmen@gmx.com>
-
- Creation time 25-oct.-2014
- ***/
-
 
 package one.empty3.library.tests.tests2.coeur;
 

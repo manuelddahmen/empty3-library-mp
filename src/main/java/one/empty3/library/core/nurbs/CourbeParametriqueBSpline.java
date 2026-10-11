@@ -27,16 +27,7 @@
  *
  */
 
-/*__
- * *
- * Global license : * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- * <p>
- * Creation time 19-sept.-2014
- * BAD UGLY COMME TA MERE
- * *
- */
+
 package one.empty3.library.core.nurbs;
 
 /*__

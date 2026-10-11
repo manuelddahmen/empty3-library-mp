@@ -27,14 +27,6 @@
  *
  */
 
-/*__
- * Global license :
- * <p>
- * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- ***/
-
 
 package one.empty3.apps.testobject;
 

@@ -20,13 +20,6 @@
  *
  */
 
-/*__
- Global license :
-
- Microsoft Public Licence
-
- author Manuel Dahmen <manuel.dahmen@gmx.com>
- ***/
 
 
 package one.empty3.library.tests.tests2.TestSphere;

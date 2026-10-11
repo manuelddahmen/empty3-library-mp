@@ -20,15 +20,7 @@
  *
  */
 
-/*__
- * *
- * Global license :  *
- * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen <manuel.dahmen@gmx.com>
- * <p>
- * *
- */
+
 package one.empty3.library.tests.tests2.formesbase;
 
 import one.empty3.apps.testobject.TestObjetSub;

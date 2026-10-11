@@ -20,17 +20,6 @@
  *
  */
 
-/*__
- * *
- * Global license :  *
- * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen <manuel.dahmen@gmx.com>
- * <p>
- * Creation time 17-sept.-2014
- * <p>
- * *
- */
 package one.empty3.library.tests.tests2.nurbs;
 
 import one.empty3.apps.testobject.TestObjetSub;

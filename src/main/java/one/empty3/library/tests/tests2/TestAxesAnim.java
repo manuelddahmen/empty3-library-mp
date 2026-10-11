@@ -31,17 +31,6 @@ import one.empty3.library.core.tribase.Plan3D;
 import one.empty3.libs.*;
 import one.empty3.apps.testobject.TestObjetSub;
 
-/*__
- * *
- * Global license :  *
- * Microsoft Public Licence
- * <p>
- * author Manuel Dahmen <manuel.dahmen@gmx.com>
- * <p>
- * Creation time 02-nov.-2014
- * <p>
- * *
- */
 
 /*__
  *

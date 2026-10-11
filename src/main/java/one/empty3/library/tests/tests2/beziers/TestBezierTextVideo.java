@@ -20,15 +20,6 @@
  *
  */
 
-/*__
- * *
- * Global license :  *
- * CC Attribution
- * <p>
- * author Manuel Dahmen <manuel.dahmen@gmx.com>
- * <p>
- * *
- */
 package one.empty3.library.tests.tests2.beziers;
 
 

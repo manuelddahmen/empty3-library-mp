@@ -27,16 +27,7 @@
  *
  */
 
-/*__
- * *
- * Global license : * GNU GPL v3
- * <p>
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- * <p>
- * Creation time 2015-03-25
- * <p>
- * *
- */
+
 package one.empty3.library.core.tribase;
 
 import one.empty3.library.ColorTexture;

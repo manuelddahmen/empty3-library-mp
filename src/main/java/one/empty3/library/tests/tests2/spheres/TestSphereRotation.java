@@ -20,16 +20,6 @@
  *
  */
 
-/*__
- Global license :
-
-
- author Manuel Dahmen _manuel.dahmen@gmx.com_
-
- Creation time 06-nov.-2014
-
- Updated 08/09/2015
- ***/
 
 
 package one.empty3.library.tests.tests2.spheres;

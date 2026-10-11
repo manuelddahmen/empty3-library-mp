@@ -32,19 +32,6 @@ package one.empty3.library;
 
 import one.empty3.libs.Image;
 
-/*__
- * *
- * Global license : * CC Attribution
- *
- * author Manuel Dahmen _manuel.dahmen@gmx.com_
- *
- **
- */
-/*__
- *
- * Meta Description missing
- * @author Manuel Dahmen dathewolf@gmail.com
- */
 class AudioPlay {
 
     public static void main(String args[]) throws Exception {
