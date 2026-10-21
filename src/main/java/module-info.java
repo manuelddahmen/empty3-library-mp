@@ -98,4 +98,6 @@ module empty3_library_mp {
     exports one.empty3.library1.tree;
     exports one.empty3.pointset;
     exports one.empty3.scenario;
+    exports one.empty3.testagentcode;
+    opens one.empty3.testagentcode;
 }

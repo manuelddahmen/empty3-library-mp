@@ -65,7 +65,7 @@ public class Colors {
 
     private static final Random random = new Random();
 
-    public Color random() {
+    public static Color random() {
         return Color.newCol((float) random.nextDouble(),
                 (float) random.nextDouble(),
                 (float) random.nextDouble()

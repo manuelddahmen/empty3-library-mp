@@ -41,18 +41,6 @@ import java.util.logging.Logger;
  * @author Manuel Dahmen
  */
 public class CameraInPath extends Camera {
-    //private double angleA = 0;
-    //private double angleB = 0;
-
-    /*__
-     * Need to get a position of the camera since it's a Z-axis
-     * Rotate, position angles around the camera.
-     */
-    /*public void rotateSphere(double angleARad, double angleBRad) {
-        this.angleA = angleARad;
-        this.angleB = angleBRad;
-    }*/
-
     protected final StructureMatrix<ParametricCurve> curve = new StructureMatrix<>(0, ParametricCurve.class);
     protected final StructureMatrix<Double> t = new StructureMatrix<>(0, Double.class);
 
@@ -88,23 +76,6 @@ public class CameraInPath extends Camera {
         this.curve.setElem(maCourbe);
     }
 
-    /*
-        public void calculerMatriceT(Point3D verticale) {
-            double t = this.t.getElem() ;
-            Point3D eye = courbe.getElem().calculerPoint3D(t);
-            //TODO DEV
-            //setLookat(courbe.getElem().calculerPoint3D(t+ t* 1.001));
-
-            Point3D dir = getLookat().moins(eye).norme1();
-            Point3D tan = eye.moins(courbe.getElem().calculerPoint3D(t - 0.001)).norme1();
-            Point3D vert = getVerticale().getElem()==null?(tan.prodVect(dir).norme1());//:getVerticale().data0d;
-            matrice.setElem(new Matrix33(new Point3D[] { tan, tan.prodVect(dir).norme1(),  dir }));
-            Logger.getAnonymousLogger().log(Level.INFO, "Matrice "+matrice.getElem().toString());
-            setEye(eye);
-
-        }
-    */
-
 
     public Point3D pProjVerticale(Point3D vVert) {
         if(vVert==null) {
@@ -133,8 +104,8 @@ public class CameraInPath extends Camera {
         matrice.setElem(new Matrix33(new Point3D[]{tan, vert2,
                 tan.prodVect(vert2).norme1()}).tild());
         setVerticale(vert2);
-        Logger.getAnonymousLogger().log(Level.INFO, "Matrice (tan, vert, dir)" + matrice.getElem().toString());
         setEye(eye);
+        Logger.getAnonymousLogger().log(Level.FINEST, "Matrice (tan, vert, dir)" + matrice.getElem().toString());
     }
 
     @Override
