@@ -590,25 +590,15 @@ public class TreeNode {
                 evalRes.setElem(s1 * eval.getElem());
             }
             return evalRes;
-        } else if (cType instanceof VectorTreeNodeType) {
+        } else if (cType instanceof VectorTreeNodeType || this instanceof VectorTreeNode) {
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).eval();
+            }
             evalRes = new StructureMatrix<>(1, Double.class);
-            /*
-            int dim = 0;
-            for (int i = 0; i <getChildren().get(0).getChildren().size() ; i++) {
-                if(dim==0) dim = 1;
-                if(getChildren().get(0).getChildren().get(i).type.equals(VectorTreeNode.class)) {
-                    dim = 2;
-                }
-            }
-            if(dim==2) evalRes = new StructureMatrix<>(2, Double.class);
-            for (int i = 0; i < getChildren().get(0).getChildren().size(); i++) {
-                StructureMatrix<Double> eval = getChildren().get(0).getChildren().get(i).eval();///!!!
-                evalRes.setElem(eval.getElem(i), i);
-            }
-             */
-            for (int i = 0; i < getChildren().get(0).getChildren().size(); i++) {
-                StructureMatrix<Double> eval = getChildren().get(0).getChildren().get(i).eval();///!!!
-                evalRes.setElem(eval.getElem(i), i);
+            for (int i = 0; i < getChildren().size(); i++) {
+                StructureMatrix<Double> eval = getChildren().get(i).eval();
+                double val = (eval.getDim() == 1) ? (eval.getData1d().isEmpty() ? 0.0 : eval.getElem(0)) : eval.getElem();
+                evalRes.setElem(val, i);
             }
             return evalRes;
         } else if (cType instanceof LogicalNumericTreeNodeType) {
@@ -647,6 +637,232 @@ public class TreeNode {
             }
         }
         return null;
+    }
+
+    public String toFormula() {
+        TreeNodeType cType = (getChildren().size() == 0) ? type : getChildren().get(0).type;
+        if (cType instanceof DoubleTreeNodeType || this instanceof TreeNodeDouble) {
+            if (objects != null && objects.length > 0 && objects[0] instanceof String) {
+                return (String) objects[0];
+            }
+            return expressionString != null ? expressionString : "0.0";
+        } else if (cType instanceof VariableTreeNodeType || this instanceof TreeNodeVariable) {
+            if (objects != null && objects.length > 0 && objects[0] instanceof String) {
+                return (String) objects[0];
+            }
+            return expressionString != null ? expressionString : "x";
+        } else if (cType instanceof SignTreeNodeType) {
+            double s1 = cType.getSign1();
+            String inner = !getChildren().isEmpty() ? getChildren().get(0).toFormula() : (expressionString != null ? expressionString : "0.0");
+            if (s1 < 0) {
+                return "(-" + inner + ")";
+            }
+            return inner;
+        } else if (cType instanceof TermTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return expressionString != null ? expressionString : "0.0";
+            }
+            if (getChildren().size() == 1) {
+                double sign = getChildren().get(0).type != null ? getChildren().get(0).type.getSign1() : 1.0;
+                String f = getChildren().get(0).toFormula();
+                return sign < 0 ? "(-" + f + ")" : f;
+            }
+            StringBuilder sb = new StringBuilder("(");
+            for (int i = 0; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                String f = child.toFormula();
+                if (i == 0) {
+                    if (sign < 0) sb.append("-").append(f);
+                    else sb.append(f);
+                } else {
+                    if (sign < 0) sb.append(" - ").append(f);
+                    else sb.append(" + ").append(f);
+                }
+            }
+            sb.append(")");
+            return sb.toString();
+        } else if (cType instanceof FactorTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return expressionString != null ? expressionString : "1.0";
+            }
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).toFormula();
+            }
+            String acc = getChildren().get(0).toFormula();
+            for (int i = 1; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                String f = child.toFormula();
+                if (sign < 0) {
+                    acc = "(" + acc + " / " + f + ")";
+                } else {
+                    acc = "(" + acc + " * " + f + ")";
+                }
+            }
+            return acc;
+        } else if (cType instanceof PowerTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return expressionString != null ? expressionString : "1.0";
+            }
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).toFormula();
+            }
+            String acc = getChildren().get(0).toFormula();
+            for (int i = 1; i < getChildren().size(); i++) {
+                acc = "(" + acc + " ^ " + getChildren().get(i).toFormula() + ")";
+            }
+            return acc;
+        } else if (cType instanceof VectorTreeNodeType || this instanceof VectorTreeNode) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < getChildren().size(); i++) {
+                if (i > 0) sb.append(", ");
+                sb.append(getChildren().get(i).toFormula());
+            }
+            return sb.toString();
+        } else if (cType instanceof TreeTreeNodeType) {
+            if (!getChildren().isEmpty()) {
+                return "(" + getChildren().get(0).toFormula() + ")";
+            }
+            return expressionString != null ? expressionString : "0.0";
+        } else if (cType instanceof IdentTreeNodeType) {
+            if (!getChildren().isEmpty()) {
+                return getChildren().get(0).toFormula();
+            }
+            return expressionString != null ? expressionString : "0.0";
+        }
+
+        if (!getChildren().isEmpty()) {
+            return getChildren().get(0).toFormula();
+        }
+        return expressionString != null ? expressionString : "0.0";
+    }
+
+    public String differentiate(String variableName) {
+        TreeNodeType cType = (getChildren().size() == 0) ? type : getChildren().get(0).type;
+        if (cType instanceof DoubleTreeNodeType || this instanceof TreeNodeDouble) {
+            return "0.0";
+        } else if (cType instanceof VariableTreeNodeType || this instanceof TreeNodeVariable) {
+            String varName = toFormula().trim();
+            return varName.equals(variableName) ? "1.0" : "0.0";
+        } else if (cType instanceof SignTreeNodeType) {
+            double s1 = cType.getSign1();
+            String inner = !getChildren().isEmpty() ? getChildren().get(0).differentiate(variableName) : "0.0";
+            if (s1 < 0) {
+                return FormulaSimplifier.simplifyNegation(inner);
+            }
+            return inner;
+        } else if (cType instanceof TermTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return "0.0";
+            }
+            if (getChildren().size() == 1) {
+                double sign = getChildren().get(0).type != null ? getChildren().get(0).type.getSign1() : 1.0;
+                String d = getChildren().get(0).differentiate(variableName);
+                return sign < 0 ? FormulaSimplifier.simplifyNegation(d) : d;
+            }
+            String acc = null;
+            for (int i = 0; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                String d = child.differentiate(variableName);
+                if (i == 0) {
+                    if (sign < 0) acc = FormulaSimplifier.simplifyNegation(d);
+                    else acc = d;
+                } else {
+                    if (sign < 0) acc = FormulaSimplifier.simplifyDifference(acc, d);
+                    else acc = FormulaSimplifier.simplifySum(acc, d);
+                }
+            }
+            return acc != null ? acc : "0.0";
+        } else if (cType instanceof FactorTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return "0.0";
+            }
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).differentiate(variableName);
+            }
+            String accExpr = getChildren().get(0).toFormula();
+            String accDiff = getChildren().get(0).differentiate(variableName);
+            for (int i = 1; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                String bExpr = child.toFormula();
+                String bDiff = child.differentiate(variableName);
+                if (sign < 0) {
+                    // Quotient rule: (u / v)' = (u' * v - u * v') / (v ^ 2)
+                    String term1 = FormulaSimplifier.simplifyProduct(accDiff, bExpr);
+                    String term2 = FormulaSimplifier.simplifyProduct(accExpr, bDiff);
+                    String numerator = FormulaSimplifier.simplifyDifference(term1, term2);
+                    String denom = FormulaSimplifier.simplifyPower(bExpr, "2.0");
+                    accDiff = FormulaSimplifier.simplifyQuotient(numerator, denom);
+                    accExpr = FormulaSimplifier.simplifyQuotient(accExpr, bExpr);
+                } else {
+                    // Product rule: (u * v)' = u' * v + u * v'
+                    String term1 = FormulaSimplifier.simplifyProduct(accDiff, bExpr);
+                    String term2 = FormulaSimplifier.simplifyProduct(accExpr, bDiff);
+                    accDiff = FormulaSimplifier.simplifySum(term1, term2);
+                    accExpr = FormulaSimplifier.simplifyProduct(accExpr, bExpr);
+                }
+            }
+            return accDiff;
+        } else if (cType instanceof PowerTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return "0.0";
+            }
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).differentiate(variableName);
+            }
+            String u = getChildren().get(0).toFormula();
+            String uDiff = getChildren().get(0).differentiate(variableName);
+            for (int i = 1; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                String v = child.toFormula();
+                String vDiff = child.differentiate(variableName);
+                if (FormulaSimplifier.isZero(vDiff) && FormulaSimplifier.isZero(uDiff)) {
+                    uDiff = "0.0";
+                } else if (FormulaSimplifier.isZero(vDiff)) {
+                    // Constant exponent: n * u^(n-1) * u'
+                    String expMinus1 = FormulaSimplifier.simplifyDifference(v, "1.0");
+                    String uPow = FormulaSimplifier.simplifyPower(u, expMinus1);
+                    String nU = FormulaSimplifier.simplifyProduct(v, uPow);
+                    uDiff = FormulaSimplifier.simplifyProduct(nU, uDiff);
+                } else {
+                    // General power rule: u^v * (v' * log(u) + v * u' / u)
+                    String logU = "(log(" + u + "))";
+                    String term1 = FormulaSimplifier.simplifyProduct(vDiff, logU);
+                    String vUdiff = FormulaSimplifier.simplifyProduct(v, uDiff);
+                    String term2 = FormulaSimplifier.simplifyQuotient(vUdiff, u);
+                    String sum = FormulaSimplifier.simplifySum(term1, term2);
+                    String uPowV = FormulaSimplifier.simplifyPower(u, v);
+                    uDiff = FormulaSimplifier.simplifyProduct(uPowV, sum);
+                }
+                u = FormulaSimplifier.simplifyPower(u, v);
+            }
+            return uDiff;
+        } else if (cType instanceof VectorTreeNodeType || this instanceof VectorTreeNode) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < getChildren().size(); i++) {
+                if (i > 0) sb.append(", ");
+                sb.append(getChildren().get(i).differentiate(variableName));
+            }
+            return sb.toString();
+        } else if (cType instanceof TreeTreeNodeType) {
+            if (!getChildren().isEmpty()) {
+                return "(" + getChildren().get(0).differentiate(variableName) + ")";
+            }
+            return "0.0";
+        } else if (cType instanceof IdentTreeNodeType) {
+            if (!getChildren().isEmpty()) {
+                return getChildren().get(0).differentiate(variableName);
+            }
+            return "0.0";
+        }
+
+        if (!getChildren().isEmpty()) {
+            return getChildren().get(0).differentiate(variableName);
+        }
+        return "0.0";
     }
 
     public ArrayList<TreeNode> getChildren() {

@@ -764,7 +764,7 @@ test {
     classpath = classpath.filter { !it.name.contains('xmlsec') }
 
     // Allow JUnit to instantiate test classes in one.empty3 package via reflection
-    jvmArgs '--add-opens=empty3_library_mp/one.empty3=org.junit.platform.commons', '--add-opens=empty3_library_mp/one.empty3.testagentcode=org.junit.platform.commons'
+    jvmArgs '--add-opens=empty3_library_mp/one.empty3=org.junit.platform.commons', '--add-opens=empty3_library_mp/one.empty3.testagentcode=org.junit.platform.commons', '--add-opens=empty3_library_mp/one.empty3.library1.tree=org.junit.platform.commons'
 
     testLogging {
         events "passed", "skipped", "failed"

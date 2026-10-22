@@ -87,4 +87,22 @@ public class TreeTreeNodeVector extends TreeNode {
         this.functionName = functionName;
     }
 
+    @Override
+    public String toFormula() {
+        String func = functionName != null ? functionName : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : "");
+        String arg = tree != null && tree.getRoot() != null ? tree.getRoot().toFormula() : (objects != null && objects.length > 0 && objects[0] instanceof String ? (String) objects[0] : "");
+        return func + "(" + arg + ")";
+    }
+
+    @Override
+    public String differentiate(String variableName) {
+        String func = functionName != null ? functionName : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : "");
+        if (tree != null && tree.getRoot() != null) {
+            if ("sum".equalsIgnoreCase(func)) {
+                String diffArg = tree.getRoot().differentiate(variableName);
+                return "sum(" + diffArg + ")";
+            }
+        }
+        return "0.0";
+    }
 }

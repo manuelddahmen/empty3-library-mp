@@ -1291,11 +1291,34 @@ public class AlgebraicTree extends Tree {
     }
 
 
+    public TreeNode getRoot() {
+        return root;
+    }
+
     public AlgebraicTree createWithSameParameters(String formula) {
         AlgebraicTree algebraicTree = new AlgebraicTree(formula);
         algebraicTree.setParametersValues(this.parametersValues);
         algebraicTree.setParametersValuesVec(this.parametersValuesVec);
         algebraicTree.setParametersValuesVecComputed(this.parametersValuesVecComputed);
         return algebraicTree;
+    }
+
+    public AlgebraicTree derivative(String variableName) {
+        if (root == null) {
+            try {
+                construct();
+            } catch (AlgebraicFormulaSyntaxException e) {
+                throw new RuntimeException("Cannot differentiate unconstructed tree", e);
+            }
+        }
+        String diffFormula = root.differentiate(variableName);
+        diffFormula = FormulaSimplifier.simplify(diffFormula);
+        AlgebraicTree diffTree = createWithSameParameters(diffFormula);
+        try {
+            diffTree.construct();
+        } catch (AlgebraicFormulaSyntaxException e) {
+            throw new RuntimeException("Failed to construct derivative tree: " + diffFormula, e);
+        }
+        return diffTree;
     }
 }

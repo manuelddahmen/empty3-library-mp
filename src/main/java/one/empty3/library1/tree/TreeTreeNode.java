@@ -138,4 +138,69 @@ public class TreeTreeNode extends TreeNode {
     public void setMathType(boolean mathType) {
         this.mathType = mathType;
     }
+
+    @Override
+    public String toFormula() {
+        String func = method != null ? method.getName() : (getFunctionName() != null ? getFunctionName() : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : ""));
+        String arg = "";
+        if (tree != null && tree.getRoot() != null) {
+            arg = tree.getRoot().toFormula();
+        } else if (objects != null && objects.length > 0 && objects[0] instanceof String) {
+            arg = (String) objects[0];
+        }
+        return func + "(" + arg + ")";
+    }
+
+    @Override
+    public String differentiate(String variableName) {
+        String func = method != null ? method.getName() : (getFunctionName() != null ? getFunctionName() : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : ""));
+        String arg = "";
+        String argDiff = "0.0";
+        if (tree != null && tree.getRoot() != null) {
+            arg = tree.getRoot().toFormula();
+            argDiff = tree.getRoot().differentiate(variableName);
+        } else if (tree != null) {
+            arg = tree.getFormula();
+            AlgebraicTree dt = tree.derivative(variableName);
+            argDiff = dt != null ? dt.getFormula() : "0.0";
+        } else if (objects != null && objects.length > 0 && objects[0] instanceof String) {
+            arg = (String) objects[0];
+            try {
+                AlgebraicTree at = new AlgebraicTree(arg);
+                at.construct();
+                argDiff = at.getRoot().differentiate(variableName);
+            } catch (Exception e) {
+                argDiff = "0.0";
+            }
+        }
+
+        if (FormulaSimplifier.isZero(argDiff)) {
+            return "0.0";
+        }
+
+        String fPrime;
+        switch (func.toLowerCase()) {
+            case "sin" -> fPrime = "cos(" + arg + ")";
+            case "cos" -> fPrime = "(-sin(" + arg + "))";
+            case "tan" -> fPrime = "(1.0 + (tan(" + arg + ") ^ 2.0))";
+            case "asin" -> fPrime = "(1.0 / sqrt(1.0 - (" + arg + " ^ 2.0)))";
+            case "acos" -> fPrime = "(-1.0 / sqrt(1.0 - (" + arg + " ^ 2.0)))";
+            case "atan" -> fPrime = "(1.0 / (1.0 + (" + arg + " ^ 2.0)))";
+            case "exp" -> fPrime = "exp(" + arg + ")";
+            case "log", "ln" -> fPrime = "(1.0 / (" + arg + "))";
+            case "sqrt" -> fPrime = "(1.0 / (2.0 * sqrt(" + arg + ")))";
+            case "sinh" -> fPrime = "cosh(" + arg + ")";
+            case "cosh" -> fPrime = "sinh(" + arg + ")";
+            case "tanh" -> fPrime = "(1.0 - (tanh(" + arg + ") ^ 2.0))";
+            case "abs" -> fPrime = "((" + arg + ") / abs(" + arg + "))";
+            case "cbrt" -> fPrime = "(1.0 / (3.0 * (cbrt(" + arg + ") ^ 2.0)))";
+            default -> fPrime = null;
+        }
+
+        if (fPrime == null) {
+            return "0.0";
+        }
+
+        return FormulaSimplifier.simplifyProduct(fPrime, argDiff);
+    }
 }

@@ -39,7 +39,7 @@ public class FactorTreeNodeType extends TreeNodeType {
     protected double signFactor = 1; // 1=*
 
     public FactorTreeNodeType(double signFactor) {
-        super(1);
+        super(signFactor);
         this.signFactor = signFactor;
     }
 
@@ -54,7 +54,7 @@ public class FactorTreeNodeType extends TreeNodeType {
 
     @Override
     public double getSign1() {
-        return super.getSign1();
+        return signFactor;
     }
 
     public String toString() {
