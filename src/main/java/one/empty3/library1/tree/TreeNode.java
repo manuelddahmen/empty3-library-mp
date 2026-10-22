@@ -865,6 +865,122 @@ public class TreeNode {
         return "0.0";
     }
 
+    public String integrateSymbolic(String variableName) {
+        TreeNodeType cType = (getChildren().size() == 0) ? type : getChildren().get(0).type;
+        if (cType instanceof DoubleTreeNodeType || this instanceof TreeNodeDouble) {
+            String val = toFormula();
+            return FormulaSimplifier.simplifyProduct(val, variableName);
+        } else if (cType instanceof VariableTreeNodeType || this instanceof TreeNodeVariable) {
+            String varName = toFormula().trim();
+            if (varName.equals(variableName)) {
+                return "0.5 * (" + variableName + " ^ 2.0)";
+            } else {
+                return FormulaSimplifier.simplifyProduct(varName, variableName);
+            }
+        } else if (cType instanceof SignTreeNodeType) {
+            double s1 = cType.getSign1();
+            String inner = !getChildren().isEmpty() ? getChildren().get(0).integrateSymbolic(variableName) : "0.0";
+            if (s1 < 0) {
+                return FormulaSimplifier.simplifyNegation(inner);
+            }
+            return inner;
+        } else if (cType instanceof TermTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return "0.0";
+            }
+            String acc = null;
+            for (int i = 0; i < getChildren().size(); i++) {
+                TreeNode child = getChildren().get(i);
+                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                String d = child.integrateSymbolic(variableName);
+                if (i == 0) {
+                    if (sign < 0) acc = FormulaSimplifier.simplifyNegation(d);
+                    else acc = d;
+                } else {
+                    if (sign < 0) acc = FormulaSimplifier.simplifyDifference(acc, d);
+                    else acc = FormulaSimplifier.simplifySum(acc, d);
+                }
+            }
+            return acc != null ? acc : "0.0";
+        } else if (cType instanceof FactorTreeNodeType) {
+            if (getChildren().isEmpty()) {
+                return "0.0";
+            }
+            if (getChildren().size() == 1) {
+                return getChildren().get(0).integrateSymbolic(variableName);
+            }
+            String firstExpr = getChildren().get(0).toFormula();
+            if (!containsVariable(getChildren().get(0), variableName)) {
+                StringBuilder rest = new StringBuilder();
+                for (int i = 1; i < getChildren().size(); i++) {
+                    TreeNode child = getChildren().get(i);
+                    double sign = child.type != null ? child.type.getSign1() : 1.0;
+                    if (i > 1 || sign < 0) {
+                        rest.append(sign < 0 ? " / " : " * ");
+                    }
+                    rest.append(child.toFormula());
+                }
+                AlgebraicTree subTree = new AlgebraicTree(rest.toString());
+                try {
+                    subTree.construct();
+                    String subInt = subTree.getRoot().integrateSymbolic(variableName);
+                    return FormulaSimplifier.simplifyProduct(firstExpr, "(" + subInt + ")");
+                } catch (Exception e) {
+                    // fall back
+                }
+            }
+            return FormulaSimplifier.simplifyProduct(toFormula(), variableName);
+        } else if (cType instanceof PowerTreeNodeType) {
+            if (getChildren().size() >= 2) {
+                String base = getChildren().get(0).toFormula();
+                String exp = getChildren().get(1).toFormula();
+                if (base.trim().equals(variableName) && !containsVariable(getChildren().get(1), variableName)) {
+                    if (exp.equals("-1.0") || exp.equals("-1") || exp.equals("(-1.0)")) {
+                        return "ln(" + variableName + ")";
+                    } else {
+                        String expPlus1 = FormulaSimplifier.simplifySum(exp, "1.0");
+                        String denom = expPlus1;
+                        String pow = FormulaSimplifier.simplifyPower(variableName, expPlus1);
+                        return FormulaSimplifier.simplifyQuotient(pow, denom);
+                    }
+                }
+            }
+            return FormulaSimplifier.simplifyProduct(toFormula(), variableName);
+        } else if (cType instanceof VectorTreeNodeType || this instanceof VectorTreeNode) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < getChildren().size(); i++) {
+                if (i > 0) sb.append(", ");
+                sb.append(getChildren().get(i).integrateSymbolic(variableName));
+            }
+            return sb.toString();
+        } else if (cType instanceof TreeTreeNodeType) {
+            String funcName = ((TreeTreeNode) this).getFunctionName();
+            if (funcName == null && ((TreeTreeNode) this).getMethod() != null) {
+                funcName = ((TreeTreeNode) this).getMethod().getName();
+            }
+            if ("sin".equals(funcName) && getChildren().size() > 0 && getChildren().get(0).toFormula().trim().equals(variableName)) {
+                return "-cos(" + variableName + ")";
+            } else if ("cos".equals(funcName) && getChildren().size() > 0 && getChildren().get(0).toFormula().trim().equals(variableName)) {
+                return "sin(" + variableName + ")";
+            } else if ("exp".equals(funcName) && getChildren().size() > 0 && getChildren().get(0).toFormula().trim().equals(variableName)) {
+                return "exp(" + variableName + ")";
+            }
+        }
+
+        return FormulaSimplifier.simplifyProduct(toFormula(), variableName);
+    }
+
+    public static boolean containsVariable(TreeNode node, String variableName) {
+        if (node == null) return false;
+        if (node.type instanceof VariableTreeNodeType || node instanceof TreeNodeVariable) {
+            return node.toFormula().trim().equals(variableName);
+        }
+        for (TreeNode child : node.getChildren()) {
+            if (containsVariable(child, variableName)) return true;
+        }
+        return false;
+    }
+
     public ArrayList<TreeNode> getChildren() {
         return children;
     }

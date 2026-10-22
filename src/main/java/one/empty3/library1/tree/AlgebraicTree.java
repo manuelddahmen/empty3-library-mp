@@ -1321,4 +1321,49 @@ public class AlgebraicTree extends Tree {
         }
         return diffTree;
     }
+
+    public double integrate(String variableName, double a, double b) {
+        return QuadratureIntegrator.adaptiveSimpson(this, variableName, a, b);
+    }
+
+    public double integrate(String variableName, double a, double b, double tolerance) {
+        return QuadratureIntegrator.adaptiveSimpson(this, variableName, a, b, tolerance);
+    }
+
+    public StructureMatrix<Double> integrateVector(String variableName, double a, double b) {
+        return QuadratureIntegrator.adaptiveSimpsonVector(this, variableName, a, b);
+    }
+
+    public StructureMatrix<Double> integrateVector(String variableName, double a, double b, double tolerance) {
+        return QuadratureIntegrator.adaptiveSimpsonVector(this, variableName, a, b, tolerance);
+    }
+
+    public double integrate2D(String varX, double ax, double bx, String varY, double ay, double by) {
+        return QuadratureIntegrator.integrate2D(this, varX, ax, bx, varY, ay, by);
+    }
+
+    public double integrate2D(String varX, double ax, double bx, String varY, double ay, double by, double tolerance) {
+        return QuadratureIntegrator.integrate2D(this, varX, ax, bx, varY, ay, by, tolerance);
+    }
+
+    public AlgebraicTree antiderivative(String variableName) {
+        if (root == null) {
+            try {
+                construct();
+            } catch (AlgebraicFormulaSyntaxException e) {
+                throw new RuntimeException("Cannot integrate unconstructed tree", e);
+            }
+        }
+        String integralFormula = root.integrateSymbolic(variableName);
+        integralFormula = FormulaSimplifier.simplify(integralFormula);
+        AlgebraicTree integralTree = createWithSameParameters(integralFormula);
+        try {
+            integralTree.construct();
+        } catch (AlgebraicFormulaSyntaxException e) {
+            throw new RuntimeException("Failed to construct antiderivative tree: " + integralFormula, e);
+        }
+        return integralTree;
+    }
+
+
 }
