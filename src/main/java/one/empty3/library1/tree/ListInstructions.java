@@ -33,20 +33,30 @@ import one.empty3.library.StructureMatrix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ListInstructions {
-    private HashMap<String, Double> currentParamsValues = new HashMap<>();
-    private HashMap<String, String> currentParamsValuesVec = new HashMap<>();
-    private HashMap<String, StructureMatrix<Double>> currentParamsValuesVecComputed = new HashMap<>();
-    private HashMap<String, AlgebraicTree.UserDefinedFunction> userFunctions = new HashMap<>();
+    private Map<String, Double> currentParamsValues = new HashMap<>();
+    private Map<String, String> currentParamsValuesVec = new HashMap<>();
+    private Map<String, StructureMatrix<Double>> currentParamsValuesVecComputed = new HashMap<>();
+    private Map<String, AlgebraicTree.UserDefinedFunction> userFunctions = new HashMap<>();
+    private StructureMatrix<Double> lastResultVec;
 
-    public HashMap<String, AlgebraicTree.UserDefinedFunction> getUserFunctions() {
+    public StructureMatrix<Double> getLastResultVec() {
+        return lastResultVec;
+    }
+
+    public void setLastResultVec(StructureMatrix<Double> lastResultVec) {
+        this.lastResultVec = lastResultVec;
+    }
+
+    public Map<String, AlgebraicTree.UserDefinedFunction> getUserFunctions() {
         return userFunctions;
     }
 
-    public void setUserFunctions(HashMap<String, AlgebraicTree.UserDefinedFunction> userFunctions) {
+    public void setUserFunctions(Map<String, AlgebraicTree.UserDefinedFunction> userFunctions) {
         if (userFunctions != null) {
             this.userFunctions = userFunctions;
         }
@@ -149,7 +159,7 @@ public class ListInstructions {
 
     }
 
-    public ArrayList<Instruction> getAssignations() {
+    public List<Instruction> getAssignations() {
         return assignations;
     }
 
@@ -172,28 +182,67 @@ public class ListInstructions {
             for (int i = 0; i < splitLines.length; i++) {
 
                 final String line = splitLines[i].trim();
+                if (line.isEmpty() || line.startsWith("##")) {
+                    assignations.add(new Instruction(i, null, null, line));
+                    continue;
+                }
 
-                // Check for braced function definition: f(x) { body }
+                // Check for braced function definition: f(x) { body } spanning single or multiple lines
                 int braceIdx = line.indexOf('{');
-                if (braceIdx > 0 && line.contains("(")) {
+                if (braceIdx >= 0 && line.contains("(")) {
                     String sig = line.substring(0, braceIdx).trim();
                     int openIdx = sig.indexOf('(');
                     int closeIdx = sig.lastIndexOf(')');
                     if (openIdx > 0 && closeIdx > openIdx) {
                         String funcName = sig.substring(0, openIdx).trim();
                         String paramsStr = sig.substring(openIdx + 1, closeIdx).trim();
-                        String body = line.substring(braceIdx + 1).trim();
-                        if (body.endsWith("}")) {
-                            body = body.substring(0, body.length() - 1).trim();
+                        
+                        StringBuilder bodyBuilder = new StringBuilder();
+                        String remainingOnLine = line.substring(braceIdx + 1).trim();
+                        int braceCount = 1;
+                        if (!remainingOnLine.isEmpty()) {
+                            if (remainingOnLine.endsWith("}")) {
+                                remainingOnLine = remainingOnLine.substring(0, remainingOnLine.length() - 1).trim();
+                                braceCount--;
+                            }
+                            bodyBuilder.append(remainingOnLine).append("\n");
                         }
+                        
+                        if (braceCount > 0) {
+                            i++;
+                            while (i < splitLines.length) {
+                                String innerLine = splitLines[i].trim();
+                                if (innerLine.contains("{")) {
+                                    braceCount++;
+                                }
+                                if (innerLine.contains("}")) {
+                                    braceCount--;
+                                    if (braceCount == 0) {
+                                        int rIdx = innerLine.lastIndexOf('}');
+                                        if (rIdx > 0) {
+                                            bodyBuilder.append(innerLine.substring(0, rIdx)).append("\n");
+                                        }
+                                        break;
+                                    }
+                                }
+                                bodyBuilder.append(innerLine).append("\n");
+                                i++;
+                            }
+                        }
+                        
+                        String bodyText = bodyBuilder.toString().trim();
                         List<String> paramList = new ArrayList<>();
                         if (!paramsStr.isEmpty()) {
                             for (String p : paramsStr.split(",")) {
                                 paramList.add(p.trim());
                             }
                         }
-                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, body));
-                        assignations.add(new Instruction(i, sig, body, line));
+                        ListInstructions bodyListInstructions = new ListInstructions();
+                        if (!bodyText.isEmpty()) {
+                            bodyListInstructions.addInstructions(bodyText);
+                        }
+                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, bodyListInstructions));
+                        assignations.add(new Instruction(i, sig, bodyText, line));
                         continue;
                     }
                 }
@@ -220,7 +269,9 @@ public class ListInstructions {
                                 paramList.add(p.trim());
                             }
                         }
-                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, value));
+                        ListInstructions bodyListInstructions = new ListInstructions();
+                        bodyListInstructions.addInstructions(value);
+                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, bodyListInstructions));
                         assignations.add(new Instruction(i, variable, value, line));
                         continue;
                     }
@@ -312,6 +363,7 @@ public class ListInstructions {
                         continue;
                     }
                     resultVec = tree.eval();
+                    lastResultVec = resultVec;
 
                     if (resultVec != null) {
                         if (key != null) {
@@ -364,27 +416,28 @@ public class ListInstructions {
         return returnedCode;
     }
 
-    public HashMap<String, Double> getCurrentParamsValues() {
+    public Map<String, Double> getCurrentParamsValues() {
         return currentParamsValues;
     }
 
-    public HashMap<String, String> getCurrentParamsValuesVec() {
+    public Map<String, String> getCurrentParamsValuesVec() {
         return currentParamsValuesVec;
     }
 
-    public HashMap<String, StructureMatrix<Double>> getCurrentParamsValuesVecComputed() {
+    public Map<String, StructureMatrix<Double>> getCurrentParamsValuesVecComputed() {
         return currentParamsValuesVecComputed;
     }
 
-    public void setCurrentParamsValues(HashMap<String, Double> currentVars) {
+    public void setCurrentParamsValues(Map<String, Double> currentVars) {
         this.currentParamsValues = currentVars;
     }
 
-    public void setCurrentParamsValuesVec(HashMap<String, String> currentVecs) {
+    public void setCurrentParamsValuesVec(Map<String, String> currentVecs) {
         this.currentParamsValuesVec = currentVecs;
     }
 
-    public void setCurrentParamsValuesVecComputed(HashMap<String, StructureMatrix<Double>> currentVecsComputed) {
+    public void setCurrentParamsValuesVecComputed(Map<String, StructureMatrix<Double>> currentVecsComputed) {
         this.currentParamsValuesVecComputed = currentVecsComputed;
     }
+
 }

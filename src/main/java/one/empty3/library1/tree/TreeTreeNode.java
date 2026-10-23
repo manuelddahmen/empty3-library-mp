@@ -50,7 +50,7 @@ public class TreeTreeNode extends TreeNode {
             tree.construct();
             if (objects[2] instanceof String && !((String) objects[2]).isEmpty()) {
                 String call = (String) objects[2];
-                if (call.length() > 1) {
+                if ((objects.length >= 4 && objects[3].equals(false)) || call.length() > 1) {
                     if ((objects.length < 4) || (objects[3].equals(true))) {
                         method = Math.class.getMethod(call, double.class);
                     } else {
@@ -65,11 +65,20 @@ public class TreeTreeNode extends TreeNode {
         }
     }
 
+    private AlgebraicTree getMainAlgebraicTree() {
+        TreeNode curr = this;
+        while (curr.parent != null) {
+            curr = curr.parent;
+        }
+        return curr.tree != null ? curr.tree : this.tree;
+    }
+
     @Override
     public StructureMatrix<Double> eval() throws TreeNodeEvalException, AlgebraicFormulaSyntaxException {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
         double r;
         StructureMatrix<Double> eval = tree.eval();
+        AlgebraicTree mainTree = getMainAlgebraicTree();
         if (eval.getDim() == 0) {
             r = tree.eval().getElem();
 
@@ -81,11 +90,11 @@ public class TreeTreeNode extends TreeNode {
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
-            } else if (functionName != null && tree != null && tree.getUserFunctions() != null && tree.getUserFunctions().containsKey(functionName)) {
-                AlgebraicTree.UserDefinedFunction udf = tree.getUserFunctions().get(functionName);
+            } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
+                AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
                 List<Double> argList = new ArrayList<>();
                 argList.add(r);
-                r = udf.evaluate(argList, tree.getParametersValues(), tree.getUserFunctions());
+                r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
                 return res.setElem(r);
             }
             return res.setElem(r);
@@ -114,13 +123,13 @@ public class TreeTreeNode extends TreeNode {
                     e.printStackTrace();
                 }
                 return res;
-            } else if (functionName != null && tree != null && tree.getUserFunctions() != null && tree.getUserFunctions().containsKey(functionName)) {
-                AlgebraicTree.UserDefinedFunction udf = tree.getUserFunctions().get(functionName);
+            } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
+                AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
                 List<Double> argList = new ArrayList<>();
                 for (Double arg : args) {
                     if (arg != null) argList.add(arg);
                 }
-                r = udf.evaluate(argList, tree.getParametersValues(), tree.getUserFunctions());
+                r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
                 return res.setElem(r);
             }
             for (int i = 0; i < eval.getData1d().size(); i++) {

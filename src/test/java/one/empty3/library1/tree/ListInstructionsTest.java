@@ -64,4 +64,21 @@ public class ListInstructionsTest {
         assertTrue(li.getCurrentParamsValues().containsKey("z"));
         assertEquals(9.0, li.getCurrentParamsValues().get("z"), EPSILON);
     }
+
+    @Test
+    public void testMultiLineFunctionBracedListInstructions() {
+        String script = "f(x) {\n" +
+                        "  a = x * 2.0\n" +
+                        "  b = a + 3.0\n" +
+                        "  b\n" +
+                        "}\n" +
+                        "res = f(5.0)";
+        ListInstructions li = new ListInstructions();
+        li.addInstructions(script);
+        List<String> results = li.runInstructions();
+
+        assertNotNull(results);
+        assertTrue(li.getCurrentParamsValues().containsKey("res"));
+        assertEquals(13.0, li.getCurrentParamsValues().get("res"), EPSILON);
+    }
 }

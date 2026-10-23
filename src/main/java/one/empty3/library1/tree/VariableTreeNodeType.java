@@ -43,7 +43,7 @@ public class VariableTreeNodeType extends TreeNodeType {
     String varName;
     Map<String, String> parametersValueVec;
     private Map<String, Double> parametersValues;
-    private HashMap<String, StructureMatrix<Double>> parametersValuesVecComputed;
+    private Map<String, StructureMatrix<Double>> parametersValuesVecComputed;
 
     public VariableTreeNodeType(AlgebraicTree tree) {
         this.algebraicTree = tree;
@@ -64,12 +64,12 @@ public class VariableTreeNodeType extends TreeNodeType {
     public StructureMatrix<Double> eval() {
         StructureMatrix<Double> doubleStructureMatrix = new StructureMatrix<>(0, Double.class);
         try {
-            if (parametersValues != null)
+            if (parametersValues != null) {
                 if (parametersValues.get(varName) != null) {
                     doubleStructureMatrix = new StructureMatrix<>(0, Double.class);
                     Double d = parametersValues.get(varName);
                     doubleStructureMatrix.setElem(d);
-                } else if (parametersValuesVecComputed.containsKey(varName)) {
+                } else if (parametersValuesVecComputed != null && parametersValuesVecComputed.containsKey(varName)) {
                     doubleStructureMatrix = new StructureMatrix<>(0, Double.class);
                     StructureMatrix<Double> finalDoubleStructureMatrix = doubleStructureMatrix;
                     switch (parametersValuesVecComputed.get(varName).getDim()) {
@@ -87,6 +87,23 @@ public class VariableTreeNodeType extends TreeNodeType {
                     }
                     return doubleStructureMatrix;
                 }
+            } else if (parametersValuesVecComputed != null && parametersValuesVecComputed.containsKey(varName)) {
+                doubleStructureMatrix = new StructureMatrix<>(0, Double.class);
+                switch (parametersValuesVecComputed.get(varName).getDim()) {
+                    case 0 -> {
+                        double d = parametersValuesVecComputed.get(varName).getElem();
+                        doubleStructureMatrix = new StructureMatrix<>(0, Double.class);
+                        doubleStructureMatrix.setElem(d, 0);
+                    }
+                    case 1 -> {
+                        doubleStructureMatrix = new StructureMatrix<>(1, Double.class);
+                        for (int i = 0; i < parametersValuesVecComputed.get(varName).data1d.size(); i++) {
+                            doubleStructureMatrix.setElem(parametersValuesVecComputed.get(varName).data1d.get(i), i);
+                        }
+                    }
+                }
+                return doubleStructureMatrix;
+            }
         } catch (RuntimeException ex) {
             ex.printStackTrace();
             return doubleStructureMatrix;

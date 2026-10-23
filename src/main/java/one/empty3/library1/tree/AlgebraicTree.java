@@ -54,7 +54,7 @@ public class AlgebraicTree extends Tree {
     private String formula = "0.0";
     Map<String, Double> parametersValues = new HashMap<>();
     Map<String, String> parametersValuesVec = new HashMap<>();
-    private HashMap<String, StructureMatrix<Double>> parametersValuesVecComputed = new HashMap<>();
+    private Map<String, StructureMatrix<Double>> parametersValuesVecComputed = new HashMap<>();
     private TreeNode root;
     private int stackSize = 0;
 
@@ -1033,7 +1033,16 @@ public class AlgebraicTree extends Tree {
                 String fName = values.substring(functionNameStart, argumentStart - 1);
                 String fParamString = values.substring(argumentStart, argumentEnd);
 
-                if (Math.class.getMethod(fName, new java.lang.Class<?>[]{double.class}) == null) {
+                boolean isMath = true;
+                try {
+                    if (Math.class.getMethod(fName, new java.lang.Class<?>[]{double.class}) == null) {
+                        isMath = false;
+                    }
+                } catch (NoSuchMethodException e) {
+                    isMath = false;
+                }
+
+                if (!isMath && (userFunctions == null || !userFunctions.containsKey(fName))) {
                     return false;
                 }
 
@@ -1041,7 +1050,7 @@ public class AlgebraicTree extends Tree {
                         fParamString, parametersValues
                 );
 
-                TreeNode t2 = new TreeTreeNode(this.createWithSameParameters(fParamString), t, new Object[]{fParamString, parametersValues, fName},
+                TreeNode t2 = new TreeTreeNode(this.createWithSameParameters(fParamString), t, new Object[]{fParamString, parametersValues, fName, isMath},
                         mathFunctionTreeNodeType);
                 if (!add(t2, fParamString))
                     return false;
@@ -1259,11 +1268,11 @@ public class AlgebraicTree extends Tree {
         return parametersValuesVec;
     }
 
-    public void setParametersValuesVecComputed(HashMap<String, StructureMatrix<Double>> parametersValuesVecComputed) {
+    public void setParametersValuesVecComputed(Map<String, StructureMatrix<Double>> parametersValuesVecComputed) {
         this.parametersValuesVecComputed = parametersValuesVecComputed;
     }
 
-    public HashMap<String, StructureMatrix<Double>> getParametersValuesVecComputed() {
+    public Map<String, StructureMatrix<Double>> getParametersValuesVecComputed() {
         return parametersValuesVecComputed;
     }
 
@@ -1289,27 +1298,79 @@ public class AlgebraicTree extends Tree {
         private String name;
         private List<String> parameters;
         private String body;
+        private ListInstructions bodyInstructions;
 
         public UserDefinedFunction(String name, List<String> parameters, String body) {
             this.name = name;
             this.parameters = parameters;
             this.body = body;
+            if (body != null) {
+                this.bodyInstructions = new ListInstructions();
+                this.bodyInstructions.addInstructions(body);
+            }
+        }
+
+        public UserDefinedFunction(String name, List<String> parameters, ListInstructions bodyInstructions) {
+            this.name = name;
+            this.parameters = parameters;
+            this.bodyInstructions = bodyInstructions;
+            if (bodyInstructions != null && !bodyInstructions.getAssignations().isEmpty()) {
+                this.body = bodyInstructions.getAssignations().get(0).getOriginalString();
+            } else {
+                this.body = "";
+            }
         }
 
         public String getName() { return name; }
         public List<String> getParameters() { return parameters; }
         public String getBody() { return body; }
+        public ListInstructions getBodyInstructions() { return bodyInstructions; }
 
         public double evaluate(List<Double> args, Map<String, Double> globalParams, Map<String, UserDefinedFunction> functions) {
             Map<String, Double> localParams = new HashMap<>(globalParams);
             for (int i = 0; i < parameters.size() && i < args.size(); i++) {
                 localParams.put(parameters.get(i).trim(), args.get(i));
             }
-            AlgebraicTree t = new AlgebraicTree(body);
-            t.setParametersValues(localParams);
-            t.setUserFunctions(functions);
-            t.construct();
-            return t.eval().getElem();
+            if (bodyInstructions != null) {
+                bodyInstructions.setCurrentParamsValues(localParams);
+                bodyInstructions.setUserFunctions(functions);
+                bodyInstructions.runInstructions();
+                if (bodyInstructions.getLastResultVec() != null) {
+                    return bodyInstructions.getLastResultVec().getElem();
+                }
+                List<ListInstructions.Instruction> assignations = bodyInstructions.getAssignations();
+                if (assignations != null && !assignations.isEmpty()) {
+                    ListInstructions.Instruction lastInst = assignations.get(assignations.size() - 1);
+                    String left = lastInst.getLeftHand();;
+                    if (left != null && bodyInstructions.getCurrentParamsValues().containsKey(left)) {
+                        return bodyInstructions.getCurrentParamsValues().get(left);
+                    } else if (left != null && bodyInstructions.getCurrentParamsValuesVecComputed().containsKey(left)) {
+                        StructureMatrix<Double> mat = bodyInstructions.getCurrentParamsValuesVecComputed().get(left);
+                        if (mat != null) return mat.getElem();
+                    }
+                    String expr = lastInst.getExpressionAlgebraicTree();
+                    if (expr == null || expr.isEmpty()) {
+                        expr = lastInst.getOriginalString();
+                    }
+                    AlgebraicTree t = new AlgebraicTree(expr);
+                    t.setParametersValues(bodyInstructions.getCurrentParamsValues());
+                    t.setParametersValuesVec(bodyInstructions.getCurrentParamsValuesVec());
+                    t.setParametersValuesVecComputed(bodyInstructions.getCurrentParamsValuesVecComputed());
+                    t.setUserFunctions(functions);
+                    t.construct();
+                    StructureMatrix<Double> evalRes = t.eval();
+                    if (evalRes != null) {
+                        return evalRes.getElem();
+                    }
+                }
+                return 0.0;
+            } else {
+                AlgebraicTree t = new AlgebraicTree(body);
+                t.setParametersValues(localParams);
+                t.setUserFunctions(functions);
+                t.construct();
+                return t.eval().getElem();
+            }
         }
     }
 
