@@ -35,6 +35,8 @@ import one.empty3.library.StructureMatrix;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -1118,103 +1120,81 @@ public class AlgebraicTree extends Tree {
     public boolean addFunctionDefinition(TreeNode t, String values)
             throws AlgebraicFormulaSyntaxException {
         int i = 0;
-        boolean isNewFactor = false;
         int count = 0;
         int newFactorPos = 0;
         int oldFactorPos = 0;
-        char newFactor = 0;
-        int countLetters = 0;
-        boolean fNameAdded = false;
         int listInstructionDef = -1;
+        boolean fNameAdded = false;
+        TreeNode t2 = null;
+
         while (i < values.length()) {
             values = addSpaces(values, i);
             if (i >= values.length())
                 break;
-            if (Character.isLetter(values.charAt(0)) && Character.isLetterOrDigit(values.charAt(i)) && count == 0) {
-                countLetters++;
-            } else if (values.charAt(i) == '(') {
+            char c = values.charAt(i);
+            if (c == '(') {
                 if (count == 0) {
                     newFactorPos = i + 1;
+                    fNameAdded = true;
                 }
                 count++;
-            } else if (values.charAt(i) == ')') {
+            } else if (c == ')') {
                 count--;
-            } else if (values.charAt(i) == '{') {
-                if (count == 0 && fNameAdded) {
-                    listInstructionDef = i + 1;
+                if (count == 0) {
+                    String fName = values.substring(oldFactorPos, newFactorPos - 1).trim();
+                    String fParamString = values.substring(newFactorPos, i).trim();
+
+                    TreeTreeNodeType mathFunctionTreeNodeType = new TreeTreeNodeType(
+                            fName, parametersValues
+                    );
+
+                    t2 = new TreeTreeNode(this.createWithSameParameters(fName), t, new Object[]{fName, parametersValues, fParamString, false},
+                            mathFunctionTreeNodeType);
+                    if (!add(t2, fParamString))
+                        return false;
                 }
-            } else if (i < 1)
-                return false;
-
-            TreeNode t2 = null;
-            if (count == 0 && values.charAt(i) == ')') {
-
-
-                String fName = values.substring(oldFactorPos, newFactorPos - 1);
-                String fParamString = values.substring(newFactorPos, i);
-
-
-                TreeTreeNodeType mathFunctionTreeNodeType = new TreeTreeNodeType(
-                        fName, parametersValues
-                );
-
-                t2 = new TreeTreeNode(this.createWithSameParameters(fName), t, new Object[]{fName, parametersValues, fParamString, false},
-                        mathFunctionTreeNodeType);
-                if (!add(t2, fParamString))
-                    return false;
-
-            } else if (values.charAt(i) == '{' && t2 != null && listInstructionDef > 0) {
-                listInstructionDef = i + 1;
-                if (addFunctionBody(t2, values.substring(listInstructionDef)))
-                    t.getChildren().add(t2);
-                else
-                    return false;
+            } else if (c == '{') {
+                if (count == 0 && t2 != null) {
+                    listInstructionDef = i + 1;
+                    String body = values.substring(listInstructionDef);
+                    if (body.endsWith("}")) {
+                        body = body.substring(0, body.length() - 1);
+                    }
+                    if (addFunctionBody(t2, body)) {
+                        t.getChildren().add(t2);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
             }
-
-
             i++;
-
         }
-        return false;
+        return t2 != null;
     }
 
     public boolean addFunctionBody(TreeNode src, String values) {
-
-        TreeNode tBraced;
-        int i = 0;
-        int count = 0;
-        while (i < values.length()) {
-            values = addSpaces(values, i);
-            if (i >= values.length())
-                break;
-            if (values.charAt(i) == ')') {
-                count--;
-            } else if (values.charAt(i) == '(') {
-                count++;
-            } else if (i < 1)
-                return false;
-
-            if (i == values.length() - 1 && count == 0 && values.charAt(i) == ')') {
-                String subsubstring = values.substring(1, values.length() - 1);
-                TreeTreeNodeType mathFunctionTreeNodeType = new TreeTreeNodeType(
-                        subsubstring, parametersValues
-                );
-                TreeNode t2 = new TreeNode(this, src, new Object[]{subsubstring, parametersValues, ""}, mathFunctionTreeNodeType);
-                try {
-                    if (!add(t2, subsubstring))
-                        return false;
-                } catch (AlgebraicFormulaSyntaxException e) {
-                    return false;
-                }
-                src.getChildren().add(t2);
+        try {
+            String subsubstring = values.trim();
+            if (subsubstring.startsWith("{") && subsubstring.endsWith("}")) {
+                subsubstring = subsubstring.substring(1, subsubstring.length() - 1).trim();
             }
-
-
-            i++;
+            TreeTreeNodeType mathFunctionTreeNodeType = new TreeTreeNodeType(
+                    subsubstring, parametersValues
+            );
+            TreeNode t2 = new TreeNode(this, src, new Object[]{subsubstring, parametersValues, ""}, mathFunctionTreeNodeType);
+            if (!add(t2, subsubstring))
+                return false;
+            src.getChildren().add(t2);
+            return true;
+        } catch (AlgebraicFormulaSyntaxException e) {
+            return false;
         }
-        return false;
     }
 
+    /**
+     * Parses braced expressions into tree nodes; validates structure
+     */
     public boolean addBracedExpression(TreeNode src, String values) throws AlgebraicFormulaSyntaxException {
         TreeNode tBraced;
         int i = 0;
@@ -1230,6 +1210,7 @@ public class AlgebraicTree extends Tree {
             } else if (i < 1)
                 return false;
 
+            // Parses nested expression into new tree node structure
             if (i == values.length() - 1 && count == 0 && values.charAt(i) == ')') {
                 String subsubstring = values.substring(1, values.length() - 1);
                 TreeTreeNodeType mathFunctionTreeNodeType = new TreeTreeNodeType(
@@ -1300,7 +1281,48 @@ public class AlgebraicTree extends Tree {
         algebraicTree.setParametersValues(this.parametersValues);
         algebraicTree.setParametersValuesVec(this.parametersValuesVec);
         algebraicTree.setParametersValuesVecComputed(this.parametersValuesVecComputed);
+        algebraicTree.setUserFunctions(this.userFunctions);
         return algebraicTree;
+    }
+
+    public static class UserDefinedFunction {
+        private String name;
+        private List<String> parameters;
+        private String body;
+
+        public UserDefinedFunction(String name, List<String> parameters, String body) {
+            this.name = name;
+            this.parameters = parameters;
+            this.body = body;
+        }
+
+        public String getName() { return name; }
+        public List<String> getParameters() { return parameters; }
+        public String getBody() { return body; }
+
+        public double evaluate(List<Double> args, Map<String, Double> globalParams, Map<String, UserDefinedFunction> functions) {
+            Map<String, Double> localParams = new HashMap<>(globalParams);
+            for (int i = 0; i < parameters.size() && i < args.size(); i++) {
+                localParams.put(parameters.get(i).trim(), args.get(i));
+            }
+            AlgebraicTree t = new AlgebraicTree(body);
+            t.setParametersValues(localParams);
+            t.setUserFunctions(functions);
+            t.construct();
+            return t.eval().getElem();
+        }
+    }
+
+    private Map<String, UserDefinedFunction> userFunctions = new HashMap<>();
+
+    public Map<String, UserDefinedFunction> getUserFunctions() {
+        return userFunctions;
+    }
+
+    public void setUserFunctions(Map<String, UserDefinedFunction> userFunctions) {
+        if (userFunctions != null) {
+            this.userFunctions = userFunctions;
+        }
     }
 
     public AlgebraicTree derivative(String variableName) {

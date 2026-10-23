@@ -40,6 +40,17 @@ public class ListInstructions {
     private HashMap<String, Double> currentParamsValues = new HashMap<>();
     private HashMap<String, String> currentParamsValuesVec = new HashMap<>();
     private HashMap<String, StructureMatrix<Double>> currentParamsValuesVecComputed = new HashMap<>();
+    private HashMap<String, AlgebraicTree.UserDefinedFunction> userFunctions = new HashMap<>();
+
+    public HashMap<String, AlgebraicTree.UserDefinedFunction> getUserFunctions() {
+        return userFunctions;
+    }
+
+    public void setUserFunctions(HashMap<String, AlgebraicTree.UserDefinedFunction> userFunctions) {
+        if (userFunctions != null) {
+            this.userFunctions = userFunctions;
+        }
+    }
 
     public String evaluate(String s) {
         return "";
@@ -160,7 +171,32 @@ public class ListInstructions {
 
             for (int i = 0; i < splitLines.length; i++) {
 
-                final String line = splitLines[i];
+                final String line = splitLines[i].trim();
+
+                // Check for braced function definition: f(x) { body }
+                int braceIdx = line.indexOf('{');
+                if (braceIdx > 0 && line.contains("(")) {
+                    String sig = line.substring(0, braceIdx).trim();
+                    int openIdx = sig.indexOf('(');
+                    int closeIdx = sig.lastIndexOf(')');
+                    if (openIdx > 0 && closeIdx > openIdx) {
+                        String funcName = sig.substring(0, openIdx).trim();
+                        String paramsStr = sig.substring(openIdx + 1, closeIdx).trim();
+                        String body = line.substring(braceIdx + 1).trim();
+                        if (body.endsWith("}")) {
+                            body = body.substring(0, body.length() - 1).trim();
+                        }
+                        List<String> paramList = new ArrayList<>();
+                        if (!paramsStr.isEmpty()) {
+                            for (String p : paramsStr.split(",")) {
+                                paramList.add(p.trim());
+                            }
+                        }
+                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, body));
+                        assignations.add(new Instruction(i, sig, body, line));
+                        continue;
+                    }
+                }
 
                 String[] splitInstructionEquals = line.split("=");
 
@@ -173,6 +209,21 @@ public class ListInstructions {
                 if (splitInstructionEquals.length == 2) {
                     variable = splitInstructionEquals[0].trim();
                     value = splitInstructionEquals[1].trim();
+                    int openIdx = variable.indexOf('(');
+                    int closeIdx = variable.lastIndexOf(')');
+                    if (openIdx > 0 && closeIdx > openIdx) {
+                        String funcName = variable.substring(0, openIdx).trim();
+                        String paramsStr = variable.substring(openIdx + 1, closeIdx).trim();
+                        List<String> paramList = new ArrayList<>();
+                        if (!paramsStr.isEmpty()) {
+                            for (String p : paramsStr.split(",")) {
+                                paramList.add(p.trim());
+                            }
+                        }
+                        userFunctions.put(funcName, new AlgebraicTree.UserDefinedFunction(funcName, paramList, value));
+                        assignations.add(new Instruction(i, variable, value, line));
+                        continue;
+                    }
                 }
                 boolean assigned = false;
                 if (splitInstructionEquals.length >= 1) {
@@ -233,6 +284,11 @@ public class ListInstructions {
 
 
             }
+
+            if (key != null && key.contains("(")) {
+                returnedCode.add(instruction.originalString);
+                continue;
+            }
             StructureMatrix<Double> resultVec = null;
             Double resultDouble = null;
 
@@ -248,6 +304,7 @@ public class ListInstructions {
                     tree.setParametersValues(currentParamsValues);
                     tree.setParametersValuesVec(currentParamsValuesVec);
                     tree.setParametersValuesVecComputed(currentParamsValuesVecComputed);
+                    tree.setUserFunctions(userFunctions);
                     try {
                         tree.construct();
                     } catch (RuntimeException ex) {
