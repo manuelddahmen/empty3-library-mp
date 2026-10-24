@@ -43,7 +43,7 @@ module empty3_library_mp {
     requires partial.desktop;
     requires org.junit.jupiter.api;
     requires org.slf4j;
-    //requires kotlin.stdlib;
+    requires kotlin.stdlib;
 //    requires jcodec.javase;
 //    requires google.cloud.storage;
     // JOGL libraries - commented out as they are not modular

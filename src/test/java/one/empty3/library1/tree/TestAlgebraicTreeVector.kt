@@ -33,9 +33,10 @@ import one.empty3.library.Point2D
 import one.empty3.library.Point3D
 import one.empty3.library.StructureMatrix
 import one.empty3.library1.shader.Vec
-import one.empty3.library1.tree.*
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
+import org.bridj.cpp.std.list
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.Array
 
@@ -43,7 +44,7 @@ import kotlin.Array
  * Test class for AlgebraicTree.
 */
 public class TestAlgebraicTreeVector {
-
+    private val EPSILON = 1e-3
 
 
     private fun testResultVariable(
@@ -602,7 +603,7 @@ public class TestAlgebraicTreeVector {
     }
 
     @Test
-    fun testForVectorSubstract() {
+    fun testForVectorSubtract() {
         val r = 12.0
         val vars = HashMap<String, Double>()
         vars["r"] = r
@@ -778,17 +779,26 @@ public class TestAlgebraicTreeVector {
 
     @Test
     fun testForFunctionWithSpaces() {
-        val r = 12.0
+        val r = 5.0
         val vars = HashMap<String, Double>()
         vars["r"] = r
-        val algebraicTree = AlgebraicTree(
-            "func1(a, b, c) {\n" +
-                    "d = c+b/a\n" +
-                    "\n" +
-                    "}\n"
-        )
-        algebraicTree.construct()
-        algebraicTree.eval()
+        val str = "func1(a, b, c) {\n" +
+                "d = c+b/a\n" +
+                "\n" +
+                "}\n" +
+                "e=func1(1,2,3)\n"
+
+        val listInstructions: ListInstructions = ListInstructions()
+        listInstructions.addInstructions(str)
+        val runInstructions = listInstructions.runInstructions()
+        assertNotNull(listInstructions.getCurrentParamsValuesVecComputed())
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().containsKey("e"))
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().get("e") != null)
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().get("e")!!.getDim()==1)
+        val let = listInstructions.getCurrentParamsValuesVecComputed().get("e")!!.getElem(0)!!
+        assertNotNull(let)
+        println("Evaluated Result = $let")
+        Assertions.assertEquals(r, let, EPSILON)
     }
 
     @Test
@@ -919,9 +929,9 @@ public class TestAlgebraicTreeVector {
         System.out.println()
         System.out.println()
 
-        println("x: " + listInstructions.getCurrentParamsValuesVecComputed()!!["x"]!!)
-        println("y: " + listInstructions.getCurrentParamsValuesVecComputed()!!["y"]!!)
-        println("z: " + listInstructions.getCurrentParamsValuesVecComputed()!!["z"]!!)
+        println("x: " + listInstructions.currentParamsValuesVecComputed!!["x"]!!)
+        println("y: " + listInstructions.currentParamsValuesVecComputed!!["y"]!!)
+        println("z: " + listInstructions.currentParamsValuesVecComputed!!["z"]!!)
 
 
         var assertion = false

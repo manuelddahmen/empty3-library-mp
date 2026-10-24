@@ -105,38 +105,53 @@ public class TreeNode {
         } else if (cType instanceof EquationTreeNodeType) {
             //Logger.getAnonymousLogger().log(Level.INFO, cType);
             //Logger.getAnonymousLogger().log(Level.INFO, getChildren().get(0));
-            switch (getChildren().get(0).getChildren().get(0).eval().getDim()) {
-                case 0:
-                    evalRes = new StructureMatrix<>(0, Double.class);
-                    evalRes.setElem(getChildren().get(0).getChildren().get(0).eval().getElem());
-                    break;
-                case 1:
-                    int sum = 0;
-                    evalRes = new StructureMatrix<>(1, Double.class);
-                    for (int j = 0; j < getChildren().get(0).getChildren().size(); j++) {
-                        StructureMatrix<Double> eval = getChildren().get(0).getChildren().get(j).eval();
-                        for (int i = 0; i < eval.data1d.size(); i++) {
-                            evalRes.setElem(eval.getElem(i), sum);
-                            sum++;
+            StructureMatrix<Double> child0Eval = getChildren().get(0).getChildren().get(0).eval();
+            if (child0Eval != null) {
+                switch (child0Eval.getDim()) {
+                    case 0:
+                        evalRes = new StructureMatrix<>(0, Double.class);
+                        Double val0 = child0Eval.getElem();
+                        if (val0 != null) {
+                            evalRes.setElem(val0);
                         }
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case 1:
+                        int sum = 0;
+                        evalRes = new StructureMatrix<>(1, Double.class);
+                        for (int j = 0; j < getChildren().get(0).getChildren().size(); j++) {
+                            StructureMatrix<Double> eval = getChildren().get(0).getChildren().get(j).eval();
+                            if (eval != null && eval.data1d != null) {
+                                for (int i = 0; i < eval.data1d.size(); i++) {
+                                    evalRes.setElem(eval.getElem(i), sum);
+                                    sum++;
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-            switch (getChildren().get(0).getChildren().get(1).eval().getDim()) {
-                case 0:
-                    evalRes.setElem(getChildren().get(0).getChildren().get(1).eval().getElem());
-                    break;
-                case 1:
-                    StructureMatrix<Double> eval = getChildren().get(0).getChildren().get(1).eval();
-                    evalRes = new StructureMatrix<>(1, Double.class);
-                    int size = eval.data1d.size();
-                    for (int i = 0; i < eval.data1d.size(); i++)
-                        evalRes.setElem(eval.getElem(i), i);
-                    break;
-                default:
-                    break;
+            StructureMatrix<Double> child1Eval = getChildren().get(0).getChildren().get(1).eval();
+            if (child1Eval != null) {
+                switch (child1Eval.getDim()) {
+                    case 0:
+                        Double val1 = child1Eval.getElem();
+                        if (val1 != null) {
+                            evalRes.setElem(val1);
+                        }
+                        break;
+                    case 1:
+                        evalRes = new StructureMatrix<>(1, Double.class);
+                        if (child1Eval.data1d != null) {
+                            int size = child1Eval.data1d.size();
+                            for (int i = 0; i < size; i++)
+                                evalRes.setElem(child1Eval.getElem(i), i);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             ArrayList<TreeNode> childrenVars = getChildren().get(0).getChildren().get(0).getChildren();
             ArrayList<TreeNode> childrenValues = getChildren().get(0).getChildren().get(1).getChildren();
@@ -786,7 +801,7 @@ public class TreeNode {
             String accDiff = getChildren().get(0).differentiate(variableName);
             for (int i = 1; i < getChildren().size(); i++) {
                 TreeNode child = getChildren().get(i);
-                double sign = child.type != null ? child.type.getSign1() : 1.0;
+                double sign = child!=null?(child.type != null ? child.type.getSign1() : 1.0):0;
                 String bExpr = child.toFormula();
                 String bDiff = child.differentiate(variableName);
                 if (sign < 0) {
