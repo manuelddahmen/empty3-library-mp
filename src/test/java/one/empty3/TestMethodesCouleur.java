@@ -20,9 +20,10 @@
  *
  */
 
-package one.empty3.library.tests.test3;
+package one.empty3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 public class TestMethodesCouleur {
     @Test

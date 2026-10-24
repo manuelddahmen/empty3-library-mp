@@ -31,7 +31,7 @@ package one.empty3;
 
 import one.empty3.feature.PixM;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.Assertions.*;
 import one.empty3.libs.Image;
 
 import one.empty3.libs.*;

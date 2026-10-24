@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.library.tests.test3;
+package one.empty3;
 
 import one.empty3.library.Point3D;
 import one.empty3.library.StructureMatrix;

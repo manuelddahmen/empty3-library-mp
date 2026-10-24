@@ -29,8 +29,9 @@
 
 package one.empty3.library;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.*;
 
 public class TestSphereCircleRefinement {
@@ -47,21 +48,21 @@ public class TestSphereCircleRefinement {
         circle.calculerRepere1();
 
         // Assertions for orthonormality
-        assertNotNull(circle.getVectX());
-        assertNotNull(circle.getVectY());
-        assertNotNull(circle.getVectZ());
+        assertNotNull(circle.getVectX(), "null");
+        assertNotNull(circle.getVectY(), "null");
+        assertNotNull(circle.getVectZ(), "null");
 
         double dotXY = circle.getVectX().prodScalaire(circle.getVectY());
         double dotYZ = circle.getVectY().prodScalaire(circle.getVectZ());
         double dotXZ = circle.getVectX().prodScalaire(circle.getVectZ());
 
-        assertEquals(0.0, dotXY, 1e-6);
-        assertEquals(0.0, dotYZ, 1e-6);
-        assertEquals(0.0, dotXZ, 1e-6);
+        assertEquals(0.0, dotXY, String.valueOf(1e-6));
+        assertEquals(0.0, dotYZ, String.valueOf(1e-6));
+        assertEquals(0.0, dotXZ, String.valueOf(1e-6));
 
-        assertEquals(1.0, circle.getVectX().norme(), 1e-6);
-        assertEquals(1.0, circle.getVectY().norme(), 1e-6);
-        assertEquals(1.0, circle.getVectZ().norme(), 1e-6);
+        assertEquals(1.0, circle.getVectX().norme(), String.valueOf(1e-6));
+        assertEquals(1.0, circle.getVectY().norme(), String.valueOf(1e-6));
+        assertEquals(1.0, circle.getVectZ().norme(), String.valueOf(1e-6));
     }
 
     @Test
@@ -77,11 +78,11 @@ public class TestSphereCircleRefinement {
         Point3D point = sphere.calculerPoint3D(0.0, 0.5);
 
         // At equator, the point should be at (10, 0, 0) if oriented correctly (axis in Z)
-        // Actually, depending on the basis construction, it might be different, 
+        // Actually, depending on the basis construction, it might be different,
         // but it should be orthogonal to the axis vector.
 
         // Axis is along Z, so point should be in XY plane
-        assertEquals(0.0, point.get(2), 1e-6);
-        assertEquals(10.0, point.norme(), 1e-6);
+        assertEquals(0.0, point.get(2), String.valueOf(1e-6));
+        assertEquals(10.0, point.norme(), String.valueOf(1e-6));
     }
 }

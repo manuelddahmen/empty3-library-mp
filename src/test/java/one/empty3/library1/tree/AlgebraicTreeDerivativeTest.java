@@ -31,11 +31,9 @@ package one.empty3.library1.tree;
 
 import one.empty3.library.StructureMatrix;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class AlgebraicTreeDerivativeTest {
 

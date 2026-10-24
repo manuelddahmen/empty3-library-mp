@@ -19,7 +19,7 @@ package one.empty3.testagentcode;
 import one.empty3.library.Point3D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.Assertions.*;
 public class PoseInterpolationTest {
 
     @Test

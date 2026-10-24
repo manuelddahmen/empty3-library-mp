@@ -33,7 +33,7 @@ import one.empty3.gui.DataModel;
 import one.empty3.library.Camera;
 import one.empty3.library.Scene;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

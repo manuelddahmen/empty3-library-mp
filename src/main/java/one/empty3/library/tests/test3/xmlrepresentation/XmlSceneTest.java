@@ -24,6 +24,7 @@ package one.empty3.library.tests.test3.xmlrepresentation;
 
 import one.empty3.library.Scene;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

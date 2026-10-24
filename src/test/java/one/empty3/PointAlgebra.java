@@ -20,19 +20,29 @@
  *
  */
 
-package one.empty3.library.tests.test3;
+package one.empty3;
 
-import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /*__
  * Created by manue on 11-09-19.
  */
-public class TestCamera {
+public class PointAlgebra {
     @Test
-    public void testScene() {
-        Camera c = new Camera();
+    public void testPoint3DInit() {
+        //Double [] ds2 = new Double [] {1.4, 2.3, 3.1};
+        double[] ds1 = new double[]{1.4, 2.3, 3.1};
+        //assertTrue(new Point3D(ds1).equals(new Point3D(ds2)));
+        assertTrue(new Point3D(ds1).equals(new Point3D(1.4, 2.3, 3.1)));
+        assertTrue(!new Point3D(ds1).equals(Point3D.O0));
+        assertTrue(new Point3D().equals(Point3D.O0));
+        assertTrue(new Point3D(3).equals(Point3D.O0));
+        assertTrue(new Point3D(1.0, 2.0, 3.0).mult(2.0).equals(new Point3D(2.0, 4.0, 6.0)));
+
     }
 
     @Test

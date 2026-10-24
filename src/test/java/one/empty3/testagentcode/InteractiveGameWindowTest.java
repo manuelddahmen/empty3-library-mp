@@ -18,7 +18,7 @@ package one.empty3.testagentcode;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.Assertions.*;
 public class InteractiveGameWindowTest {
 
     @Test

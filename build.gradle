@@ -90,14 +90,14 @@ sourceSets {
 
     test {
         java {
-            srcDirs = ['src/test/java', 'src/main/java']
+            srcDirs = ['src/test/java', 'src/main/java', 'src/test/kotlin']
         }
         resources {
             srcDirs = ['src/test/resources', 'src/test/configs', 'src/test/java']
         }
 
         kotlin {
-            srcDirs = ['src/test/kotlin', 'src/main/java']
+            srcDirs = ['src/test/kotlin', 'src/test/java', 'src/main/java']
         }
 
 
@@ -134,11 +134,11 @@ ossIndexAudit {
     printBanner = true // if true will print ASCII text banner. By default is true.
 }
 */
-ext.mainTestClasses = [
+/*ext.mainTestClasses = [
         "one.empty3.library1.tree.TestStringAnalyzer5",
         "one.empty3.library1.tree.TestStringAnalyzer7",
         "one.empty3.library1.tree.TestAlgebraicTreeVector"
-]
+]*/
 
 
 //kotlin {
@@ -763,8 +763,12 @@ test {
     // jakarta.xml.bind at boot layer init but is not used in any test code
     classpath = classpath.filter { !it.name.contains('xmlsec') }
 
-    // Allow JUnit to instantiate test classes in one.empty3 package via reflection
-    jvmArgs '--add-opens=empty3_library_mp/one.empty3=org.junit.platform.commons', '--add-opens=empty3_library_mp/one.empty3.testagentcode=org.junit.platform.commons', '--add-opens=empty3_library_mp/one.empty3.library1.tree=org.junit.platform.commons'
+    // Allow JUnit to instantiate test classes in one.empty3 package via reflection and prevent IllegalAccessError across packages
+    jvmArgs '--add-opens=empty3_library_mp/one.empty3=ALL-UNNAMED,org.junit.platform.commons',
+            '--add-opens=empty3_library_mp/one.empty3.testagentcode=ALL-UNNAMED,org.junit.platform.commons',
+            '--add-opens=empty3_library_mp/one.empty3.library1.tree=ALL-UNNAMED,org.junit.platform.commons',
+            '--add-opens=empty3_library_mp/one.empty3.library=ALL-UNNAMED,org.junit.platform.commons',
+            '--add-opens=empty3_library_mp/one.empty3.library1.shader=ALL-UNNAMED,org.junit.platform.commons'
 
     testLogging {
         events "passed", "skipped", "failed"
@@ -773,6 +777,14 @@ test {
     }
 }
 
+
+tasks.named('compileKotlin').configure {
+    destinationDirectory.set(sourceSets.main.java.destinationDirectory)
+}
+
+tasks.named('compileTestKotlin').configure {
+    destinationDirectory.set(sourceSets.test.java.destinationDirectory)
+}
 
 tasks.configureEach { task ->
     if (task.class.name.contains('JReleaser')) {

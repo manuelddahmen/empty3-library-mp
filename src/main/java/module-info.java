@@ -100,4 +100,9 @@ module empty3_library_mp {
     exports one.empty3.scenario;
     exports one.empty3.testagentcode;
     opens one.empty3.testagentcode;
+    opens one.empty3.library1.tree;
+    opens one.empty3.library1.tree.functions;
+    opens one.empty3.library;
+    opens one.empty3.library1.shader;
+    opens one.empty3.library.core.math;
 }
