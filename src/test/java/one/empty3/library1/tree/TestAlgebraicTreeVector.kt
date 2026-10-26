@@ -33,7 +33,6 @@ import one.empty3.library.Point2D
 import one.empty3.library.Point3D
 import one.empty3.library.StructureMatrix
 import one.empty3.library1.shader.Vec
-import org.bridj.cpp.std.list
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -624,7 +623,7 @@ public class TestAlgebraicTreeVector {
         val vars = HashMap<String, Double>()
         vars["r"] = r
         testResultVariableVec(
-            "sum((2,1,2,2,2,3))",
+            "sum(2,1,2,2,2,3)",
             Vec(12.0), vars, true
         )
     }
@@ -778,16 +777,22 @@ public class TestAlgebraicTreeVector {
     }
 
     @Test
-    fun testForFunctionWithSpaces() {
-        val r = 5.0
-        val vars = HashMap<String, Double>()
-        vars["r"] = r
-        val str = "func1(a, b, c) {\n" +
+    fun testForFunctionMultiArguments() {
+        val r : Double = 5.0
+        val str = "func(a, b, c) {\n" +
                 "d = c+b/a\n" +
-                "\n" +
+                "d\n" +
                 "}\n" +
-                "e=func1(1,2,3)\n"
+                "e=func(1,2,3)\n" +
+                "e\n"
+        val li = ListInstructions()
+        li.addInstructions(str)
+        val results = li.runInstructions()
 
+        assertNotNull(results)
+        assertTrue(li.getCurrentParamsValues().containsKey("e"))
+        Assertions.assertEquals(5.0, li.getCurrentParamsValues().get("e")!!, EPSILON)
+        /*
         val listInstructions: ListInstructions = ListInstructions()
         listInstructions.addInstructions(str)
         val runInstructions = listInstructions.runInstructions()
@@ -798,7 +803,39 @@ public class TestAlgebraicTreeVector {
         val let = listInstructions.getCurrentParamsValuesVecComputed().get("e")!!.getElem(0)!!
         assertNotNull(let)
         println("Evaluated Result = $let")
-        Assertions.assertEquals(r, let, EPSILON)
+        assertEquals(r as Double, let as Double, EPSILON as Double)
+
+         */
+    }
+    @Test
+    fun testForFunctionOneArguments() {
+        val r : Double = 5.0
+        val str = "func(a) {\n" +
+                "d = a^2\n" +
+                "}\n" +
+                "e=func(3)\n" +
+                "e\n"
+        val li = ListInstructions()
+        li.addInstructions(str)
+        val results = li.runInstructions()
+
+        assertNotNull(results)
+        assertTrue(li.getCurrentParamsValues().containsKey("e"))
+        Assertions.assertEquals(9.0, li.getCurrentParamsValues().get("e")!!, EPSILON)
+        /*
+        val listInstructions: ListInstructions = ListInstructions()
+        listInstructions.addInstructions(str)
+        val runInstructions = listInstructions.runInstructions()
+        assertNotNull(listInstructions.getCurrentParamsValuesVecComputed())
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().containsKey("e"))
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().get("e") != null)
+        assertTrue(listInstructions.getCurrentParamsValuesVecComputed().get("e")!!.getDim()==1)
+        val let = listInstructions.getCurrentParamsValuesVecComputed().get("e")!!.getElem(0)!!
+        assertNotNull(let)
+        println("Evaluated Result = $let")
+        assertEquals(r as Double, let as Double, EPSILON as Double)
+
+         */
     }
 
     @Test

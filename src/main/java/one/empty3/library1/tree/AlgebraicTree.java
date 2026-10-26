@@ -1161,22 +1161,84 @@ public class AlgebraicTree extends Tree {
                             mathFunctionTreeNodeType);
                     if (!add(t2, fParamString))
                         return false;
+                } else {
+                    return false;
                 }
             } else if (c == '{') {
                 if (count == 0 && t2 != null) {
                     listInstructionDef = i + 1;
-                    String body = values.substring(listInstructionDef);
-                    if (body.endsWith("}")) {
-                        body = body.substring(0, body.length() - 1);
+
+                    // Track brace nesting to find the exact matching closing brace }
+                    int braceCount = 1;
+                    int bodyEnd = -1;
+                    int j = listInstructionDef;
+                    while (j < values.length()) {
+                        char bc = values.charAt(j);
+                        if (bc == '{') {
+                            braceCount++;
+                        } else if (bc == '}') {
+                            braceCount--;
+                            if (braceCount == 0) {
+                                bodyEnd = j;
+                                break;
+                            }
+                        }
+                        j++;
                     }
+
+                    if (bodyEnd == -1) {
+                        return false; // Unmatched opening brace {
+                    }
+
+                    // Extract precisely the function body between { and }
+                    String body = values.substring(listInstructionDef, bodyEnd);
+
+                    if (addFunctionBody(t2, body)) {
+                        t.getChildren().add(t2);
+                        // Advance outer loop index i to bodyEnd so parsing can continue for subsequent statements
+                        i = bodyEnd;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            /*
+            } else if (c == '{') {
+                if (count == 0 && t2 != null) {
+                    listInstructionDef = i + 1;
+
+                    // Track brace nesting to find the exact matching closing brace }
+                    int braceCount = 1;
+                    int bodyEnd = -1;
+                    int j = listInstructionDef;
+                    while (j < values.length()) {
+                        char bc = values.charAt(j);
+                        if (bc == '{') {
+                            braceCount++;
+                        } else if (bc == '}') {
+                            braceCount--;
+                            if (braceCount == 0) {
+                                bodyEnd = j;
+                                break;
+                            }
+                        }
+                        j++;
+                    }
+
+                    if (bodyEnd == -1) {
+                        return false; // Unmatched opening brace {
+                    }
+
+                    // Extract precisely the function body between { and }
+                    String body = values.substring(listInstructionDef, bodyEnd);
                     if (addFunctionBody(t2, body)) {
                         t.getChildren().add(t2);
                         return true;
                     } else {
                         return false;
                     }
-                }
-            }
+             */
+
             i++;
         }
         return t2 != null;
