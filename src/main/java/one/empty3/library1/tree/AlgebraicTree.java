@@ -1038,8 +1038,14 @@ public class AlgebraicTree extends Tree {
                     if (Math.class.getMethod(fName, new java.lang.Class<?>[]{double.class}) == null) {
                         isMath = false;
                     }
-                } catch (NoSuchMethodException e) {
-                    isMath = false;
+                } catch (NoSuchMethodException e1) {
+                    try {
+                        if (Math.class.getMethod(fName, new java.lang.Class<?>[]{double.class, double.class}) == null) {
+                            isMath = false;
+                        }
+                    } catch (NoSuchMethodException e2) {
+                        isMath = false;
+                    }
                 }
 
                 if (!isMath && (userFunctions == null || !userFunctions.containsKey(fName))) {

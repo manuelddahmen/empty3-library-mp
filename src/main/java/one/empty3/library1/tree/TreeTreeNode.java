@@ -44,30 +44,76 @@ import org.jcodec.api.NotImplementedException;
 
 
 public class TreeTreeNode extends TreeNode {
+    private List<AlgebraicTree> argTrees = new ArrayList<>();
     private String functionName;
     private Method method = null;
     private boolean mathType = true;
 
     public TreeTreeNode(AlgebraicTree tree, TreeNode t, Object[] objects, TreeNodeType type) {
         super(tree, t, objects, type);
-        //tree = new AlgebraicTree((String) objects[0], (Map<String, Double>) objects[1]);
         try {
-            tree.construct();
-            if (objects[2] instanceof String && !((String) objects[2]).isEmpty()) {
+            String fParamString = "";
+            if (objects != null && objects.length > 0 && objects[0] instanceof String) {
+                fParamString = (String) objects[0];
+            }
+            List<String> argStrs = splitArguments(fParamString);
+            for (String argStr : argStrs) {
+                if (!argStr.isEmpty()) {
+                    AlgebraicTree argTree = tree.createWithSameParameters(argStr);
+                    argTree.construct();
+                    argTrees.add(argTree);
+                }
+            }
+            if (argTrees.isEmpty() && tree != null) {
+                tree.construct();
+                argTrees.add(tree);
+            }
+
+            if (objects.length > 2 && objects[2] instanceof String && !((String) objects[2]).isEmpty()) {
                 String call = (String) objects[2];
                 if ((objects.length >= 4 && objects[3].equals(false)) || call.length() > 1) {
                     if ((objects.length < 4) || (objects[3].equals(true))) {
-                        method = Math.class.getMethod(call, double.class);
+                        int argCount = argTrees.size();
+                        if (argCount == 2) {
+                            try {
+                                method = Math.class.getMethod(call, double.class, double.class);
+                            } catch (NoSuchMethodException e) {
+                                method = Math.class.getMethod(call, double.class);
+                            }
+                        } else {
+                            method = Math.class.getMethod(call, double.class);
+                        }
                     } else {
                         mathType = false;
                         functionName = call;
-                        //throw new NotImplementedException("Custom functions not implemented yet");
                     }
                 }
             }
         } catch (AlgebraicFormulaSyntaxException | NoSuchMethodException e) {
             //e.printStackTrace();
         }
+    }
+
+    public static List<String> splitArguments(String argsStr) {
+        List<String> args = new ArrayList<>();
+        if (argsStr == null || argsStr.trim().isEmpty()) {
+            return args;
+        }
+        int depth = 0;
+        int start = 0;
+        for (int i = 0; i < argsStr.length(); i++) {
+            char c = argsStr.charAt(i);
+            if (c == '(' || c == '[' || c == '{') {
+                depth++;
+            } else if (c == ')' || c == ']' || c == '}') {
+                depth--;
+            } else if (c == ',' && depth == 0) {
+                args.add(argsStr.substring(start, i).trim());
+                start = i + 1;
+            }
+        }
+        args.add(argsStr.substring(start).trim());
+        return args;
     }
 
     private AlgebraicTree getMainAlgebraicTree() {
@@ -81,68 +127,97 @@ public class TreeTreeNode extends TreeNode {
     @Override
     public StructureMatrix<Double> eval() throws TreeNodeEvalException, AlgebraicFormulaSyntaxException {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
-        double r;
-        StructureMatrix<Double> eval = tree.eval();
         AlgebraicTree mainTree = getMainAlgebraicTree();
-        if (eval.getDim() == 0) {
-            r = tree.eval().getElem();
 
+        List<Double> argValues = new ArrayList<>();
+        boolean isVectorArg = false;
+        List<List<Double>> vectorArgs = new ArrayList<>();
+        int vectorSize = -1;
+
+        for (AlgebraicTree argTree : argTrees) {
+            StructureMatrix<Double> argEval = argTree.eval();
+            if (argEval.getDim() == 0) {
+                argValues.add(argEval.getElem());
+                vectorArgs.add(List.of(argEval.getElem()));
+            } else if (argEval.getDim() == 1) {
+                isVectorArg = true;
+                List<Double> d1 = argEval.getData1d();
+                vectorArgs.add(d1);
+                if (vectorSize == -1 || d1.size() > vectorSize) {
+                    vectorSize = d1.size();
+                }
+                argValues.add(d1.isEmpty() ? 0.0 : d1.get(0));
+            } else {
+                argValues.add(0.0);
+                vectorArgs.add(List.of(0.0));
+            }
+        }
+
+        if (!isVectorArg) {
+            double r = 0.0;
             if (method != null) {
                 try {
-                    r = (Double) method.invoke(Math.class, r);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                    Object[] argsArray = argValues.toArray();
+                    if (method.getParameterCount() == 2 && argsArray.length >= 2) {
+                        r = (Double) method.invoke(Math.class, argsArray[0], argsArray[1]);
+                    } else if (method.getParameterCount() == 1 && argsArray.length >= 1) {
+                        r = (Double) method.invoke(Math.class, argsArray[0]);
+                    } else {
+                        r = (Double) method.invoke(Math.class, argsArray);
+                    }
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
                 AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
-                List<Double> argList = new ArrayList<>();
-                argList.add(r);
-                r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
-                return res.setElem(r);
+                r = udf.evaluate(argValues, mainTree.getParametersValues(), mainTree.getUserFunctions());
+            } else if (!argValues.isEmpty()) {
+                r = argValues.get(0);
             }
             return res.setElem(r);
-
-        } else if (eval.getDim() == 1) {
-
-            int size = eval.getData1d().size();
-            Double[] args = new Double[size];
-            for (int i = 0; i < size; i++) {
-                args[i] = eval.getData1d().get(i);
-            }
+        } else {
             res = new StructureMatrix<>(1, Double.class);
             if (method != null) {
                 try {
-                    int k = 0;
-                    for (int i = 0; i < eval.getData1d().size(); i++) {
-                        if (args[i] != null) {
-                            r = (Double) method.invoke(Math.class, args[i]);
+                    for (int i = 0; i < vectorSize; i++) {
+                        Object[] invokeArgs = new Object[argTrees.size()];
+                        boolean valid = true;
+                        for (int j = 0; j < argTrees.size(); j++) {
+                            List<Double> vArg = vectorArgs.get(j);
+                            if (i < vArg.size() && vArg.get(i) != null) {
+                                invokeArgs[j] = vArg.get(i);
+                            } else if (!vArg.isEmpty()) {
+                                invokeArgs[j] = vArg.get(0);
+                            } else {
+                                valid = false;
+                                break;
+                            }
+                        }
+                        if (valid) {
+                            double r;
+                            if (method.getParameterCount() == 2) {
+                                r = (Double) method.invoke(Math.class, invokeArgs[0], invokeArgs[1]);
+                            } else {
+                                r = (Double) method.invoke(Math.class, invokeArgs[0]);
+                            }
                             res.setElem(r, i);
-                            k++;
                         }
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
                 return res;
             } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
                 AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
-                List<Double> argList = new ArrayList<>();
-                for (Double arg : args) {
-                    if (arg != null) argList.add(arg);
-                }
-                r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
+                double r = udf.evaluate(argValues, mainTree.getParametersValues(), mainTree.getUserFunctions());
                 res.setElem(r, 0);
+                return res;
             }
-            for (int i = 0; i < eval.getData1d().size(); i++) {
-                r = eval.getElem(i);
-                res.setElem(r, i);
+            for (int i = 0; i < vectorSize; i++) {
+                res.setElem(argValues.get(0), i);
             }
+            return res;
         }
-        return res;
     }
 
     public String getFunctionName() {
@@ -172,13 +247,19 @@ public class TreeTreeNode extends TreeNode {
     @Override
     public String toFormula() {
         String func = method != null ? method.getName() : (getFunctionName() != null ? getFunctionName() : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : ""));
-        String arg = "";
-        if (tree != null && tree.getRoot() != null) {
-            arg = tree.getRoot().toFormula();
-        } else if (objects != null && objects.length > 0 && objects[0] instanceof String) {
-            arg = (String) objects[0];
+        StringBuilder argsStr = new StringBuilder();
+        for (int i = 0; i < argTrees.size(); i++) {
+            if (i > 0) argsStr.append(", ");
+            if (argTrees.get(i).getRoot() != null) {
+                argsStr.append(argTrees.get(i).getRoot().toFormula());
+            } else {
+                argsStr.append(argTrees.get(i).getFormula());
+            }
         }
-        return func + "(" + arg + ")";
+        if (argsStr.length() == 0 && objects != null && objects.length > 0 && objects[0] instanceof String) {
+            argsStr.append((String) objects[0]);
+        }
+        return func + "(" + argsStr.toString() + ")";
     }
 
     @Override
@@ -186,12 +267,12 @@ public class TreeTreeNode extends TreeNode {
         String func = method != null ? method.getName() : (getFunctionName() != null ? getFunctionName() : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : ""));
         String arg = "";
         String argDiff = "0.0";
-        if (tree != null && tree.getRoot() != null) {
-            arg = tree.getRoot().toFormula();
-            argDiff = tree.getRoot().differentiate(variableName);
-        } else if (tree != null) {
-            arg = tree.getFormula();
-            AlgebraicTree dt = tree.derivative(variableName);
+        if (!argTrees.isEmpty() && argTrees.get(0).getRoot() != null) {
+            arg = argTrees.get(0).getRoot().toFormula();
+            argDiff = argTrees.get(0).getRoot().differentiate(variableName);
+        } else if (!argTrees.isEmpty() && argTrees.get(0) != null) {
+            arg = argTrees.get(0).getFormula();
+            AlgebraicTree dt = argTrees.get(0).derivative(variableName);
             argDiff = dt != null ? dt.getFormula() : "0.0";
         } else if (objects != null && objects.length > 0 && objects[0] instanceof String) {
             arg = (String) objects[0];

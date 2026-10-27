@@ -1007,6 +1007,12 @@ public class TestAlgebraicTreeVector {
         }
     }
 
+    @Test
+    fun testMultiArgumentFunctions() {
+        testResult("pow(2.0, 3.0)", 8.0, true)
+        testResult("atan2(0.0, 1.0)", 0.0, true)
+    }
+
     /***
      * @param get computed value
      * @param vec expected value
