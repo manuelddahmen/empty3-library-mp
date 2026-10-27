@@ -42,9 +42,7 @@ import org.jcodec.api.NotImplementedException;
  * J'ai un problème dans ALgebraicTree soit au niveau de la construction de l'arbre (construct() ) soit au niveau de l'eval() .: les fonctions à plusieurs paramètres ne fonctionnent pas. Il semble que le construct ou l'eval quelque part, ne prend qu'un paramètre alors qu'il devrait prendre tous les paramètres entre parenthèses.
  */
 
-/***
- *
- */
+
 public class TreeTreeNode extends TreeNode {
     private String functionName;
     private Method method = null;
@@ -113,7 +111,7 @@ public class TreeTreeNode extends TreeNode {
             for (int i = 0; i < size; i++) {
                 args[i] = eval.getData1d().get(i);
             }
-            res = new StructureMatrix<>(0, Double.class);
+            res = new StructureMatrix<>(1, Double.class);
             if (method != null) {
                 try {
                     int k = 0;
@@ -137,7 +135,7 @@ public class TreeTreeNode extends TreeNode {
                     if (arg != null) argList.add(arg);
                 }
                 r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
-                return res.setElem(r);
+                res.setElem(r, 0);
             }
             for (int i = 0; i < eval.getData1d().size(); i++) {
                 r = eval.getElem(i);
