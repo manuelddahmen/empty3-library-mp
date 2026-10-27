@@ -619,12 +619,20 @@ public class TestAlgebraicTreeVector {
 
     @Test
     fun testForVectorSumOfComponents() {
+        val tree = AlgebraicTree("sum(2,1,2,2,2,3)")
+        tree.construct()
+
+        val result = tree.eval()
+
+        println("Dimension = ${result.dim}")
+        println("Résultat = $result")
+        println("Composantes = ${result.data1d}")
         val r = 12.0
         val vars = HashMap<String, Double>()
         vars["r"] = r
-        testResultVariableVec(
+        testResultVariable(
             "sum(2,1,2,2,2,3)",
-            Vec(12.0), vars, true
+            12.0, vars, true
         )
     }
 

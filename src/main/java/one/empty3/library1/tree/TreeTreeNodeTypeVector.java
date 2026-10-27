@@ -29,6 +29,8 @@
 
 package one.empty3.library1.tree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import one.empty3.library.StructureMatrix;
@@ -45,9 +47,45 @@ public class TreeTreeNodeTypeVector extends TreeNodeType {
         this.fName = fName;
     }
 
+
     @Override
     public StructureMatrix<Double> eval() {
-        return null;
+        List<String> args =
+                TreeTreeNode.splitArguments(paramsString);
+
+        List<Double> values = new ArrayList<>();
+
+        for (String arg : args) {
+            try {
+                AlgebraicTree tree = new AlgebraicTree(arg);
+                tree.construct();
+
+                StructureMatrix<Double> value = tree.eval();
+
+                if (value.getDim() == 0) {
+                    values.add(value.getElem());
+                } else if (value.getDim() == 1) {
+                    values.addAll(value.getData1d());
+                }
+
+            } catch (Exception e) {
+                throw new IllegalArgumentException(
+                        "Cannot evaluate argument: " + arg, e
+                );
+            }
+        }
+
+        double result = Functions.search(
+                fName,
+                values.toArray(new Double[0])
+        );
+
+        StructureMatrix<Double> matrix =
+                new StructureMatrix<>(1, Double.class);
+
+        matrix.setElem(result, 0);
+
+        return matrix;
     }
 
     public String getfName() {

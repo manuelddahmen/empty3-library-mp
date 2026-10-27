@@ -29,21 +29,19 @@
 
 package one.empty3.library1.tree;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import one.empty3.library.StructureMatrix;
 import org.jcodec.api.NotImplementedException;
 
-/**
- * J'ai un problème dans ALgebraicTree soit au niveau de la construction de l'arbre (construct() ) soit au niveau de l'eval() .: les fonctions à plusieurs paramètres ne fonctionnent pas. Il semble que le construct ou l'eval quelque part, ne prend qu'un paramètre alors qu'il devrait prendre tous les paramètres entre parenthèses.
- */
-
-
 public class TreeTreeNode extends TreeNode {
+    private Field field = null;
     private List<AlgebraicTree> argTrees = new ArrayList<>();
     private String functionName;
     private Method method = null;
@@ -53,43 +51,86 @@ public class TreeTreeNode extends TreeNode {
         super(tree, t, objects, type);
         try {
             String fParamString = "";
-            if (objects != null && objects.length > 0 && objects[0] instanceof String) {
-                fParamString = (String) objects[0];
-            }
-            List<String> argStrs = splitArguments(fParamString);
-            for (String argStr : argStrs) {
-                if (!argStr.isEmpty()) {
-                    AlgebraicTree argTree = tree.createWithSameParameters(argStr);
-                    argTree.construct();
-                    argTrees.add(argTree);
+            String call = "";
+            boolean isMathMethod = false;
+            if (objects != null) {
+                if (objects.length >= 4 && objects[3] instanceof Boolean) {
+                    fParamString = objects[0] instanceof String ? (String) objects[0] : "";
+                    call = objects[2] instanceof String ? (String) objects[2] : "";
+                    isMathMethod = (Boolean) objects[3];
+                } else if (objects.length >= 3) {
+                    call = objects[0] instanceof String ? (String) objects[0] : "";
+                    fParamString = objects[2] instanceof String ? (String) objects[2] : "";
+                } else if (objects.length > 0 && objects[0] instanceof String) {
+                    fParamString = (String) objects[0];
                 }
             }
-            if (argTrees.isEmpty() && tree != null) {
-                tree.construct();
-                argTrees.add(tree);
+
+            if (!call.isEmpty() && isMathMethod) {
+                Method m2 = null;
+                try {
+                    m2 = Math.class.getMethod(call, double.class, double.class);
+                } catch (NoSuchMethodException e) {
+                    // Non 2-arg
+                }
+                if (m2 != null) {
+                    method = m2;
+                } else {
+                    try {
+                        method = Math.class.getMethod(call, double.class);
+                    } catch (NoSuchMethodException e1) {
+                        try {
+                            method = Math.class.getMethod(call);
+                        } catch (NoSuchMethodException e0) {
+                            // ignore
+                        }
+                    }
+                }
+            } else if (!call.isEmpty()) {
+                mathType = false;
+                functionName = call;
             }
 
-            if (objects.length > 2 && objects[2] instanceof String && !((String) objects[2]).isEmpty()) {
-                String call = (String) objects[2];
-                if ((objects.length >= 4 && objects[3].equals(false)) || call.length() > 1) {
-                    if ((objects.length < 4) || (objects[3].equals(true))) {
-                        int argCount = argTrees.size();
-                        if (argCount == 2) {
-                            try {
-                                method = Math.class.getMethod(call, double.class, double.class);
-                            } catch (NoSuchMethodException e) {
-                                method = Math.class.getMethod(call, double.class);
-                            }
-                        } else {
-                            method = Math.class.getMethod(call, double.class);
+            int expectedArgs = 1;
+            if (method != null) {
+                expectedArgs = method.getParameterCount();
+            } else if (functionName != null) {
+                expectedArgs = -1; // dynamique selon la présence de virgules
+            }
+
+            List<String> argStrs = new ArrayList<>();
+            if (expectedArgs == 2 || (expectedArgs == -1 && fParamString.contains(","))) {
+                argStrs = splitArguments(fParamString);
+            } else {
+                argStrs.add(fParamString);
+            }
+
+            for (String argStr : argStrs) {
+                if (!argStr.isEmpty()) {
+                    AlgebraicTree argTree = (tree != null) ? tree.createWithSameParameters(argStr) : new AlgebraicTree(argStr);
+                    try {
+                        String tf = argTree.getFormula();
+                        if (tf == null || !tf.trim().equals(call)) {
+                            argTree.construct();
+                            argTrees.add(argTree);
                         }
-                    } else {
-                        mathType = false;
-                        functionName = call;
+                    } catch (Exception e) {
+                        // ignore
                     }
                 }
             }
-        } catch (AlgebraicFormulaSyntaxException | NoSuchMethodException e) {
+            if (argTrees.isEmpty() && tree != null) {
+                try {
+                    String treeFormula = tree.getFormula();
+                    if (treeFormula == null || !treeFormula.trim().equals(call)) {
+                        tree.construct();
+                        argTrees.add(tree);
+                    }
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        } catch (AlgebraicFormulaSyntaxException e) {
             //e.printStackTrace();
         }
     }
@@ -129,77 +170,43 @@ public class TreeTreeNode extends TreeNode {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
         AlgebraicTree mainTree = getMainAlgebraicTree();
 
-        List<Double> argValues = new ArrayList<>();
-        boolean isVectorArg = false;
-        List<List<Double>> vectorArgs = new ArrayList<>();
-        int vectorSize = -1;
-
-        for (AlgebraicTree argTree : argTrees) {
-            StructureMatrix<Double> argEval = argTree.eval();
-            if (argEval.getDim() == 0) {
-                argValues.add(argEval.getElem());
-                vectorArgs.add(List.of(argEval.getElem()));
-            } else if (argEval.getDim() == 1) {
-                isVectorArg = true;
-                List<Double> d1 = argEval.getData1d();
-                vectorArgs.add(d1);
-                if (vectorSize == -1 || d1.size() > vectorSize) {
-                    vectorSize = d1.size();
+        if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
+            AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
+            List<Double> argList = new ArrayList<>();
+            for (AlgebraicTree argTree : argTrees) {
+                StructureMatrix<Double> evalArg = argTree.eval();
+                if (evalArg.getDim() == 0) {
+                    argList.add(evalArg.getElem());
+                } else if (evalArg.getDim() == 1 && !evalArg.getData1d().isEmpty()) {
+                    argList.add(evalArg.getData1d().get(0));
+                } else {
+                    argList.add(0.0);
                 }
-                argValues.add(d1.isEmpty() ? 0.0 : d1.get(0));
-            } else {
-                argValues.add(0.0);
-                vectorArgs.add(List.of(0.0));
             }
+            double r = udf.evaluate(argList, mainTree.getParametersValues(), mainTree.getUserFunctions());
+            return res.setElem(r);
         }
 
-        if (!isVectorArg) {
-            double r = 0.0;
-            if (method != null) {
-                try {
-                    Object[] argsArray = argValues.toArray();
-                    if (method.getParameterCount() == 2 && argsArray.length >= 2) {
-                        r = (Double) method.invoke(Math.class, argsArray[0], argsArray[1]);
-                    } else if (method.getParameterCount() == 1 && argsArray.length >= 1) {
-                        r = (Double) method.invoke(Math.class, argsArray[0]);
-                    } else {
-                        r = (Double) method.invoke(Math.class, argsArray);
+        if (argTrees.size() == 1) {
+            StructureMatrix<Double> eval = argTrees.get(0).eval();
+            if (eval.getDim() == 0) {
+                double r = eval.getElem();
+                if (method != null) {
+                    try {
+                        r = (Double) method.invoke(Math.class, r);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
                     }
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
                 }
-            } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
-                AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
-                r = udf.evaluate(argValues, mainTree.getParametersValues(), mainTree.getUserFunctions());
-            } else if (!argValues.isEmpty()) {
-                r = argValues.get(0);
-            }
-            return res.setElem(r);
-        } else {
-            res = new StructureMatrix<>(1, Double.class);
-            if (method != null) {
+                return res.setElem(r);
+            } else if (eval.getDim() == 1) {
+                int size = eval.getData1d().size();
+                res = new StructureMatrix<>(1, Double.class);
                 try {
-                    for (int i = 0; i < vectorSize; i++) {
-                        Object[] invokeArgs = new Object[argTrees.size()];
-                        boolean valid = true;
-                        for (int j = 0; j < argTrees.size(); j++) {
-                            List<Double> vArg = vectorArgs.get(j);
-                            if (i < vArg.size() && vArg.get(i) != null) {
-                                invokeArgs[j] = vArg.get(i);
-                            } else if (!vArg.isEmpty()) {
-                                invokeArgs[j] = vArg.get(0);
-                            } else {
-                                valid = false;
-                                break;
-                            }
-                        }
-                        if (valid) {
-                            double r;
-                            if (method.getParameterCount() == 2) {
-                                r = (Double) method.invoke(Math.class, invokeArgs[0], invokeArgs[1]);
-                            } else {
-                                r = (Double) method.invoke(Math.class, invokeArgs[0]);
-                            }
+                    for (int i = 0; i < size; i++) {
+                        Double arg = eval.getData1d().get(i);
+                        if (arg != null) {
+                            double r = method != null ? (Double) method.invoke(Math.class, arg) : arg;
                             res.setElem(r, i);
                         }
                     }
@@ -207,17 +214,93 @@ public class TreeTreeNode extends TreeNode {
                     e.printStackTrace();
                 }
                 return res;
-            } else if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
-                AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);
-                double r = udf.evaluate(argValues, mainTree.getParametersValues(), mainTree.getUserFunctions());
-                res.setElem(r, 0);
+            }
+        } else if (argTrees.size() == 2) {
+            StructureMatrix<Double> eval1 = argTrees.get(0).eval();
+            StructureMatrix<Double> eval2 = argTrees.get(1).eval();
+
+            if (eval1.getDim() == 0 && eval2.getDim() == 0) {
+                double arg1 = eval1.getElem();
+                double arg2 = eval2.getElem();
+                double r = 0.0;
+                if (method != null) {
+                    try {
+                        if (method.getParameterCount() == 2) {
+                            r = (Double) method.invoke(Math.class, arg1, arg2);
+                        } else {
+                            r = (Double) method.invoke(Math.class, arg1);
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return res.setElem(r);
+            } else if (argTrees.size() == 0) {
+                double r = 0.0;
+                if (method != null) {
+                    try {
+                        r = (Double) method.invoke(Math.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (field != null) {
+                    try {
+                        r = field.getDouble(null);
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+                return res.setElem(r);
+            } else {
+                int size1 = eval1.getDim() == 1 ? eval1.getData1d().size() : 1;
+                int size2 = eval2.getDim() == 1 ? eval2.getData1d().size() : 1;
+                int size = Math.max(size1, size2);
+                res = new StructureMatrix<>(1, Double.class);
+                try {
+                    for (int i = 0; i < size; i++) {
+                        double arg1 = eval1.getDim() == 1 ? (i < size1 ? eval1.getData1d().get(i) : eval1.getData1d().get(0)) : eval1.getElem();
+                        double arg2 = eval2.getDim() == 1 ? (i < size2 ? eval2.getData1d().get(i) : eval2.getData1d().get(0)) : eval2.getElem();
+                        double r = 0.0;
+                        if (method != null) {
+                            if (method.getParameterCount() == 2) {
+                                r = (Double) method.invoke(Math.class, arg1, arg2);
+                            } else {
+                                r = (Double) method.invoke(Math.class, arg1);
+                            }
+                        }
+                        res.setElem(r, i);
+                    }
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
                 return res;
             }
-            for (int i = 0; i < vectorSize; i++) {
-                res.setElem(argValues.get(0), i);
+        } else if (!argTrees.isEmpty()) {
+            List<Double> argList = new ArrayList<>();
+            for (AlgebraicTree at : argTrees) {
+                try {
+                    StructureMatrix<Double> evalArg = at.eval();
+                    if (evalArg.getDim() == 0) argList.add(evalArg.getElem());
+                    else if (evalArg.getDim() == 1 && !evalArg.getData1d().isEmpty()) argList.add(evalArg.getData1d().get(0));
+                    else argList.add(0.0);
+                } catch (Exception e) {
+                    argList.add(0.0);
+                }
             }
-            return res;
+            double r = 0.0;
+            if (method != null) {
+                try {
+                    r = (Double) method.invoke(Math.class, argList.toArray());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (!argList.isEmpty()) {
+                r = argList.get(0);
+            }
+            return res.setElem(r);
         }
+
+        return res;
     }
 
     public String getFunctionName() {

@@ -76,6 +76,10 @@ public class TreeTreeNodeVector extends TreeNode {
             r = eval.getElem();
         }
         res.setElem(r, 0);
+        System.out.println(
+                "TreeTreeNodeVector.eval() : dim = "
+                        + res.getDim() + ", result = " + res
+        );
         return res;
     }
 

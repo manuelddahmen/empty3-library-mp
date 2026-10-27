@@ -1056,12 +1056,21 @@ public class AlgebraicTree extends Tree {
                         fParamString, parametersValues
                 );
 
-                TreeNode t2 = new TreeTreeNode(this.createWithSameParameters(fParamString), t, new Object[]{fParamString, parametersValues, fName, isMath},
-                        mathFunctionTreeNodeType);
-                if (!add(t2, fParamString))
-                    return false;
-                t.getChildren().add(t2);
+                TreeNode t2 = new TreeTreeNode(
+                        this.createWithSameParameters(fParamString),
+                        t,
+                        new Object[]{
+                                fParamString,
+                                parametersValues,
+                                fName,
+                                isMath
+                        },
+                        mathFunctionTreeNodeType
+                );
 
+// Les arguments sont déjà construits
+// dans TreeTreeNode.
+                t.getChildren().add(t2);
 
             }
         } catch (Exception ex) {
