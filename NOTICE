@@ -1,4 +1,10 @@
-Copyright 2014–2026 Manuel Dahmen
+Copyright 2026 Manuel Dahmen
+Apache 2.0 LICENSE
+
+
+NOTES FOR BSD-3 CLAUSE.
+
+About dependencies :
 <dependencies>
 <dependency>
 <groupId>io.netty</groupId>
