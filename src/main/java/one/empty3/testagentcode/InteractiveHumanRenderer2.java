@@ -790,12 +790,16 @@ public class InteractiveHumanRenderer2 {
 
         private static void addSphere(Scene s, Point3D pos, double radius, ColorTexture tex) {
             Sphere sphere = new Sphere(pos, radius);
+            sphere.setIncrU(0.1);
+            sphere.setIncrV(0.1);
             sphere.texture(tex);
             s.add(sphere);
         }
 
         private static void addCylinder(Scene s, Point3D start, Point3D end, double radius, ColorTexture tex) {
             Cylinder cylinder = new Cylinder(start, end, radius);
+            cylinder.setIncrU(0.1);
+            cylinder.setIncrV(0.1);
             cylinder.texture(tex);
             s.add(cylinder);
         }

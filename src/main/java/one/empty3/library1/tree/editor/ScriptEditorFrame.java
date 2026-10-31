@@ -1,47 +1,17 @@
-/*
- *
- *  *
- *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
- *  *  *
- *  *  *
- *  *  *    Copyright 2026 Manuel Daniel Dahmen
- *  *  *
- *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *    you may not use this file except in compliance with the License.
- *  *  *    You may obtain a copy of the License at
- *  *  *
- *  *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  *    Unless required by applicable law or agreed to in writing, software
- *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *    See the License for the specific language governing permissions and
- *  *  *    limitations under the License.
- *  *
- *  *
- *
- *
- *
- *  * Created by $user $date
- *
- *
- */
-
 package one.empty3.library1.tree.editor;
 
 import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.*;
 import java.io.File;
 
 public class ScriptEditorFrame extends JFrame {
-    private JTextPane editorPane;
+    private JTabbedPane tabbedPane;
     private JTextArea consoleArea;
     private File currentFile;
 
     public ScriptEditorFrame() {
-        setTitle("Algebraic Script Editor");
-        setSize(900, 600);
+        setTitle("Algebraic Script Editor with Tabs");
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -52,16 +22,19 @@ public class ScriptEditorFrame extends JFrame {
         // Menu bar
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenuItem newItem = new JMenuItem("New Tab");
         JMenuItem openItem = new JMenuItem("Open...");
         JMenuItem saveItem = new JMenuItem("Save");
         JMenuItem saveAsItem = new JMenuItem("Save As...");
         JMenuItem exitItem = new JMenuItem("Exit");
 
+        newItem.addActionListener(e -> addNewTab("Untitled.calcmath", ""));
         openItem.addActionListener(e -> openFile());
         saveItem.addActionListener(e -> saveFile());
         saveAsItem.addActionListener(e -> saveAsFile());
         exitItem.addActionListener(e -> System.exit(0));
 
+        fileMenu.add(newItem);
         fileMenu.add(openItem);
         fileMenu.add(saveItem);
         fileMenu.add(saveAsItem);
@@ -80,37 +53,110 @@ public class ScriptEditorFrame extends JFrame {
 
         setJMenuBar(menuBar);
 
-        // Toolbar
+        // Toolbar (Icon bar / Actions)
         JToolBar toolBar = new JToolBar();
-        JButton runButton = new JButton("Run Script");
+        JButton newButton = new JButton("New");
+        JButton runButton = new JButton("Run");
+        JButton checkButton = new JButton("Check Syntax");
+        JButton closeTabButton = new JButton("Close Tab");
+
+        newButton.addActionListener(e -> addNewTab("Untitled.calcmath", ""));
         runButton.addActionListener(e -> runScript());
+        checkButton.addActionListener(e -> checkSyntax());
+        closeTabButton.addActionListener(e -> closeCurrentTab());
+
+        toolBar.add(newButton);
         toolBar.add(runButton);
+        toolBar.add(checkButton);
+        toolBar.addSeparator();
+        toolBar.add(closeTabButton);
 
         add(toolBar, BorderLayout.NORTH);
 
-        // Editor & Console Split Pane
-        editorPane = new JTextPane();
-        editorPane.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        JScrollPane editorScroll = new JScrollPane(editorPane);
+        // Tabbed pane for editors
+        tabbedPane = new JTabbedPane();
+        addNewTab("Script 1.calcmath", "sin(x) * 2");
 
+        // Console output
         consoleArea = new JTextArea();
         consoleArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
         consoleArea.setEditable(false);
         consoleArea.setBackground(new Color(30, 30, 30));
         consoleArea.setForeground(new Color(220, 220, 220));
         JScrollPane consoleScroll = new JScrollPane(consoleArea);
+        consoleScroll.setPreferredSize(new Dimension(1000, 200));
+        // Menu Theme / Appearance
+        JMenu themeMenu = new JMenu("Theme");
+        JMenuItem lightThemeItem = new JMenuItem("FlatLaf Light");
+        JMenuItem darkThemeItem = new JMenuItem("FlatLaf Dark");
+        JMenuItem intelliJThemeItem = new JMenuItem("FlatLaf IntelliJ");
+        JMenuItem darculaThemeItem = new JMenuItem("FlatLaf Darcula");
+        JMenuItem systemThemeItem = new JMenuItem("System Default");
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, editorScroll, consoleScroll);
-        splitPane.setDividerLocation(350);
+        lightThemeItem.addActionListener(e -> setTheme("com.formdev.flatlaf.FlatLightLaf"));
+        darkThemeItem.addActionListener(e -> setTheme("com.formdev.flatlaf.FlatDarkLaf"));
+        intelliJThemeItem.addActionListener(e -> setTheme("com.formdev.flatlaf.FlatIntelliJLaf"));
+        darculaThemeItem.addActionListener(e -> setTheme("com.formdev.flatlaf.FlatDarculaLaf"));
+        systemThemeItem.addActionListener(e -> setTheme(UIManager.getSystemLookAndFeelClassName()));
+
+        themeMenu.add(lightThemeItem);
+        themeMenu.add(darkThemeItem);
+        themeMenu.add(intelliJThemeItem);
+        themeMenu.add(darculaThemeItem);
+        themeMenu.addSeparator();
+        themeMenu.add(systemThemeItem);
+        menuBar.add(themeMenu);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tabbedPane, consoleScroll);
+        splitPane.setDividerLocation(450);
 
         add(splitPane, BorderLayout.CENTER);
     }
 
+    private void addNewTab(String title, String content) {
+        JTextPane editorPane = new JTextPane();
+        editorPane.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        editorPane.setText(content);
+        AdvancedEditorFeatures.applySyntaxHighlighting(editorPane);
+
+        JScrollPane scrollPane = new JScrollPane(editorPane);
+        tabbedPane.addTab(title, scrollPane);
+        tabbedPane.setSelectedComponent(scrollPane);
+    }
+
+    private JTextPane getCurrentEditorPane() {
+        Component selectedComponent = tabbedPane.getSelectedComponent();
+        if (selectedComponent instanceof JScrollPane scrollPane) {
+            JViewport viewPort = scrollPane.getViewport();
+            Component view = viewPort.getView();
+            if (view instanceof JTextPane textPane) {
+                return textPane;
+            }
+        }
+        return null;
+    }
+
+    private void closeCurrentTab() {
+        int index = tabbedPane.getSelectedIndex();
+        if (index >= 0) {
+            tabbedPane.remove(index);
+        }
+    }
+
     private void runScript() {
+        JTextPane editorPane = getCurrentEditorPane();
+        if (editorPane == null) return;
         String code = editorPane.getText();
         consoleArea.setText("Executing script...\n");
         String result = ScriptExecutor.execute(code);
         consoleArea.append(result);
+    }
+
+    private void checkSyntax() {
+        JTextPane editorPane = getCurrentEditorPane();
+        if (editorPane == null) return;
+        String code = editorPane.getText();
+        String status = AdvancedEditorFeatures.checkSyntax(code);
+        consoleArea.setText(status + "\n");
     }
 
     private void openFile() {
@@ -119,7 +165,7 @@ public class ScriptEditorFrame extends JFrame {
             currentFile = chooser.getSelectedFile();
             try {
                 String content = CloudStorageManager.loadFromFile(currentFile);
-                editorPane.setText(content);
+                addNewTab(currentFile.getName(), content);
                 consoleArea.setText("Loaded file: " + currentFile.getAbsolutePath() + "\n");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error loading file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -128,6 +174,8 @@ public class ScriptEditorFrame extends JFrame {
     }
 
     private void saveFile() {
+        JTextPane editorPane = getCurrentEditorPane();
+        if (editorPane == null) return;
         if (currentFile == null) {
             saveAsFile();
         } else {
@@ -135,17 +183,18 @@ public class ScriptEditorFrame extends JFrame {
                 CloudStorageManager.saveToFile(currentFile, editorPane.getText());
                 consoleArea.setText("Saved file: " + currentFile.getAbsolutePath() + "\n");
             } catch (Exception ex) {
-                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error saving file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                consoleArea.append("Error saving file: " + ex.getMessage() + "\n");
             }
         }
     }
 
     private void saveAsFile() {
+        JTextPane editorPane = getCurrentEditorPane();
+        if (editorPane == null) return;
         JFileChooser chooser = new JFileChooser();
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             currentFile = chooser.getSelectedFile();
+            tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), currentFile.getName());
             saveFile();
         }
     }
@@ -155,7 +204,7 @@ public class ScriptEditorFrame extends JFrame {
         if (url != null && !url.trim().isEmpty()) {
             try {
                 String content = CloudStorageManager.loadFromCloud(url.trim());
-                editorPane.setText(content);
+                addNewTab("CloudScript", content);
                 consoleArea.setText("Loaded from cloud: " + url + "\n");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error loading from cloud: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -164,6 +213,8 @@ public class ScriptEditorFrame extends JFrame {
     }
 
     private void saveCloud() {
+        JTextPane editorPane = getCurrentEditorPane();
+        if (editorPane == null) return;
         String url = JOptionPane.showInputDialog(this, "Enter Cloud URL (POST):");
         if (url != null && !url.trim().isEmpty()) {
             try {
@@ -174,7 +225,17 @@ public class ScriptEditorFrame extends JFrame {
             }
         }
     }
-
+    private void setTheme(String className) {
+        try {
+            UIManager.setLookAndFeel(className);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not apply theme: " + className + "\n(Make sure FlatLaf dependency is added to build.gradle)",
+                    "Theme Error",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new ScriptEditorFrame().setVisible(true);

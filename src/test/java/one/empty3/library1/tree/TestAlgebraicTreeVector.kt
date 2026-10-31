@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.Array
+import kotlin.math.sin
 
 /**
  * Test class for AlgebraicTree.
@@ -815,6 +816,27 @@ public class TestAlgebraicTreeVector {
 
          */
     }
+
+    @Test
+    fun testForFunctionFunction() {
+        val r : Double = 5.0
+        val str = "g(x) {\n" +
+                "        sin(x)\n" +
+                "    }\n" +
+                "    f(x) = x*x * 2\n" +
+                "    pi = PI()\n" +
+                "    a = f(g(pi+1))"
+        val li = ListInstructions()
+        li.addInstructions(str)
+        val results = li.runInstructions()
+
+        assertNotNull(results)
+        assertTrue(li.getCurrentParamsValues().containsKey("a"))
+        Assertions.assertEquals(Math.pow(Math.sin(Math.PI+1), 2.0)*2.0, li.getCurrentParamsValues().get("a")!!, EPSILON)
+    }
+
+
+
     @Test
     fun testForFunctionOneArguments() {
         val r : Double = 5.0
