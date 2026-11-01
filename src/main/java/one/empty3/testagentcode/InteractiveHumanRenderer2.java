@@ -16,6 +16,7 @@
 
 package one.empty3.testagentcode;
 
+import one.empty3.NativeLookAndFeelSwing;
 import one.empty3.library.*;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
@@ -1090,7 +1091,7 @@ public class InteractiveHumanRenderer2 {
                     // Ground plane
                     Sphere ground = new Sphere(new Point3D(0.0, -100.0, 0.0), 100.0);
                     ground.texture(new ColorTexture(Color.newCol(0.25f, 0.50f, 0.22f)));
-                    scene.add(ground);
+//                    scene.add(ground);
 
                     // Character geometry in world coordinates
                     PoseState worldPose = character.getWorldPose(animator.getCurrentPose());
@@ -1522,6 +1523,8 @@ public class InteractiveHumanRenderer2 {
         boolean launchCli = false;
         boolean batchExport = false;
 
+
+
         for (String arg : args) {
             String lower = arg.toLowerCase();
             if (lower.equals("--gui") || lower.equals("--game") || lower.equals("-g")) {
@@ -1532,6 +1535,11 @@ public class InteractiveHumanRenderer2 {
                 batchExport = true;
             }
         }
+
+        if(launchGui) {
+            NativeLookAndFeelSwing laf = new NativeLookAndFeelSwing();
+        }
+
 
         // If no flags provided, default to batch catalog rendering (preserving backward compatibility)
         if (!launchGui && !launchCli && !batchExport) {
