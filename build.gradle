@@ -802,8 +802,11 @@ jreleaser {
         mode = 'FILE'
         //publicKey = load.get('signing.publicKeyPath')
         passphrase = load.get('signing.passphrase')
-        secretKey = load.get('signing.secretKey')
-
+        def secretKeyPath = load.get('signing.secretKey')
+        if (secretKeyPath) {
+            File skFile = new File(secretKeyPath as String)
+            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
+        }
     }
     release {
         github {

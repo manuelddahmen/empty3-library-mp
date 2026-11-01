@@ -36,9 +36,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Interactive 3D Human Animation & Rendering System.
+ * Interactive 3D Human Animation and Rendering System.
  * Supports modular anatomical joint tracking, smooth pose transitions with easing,
- * 3D character displacement & yaw orientation, real-time GUI game controller,
+ * 3D character displacement ands yaw orientation, real-time GUI game controller,
  * and command-line automation REPL.
  */
 public class InteractiveHumanRenderer2 {

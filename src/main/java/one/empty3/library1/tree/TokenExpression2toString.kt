@@ -31,6 +31,7 @@ package one.empty3.library1.tree
 
 import one.empty3.library1.tree.StringAnalyzerJava2.TokenExpression2
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 class TokenExpression2toString {
     /**
      * Converts string to tokenized string representation
