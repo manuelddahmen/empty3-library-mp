@@ -800,11 +800,15 @@ jreleaser {
         active = 'ALWAYS'
         armored = true
         mode = 'FILE'
-        publicKey = load.get('signing.publicKeyPath')
+        //publicKey = load.get('signing.publicKeyPath')
         passphrase = load.get('signing.passphrase')
         secretKey = load.get('signing.secretKey')
-        release.github.token = load.get('release.github.token')
 
+    }
+    release {
+        github {
+            token = load.get('release.github.token')
+        }
     }
     project {
         name = 'empty3-library-mp'
