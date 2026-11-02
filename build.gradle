@@ -444,6 +444,7 @@ signing {
 dependencies {
     // Netty constraints to force version
     constraints {
+        implementation("io.netty:netty-parent:4.1.138.Final")
         implementation('io.netty:netty-codec-http:4.2.17.Final')
         implementation('com.fasterxml.jackson.core:jackson-core:2.21.4')
         implementation('io.grpc:grpc-netty-shaded:1.75.0')
@@ -755,9 +756,9 @@ test {
     useJUnitPlatform()
 
     // Ne pas échouer s'il n'y a pas de tests
-    onlyIf {
-        project.hasProperty('runTests')
-    }
+   // onlyIf {
+   //     project.hasProperty('runTests')
+  //  }
 
     // Exclude xmlsec from test classpath: it's a named module that requires
     // jakarta.xml.bind at boot layer init but is not used in any test code
