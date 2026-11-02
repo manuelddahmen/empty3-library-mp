@@ -1048,7 +1048,9 @@ public class AlgebraicTree extends Tree {
                     }
                 }
 
-                if (!isMath && (userFunctions == null || !userFunctions.containsKey(fName))) {
+                boolean isCalculusFunction = "integral".equals(fName) || "derivative".equals(fName);
+
+                if (!isMath && !isCalculusFunction && (userFunctions == null || !userFunctions.containsKey(fName))) {
                     return false;
                 }
 

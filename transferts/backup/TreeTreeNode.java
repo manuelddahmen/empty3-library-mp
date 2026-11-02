@@ -38,8 +38,8 @@ public class TreeTreeNode extends TreeNode {
     public TreeTreeNode(TreeNode t, Object[] objects, TreeNodeType type) {
         super(t, objects, type);
         tree = new AlgebraicTree((String) objects[0], (Map<String, Double>) objects[1]);
+        tree.construct();
         try {
-            tree.construct();
             if (objects[2] instanceof String && !((String) objects[2]).isEmpty()) {
                 String call = (String) objects[2];
                 if (call.length() > 1) {
@@ -52,6 +52,20 @@ public class TreeTreeNode extends TreeNode {
                     }
                 }
             }
+            int expectedArgs = 1;
+            if (method != null) {
+                expectedArgs = method.getParameterCount();
+            } else if (functionName != null) {
+                expectedArgs = -1; // dynamique selon la présence de virgules
+            }
+
+            List<String> argStrs = new ArrayList<>();
+            if (expectedArgs >= 2 || expectedArgs == -1 || "integral".equals(functionName) || "derivative".equals(functionName)) {
+                argStrs = splitArguments(fParamString);
+            } else {
+                argStrs.add(fParamString);
+            }
+
         } catch (AlgebraicFormulaSyntaxException | NoSuchMethodException e) {
             //e.printStackTrace();
         }
@@ -60,6 +74,36 @@ public class TreeTreeNode extends TreeNode {
     @Override
     public StructureMatrix<Double> eval() throws TreeNodeEvalException, AlgebraicFormulaSyntaxException {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
+        String funcName = getFunctionName();
+        List<String> argStrs = new ArrayList<>();
+        if (expectedArgs >= 2 || expectedArgs == -1 || fParamString.contains(",") || "integral".equals(functionName) || "derivative".equals(functionName)) {
+            argStrs = splitArguments(fParamString);
+        } else {
+            argStrs.add(fParamString);
+        }
+        if ("integral".equals(functionName)) {
+            // Expected arguments: [variableName, expression, lowerBound, upperBound]
+            if (argTrees.size() >= 4) {
+                String varName = argTrees.get(0).getFormula(); // or argument string representation
+                AlgebraicTree subTree = argTrees.get(1);
+                double a = argTrees.get(2).eval().getElem();
+                double b = argTrees.get(3).eval().getElem();
+                double result = subTree.integrate(varName, a, b);
+                return res.setElem(result);
+            }
+        } else if ("derivative".equals(functionName)) {
+            // Expected arguments: [variableName, expression, evaluationPoint]
+            if (argTrees.size() >= 3) {
+                String varName = argTrees.get(0).getFormula();
+                AlgebraicTree subTree = argTrees.get(1);
+                double xVal = argTrees.get(2).eval().getElem();
+
+                AlgebraicTree diffTree = subTree.derivative(varName);
+                diffTree.setParameter(varName, xVal);
+                return diffTree.eval();
+            }
+        }
+
         double r;
         r = tree.eval().getElem();
 

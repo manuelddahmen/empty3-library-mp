@@ -784,6 +784,20 @@ public class TestAlgebraicTreeVector {
             true
         )
     }
+    @Test
+    fun testIntegral() {
+        val tree:AlgebraicTree  =  AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)");
+        tree.construct();
+        val result = tree.eval ().getElem(); // Evaluates to ~2.6667
+        assertEquals(result, 2.6667, 0.1)
+    }
+    @Test
+    fun testDerivative() {
+        val tree:AlgebraicTree  = AlgebraicTree("derivative(x, x ^ 2.0, 2.0)");
+        tree.construct();
+        val result = tree.eval().getElem(); // Evaluates to ~2.6667
+        assertEquals(result, 4.0, 0.1)
+    }
 
     @Test
     fun testForFunctionMultiArguments() {
