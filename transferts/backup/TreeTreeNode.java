@@ -102,6 +102,20 @@ public class TreeTreeNode extends TreeNode {
                 diffTree.setParameter(varName, xVal);
                 return diffTree.eval();
             }
+        } else if ("integrate2D".equals(functionName)) {
+            // Expected arguments: [expression, varX, ax, bx, varY, ay, by] (7 arguments)
+            if (argTrees.size() >= 7) {
+                AlgebraicTree subTree = argTrees.get(0);
+                String varX = argTrees.get(1).getFormula();
+                double ax = argTrees.get(2).eval().getElem();
+                double bx = argTrees.get(3).eval().getElem();
+                String varY = argTrees.get(4).getFormula();
+                double ay = argTrees.get(5).eval().getElem();
+                double by = argTrees.get(6).eval().getElem();
+
+                double result = subTree.integrate2D(varX, ax, bx, varY, ay, by);
+                return res.setElem(result);
+            }
         }
 
         double r;

@@ -99,7 +99,7 @@ public class TreeTreeNode extends TreeNode {
             }
 
             List<String> argStrs = new ArrayList<>();
-            if (expectedArgs == 2 || (expectedArgs == -1 && fParamString.contains(","))) {
+            if (expectedArgs >= 2 || expectedArgs == -1 || fParamString.contains(",") || "integral".equals(functionName) || "derivative".equals(functionName)) {
                 argStrs = splitArguments(fParamString);
             } else {
                 argStrs.add(fParamString);
@@ -169,6 +169,38 @@ public class TreeTreeNode extends TreeNode {
     public StructureMatrix<Double> eval() throws TreeNodeEvalException, AlgebraicFormulaSyntaxException {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
         AlgebraicTree mainTree = getMainAlgebraicTree();
+
+        if ("integral".equals(functionName)) {
+            if (argTrees.size() >= 4) {
+                String varName = argTrees.get(0).getFormula();
+                AlgebraicTree subTree = argTrees.get(1);
+                double a = argTrees.get(2).eval().getElem();
+                double b = argTrees.get(3).eval().getElem();
+                double result = subTree.integrate(varName, a, b);
+                return res.setElem(result);
+            }
+        } else if ("derivative".equals(functionName)) {
+            if (argTrees.size() >= 3) {
+                String varName = argTrees.get(0).getFormula();
+                AlgebraicTree subTree = argTrees.get(1);
+                double xVal = argTrees.get(2).eval().getElem();
+                AlgebraicTree diffTree = subTree.derivative(varName);
+                diffTree.setParameter(varName, xVal);
+                return diffTree.eval();
+            }
+        } else if ("integrate2D".equals(functionName)) {
+            if (argTrees.size() >= 7) {
+                AlgebraicTree subTree = argTrees.get(0);
+                String varX = argTrees.get(1).getFormula();
+                double ax = argTrees.get(2).eval().getElem();
+                double bx = argTrees.get(3).eval().getElem();
+                String varY = argTrees.get(4).getFormula();
+                double ay = argTrees.get(5).eval().getElem();
+                double by = argTrees.get(6).eval().getElem();
+                double result = subTree.integrate2D(varX, ax, bx, varY, ay, by);
+                return res.setElem(result);
+            }
+        }
 
         if (functionName != null && mainTree != null && mainTree.getUserFunctions() != null && mainTree.getUserFunctions().containsKey(functionName)) {
             AlgebraicTree.UserDefinedFunction udf = mainTree.getUserFunctions().get(functionName);

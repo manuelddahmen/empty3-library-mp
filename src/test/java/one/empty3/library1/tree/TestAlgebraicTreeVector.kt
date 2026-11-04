@@ -38,7 +38,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.Array
-import kotlin.math.sin
 
 /**
  * Test class for AlgebraicTree.
@@ -784,12 +783,31 @@ public class TestAlgebraicTreeVector {
             true
         )
     }
+
     @Test
     fun testIntegral() {
-        val tree:AlgebraicTree  =  AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)");
+        val tree: AlgebraicTree = AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)");
         tree.construct();
-        val result = tree.eval ().getElem(); // Evaluates to ~2.6667
+        val result = tree.eval().getElem(); // Evaluates to ~2.6667
         assertEquals(result, 2.6667, 0.1)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testIterated2DIntegral() {
+        // \int_0^1 \int_0^1 (x + y) dx dy = 1.0
+        val tree = AlgebraicTree("x + y")
+        tree.construct()
+        val result = tree.integrate2D("x", 0.0, 1.0, "y", 0.0, 1.0)
+        assertEquals(1.0, result, EPSILON)
+    }
+    @Test
+    @Throws(Exception::class)
+    fun testIterated2DIntegral2dCalcmath() {
+        val tree:AlgebraicTree  = AlgebraicTree("integrate2D(x + y, x, 0.0, 1.0, y, 0.0, 1.0)");
+        tree.construct();
+        val  result = tree.eval().getElem(); // Evaluates to 1.0
+        assertEquals(1.0, result.toDouble(), 0.1)
     }
     @Test
     fun testDerivative() {
