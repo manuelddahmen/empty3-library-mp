@@ -896,7 +896,7 @@ jreleaser {
 
                     // Deployment identifier used for publication.
                     //
-                    deploymentId = '27d4cb92-0141-4a3f-b2e1-38c801bfafb0'
+                    deploymentId = 'd54226c8-5abd-4679-bc76-451c3ae38bfb'//27d4cb92-0141-4a3f-b2e1-38c801bfafb0'
 
                     // Time to wait between state transition checks, in seconds.
                     // Defaults to `10`.

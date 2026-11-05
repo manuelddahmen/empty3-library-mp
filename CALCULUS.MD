@@ -119,32 +119,17 @@ double doubleIntegral = tree.integrate2D("x", 0.0, 1.0, "y", 0.0, 1.0); // Retur
 
 ---
 
-## 7. The `calcmath` Language: Inline Calculus Syntax
+## 6. Parameters & User-Defined Variables
 
-The parser language powering `AlgebraicTree` is known as **`calcmath`**. It supports direct, inline evaluation of calculus operations (`integral` and `derivative`) directly inside formula strings.
-
-### A. Inline Definite Integral (`integral`)
-To compute definite integrals directly within an expression string, use the `integral` function with 4 arguments:
-```
-integral(variableName, expression, lowerBound, upperBound)
-```
-
-**Example in Java / `calcmath`**:
+Parameters can be dynamically updated at runtime without reconstructing the tree:
 ```java
-AlgebraicTree tree = new AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)");
+AlgebraicTree tree = new AlgebraicTree("a * x ^ 2.0 + b * x + c");
 tree.construct();
-double result = tree.eval().getElem(); // Evaluates to ~2.6667 (\int_0^2 x^2 dx)
-```
 
-### B. Inline Derivative (`derivative`)
-To compute and evaluate a derivative directly within an expression string, use the `derivative` function with 3 arguments:
-```
-derivative(variableName, expression, evaluationPoint)
-```
+tree.setParameter("a", 1.0);
+tree.setParameter("b", -3.0);
+tree.setParameter("c", 2.0);
+tree.setParameter("x", 4.0);
 
-**Example in Java / `calcmath`**:
-```java
-AlgebraicTree tree = new AlgebraicTree("derivative(x, x ^ 2.0, 2.0)");
-tree.construct();
-double result = tree.eval().getElem(); // Evaluates to 4.0 (d/dx(x^2) evaluated at x = 2.0)
+double result = tree.eval().getElem();
 ```
