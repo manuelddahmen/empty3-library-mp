@@ -811,6 +811,22 @@ public class TestAlgebraicTreeVector {
     }
 
     @Test
+    fun testToFormulaTransform() {
+        val tree: AlgebraicTree = AlgebraicTree("derivative(x, x ^ 2.0)>>")
+        tree.construct()
+        val formula = tree.root.toFormula()
+        assertEquals("((2.0 * x))", formula)
+    }
+
+    @Test
+    fun testToFormulaIntegralTransform() {
+        val tree: AlgebraicTree = AlgebraicTree("integral(x, x)>>")
+        tree.construct()
+        val formula = tree.root.toFormula()
+        assertEquals("((0.5 * ((x ^ 2.0))))", formula)
+    }
+
+    @Test
     @Throws(Exception::class)
     fun testIterated2DIntegral() {
         // \int_0^1 \int_0^1 (x + y) dx dy = 1.0

@@ -380,6 +380,34 @@ public class TreeTreeNode extends TreeNode {
     @Override
     public String toFormula() {
         String func = method != null ? method.getName() : (getFunctionName() != null ? getFunctionName() : (objects != null && objects.length > 2 && objects[2] instanceof String ? (String) objects[2] : ""));
+        
+        if (isTransform()) {
+            String lowerFunc = func != null ? func.toLowerCase() : "";
+            if ("derivative".equals(lowerFunc) && argTrees.size() >= 2) {
+                try {
+                    AlgebraicTree subTree = argTrees.get(1);
+                    String varName = argTrees.get(0).getFormula();
+                    AlgebraicTree diffTree = subTree.derivative(varName);
+                    if (diffTree != null && diffTree.getRoot() != null) {
+                        return diffTree.getRoot().toFormula();
+                    }
+                } catch (Exception e) {
+                    // fallback
+                }
+            } else if (("integral".equals(lowerFunc) || "antiderivative".equals(lowerFunc)) && argTrees.size() >= 2) {
+                try {
+                    AlgebraicTree subTree = argTrees.get(1);
+                    String varName = argTrees.get(0).getFormula();
+                    AlgebraicTree intTree = subTree.antiderivative(varName);
+                    if (intTree != null && intTree.getRoot() != null) {
+                        return intTree.getRoot().toFormula();
+                    }
+                } catch (Exception e) {
+                    // fallback
+                }
+            }
+        }
+
         StringBuilder argsStr = new StringBuilder();
         for (int i = 0; i < argTrees.size(); i++) {
             if (i > 0) argsStr.append(", ");
@@ -392,7 +420,11 @@ public class TreeTreeNode extends TreeNode {
         if (argsStr.length() == 0 && objects != null && objects.length > 0 && objects[0] instanceof String) {
             argsStr.append((String) objects[0]);
         }
-        return func + "(" + argsStr.toString() + ")";
+        String formula = func + "(" + argsStr.toString() + ")";
+        if (isTransform()) {
+            formula += ">>";
+        }
+        return formula;
     }
 
     @Override
