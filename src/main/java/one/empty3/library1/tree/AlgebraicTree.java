@@ -151,6 +151,12 @@ public class AlgebraicTree extends Tree {
         if (src == null || subformula == null || subformula.length() == 0)
             return false;
 
+        subformula = subformula.trim();
+        if (subformula.endsWith(">>")) {
+            src.setTransform(true);
+            subformula = subformula.substring(0, subformula.length() - 2).trim();
+        }
+
         int i = 1;
         boolean added = false;
         int last = 15;
@@ -1050,6 +1056,7 @@ public class AlgebraicTree extends Tree {
 
                 boolean isCalculusFunction = "integral".equalsIgnoreCase(fName)
                         || "derivative".equalsIgnoreCase(fName)
+                        || "antiderivative".equalsIgnoreCase(fName)
                         || "integrate2D".equalsIgnoreCase(fName);
 
                 if (!isMath && !isCalculusFunction && (userFunctions == null || !userFunctions.containsKey(fName))) {

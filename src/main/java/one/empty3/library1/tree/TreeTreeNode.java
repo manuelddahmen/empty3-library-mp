@@ -170,8 +170,17 @@ public class TreeTreeNode extends TreeNode {
         StructureMatrix<Double> res = new StructureMatrix<>(0, Double.class);
         AlgebraicTree mainTree = getMainAlgebraicTree();
 
-        if ("integral".equals(functionName)) {
-            if (argTrees.size() >= 4) {
+        if ("integral".equals(functionName) || "antiderivative".equals(functionName)) {
+            if (isTransform() && argTrees.size() >= 2) {
+                AlgebraicTree subTree = argTrees.get(0);
+                String varName = argTrees.get(1).getFormula();
+                AlgebraicTree intTree = subTree.antiderivative(varName);
+                if (mainTree != null) {
+                    intTree.setParametersValues(mainTree.getParametersValues());
+                    intTree.setUserFunctions(mainTree.getUserFunctions());
+                }
+                return intTree.eval();
+            } else if (argTrees.size() >= 4) {
                 String varName = argTrees.get(0).getFormula();
                 AlgebraicTree subTree = argTrees.get(1);
                 double a = argTrees.get(2).eval().getElem();
@@ -180,7 +189,16 @@ public class TreeTreeNode extends TreeNode {
                 return res.setElem(result);
             }
         } else if ("derivative".equals(functionName)) {
-            if (argTrees.size() >= 3) {
+            if (isTransform() && argTrees.size() >= 2) {
+                AlgebraicTree subTree = argTrees.get(0);
+                String varName = argTrees.get(1).getFormula();
+                AlgebraicTree diffTree = subTree.derivative(varName);
+                if (mainTree != null) {
+                    diffTree.setParametersValues(mainTree.getParametersValues());
+                    diffTree.setUserFunctions(mainTree.getUserFunctions());
+                }
+                return diffTree.eval();
+            } else if (argTrees.size() >= 3) {
                 String varName = argTrees.get(0).getFormula();
                 AlgebraicTree subTree = argTrees.get(1);
                 double xVal = argTrees.get(2).eval().getElem();

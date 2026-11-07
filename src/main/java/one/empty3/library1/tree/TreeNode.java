@@ -48,6 +48,15 @@ public class TreeNode {
     protected TreeNode parent;
     protected String expressionString;
     private TreeNodeValue value;
+    protected boolean transform = false;
+
+    public boolean isTransform() {
+        return transform || (parent != null && parent.isTransform());
+    }
+
+    public void setTransform(boolean transform) {
+        this.transform = transform;
+    }
 
     private enum TreeNodeClassType {
         Double, Integer, Boolean, String, Char

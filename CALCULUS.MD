@@ -117,6 +117,22 @@ tree.construct();
 double doubleIntegral = tree.integrate2D("x", 0.0, 1.0, "y", 0.0, 1.0); // Returns 1.0
 ```
 
+### F. The `>>` Formula Transform Operator
+The `>>` operator in calcmath transforms symbolic calculus operations (such as derivatives and antiderivatives/integrals) into their resulting algebraic expressions and evaluates them or assigns them in equations:
+```java
+// Assign the symbolic derivative of x^2 w.r.t x and evaluate
+AlgebraicTree tree = new AlgebraicTree("a = derivative(x ^ 2.0, x)>>");
+tree.construct();
+tree.setParameter("x", 2.0);
+double val = tree.eval().getElem(); // Returns 4.0
+
+// Symbolic antiderivative
+AlgebraicTree tree2 = new AlgebraicTree("a = integral(x ^ 2.0, x)>>");
+tree2.construct();
+tree2.setParameter("x", 2.0);
+double intVal = tree2.eval().getElem(); // Evaluates ~2.6667
+```
+
 ---
 
 ## 6. Parameters & User-Defined Variables

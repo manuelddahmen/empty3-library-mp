@@ -786,10 +786,28 @@ public class TestAlgebraicTreeVector {
 
     @Test
     fun testIntegral() {
-        val tree: AlgebraicTree = AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)");
+        val tree: AlgebraicTree = AlgebraicTree("integral(x, x ^ 2.0, 0.0, 2.0)")
         tree.construct();
         val result = tree.eval().getElem(); // Evaluates to ~2.6667
         assertEquals(result, 2.6667, 0.1)
+    }
+
+    @Test
+    fun testIntegralSymbolic() {
+        val tree: AlgebraicTree = AlgebraicTree("a = integral(x ^ 2.0, x)>>")
+        tree.construct();
+        tree.parametersValues["x"] = 2.0
+        val result = tree.eval().getElem(); // Evaluates to ~2.6667
+        assertEquals(result, 2.6667, 0.1)
+    }
+
+    @Test
+    fun testDerivativeSymbolic() {
+        val tree: AlgebraicTree = AlgebraicTree("a = derivative(x ^ 2.0, x)>>")
+        tree.construct();
+        tree.parametersValues["x"] = 2.0
+        val result = tree.eval().getElem(); // Evaluates to 4.0
+        assertEquals(result, 4.0, 0.1)
     }
 
     @Test
