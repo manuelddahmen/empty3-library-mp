@@ -392,7 +392,7 @@ public class TreeTreeNode extends TreeNode {
                         return diffTree.getRoot().toFormula();
                     }
                 } catch (Exception e) {
-                    // fallback
+                    throw new RuntimeException(e);
                 }
             } else if (("integral".equals(lowerFunc) || "antiderivative".equals(lowerFunc)) && argTrees.size() >= 2) {
                 try {
@@ -403,7 +403,7 @@ public class TreeTreeNode extends TreeNode {
                         return intTree.getRoot().toFormula();
                     }
                 } catch (Exception e) {
-                    // fallback
+                    throw new RuntimeException(e);
                 }
             }
         }

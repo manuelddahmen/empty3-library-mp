@@ -365,30 +365,33 @@ public class ListInstructions {
                     resultVec = tree.eval();
                     lastResultVec = resultVec;
 
+                    String formulaStr = tree.getRoot() != null ? tree.getRoot().toFormula() : value;
+
                     if (resultVec != null) {
                         if (key != null) {
-                            Logger.getAnonymousLogger().log(Level.INFO, "key: " + key + " value: " + value + " computed: " + resultVec);
+                            Logger.getAnonymousLogger().log(Level.INFO, "key: " + key + " value: " + value + " formula: " + formulaStr + " computed: " + resultVec);
                             if (resultVec.getDim() == 1) {
                                 currentParamsValuesVecComputed.put(key, resultVec);
-                                currentParamsValuesVec.put(key, value);
+                                currentParamsValuesVec.put(key, formulaStr);
 
-                                String errors1 = String.format("\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
-                                returnedCode.add(key + "=" + value + errors1);
+                                String errors1 = String.format("\n##line : (%d)%s = %s [formula: %s]", countInstructions, value, resultVec.toStringLine(), formulaStr);
+                                returnedCode.add(key + " = " + formulaStr + " ##value: " + value + errors1);
 
 
                             } else if (resultVec.getDim() == 0) {
                                 currentParamsValuesVecComputed.put(key, resultVec);
-                                currentParamsValuesVec.put(key, value);
+                                currentParamsValuesVec.put(key, formulaStr);
                                 currentParamsValues.put(key, resultVec.getElem());
 
 
-                                String errors1 = String.format("\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
-                                returnedCode.add(instruction.originalString + errors1);
+                                String errors1 = String.format("\n##line : (%d)%s = %s [formula: %s]", countInstructions, value, resultVec.toStringLine(), formulaStr);
+                                String leftPart = key != null ? key + " = " + formulaStr : instruction.originalString;
+                                returnedCode.add(leftPart + errors1);
 
                             }
                         } else if (instruction.originalString.startsWith("##")) {
                         } else {
-                            String errors1 = String.format("\n##line : (%d)%s=%s ", countInstructions, value, resultVec.toStringLine());
+                            String errors1 = String.format("\n##line : (%d)%s = %s [formula: %s]", countInstructions, value, resultVec.toStringLine(), formulaStr);
                             returnedCode.add(instruction.originalString + errors1);
 
                         }
