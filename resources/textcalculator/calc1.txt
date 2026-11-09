@@ -4,60 +4,60 @@
 ##D:\current\apps\empty3-library-mp\resources\textcalculator\calc1.txt
 ##
 
-x=0.39*4+0.97+0.72
-##line : (7)0.39*4+0.97+0.72=num(dim:0) data : 3.25 
-x=4*4
-##line : (9)4*4=num(dim:0) data : 16.0 
+x = ((0.39 * 4) + 0.97 + 0.72)
+##line : (7)0.39*4+0.97+0.72 = num(dim:0) data : 3.25 [formula: ((0.39 * 4) + 0.97 + 0.72)]
+x = (4 * 4)
+##line : (9)4*4 = num(dim:0) data : 16.0 [formula: (4 * 4)]
 9.4/24+0.97+1.39
-##line : (11)9.4/24+0.97+1.39=num(dim:0) data : 2.7516666666666665 
+##line : (11)9.4/24+0.97+1.39 = num(dim:0) data : 2.7516666666666665 [formula: ((9.4 / 24) + 0.97 + 1.39)]
 16
-##line : (13)16=num(dim:0) data : 16.0 
-b=7.02/3
-##line : (15)7.02/3=num(dim:0) data : 2.34 
-x
-##line : (17)x=num(dim:0) data : 16.0 
-a=2.33*8
-##line : (19)2.33*8=num(dim:0) data : 18.64 
+##line : (13)16 = num(dim:0) data : 16.0 [formula: 16]
+b = (7.02 / 3)
+##line : (15)7.02/3 = num(dim:0) data : 2.34 [formula: (7.02 / 3)]
+x = x
+##line : (17)x = num(dim:0) data : 16.0 [formula: x]
+a = (2.33 * 8)
+##line : (19)2.33*8 = num(dim:0) data : 18.64 [formula: (2.33 * 8)]
 
-pi=3.141592653589793
-##line : (22)3.141592653589793=num(dim:0) data : 3.141592653589793 
-
-
-a=6
-##line : (26)6=num(dim:0) data : 6.0 
+pi = 3.141592653589793
+##line : (22)3.141592653589793 = num(dim:0) data : 3.141592653589793 [formula: 3.141592653589793]
 
 
-
-b=2*pi-6
-##line : (31)2*pi-6=num(dim:0) data : 0.28318530717958623 
-
-
-a=(1,1)
-##line : (35)(1,1)=num(dim:1) data : ( 1.0, 1.0 ) 
+a = 6
+##line : (26)6 = num(dim:0) data : 6.0 [formula: 6]
 
 
-r=sqrt(median(29,12))
-##line : (39)sqrt(median(29,12))=num(dim:0) data : 12.020815280171307 
+
+b = ((2 * pi) - 6)
+##line : (31)2*pi-6 = num(dim:0) data : 0.28318530717958623 [formula: ((2 * pi) - 6)]
+
+
+a = (1, 1) ##value: (1,1)
+##line : (35)(1,1) = num(dim:1) data : ( 1.0, 1.0 ) [formula: (1, 1)]
+
+
+r = (sqrt(median(29,12)))
+##line : (39)sqrt(median(29,12)) = num(dim:0) data : 12.020815280171307 [formula: (sqrt(median(29,12)))]
 2.35/1.5
-##line : (41)2.35/1.5=num(dim:0) data : 1.5666666666666667 
+##line : (41)2.35/1.5 = num(dim:0) data : 1.5666666666666667 [formula: (2.35 / 1.5)]
 
 24/9
-##line : (44)24/9=num(dim:0) data : 2.6666666666666665 
-m=(0.39,12)
-##line : (46)(0.39,12)=num(dim:1) data : ( 0.39, 12.0 ) 
-e=sum(x)
-##line : (48)sum(x)=num(dim:0) data : 16.0 
-e=sin(x)
-##line : (50)sin(x)=num(dim:0) data : -0.2879033166650653 
-e=sum((m))
-##line : (52)sum((m))=num(dim:0) data : 12.39 
-e=sum((m))
-##line : (54)sum((m))=num(dim:0) data : 12.39 
-e=sum((x))
-##line : (56)sum((x))=num(dim:0) data : 16.0 
+##line : (44)24/9 = num(dim:0) data : 2.6666666666666665 [formula: (24 / 9)]
+m = (0.39, 12) ##value: (0.39,12)
+##line : (46)(0.39,12) = num(dim:1) data : ( 0.39, 12.0 ) [formula: (0.39, 12)]
+e = sum(x)
+##line : (48)sum(x) = num(dim:0) data : 16.0 [formula: sum(x)]
+e = (sin(x))
+##line : (50)sin(x) = num(dim:0) data : -0.2879033166650653 [formula: (sin(x))]
+e = sum((m))
+##line : (52)sum((m)) = num(dim:0) data : 12.39 [formula: sum((m))]
+e = sum((m))
+##line : (54)sum((m)) = num(dim:0) data : 12.39 [formula: sum((m))]
+e = sum((x))
+##line : (56)sum((x)) = num(dim:0) data : 16.0 [formula: sum((x))]
 sum((0.39,12.0))
-##line : (58)sum((0.39,12.0))=num(dim:0) data : 12.39 
+##line : (58)sum((0.39,12.0)) = num(dim:0) data : 12.39 [formula: sum((0.39,12.0))]
 sin(m)
-##line : (60)sin(m)=num(dim:1) data : ( 0.3801884151231614, -0.5365729180004349 ) 
+##line : (60)sin(m) = num(dim:1) data : ( 0.3801884151231614, -0.5365729180004349 ) [formula: (sin(m))]
 sin((m))
-##line : (62)sin((m))=num(dim:1) data : ( 0.3801884151231614, -0.5365729180004349 ) 
+##line : (62)sin((m)) = num(dim:1) data : ( 0.3801884151231614, -0.5365729180004349 ) [formula: (sin((m)))]

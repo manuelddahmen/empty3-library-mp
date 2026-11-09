@@ -318,25 +318,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
         // return camera().calculerPointDansRepere(super.rotate(p0, ref));
     }
 
-    /**
-     * Draws the elements of the given collection. If an element is of type {@code Representable},
-     * it processes the object and invokes the appropriate actions. If the element is another
-     * collection, the method is recursively called to process its elements.
-     *
-     * @param collection the collection of objects to be drawn; it can contain elements of
-     *                   type {@code Representable}, {@code Scene}, {@code Point3D}, or other collections
-     */
-    public synchronized void draw(Collection<Object> collection) {
-        collection.forEach((Consumer) o -> {
-            if (o instanceof Representable) {
-                if (!(o instanceof Scene) && !(o instanceof Point3D)) {
-                    setCurrentRepresentable((Representable) o);
-                }
-                draw((Representable) o);
-            } else if (o instanceof Collection)
-                draw((Collection) o);
-        });
-    }
+
 
     /**
      * Renders the specified {@code Representable} object by processing its components
@@ -350,7 +332,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
      *          triangles. Null values are handled gracefully, and specific logging is
      *          performed if {@code r} is null.
      */
-    public synchronized void draw(Representable r) {
+    public void draw(Representable r) {
         Vec origin = null;
         if (r != null && finalRmatrix.containsKey(r)) {
             origin = finalRmatrix.get(r);
@@ -369,16 +351,15 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
         if (r instanceof Scene scene) {
             updatePerpective();
-            scene.getObjets().getData1d().forEach(this::draw);
+            scene.getObjets().getData1d().parallelStream().forEach(this::draw);
             return;
         } else if (r instanceof RepresentableConteneur finalR) {
             final Representable r1 = r;
-            finalR.getListRepresentable().forEach(
+            finalR.getListRepresentable().parallelStream().forEach(
                     representable -> {
                         representable.setVectX(r1.getVectX());
                         representable.setVectY(r1.getVectY());
                         representable.setVectZ(r1.getVectZ());
-                        //finalR.transformContained(representable);
                         draw(representable);
                     }
             );
