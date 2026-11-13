@@ -681,35 +681,7 @@ publishing {
     }
 
     repositories {
-        /*  maven {
-              name = "JetBrainsSpaceEmpty3"
-              url = "https://maven.pkg.jetbrains.space/empty3/p/empty3/maven/maven"
-              credentials {
-                  // Automation has a special account for authentication in Space
-                  // account credentials are accessible via env vars
-                  username = load.get("spaceUsername")
-                  password = load.get("spacePassword")
-              }
 
-          }*/
-        /*maven {
-            name = "OSSRH"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = load.get("ossrhUsername")
-                password = load.get("ossrhPassword")
-            }
-
-        }*/
-/*
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/manuelddahmen/empty3_miror")
-            credentials {
-                username = load.get("GITHUB_ACTOR")
-                password = load.get("GITHUB_TOKEN")
-            }
-        }*/
         maven {
             url = layout.buildDirectory.dir('staging-deploy')
         }

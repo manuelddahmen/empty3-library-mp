@@ -40,6 +40,11 @@ import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/***
+ * TextureMorphMove is a class that extends ITexture and provides functionality
+ * for morphing textures using a distance-based approach. It allows for the
+ * selection of points, distance calculations, and convex hull generation.
+ */
 public class TextureMorphMove extends ITexture {
     public static final Color WHITE = Color.newCol(1f,1f,1f);
     public final EditPolygonsMappings editPanel;

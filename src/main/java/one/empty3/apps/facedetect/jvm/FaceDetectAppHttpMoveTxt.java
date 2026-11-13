@@ -45,6 +45,11 @@ import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.util.*;
 
+/***
+ * FaceDetectAppHttpMoveTxt is a class that extends FaceDetectAppHttp and provides
+ * functionality for moving and writing face data to a text file. It utilizes Google's
+ * Vision API to detect faces in images and extract facial landmarks.
+ */
 public class FaceDetectAppHttpMoveTxt {
     private static final String APPLICATION_NAME = "MeshMask";
     private static final int MAX_RESULTS = 10;

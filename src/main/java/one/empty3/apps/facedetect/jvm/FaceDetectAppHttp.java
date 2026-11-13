@@ -45,6 +45,11 @@ import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.util.*;
 
+/***
+ * FaceDetectAppHttp is a class that utilizes Google's Vision API to detect faces
+ * in images and extract facial landmarks. It provides methods for initializing
+ * polygon structures, detecting frontal faces, and writing face data to a file.
+ */
 public class FaceDetectAppHttp {
     private static final String APPLICATION_NAME = "MeshMask";
     private static final int MAX_RESULTS = 100;

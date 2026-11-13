@@ -48,6 +48,24 @@ import java.util.logging.Logger;
 // import java.io.File;
 // import java.io.IOException;
 
+/**
+ * Computes a two-dimensional convex hull from a set of input points and produces
+ * a mask image representing the filled hull area.
+ *
+ * The input points are treated as normalized coordinates and scaled to the
+ * supplied image dimensions before hull computation. The Z coordinate is not
+ * used for hull geometry. The hull is computed using the Gift Wrapping
+ * algorithm, also known as Jarvis March, and collinear edge candidates are
+ * resolved by keeping the farthest point.
+ *
+ * The generated mask has the requested width and height. Pixels whose centers
+ * fall inside or on the boundary of the computed convex hull are marked as
+ * white. Areas outside the hull remain unchanged or black, depending on the
+ * initial state of the image.
+ *
+ * A hull containing fewer than three points is retained as the scaled input
+ * points, but it does not define a filled polygonal region.
+ */
 public class ConvexHull {
     private final List<Point3D> originalScaledPoints; // Renamed for clarity
     private final Image mask;
