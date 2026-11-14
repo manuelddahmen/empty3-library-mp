@@ -350,12 +350,15 @@ public class ZBufferImpl extends Representable implements ZBuffer {
             r.texture().timeNext();
 
         if (r instanceof Scene scene) {
+            if (camera() != null) {
+                camera().calculerMatrice(camera().getVerticale());
+            }
             updatePerpective();
-            scene.getObjets().getData1d().parallelStream().forEach(this::draw);
+            scene.getObjets().getData1d().forEach(this::draw);
             return;
         } else if (r instanceof RepresentableConteneur finalR) {
             final Representable r1 = r;
-            finalR.getListRepresentable().parallelStream().forEach(
+            finalR.getListRepresentable().forEach(
                     representable -> {
                         representable.setVectX(r1.getVectX());
                         representable.setVectY(r1.getVectY());
@@ -468,6 +471,30 @@ public class ZBufferImpl extends Representable implements ZBuffer {
                         f.getU(2),
                         f.getV(2)
                 );
+            }
+        } else if (r instanceof Polygon p) {
+            toDrawR = r;
+            setCurrentRepresentable(r);
+            List<Point3D> pts = p.getPoints().getData1d();
+            int size = pts.size();
+            if (size == 4) {
+                Point3D p1 = p.transformVec(pts.get(0));
+                Point3D p2 = p.transformVec(pts.get(1));
+                Point3D p3 = p.transformVec(pts.get(2));
+                Point3D p4 = p.transformVec(pts.get(3));
+                if (p1 != null && p2 != null && p3 != null && p4 != null) {
+                    tracerQuad(p1, p2, p3, p4, p.texture(), 0.0, 1.0, 0.0, 1.0, null);
+                }
+            } else if (size >= 3) {
+                List<FrustumPolygonIntersection.TexturedPoint> polyPts = new ArrayList<>(size);
+                for (int i = 0; i < size; i++) {
+                    Point3D pt = p.transformVec(pts.get(i));
+                    if (pt != null) {
+                        polyPts.add(new FrustumPolygonIntersection.TexturedPoint(pt, 0.5, 0.5));
+                    }
+                }
+                List<FrustumPolygonIntersection.TexturedPoint> clipped = intersection(polyPts);
+                renderClippedPolygon(clipped, p.texture(), null);
             }
         } else if (r instanceof ParametricSurface n) {
             toDrawR = r;
@@ -2159,7 +2186,7 @@ public class ZBufferImpl extends Representable implements ZBuffer {
 
                 pFinal.texture(texture);
 
-                if (n != null) {
+                if (n != null && !(n instanceof Polygon) && scene() != null && !scene().lumieres().isEmpty()) {
 
                     Point3D normal =
                             n.calculerNormale3D(u, v);

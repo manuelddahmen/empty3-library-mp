@@ -240,7 +240,7 @@ public class Camera extends CameraBox {
             x3d = pointIntersects(x3d, la, ha);
         }*/
 
-        if (x3d != null /*&& conditionInBounds*/) {
+        if (x3d != null && x3d.getZ() > 0 /*&& conditionInBounds*/) {
 
             double scale = (1.0 / (x3d.getZ()));
 
@@ -312,9 +312,12 @@ public class Camera extends CameraBox {
     }
 
     public double distanceCamera(Point3D x3d) {
+        if (x3d == null) {
+            return Double.NEGATIVE_INFINITY;
+        }
         return switch (type) {
-            case PERSPECTIVE_ISOMETRIQUE -> x3d.getZ() - eye.getElem().getZ();
-            case PERSPECTIVE_POINTDEFUITE -> x3d.moins(eye.getElem()).getZ();
+            case PERSPECTIVE_ISOMETRIQUE -> -calculerPointDansRepere(x3d).getZ();
+            case PERSPECTIVE_POINTDEFUITE -> -calculerPointDansRepere(x3d).getZ();
             default -> throw new UnsupportedOperationException("Type de perspective non reconnu");
         };
 
