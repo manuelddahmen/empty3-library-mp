@@ -1,0 +1,8 @@
+﻿tasks.register('dumpJreleaser') {
+    doLast {
+        def ext = project.extensions.findByName('jreleaser')
+        ext.properties.each { k, v ->
+            println "EXT: " + k + " = " + v
+        }
+    }
+}

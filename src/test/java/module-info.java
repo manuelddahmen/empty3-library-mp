@@ -1,0 +1,108 @@
+/*
+ *
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
+ *  *
+ *  *
+ *
+ *
+ *
+ *  * Created by Manuel D Dahmen -2026
+ *
+ *
+ */
+
+module empty3_library_mp {
+    requires com.google.api.client;
+    requires com.google.api.client.json.gson;
+    requires com.google.api.services.vision;
+    requires com.google.auth.oauth2;
+    requires com.google.common;
+    requires com.google.gson;
+    requires google.api.client;
+    requires java.datatransfer;
+    requires java.desktop;
+    requires java.logging;
+    requires org.apache.commons.net;
+    requires org.checkerframework.checker.qual;
+    requires partial.desktop;
+    requires org.junit.jupiter.api;
+    requires org.slf4j;
+    //requires kotlin.stdlib;
+//    requires jcodec.javase;
+//    requires google.cloud.storage;
+    // JOGL libraries - commented out as they are not modular
+    // requires gluegen.rt;
+    // requires jogl.all;
+
+// Extras as gradle reads=ALL_UNNANED
+    exports one.empty3.library;
+    exports one.empty3.apps.facedetect.jvm;
+    exports one.empty3.apps.testobject;
+    exports one.empty3.library.core.nurbs;
+    exports one.empty3.library.core.lighting;
+    exports one.empty3.library.core.export;
+    exports one.empty3.library.core.bsp;
+    exports one.empty3.library.core.aonb;
+    exports one.empty3.library.core.animation;
+    exports one.empty3.library.core.extra;
+    exports one.empty3.library.core.gdximports;
+    exports one.empty3.library.core.integration;
+    exports one.empty3.library.core.iterate;
+    exports one.empty3.library.core.math;
+    exports one.empty3.library.core.mesh;
+    exports one.empty3.library.core.physics;
+    exports one.empty3.library.core.tribase;
+    exports one.empty3.library.core.move;
+    exports one.empty3.library.core.script;
+    exports one.empty3.library.core.units;
+    exports one.empty3.library.core.Engine;
+    exports one.empty3.library.objloader;
+    exports one.empty3.library.exporters.obj;
+    exports one.empty3.library.colorcomp;
+    exports one.empty3.library.lang;
+    exports one.empty3.library.modelerview;
+    exports one.empty3.library.svgtexture;
+    exports one.empty3.library.optimize;
+    exports one.empty3.library.stl_loader;
+    exports one.empty3.library.utils;
+    exports one.empty3.feature.process;
+    exports one.empty3.buildutil;
+    exports one.empty3.neuralnetwork.of;
+    exports one.empty3.neuralnetwork.trainfacedetectdev;
+    exports one.empty3.neuralnetwork;
+    exports one.empty3.csv;
+    exports one.empty3.growth.actionstype;
+    exports one.empty3.growth.graphics;
+    exports one.empty3.exp;
+    exports one.empty3.gui;
+    exports one.empty3.tests;
+    exports one.empty3.library1.shader.language.cpp;
+    exports one.empty3.library1.shader;
+    exports one.empty3.library1.tree.functions;
+    exports one.empty3.library1.tree;
+    exports one.empty3.pointset;
+    exports one.empty3.scenario;
+    exports one.empty3.testagentcode;
+    opens one.empty3.testagentcode;
+    opens one.empty3.library1.tree;
+    opens one.empty3.library1.tree.functions;
+    opens one.empty3.library;
+    opens one.empty3.library1.shader;
+    opens one.empty3.library.core.math;
+}
